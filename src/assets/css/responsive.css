@@ -1,0 +1,1420 @@
+@media screen and (min-device-width: 0px) and (max-device-width: 767px) {
+  .myProjectTable h2 {
+    font-size: 22px;
+  }
+  .myProjectTable div.row {
+    min-height: 120px;
+    padding: 10px 0;
+  }
+
+  .myProjectTable div.row div {
+    padding: 10px 20px;
+  }
+
+  .purchase_dialog .puchase_box {
+    padding: 10px 0px;
+  }
+  .purchase_dialog p {
+    font-size: 19px !important;
+  }
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
+    line-height: 37px;
+  }
+  .forgerPasswordButton {
+    font-size: 12px;
+    margin-top: 11px;
+    margin-bottom: 15px;
+  }
+
+  .let-get-started .join-us-now-main .join-us-now-text a:nth-child(1) button,
+  .let-get-started .join-us-now-main .join-us-now-text a:nth-child(2) button {
+    font-size: 16px;
+  }
+  .create-account
+    main.create-account-main
+    form
+    .create-account-input
+    .policy-span {
+    text-align: center;
+  }
+
+  .homePageherosSectionLogo {
+    height: 80px !important;
+  }
+  header.dashboard-header h6 {
+    font-size: 12px;
+  }
+  .custom-border-radius-one {
+    border-radius: 0 0 0 0;
+  }
+  header.home-page-header form,
+  header.home-page-header ul {
+    display: none;
+  }
+  .find-text h2 {
+    text-align: center;
+    padding-top: 10px;
+    font-size: 22px;
+  }
+  header.home-page-header .hamburger-button {
+    display: flex;
+  }
+  section.earners-review-carousel {
+    background: url(../img/Mobile-carousel.bg.png);
+    background-repeat: no-repeat;
+    background-size: 320px 40%;
+    background-position: 20% 0%;
+    padding: 25px 0;
+  }
+  footer {
+    padding-top: 25px;
+  }
+  footer .quadra-copyright {
+    margin-top: 25px;
+  }
+  .Top_Earners_Ineer {
+    margin: 0 33px 0 0;
+  }
+  .Find_Talent {
+    padding: 25px 0px;
+  }
+  .find-inner {
+    padding-top: 25px;
+  }
+  .hover-section {
+    min-height: 230px;
+  }
+  .Top_Earners_Ineer h2 {
+    font-size: 15px;
+    padding: 0;
+  }
+  .Top_Earners .owl-next:before {
+    height: 35px;
+    width: 35px;
+    position: static;
+  }
+  .Top_Earners .owl-prev:before {
+    height: 35px;
+    width: 35px;
+    position: static;
+  }
+  .Top_Earners .owl-prev:after {
+    top: 13px;
+    left: 7px;
+  }
+  .Top_Earners .owl-next:after {
+    top: 13px;
+    right: 4px;
+  }
+  .add-hire .add-icon i {
+    font-size: 11px;
+  }
+  .add-hire .add-icon span {
+    font-size: 12px;
+  }
+  .add-btn button {
+    padding: 8px 13px;
+    font-size: 12px;
+  }
+  .henry-img img {
+    width: 80px !important;
+    object-fit: cover;
+    height: 80px;
+  }
+  .Top_Earners .item {
+    padding: 25px 15px 25px 15px;
+  }
+  .henry-text h6 {
+    font-size: 16px;
+  }
+  .Top_Earners .owl-carousel {
+    margin: 25px 0px 25px 0px;
+  }
+  .Top_Earners {
+    background-size: 400% 106%;
+    padding: 25px 0;
+    background-position: 20% -30px;
+  }
+  .Top_Earners.Recent_Earners {
+    background-size: 250% 104%;
+    background-position: 100% -18px;
+    padding: 25px 0;
+    margin: 0;
+  }
+  .our-top-clients-sec {
+    padding: 25px 0px 225px 0;
+    background-size: 100%;
+  }
+  .card-box-our-top-clients {
+    padding-bottom: 25px !important;
+  }
+  .quotes-image-carousel {
+    height: 50px !important;
+    width: 50px !important;
+  }
+  section.earners-review-carousel .carousel .image-carousel-main {
+    padding: 0;
+    height: 350px;
+  }
+  section.earners-review-carousel .carousel-caption h3 {
+    font-size: 22px;
+  }
+  .our-top-clients-sec h2 {
+    font-size: 22px;
+  }
+  .hover-section:hover {
+    padding-top: 0px;
+    transition: all 0.5s !important;
+  }
+  header.dashboard-header h2 {
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 20px;
+  }
+  .dashboard main #Browse-projects h3 {
+    font-size: 28px;
+  }
+  .dashboard main #Browse-projects h4 {
+    font-size: 16px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h3 {
+    font-size: 22px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h5 {
+    font-size: 16px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h4 {
+    font-size: 16px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h2 {
+    font-size: 22px;
+  }
+  .dashboard main #dashboard-menu-bar img {
+    height: 34px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional {
+    padding: 20px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    h4 {
+    font-size: 20px;
+    line-height: normal;
+    margin: 0;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    h3 {
+    font-size: 22px;
+    line-height: normal;
+    color: #ffffff;
+    font-weight: 400;
+    font-family: "Poppins";
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    p {
+    font-size: 15px;
+    line-height: normal;
+    width: auto;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    button {
+    font-size: 17px;
+    font-weight: 400;
+    padding: 10px 25px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .completed-projects-box
+    h2 {
+    font-size: 22px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .completed-projects-box
+    h3 {
+    font-weight: 500;
+  }
+  .dashboard main #dashboard-menu-bar .projects-table h4 {
+    font-size: 15px;
+  }
+  .dashboard main #dashboard-menu-bar .projects-table h5 {
+    font-size: 15px;
+  }
+  .dashboard main #dashboard-menu-bar .projects-table .project-table-header h6 {
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 1px solid #dee2e6 !important;
+    padding: 10px;
+    font-family: "Poppins";
+    margin: 0;
+  }
+  .dashboard main #dashboard-menu-bar .projects-table .project-table-header {
+    padding: 0;
+    margin: 15px 0;
+  }
+  .dashboard main #dashboard-menu-bar .projects-table {
+    padding: 1px;
+  }
+  .Residential-Architecture-page .card {
+    height: 173px;
+  }
+  .Residential-Architecture-page h3 {
+    font-size: 22px;
+  }
+  .Residential-Architecture-page button {
+    width: 175px;
+    padding: 7px 0;
+    font-size: 17px;
+  }
+  .create-account main.create-account-main form {
+    padding: 50px 8px;
+    min-height: 400px;
+  }
+  .create-account main.create-account-main form h1 {
+    font-size: 24px;
+  }
+  .create-account main.create-account-main form h3 {
+    font-size: 15px;
+  }
+  .create-account main.create-account-main form .create-account-btn {
+    font-size: 15px;
+    padding: 10px 30px;
+    margin: auto;
+    display: block;
+  }
+  .create-account main.create-account-main form .logInbtn {
+    font-size: 15px;
+    padding: 10px 30px;
+    margin: auto;
+    display: block;
+    margin-top: 20px;
+  }
+  .create-account main.create-account-main form .horizontal-line {
+    width: 30%;
+  }
+  .create-account header.create-account-header h2 {
+    font-size: 35px;
+  }
+  .create-account {
+    background-position: 100%;
+    background-size: 170% 100%;
+  }
+  .create-account header.create-account-header ul li,
+  .create-account header.create-account-header ul li a {
+    margin-left: 5px;
+  }
+  .language-dropdown-slider {
+    transform: translate(48px, 27px);
+  }
+  .let-get-started .join-us-now-main .join-us-now-text {
+    min-height: auto;
+    padding: 60px 20px;
+    border-radius: 30px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text h3 {
+    font-size: 22px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text h1 {
+    font-size: 35px;
+    line-height: normal;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text button:nth-child(2),
+  .let-get-started .join-us-now-main .join-us-now-text button:nth-child(1) {
+    font-size: 18px;
+    width: 100%;
+    padding: 7px 30px;
+  }
+  .catagory-filters-cards {
+    padding: 23px;
+  }
+  .result-based-on-catogory-one {
+    background-size: 50% 150%;
+    padding: 35px 0;
+  }
+  .result-based-on-catogory-two {
+    background-size: 50% 150%;
+    padding: 35px 0;
+  }
+  .show-filters-heading {
+    font-size: 16px;
+    line-height: normal;
+  }
+  h2.filters-h2 {
+    font-size: 38px !important;
+  }
+
+  .client-projects-graph {
+    width: 250px;
+    height: 300px;
+    position: relative;
+  }
+  .client-projects-graph .client-project-progress-bar {
+    left: 0%;
+  }
+  .graph-month-display {
+    width: 255px;
+    font-size: 14px;
+  }
+  .client-project-main-row h4 {
+    font-size: 14px;
+  }
+  .client-project-main-row select {
+    font-size: 12px;
+  }
+  .client-project-main-row h3 {
+    font-size: 20px;
+  }
+  .client-project-main-row h2.number-of-professional-h2 {
+    font-size: 22px;
+  }
+  .client-project-main-row h2 {
+    font-size: 18px;
+  }
+  .chat-to-professional-client-page h5 {
+    font-size: 18px;
+    padding: 10px 0 0 0;
+  }
+  .chat-to-professional-client-page h6 {
+    font-size: 16px;
+  }
+  .recent-payments-client-page h6 {
+    font-size: 16px;
+  }
+  .recent-payments-client-page h5 {
+    font-size: 18px;
+  }
+  .profile-edit-dropdown button {
+    padding: 10px 16px;
+  }
+  /* <--client-page-css--> */
+  main.profile-page section.profile-page-sec-two .user-profile-image img {
+    padding: 15px;
+  }
+  main.profile-page section.profile-page-sec-three {
+    padding: 10px;
+    margin: 265px 0 0 0;
+  }
+  main.profile-page section.profile-page-sec-one img.right-user-banner-image {
+    height: 295px;
+  }
+  main.profile-page section.profile-page-sec-two .user-experience-box h4 {
+    font-size: 18px;
+  }
+  main.profile-page section.profile-page-sec-two .user-experience-box h5 {
+    font-size: 16px;
+  }
+  main.profile-page section.profile-page-sec-two .user-experience-box h2 {
+    font-size: 36px;
+  }
+  main.profile-page section.profile-page-sec-two .user-experience-box {
+    box-shadow: 0px 4px 4px #878787;
+    padding: 10px;
+  }
+  main.profile-page section.profile-page-sec-two .user-profile-info h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  main.profile-page section.profile-page-sec-two .user-profile-info h4 {
+    font-size: 16px;
+  }
+  main.profile-page
+    section.profile-page-sec-three
+    .button-group-profile-page
+    img {
+    width: 60px;
+    height: 60px;
+  }
+  main.profile-page section.profile-page-sec-three h4 {
+    font-size: 16px;
+  }
+  main.profile-page section.profile-page-sec-three h3 {
+    font-size: 20px;
+    padding-top: 25px;
+  }
+  main.profile-page section.profile-page-sec-three p {
+    font-size: 14px;
+    line-height: normal;
+  }
+  main.profile-page section.profile-page-sec-five h3 {
+    font-size: 20px;
+  }
+  main.profile-page section.profile-page-sec-five p {
+    font-size: 14px;
+  }
+  main.profile-page section.profile-page-sec-six {
+    padding: 50px 0;
+  }
+  main.profile-page section.profile-page-sec-six h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  main.profile-page section.profile-page-sec-six h5 {
+    font-size: 16px;
+  }
+
+  .find-visualizer form h3 {
+    font-size: 22px;
+  }
+  .find-visualizer form button[type="reset"] {
+    padding: 16px;
+  }
+  .find-visualizer form button[type="reset"] img {
+    height: 16px !important;
+    width: 19px !important;
+  }
+  .find-visualizer form button[type="submit"] {
+    font-size: 14px;
+    width: 155px;
+    padding: 3px 0;
+  }
+  .find-visualizer form {
+    padding: 24px;
+  }
+  .find-visualizer .item {
+    padding: 15px;
+  }
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 991px) {
+  .myProjectTable div.row div {
+    padding: 10px 20px;
+  }
+
+  .myProjectTable h2 {
+    font-size: 30px;
+  }
+  header.home-page-header ul li {
+    margin-left: 17px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text a:nth-child(1) button,
+  .let-get-started .join-us-now-main .join-us-now-text a:nth-child(2) button {
+    font-size: 12px;
+  }
+  .homePageherosSectionLogo {
+    height: 90px !important;
+  }
+  .Find_Talent {
+    padding: 50px 0 0 0px;
+  }
+  .find-text h2 {
+    padding-top: 0;
+    margin: 0;
+    font-size: 25px;
+  }
+  .find-inner {
+    padding-top: 50px;
+  }
+  .hover-section {
+    min-height: 240px;
+  }
+  .hover-section:hover {
+    padding-top: 10px;
+  }
+  .Top_Earners_Ineer h2 {
+    padding-top: 0px;
+    font-size: 25px;
+  }
+  .Top_Earners .owl-carousel {
+    margin: 0;
+  }
+  .Top_Earners {
+    padding: 50px 0;
+    background-size: 100% 100%;
+    background-position: 100% -12px;
+  }
+  .Top_Earners.Recent_Earners {
+    padding: 50px 0;
+    background-size: 100% 100%;
+    background-position: 100% 0px;
+    margin: 0;
+  }
+  .our-top-clients-sec {
+    padding: 50px 0 250px 0;
+  }
+  section.earners-review-carousel {
+    padding: 0 0 50px 0;
+    background-size: 150% 100%;
+    background-position: 50% 0;
+  }
+  section.earners-review-carousel .carousel .image-carousel-main {
+    padding: 0px;
+    height: 400px;
+    width: 325px;
+  }
+  footer {
+    padding-top: 50px;
+  }
+  footer .quadra-copyright {
+    margin-top: 50px;
+  }
+  .Top_Earners .item {
+    padding: 20px 25px 20px 25px;
+  }
+  .henry-text h6 {
+    font-size: 18px;
+  }
+  .add-icon i {
+    font-size: 12px;
+  }
+  .our-top-clients-sec h2 {
+    font-size: 25px;
+  }
+  .quotes-image-carousel {
+    height: 60px !important;
+    width: 60px !important;
+  }
+  section.earners-review-carousel .carousel-caption h3 {
+    font-size: 25px;
+  }
+  .Top_Earners_Ineer {
+    margin: 0px 45px 27px 0;
+  }
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
+    font-size: 12px;
+    line-height: 43px;
+    padding-left: 10px;
+    padding-right: 0;
+  }
+  .dashboard aside h1 {
+    font-size: 40px;
+  }
+  header.dashboard-header h2 {
+    font-size: 23px;
+  }
+  .dashboard main #Browse-projects h3 {
+    font-size: 30px;
+  }
+  .dashboard main #Browse-projects h4 {
+    font-size: 16px;
+  }
+  .dashboard main #Browse-projects .browse-project-card {
+    height: 200px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h3 {
+    font-size: 24px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h5 {
+    font-size: 17px;
+  }
+  .dashboard main #dashboard-menu-bar img {
+    height: 40px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h2 {
+    font-size: 24px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h4 {
+    font-size: 17px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional {
+    padding: 20px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    h4 {
+    font-size: 22px;
+    line-height: normal;
+    margin: 0;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    h3 {
+    font-size: 24px;
+    line-height: normal;
+    margin: 0;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    p {
+    font-size: 15px;
+    line-height: normal;
+    width: auto;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    button {
+    font-size: 18px;
+    padding: 5px 23px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .completed-projects-box
+    h3 {
+    font-size: 18px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .completed-projects-box
+    h2 {
+    font-size: 24px;
+  }
+  .dashboard main #dashboard-menu-bar .projects-table p {
+    font-size: 14px;
+  }
+  .dashboard main #dashboard-menu-bar .projects-table h6 {
+    font-size: 15px;
+    font-weight: 300;
+  }
+  .Residential-Architecture-page .card {
+    height: 200px;
+  }
+  .Residential-Architecture-page h3 {
+    font-size: 30px;
+  }
+  .Residential-Architecture-page button {
+    width: 173px;
+    padding: 8px 0;
+    font-size: 18px;
+  }
+  .create-account header.create-account-header h2 {
+    font-size: 40px;
+  }
+  .create-account main.create-account-main form h1 {
+    font-size: 30px;
+  }
+  .create-account main.create-account-main form h3 {
+    font-size: 18px;
+  }
+  .create-account {
+    background-position: 100%;
+    background-size: 105% 100%;
+  }
+  .create-account main.create-account-main form {
+    padding: 50px;
+    min-height: 450px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text {
+    min-height: auto;
+    padding: 50px 30px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text button:nth-child(1) {
+    font-size: 16px;
+    background-color: #01a78a;
+    color: #ffffff;
+    border: 0;
+    font-weight: 500;
+    font-family: "Poppins";
+    border-radius: 50px;
+    padding: 10px 20px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text button:nth-child(2) {
+    font-size: 16px;
+    border: 1px solid #01a78a;
+    background-color: transparent;
+    color: #01a78a;
+    font-weight: 500;
+    font-family: "Poppins";
+    border-radius: 50px;
+    padding: 10px 10px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-image {
+    width: 36%;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text h1 {
+    font-size: 40px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text h3 {
+    font-size: 25px;
+  }
+  .catagory-filters-cards {
+    padding: 29px;
+  }
+  .show-filters-heading {
+    font-size: 24px;
+  }
+  .result-based-on-catogory-one,
+  .result-based-on-catogory-two {
+    padding: 60px 0;
+  }
+  section.chatbox {
+    padding: 75px 0;
+  }
+  section.chatbox .chats-main .chats-sidebar {
+    height: 425px;
+  }
+  section.chatbox .chats-main .chats-show {
+    height: 425px;
+  }
+  .client-projects-graph {
+    margin: auto;
+  }
+  .graph-month-display {
+    width: 290px;
+    margin: auto;
+  }
+  .client-project-main-row h3 {
+    font-size: 22px;
+  }
+  .client-project-main-row h2.number-of-professional-h2 {
+    font-size: 26px;
+  }
+  .client-project-main-row h2 {
+    font-size: 20px;
+  }
+  .recent-payments-client-page h6 {
+    font-size: 16px;
+  }
+  .chat-to-professional-client-page h6 {
+    font-size: 16px;
+  }
+  main.profile-page section.profile-page-sec-two .user-experience-box {
+    bottom: 76px;
+    right: 25px;
+  }
+  main.profile-page section.profile-page-sec-two .user-experience-box h2 {
+    font-size: 45px;
+  }
+  main.profile-page section.profile-page-sec-two .user-experience-box h5 {
+    font-size: 16px;
+  }
+  main.profile-page section.profile-page-sec-two .user-experience-box h4 {
+    font-size: 23px;
+  }
+  main.profile-page section.profile-page-sec-one img.right-user-banner-image {
+    height: 320px;
+  }
+  main.profile-page section.profile-page-sec-two .user-profile-info h2 {
+    font-size: 28px;
+    font-weight: 600;
+  }
+  main.profile-page section.profile-page-sec-two .user-profile-info h4 {
+    font-size: 19px;
+  }
+  main.profile-page section.profile-page-sec-three {
+    padding: 0;
+  }
+  main.profile-page
+    section.profile-page-sec-three
+    .button-group-profile-page
+    img {
+    width: 60px;
+    height: 60px;
+  }
+  main.profile-page section.profile-page-sec-three h4 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  main.profile-page section.profile-page-sec-three {
+    padding: 75px 0 50px 0;
+    margin: 135px 0 0 0;
+  }
+  main.profile-page section.profile-page-sec-three .button-group-profile-page {
+    margin: -145px 0 0 0;
+  }
+  main.profile-page section.profile-page-sec-three h3 {
+    font-size: 28px;
+    padding-top: 50px;
+  }
+  main.profile-page section.profile-page-sec-three p {
+    font-size: 16px;
+    line-height: 35px;
+  }
+  main.profile-page section.profile-page-sec-five h3 {
+    font-size: 28px;
+  }
+  main.profile-page section.profile-page-sec-five p {
+    font-size: 16px;
+  }
+  main.profile-page section.profile-page-sec-six h3 {
+    font-size: 28px;
+  }
+  main.profile-page section.profile-page-sec-six h5 {
+    font-size: 18px;
+  }
+  main.profile-page section.profile-page-sec-six {
+    padding: 40px 0;
+  }
+
+  .find-visualizer .item {
+    padding: 10px;
+  }
+  .find-visualizer form h3 {
+    font-size: 28px;
+  }
+  .find-visualizer form button[type="submit"] {
+    font-size: 18px;
+    width: 212px;
+  }
+  .find-visualizer form button[type="reset"] {
+    padding: 21px;
+  }
+}
+
+@media screen and (min-device-width: 992px) and (max-device-width: 1024px) {
+  .homePageherosSectionLogo {
+    height: 110px !important;
+  }
+  .create-account main.create-account-main form {
+    padding: 50px;
+    min-height: 475px;
+  }
+  .Find_Talent {
+    padding: 50px 0 0 0px;
+  }
+  .find-text h2 {
+    text-align: center;
+    padding-top: 0;
+    margin: 0;
+    font-size: 28px;
+  }
+  .find-inner {
+    padding-top: 50px;
+  }
+  .Top_Earners_Ineer h2 {
+    padding-top: 0px;
+    font-size: 28px;
+  }
+  .Top_Earners_Ineer {
+    padding: 0 50px 0 0;
+  }
+  .Top_Earners .owl-carousel {
+    margin: 25px 0px 0 0px;
+  }
+  .Top_Earners {
+    background-size: 100% 120%;
+    background-position: 100% -78px;
+  }
+  .Top_Earners.Recent_Earners {
+    background-size: 100% 104%;
+    background-position: 100% 100%;
+    padding: 50px 0;
+    margin: 0;
+  }
+  .henry-text span {
+    font-size: 13px;
+  }
+  .henry-text h6 {
+    font-size: 15px;
+  }
+  .henry-img img {
+    width: 80px !important;
+    height: 80px;
+  }
+  .add-hire .add-icon i {
+    font-size: 11px;
+  }
+  .add-hire .add-icon span {
+    font-size: 12px;
+  }
+  .add-btn button {
+    padding: 10px 10px;
+  }
+  .our-top-clients-sec h2 {
+    font-size: 28px;
+  }
+  section.earners-review-carousel {
+    background-size: 130% 100%;
+  }
+  section.earners-review-carousel .carousel-caption h3 {
+    font-size: 28px;
+  }
+  footer .quadra-copyright {
+    margin-top: 50px;
+  }
+  footer {
+    background-image: url(../img/FooterBg.png);
+    padding-top: 50px;
+  }
+  .our-top-clients-sec {
+    padding: 50px 0 250px 0;
+  }
+  section.earners-review-carousel .carousel .image-carousel-main {
+    height: 400px;
+    width: 375px;
+    padding: 20px;
+  }
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
+    font-size: 14px;
+    line-height: 45px;
+  }
+  .dashboard aside h1 {
+    font-size: 40px;
+  }
+  .dashboard main #Browse-projects h3 {
+    font-size: 32px;
+  }
+  .dashboard main #Browse-projects h4 {
+    font-size: 18px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h3 {
+    font-size: 26px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h5 {
+    font-size: 18px;
+  }
+  .dashboard main #dashboard-menu-bar img {
+    height: 42px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h4 {
+    font-size: 16px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h2 {
+    font-size: 26px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional {
+    padding: 30px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    h4 {
+    font-size: 28px;
+    line-height: normal;
+    margin: 0;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    p {
+    font-size: 18px;
+    line-height: normal;
+    width: 90%;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    button {
+    padding: 8px 30px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .completed-projects-box
+    h3 {
+    font-size: 19px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .completed-projects-box
+    h2 {
+    font-size: 26px;
+  }
+  .Residential-Architecture-page h3 {
+    font-size: 35px;
+  }
+  .Residential-Architecture-page .card {
+    height: 225px;
+  }
+  .create-account {
+    background-position: 100%;
+    background-size: 105% 100%;
+  }
+  .let-get-started .join-us-now-main .join-us-now-image {
+    width: 45%;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text {
+    min-height: auto;
+    padding: 35px 25px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text h1 {
+    font-size: 45px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text h3 {
+    font-size: 27px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text button:nth-child(1),
+  .let-get-started .join-us-now-main .join-us-now-text button:nth-child(2) {
+    font-size: 18px;
+  }
+  .catagory-filters-cards {
+    padding: 28px;
+  }
+  .result-based-on-catogory-one,
+  .result-based-on-catogory-two {
+    padding: 70px 0;
+  }
+  main.profile-page section.profile-page-sec-two .user-profile-image img {
+    padding: 15px;
+  }
+  main.profile-page section.profile-page-sec-two {
+    margin: -265px 0 0 0;
+  }
+  main.profile-page section.profile-page-sec-three {
+    padding: 100px 0 40px 0;
+  }
+  main.profile-page section.profile-page-sec-three h4 {
+    font-weight: 500;
+    font-size: 17px;
+  }
+  main.profile-page section.profile-page-sec-three h3 {
+    font-weight: 500;
+  }
+  section.profile-page-sec-five {
+    padding: 40px 0;
+  }
+  main.profile-page section.profile-page-sec-six {
+    padding: 55px 0;
+  }
+  section.profile-page-sec-five {
+    padding-bottom: 29px;
+  }
+}
+
+@media screen and (min-device-width: 992px) and (max-device-width: 1199px) {
+  .let-get-started .join-us-now-main .join-us-now-text a:nth-child(1) button,
+  .let-get-started .join-us-now-main .join-us-now-text a:nth-child(2) button {
+    font-size: 14px;
+  }
+
+  header.home-page-header ul li {
+    margin-left: 25px;
+  }
+  header.home-page-header .hamburger-button {
+    margin-left: 25px;
+  }
+  header.home-page-header form.headerSearchButton input {
+    border-radius: 30px;
+    width: 200px;
+    padding: 15px 30px;
+  }
+}
+
+@media screen and (min-device-width: 1025px) and (max-device-width: 1280px) {
+  .homePageherosSectionLogo {
+    height: 120px !important;
+  }
+  .create-account main.create-account-main form {
+    padding: 50px;
+    min-height: 500px;
+  }
+  .find-text h2 {
+    padding-top: 0;
+    margin: 0;
+    font-size: 29px;
+  }
+  .Find_Talent {
+    padding: 55px 0px;
+  }
+  .find-inner {
+    padding-top: 55px;
+  }
+  .Top_Earners_Ineer h2 {
+    padding-top: 0px;
+    margin: 0;
+    font-size: 29px;
+  }
+  .Top_Earners .owl-carousel {
+    position: relative;
+    margin: 0;
+    padding: 55px 0;
+  }
+  .Top_Earners {
+    padding-bottom: 0;
+    background-size: 100% 111%;
+    background-position: 100% -55px;
+  }
+  .Top_Earners.Recent_Earners {
+    padding: 55px 0 0 0;
+    background-size: 100% 100%;
+    margin: 0;
+  }
+  .our-top-clients-sec {
+    padding: 55px 0 250px 0;
+  }
+  footer {
+    padding-top: 55px;
+  }
+  footer .quadra-copyright {
+    margin-top: 55px;
+  }
+  section.earners-review-carousel {
+    background-size: 118% 89%;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 55px 0;
+  }
+  section.earners-review-carousel .carousel .image-carousel-main {
+    height: 400px;
+    width: 375px;
+    padding: 20px;
+  }
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
+    font-size: 14px;
+    line-height: 45px;
+  }
+  .dashboard aside h1 {
+    font-size: 40px;
+  }
+  .dashboard main #Browse-projects h3 {
+    font-size: 32px;
+  }
+  .dashboard main #Browse-projects h4 {
+    font-size: 18px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h3 {
+    font-size: 26px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h5 {
+    font-size: 18px;
+  }
+  .dashboard main #dashboard-menu-bar img {
+    height: 42px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h4 {
+    font-size: 16px;
+  }
+  .dashboard main #dashboard-menu-bar .total-earning-row h2 {
+    font-size: 26px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional {
+    padding: 30px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    h4 {
+    font-size: 28px;
+    line-height: normal;
+    margin: 0;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    p {
+    font-size: 18px;
+    line-height: normal;
+    width: 90%;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .Become-professional
+    button {
+    padding: 8px 30px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .completed-projects-box
+    h3 {
+    font-size: 19px;
+  }
+  .dashboard
+    main
+    #dashboard-menu-bar
+    .completed-projects-row
+    .completed-projects-box
+    h2 {
+    font-size: 26px;
+  }
+  .Residential-Architecture-page h3 {
+    font-size: 35px;
+  }
+  .Residential-Architecture-page .card {
+    height: 225px;
+  }
+  .Residential-Architecture-page .card .card-img-overlay h4 {
+    font-size: 20px;
+  }
+  .create-account {
+    background-position: 100%;
+    background-size: 105% 100%;
+  }
+  .let-get-started .join-us-now-main .join-us-now-image {
+    width: 45%;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text {
+    min-height: auto;
+    padding: 75px 25px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text h1 {
+    font-size: 45px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text h3 {
+    font-size: 27px;
+  }
+  .let-get-started .join-us-now-main .join-us-now-text button:nth-child(1),
+  .let-get-started .join-us-now-main .join-us-now-text button:nth-child(2) {
+    font-size: 18px;
+  }
+  .catagory-filters-cards {
+    padding: 20px;
+  }
+  .show-filters-heading {
+    font-size: 28px;
+  }
+  main.profile-page section.profile-page-sec-two .user-profile-image img {
+    padding: 15px;
+  }
+  main.profile-page section.profile-page-sec-two {
+    margin: -265px 0 0 0;
+  }
+  main.profile-page section.profile-page-sec-three {
+    padding: 100px 0 40px 0;
+  }
+  main.profile-page section.profile-page-sec-three h4 {
+    font-weight: 500;
+    font-size: 17px;
+  }
+  main.profile-page section.profile-page-sec-three h3 {
+    font-weight: 500;
+  }
+  section.profile-page-sec-five {
+    padding: 40px 0;
+  }
+  main.profile-page section.profile-page-sec-six {
+    padding: 55px 0;
+  }
+}
+
+@media screen and (min-device-width: 1281px) and (max-device-width: 1366px) {
+  section.earners-review-carousel {
+    padding: 50px 0px;
+    background-size: 120% 100%;
+  }
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
+    font-size: 14px;
+    line-height: 45px;
+  }
+  .dashboard aside h1 {
+    font-size: 40px;
+  }
+  .dashboard main #Browse-projects h3 {
+    font-size: 32px;
+  }
+  .dashboard main #Browse-projects h4 {
+    font-size: 18px;
+  }
+  .catagory-filters-cards {
+    padding: 28px;
+  }
+  main.profile-page section.profile-page-sec-five {
+    padding: 0 0 100px 0;
+  }
+  main.profile-page section.profile-page-sec-two {
+    margin: -315px 0 0 0;
+  }
+  main.profile-page section.profile-page-sec-two .user-profile-image img {
+    padding: 0px;
+  }
+}
+
+@media screen and (min-device-width: 1400px) and (max-device-width: 1600px) {
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
+    font-size: 14px;
+    line-height: 55px;
+    padding-left: 19px;
+    padding-right: 0;
+  }
+  .progress-bar-main {
+    padding: 20px !important;
+  }
+  .create-account {
+    background-position: 100%;
+    background-size: 105% 100%;
+  }
+}
+
+/* 
+.dashboard main #dashboard-menu-bar .total-earning-row h3 {
+    font-size: 26px;
+}
+
+.dashboard main #dashboard-menu-bar .total-earning-row h5 {
+    font-size: 18px;
+}
+
+.dashboard main #dashboard-menu-bar img {
+    height: 42px;
+}
+
+.dashboard main #dashboard-menu-bar .total-earning-row h4 {
+    font-size: 16px;
+}
+
+.dashboard main #dashboard-menu-bar .total-earning-row h2 {
+    font-size: 26px;
+}
+
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional {
+    padding: 30px;
+}
+
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h4 {
+    font-size: 28px;
+    line-height: normal;
+    margin: 0;
+}
+
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional p {
+    font-size: 18px;
+    line-height: normal;
+    width: 90%;
+}
+
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional button {
+    padding: 8px 30px;
+}
+
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h3 {
+    font-size: 19px;
+}
+
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h2 {
+    font-size: 26px;
+} */

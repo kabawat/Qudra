@@ -1,0 +1,345 @@
+import React, { useEffect, useState, useContext } from "react";
+import { Header2 } from "./Header";
+import * as Yup from "yup";
+import axios from "axios";
+import $ from "jquery";
+import { useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import PhoneInput from "react-phone-input-2";
+import Loader from "./Loader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CountryDropdown from "country-dropdown-with-flags-for-react";
+import Global from "../context/Global";
+import CountrySelect from "react-bootstrap-country-select";
+import { getCode } from "country-list";
+
+const SignUpSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(8, "Password must be aleast 8 characters long!")
+    .max(30, "Password is too long!")
+    .required("Required"),
+  email: Yup.string().email("Please enter a valid email").required("Required"),
+  last_name: Yup.string()
+    .min(3, "Please enter your last name")
+    .required("Required"),
+  mobile_no: Yup.string()
+    .min(3, "Please enter your mobile number")
+    .required("Required"),
+  first_name: Yup.string()
+    .min(3, "Please enter your first name")
+    .required("Required"),
+  agreedTerms: Yup.bool().oneOf(
+    [true],
+    "Accept Terms & Conditions is required"
+  ),
+});
+
+const style = {
+  color: "#01a78a",
+  textDecoration: "none",
+};
+
+const EditProfileClient = () => {
+  const contextData = useContext(Global);
+  const location = useLocation();
+  const [isLoading, setLoading] = useState(false);
+
+  const [value, setValue] = useState({
+    // alpha2: "us",
+    // alpha3: "usa",
+    // flag: "🇺🇸",
+    id: getCode(location?.state?.nation).toLocaleLowerCase(),
+    // ioc: "usa",
+    name: location?.state?.nation,
+  });
+
+  const [imgcode, setimgcode] = useState(getCode(location?.state?.nation));
+
+  let navigate = useNavigate();
+
+  const [filePic, setFilePic] = useState(location?.state?.client_image);
+  const photoChange = (e) => {
+    const fileReader = new FileReader();
+    const file = e.target.files[0];
+    setFilePic(file);
+    const signupuser = new FormData();
+    signupuser.append("image", file);
+    signupuser.append("user_id", contextData?.userData?.user_id);
+    signupuser.append("user_token", contextData?.userData?.user_token);
+
+    signupuser.append("role", contextData?.userData?.role);
+    signupuser &&
+      axios.post(
+        "http://13.52.16.160:8082/identity/client_profile",
+        signupuser
+      );
+    if (file) {
+      let reader = new FileReader();
+      reader.onload = function (event) {
+        $(" #imgPreview").attr("src", event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="create-account">
+          <Header2 />
+          <main className="create-account-main">
+            <div className="container">
+              <Formik
+                enableReinitialize
+                initialValues={{
+                  first_name: location?.state?.first_name,
+                  last_name: location?.state?.last_name,
+                  email_verify: true,
+                  nation: location?.state?.nation,
+                  mobile_no: location?.state?.mobile_no,
+                }}
+                validationSchema={SignUpSchema}
+              >
+                {({ values, handleSubmit, setFieldValue }) => (
+                  <Form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      axios
+                        .post(
+                          "http://13.52.16.160:8082/identity/update_account",
+                          {
+                            user_id: contextData?.userData?.user_id,
+                            user_token: contextData?.userData?.user_token,
+                            role: "client",
+                            ...values,
+                          }
+                        )
+                        .then((res) => {
+                          if (res?.data?.status === "Success") {
+                            navigate("/clientdashboard", {
+                              state: { role: "client" },
+                            });
+                            contextData.dispatch({ type: "LOG_OUT" });
+                          }
+                        });
+                    }}
+                  >
+                    <h1>Edit Profile</h1>
+                    <div className="row">
+                      <div className="col-md my-md-3 my-1">
+                        <div className="create-account-input">
+                          <Field
+                            type="text"
+                            name="first_name"
+                            className="form-control"
+                            placeholder="First Name"
+                          />
+
+                          <i className="fa-regular fa-user"></i>
+                          <ErrorMessage
+                            name="first_name"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md my-md-3 my-1">
+                        <div className="create-account-input">
+                          <Field
+                            type="text"
+                            name="last_name"
+                            className="form-control"
+                            placeholder="Last Name"
+                          />
+                          <i className="fa-regular fa-user"></i>
+                          <ErrorMessage
+                            name="last_name"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div
+                        className="col-md my-md-3 my-1"
+                        style={{
+                          position: "relative",
+                          // left:'10px',
+                        }}
+                      >
+                        <img
+                          style={{
+                            top: "37%",
+                            position: "absolute",
+                            // top:'34px',
+                            left: "5%",
+                            width: "18px",
+                            zIndex: "4545",
+                          }}
+                          alt="United States"
+                          src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
+                        />
+                        <CountrySelect
+                          value={value}
+                          onChange={(val) => {
+                            console.log("val", val);
+                            setValue(val);
+                            setFieldValue("nation", val?.name);
+                            let id = val.id;
+                            setimgcode(id.toLocaleUpperCase());
+                          }}
+                          flags={true}
+                          placeholder="Select An Country"
+                          name="nation"
+                        />
+                      </div>
+                      <div className="col-md my-md-3 my-1">
+                        <div className="form-group">
+                          <PhoneInput
+                            value={location?.state?.mobile_no}
+                            placeholder="Enter phone number"
+                            country={value?.alpha2}
+                            enableAreaCodes
+                            name="mobile_no"
+                            onChange={(pho, country) =>
+                              setFieldValue(
+                                "mobile_no",
+                                `+${country.dialCode}${pho}`
+                              )
+                            }
+                            inputStyle={{
+                              padding: "26px",
+                              width: "100%",
+                              borderRadius: "50px",
+                              paddingLeft: "45px",
+                            }}
+                          />
+                        </div>
+                        <ErrorMessage
+                          name="mobile_no"
+                          component="div"
+                          className="m-2 text-danger"
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-3 col-xl-2 my-md-3 my-1">
+                        <div>
+                          <div
+                            className="form-image-input"
+                            onClick={() => {
+                              document.getElementById("photo").click();
+                            }}
+                          >
+                            <img
+                              id="imgPreview"
+                              src={location?.state?.client_image}
+                              alt="pic"
+                            />
+                            <div className="plus-image-overlay">
+                              <i className="fa fa-plus"></i>
+                            </div>
+                          </div>
+                          <input
+                            type="file"
+                            name="photograph"
+                            id="photo"
+                            onChange={(event) => {
+                              photoChange(event);
+                            }}
+                          />
+
+                          <ErrorMessage
+                            name="photograph"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-9">
+                        <div className="form-check my-3">
+                          <Field
+                            type="checkbox"
+                            name="email_verify"
+                            className="form-check-input check"
+                          />
+                          <label className="form-check-label ms-2">
+                            Send me emails with helpful tips to find talent that
+                            fits my needs.
+                          </label>
+                          <ErrorMessage
+                            name="email_verify"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                        <div className="form-check my-3">
+                          <Field
+                            type="checkbox"
+                            name="agreedTerms"
+                            className="form-check-input check"
+                          />
+                          <label className="form-check-label ms-2">
+                            Yes, I understand and agree to the
+                            <a
+                              href="#"
+                              className="theme-text-color text-decoration-none"
+                            >
+                              Quadra Terms of Service User Agreement Privacy
+                              Policy
+                            </a>
+                          </label>
+                          <ErrorMessage
+                            name="agreedTerms"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="d-md-flex align-items-center justify-content-center my-md-5 my-2">
+                      <button type="button" className="logInbtn mx-3">
+                        <Link to="/clientdashboard" style={style}>
+                          <i className="fa-solid  fa-arrow-left-long me-3"></i>
+                          Cancel
+                        </Link>
+                      </button>
+                      <button
+                        type="submit"
+                        className="create-account-btn mx-3"
+                        style={{ pointerEvents: "all" }}
+                      >
+                        Edit Profile
+                        <i class="fa-solid  fa-arrow-right-long ms-3"></i>
+                      </button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </main>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default EditProfileClient;
