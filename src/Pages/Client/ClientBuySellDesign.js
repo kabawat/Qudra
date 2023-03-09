@@ -55,31 +55,63 @@ const ClientBuySellDesign = () => {
     }
   };
 
-  const [selectedCatagories, setSelectedCatagories] = useState(
-    JSON.parse(localStorage.getItem("SelectedCatagories"))
-  );
+  const [selectedCatagories, setSelectedCatagories] = useState(JSON.parse(localStorage.getItem("SelectedCatagories")));
 
   const formSubmit = (valueArray) => {
-    axios
-      .post("http://13.52.16.160:8082/client/sel_sub_category", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        category: {
-          cat_id: [...selectedCatagories?.cat_id, 3],
-        },
-        sel_sub_cat: {
-          ...selectedCatagories.sel_sub_cat,
-          3: valueArray,
-        },
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/clientdashboard");
-        }
+    if (valueArray.length) {
+      axios
+        .post("http://13.52.16.160:8082/client/sel_sub_category", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          category: {
+            cat_id: [...selectedCatagories?.cat_id, 3],
+          },
+          sel_sub_cat: {
+            ...selectedCatagories.sel_sub_cat,
+            3: valueArray,
+          },
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            navigate("/clientdashboard");
+          }
+        });
+    } else {
+      console.log("toast.error");
+      toast.error("You must select an category!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
       });
-    console.log(valueArray);
+    }
   };
+  // const formSubmit = (valueArray) => {
+
+  //   axios
+  //     .post("http://13.52.16.160:8082/client/sel_sub_category", {
+  //       user_id: contextData?.userData?.user_id,
+  //       user_token: contextData?.userData?.user_token,
+  //       role: contextData?.userData?.role,
+  //       category: {
+  //         cat_id: [...selectedCatagories?.cat_id, 3],
+  //       },
+  //       sel_sub_cat: {
+  //         ...selectedCatagories.sel_sub_cat,
+  //         3: valueArray,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       if (res?.data?.status === "Success") {
+  //         navigate("/clientdashboard");
+  //       }
+  //     });
+  // };
   useEffect(() => {
     axios
       .get(`http://13.52.16.160:8082/quadra/sub_categories?category_id=3`)
@@ -91,31 +123,45 @@ const ClientBuySellDesign = () => {
       });
   }, []);
   const handleSkipButton = () => {
-    axios
-      .post("http://13.52.16.160:8082/client/sel_sub_category", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        category: {
-          cat_id: [...selectedCatagories?.cat_id, 3],
-        },
-        sel_sub_cat: {
-          ...selectedCatagories.sel_sub_cat,
-          3: [],
-        },
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/clientdashboard");
-        }
+    if (selectedCatagories.length) {
+      axios
+        .post("http://13.52.16.160:8082/client/sel_sub_category", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          category: {
+            cat_id: [...selectedCatagories?.cat_id, 3],
+          },
+          sel_sub_cat: {
+            ...selectedCatagories.sel_sub_cat,
+            3: [],
+          },
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            navigate("/clientdashboard");
+          }
+        });
+    } else {
+      console.log("toast.error");
+      toast.error("You must select an category!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
       });
+    }
   };
   return (
     <>
       <div className="create-account">
         <main className="create-account-main">
           <div className="container mb-5">
-            <Header2 link={true} />
+            <Header2 />
             <Formik
               initialValues={{}}
               onSubmit={(values, { setSubmitting }) => {
@@ -123,19 +169,26 @@ const ClientBuySellDesign = () => {
                 for (let x in values) {
                   valueArray.push(values[x]);
                 }
-                valueArray.length
-                  ? formSubmit(valueArray)
-                  : toast.error("You must select an category!", {
-                      position: "top-right",
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "colored",
-                    });
+                formSubmit(valueArray);
               }}
+            // onSubmit={(values, { setSubmitting }) => {
+            //   var valueArray = [];
+            //   for (let x in values) {
+            //     valueArray.push(values[x]);
+            //   }
+            //   valueArray.length
+            //     ? formSubmit(valueArray)
+            //     : toast.error("You must select an category!", {
+            //       position: "top-right",
+            //       autoClose: 5000,
+            //       hideProgressBar: false,
+            //       closeOnClick: true,
+            //       pauseOnHover: true,
+            //       draggable: true,
+            //       progress: undefined,
+            //       theme: "colored",
+            //     });
+            // }}
             >
               {({ isSubmitting, setFieldValue, values }) => (
                 <Form>
@@ -158,8 +211,7 @@ const ClientBuySellDesign = () => {
                         style={{ fontSize: "30px" }}
                         className="fa-solid fa-arrow-left-long"
                         onClick={() => {
-                          navigate("/client-architechture");
-                          localStorage.removeItem("SelectedCatagories");
+                          navigate("/client-visualisation");
                         }}
                       ></i>
                     </div>
@@ -230,7 +282,7 @@ const ClientBuySellDesign = () => {
                         <button
                           type="submit"
                           className="create-account-btn"
-                          // onClick={() => navigate("/client-visualisation")}
+                        // onClick={() => navigate("/client-visualisation")}
                         >
                           Continue <BsArrowRight style={{ color: "white" }} />
                         </button>

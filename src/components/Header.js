@@ -54,8 +54,7 @@ const Header2 = ({ link }) => {
 };
 
 const HeaderHome = () => {
-  const [cookie] = useCookies()
-  const [userData, setUserData] = useState(cookie.user_info);
+  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('user_data')));
 
   const textClick = () => {
     $(".mobile-menu").css("top", "0");
@@ -108,9 +107,7 @@ const HeaderHome = () => {
                       <li>
                         <Link
                           to={
-                            userData?.role === "client"
-                              ? "/clientdashboard"
-                              : "/professionaldashboard"
+                            userData?.role === "client" ? "/clientdashboard" : "/professionaldashboard"
                           }
                           state={{ fromHomePage: true }}
                         >
@@ -853,6 +850,7 @@ const HeaderDashboard = () => {
         }
       });
   };
+  console.log(contextData.userData)
   return (
     <>
       <header className="dashboard-header bg-white custom-border-radius-one">

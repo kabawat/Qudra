@@ -10,7 +10,6 @@ import PhoneInput from "react-phone-input-2";
 import Loader from "./Loader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CountryDropdown from "country-dropdown-with-flags-for-react";
 import Global from "../context/Global";
 import CountrySelect from "react-bootstrap-country-select";
 import { getCode } from "country-list";
@@ -172,7 +171,7 @@ const EditProfileClient = () => {
                           // left:'10px',
                         }}
                       >
-                        <img
+                        {/* <img
                           style={{
                             top: "37%",
                             position: "absolute",
@@ -183,7 +182,7 @@ const EditProfileClient = () => {
                           }}
                           alt="United States"
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
-                        />
+                        /> */}
                         <CountrySelect
                           value={value}
                           onChange={(val) => {

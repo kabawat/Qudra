@@ -22,8 +22,6 @@ import Footer from "../components/Footer";
 import OwlCarousel from "react-owl-carousel";
 import { useNavigate } from "react-router-dom";
 import HeroesSection from "../components/HeroesSection";
-
-import $ from "jquery";
 import axios from "axios";
 const options1 = {
   loop: false,
@@ -95,13 +93,17 @@ const Home = () => {
           "user_data",
           JSON.stringify(user_data)
         );
-        if (res?.data?.data?.category_selected === false) {
-          navigate("/categoryArchitecture");
+
+        if (res?.data?.data?.category_selected === true) {
+          navigate("/");
         } else {
-          if (res?.data?.data?.role === "client") {
+          console.log(res)
+          if (user_data?.role === "client") {
             contextData.setShowDisclamer(true);
+            navigate("/client-architechture");
           } else {
             contextData.setShowDisclamer(true);
+            navigate("/categoryArchitecture");
           }
         }
       });

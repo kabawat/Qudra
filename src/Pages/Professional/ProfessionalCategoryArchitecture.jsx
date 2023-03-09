@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Header2 } from "../../components/Header";
-import { Formik, Form } from "formik";
-import { json, useFetchers, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import Global from "../../context/Global";
 import axios from "axios";
@@ -111,6 +110,19 @@ const ProfessionalCategoryArchitecture = () => {
         });
       });
   }, []);
+
+
+  // edit profile back 
+  const handleEditProfileButton = () => {
+    axios
+      .put("http://13.52.16.160:8082/identity/update_account", { ...JSON.parse(localStorage.getItem('user_data')) })
+      .then((res) => {
+        console.log(res?.data)
+        if (res?.data?.status === "Success") {
+          navigate("/edit-profile", { state: res?.data?.data });
+        }
+      });
+  };
   return (
     <>
       <div className="create-account">
@@ -124,7 +136,20 @@ const ProfessionalCategoryArchitecture = () => {
                   <h6 className="text-center">I Do Architectural Designing</h6>
                 </div>
                 <br />
-
+                <div
+                  className="me-auto"
+                  style={{
+                    fontSize: "25px",
+                    color: "#01a78a",
+                    cursor: "pointer",
+                  }}
+                >
+                  <i
+                    style={{ fontSize: "30px" }}
+                    className="fa-solid fa-arrow-left-long"
+                    onClick={handleEditProfileButton}
+                  ></i>
+                </div>
                 <div className="row">
                   {selectList &&
                     contextData?.static_architecture_design?.data?.length &&

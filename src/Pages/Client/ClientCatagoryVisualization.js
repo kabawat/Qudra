@@ -54,7 +54,7 @@ const ClientCatagoryVisualization = () => {
       })
     );
     localStorage.setItem("selectImg2", JSON.stringify(selectList));
-    navigate("/professional-buy-and-sale");
+    navigate("/client-buy-sell");
   };
   const submitData = (event) => {
     event.preventDefault();
@@ -82,7 +82,7 @@ const ClientCatagoryVisualization = () => {
           sel_sub_cat: { ...sel_sub_cat },
         })
       );
-      navigate("/professional-buy-and-sale");
+      navigate("/client-buy-sell");
     } else {
       toast.error("You must select an category!", {
         position: "top-right",
@@ -135,7 +135,7 @@ const ClientCatagoryVisualization = () => {
                     style={{ fontSize: "30px" }}
                     className="fa-solid fa-arrow-left-long"
                     onClick={() => {
-                      navigate("/categoryArchitecture");
+                      navigate("/client-architechture");
                     }}
                   ></i>
                 </div>
@@ -203,7 +203,7 @@ const ClientCatagoryVisualization = () => {
                     <button
                       type="submit"
                       className="create-account-btn"
-                      // onClick={() => navigate("/client-visualisation")}
+                    // onClick={() => navigate("/client-visualisation")}
                     >
                       Continue <BsArrowRight style={{ color: "white" }} />
                     </button>

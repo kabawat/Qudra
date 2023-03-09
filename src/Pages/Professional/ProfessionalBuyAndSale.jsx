@@ -260,7 +260,6 @@ const ProfessionalBuyAndSale = () => {
     selectedCatagories &&
       Object.values(selectedCatagories.sel_sub_cat).map((val) => {
         if (!val.length) {
-          console.log("valkjladkjflasdkjflasjdlkjasdf");
           toast.error("please select minmum one category!");
         } else {
           axios

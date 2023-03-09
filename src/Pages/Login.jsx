@@ -123,15 +123,16 @@ const Login = () => {
           "user_data",
           JSON.stringify(user_data)
         );
-        if (res?.data?.data?.category_selected === false) {
-          navigate("/categoryArchitecture");
+        if (res?.data?.data?.category_selected === true) {
+          navigate("/");
         } else {
-          if (res?.data?.data?.role === "client") {
-            navigate("/");
+          console.log(res)
+          if (user_data?.role === "client") {
             contextData.setShowDisclamer(true);
+            navigate("/client-architechture");
           } else {
-            navigate("/");
             contextData.setShowDisclamer(true);
+            navigate("/categoryArchitecture");
           }
         }
       });

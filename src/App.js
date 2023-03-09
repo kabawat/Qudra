@@ -39,7 +39,7 @@ import EditBackProfile from "./Pages/Professional/EditBackProfile";
 function App() {
   return (
     <GlobalData>
-      <BrowserRouter>
+      <BrowserRouter >
         <ScrollToTop />
         <IconContext.Provider
           value={{ color: "black", className: "global-class-name" }}

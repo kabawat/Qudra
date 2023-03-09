@@ -75,17 +75,19 @@ const languages = [
 ];
 
 const SetUp = () => {
+  const [profileerr, setprofileerr] = useState("none");
+
   const [cookies, setCookies] = useCookies(["user_info"]);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [value, setValue] = useState({
-    // alpha2: "us",
-    // alpha3: "usa",
-    // flag: "🇺🇸",
-    // id: "us",
-    // ioc: "usa",
-    // name: "United States",
+    alpha2: "in",
+    alpha3: "ind",
+    flag: "in",
+    id: "in",
+    ioc: "ind",
+    name: "INDIA",
   });
 
   const [disply, setdisply] = useState("none");
@@ -96,27 +98,30 @@ const SetUp = () => {
     password: Yup.string()
       .min(8, "Password must be aleast 8 characters long!")
       .max(30, "Password is too long!")
-      .required("Required"),
+      .required(" password required"),
     email: Yup.string()
-      .email("Please enter a valid email")
-      .required("Required"),
+      .email(" enter a valid email")
+      .required(" email required"),
     mobile_no: Yup.string()
-      .min(10, "please enter a valid phone number")
-      .required("Please enter your phone number"),
+      .min(10, " enter a valid phone number")
+      .required(" enter phone number"),
     last_name: Yup.string()
-      .min(3, "Please enter your last name")
-      .required("Required"),
+      .min(3, "minimum 3 charecter required")
+      .required(" last name required"),
     first_name: Yup.string()
-      .min(3, "Please enter your first name")
-      .required("Required"),
-    languages: Yup.array().required(),
-    education: Yup.string().required("Education is required"),
+      .min(3, "minimum 3 charecter required")
+      .required(" first name required"),
+    languages: Yup.array().required("languages  required"),
+    education: Yup.string().required("Education required"),
     skills: Yup.array().required(),
-
+    experience: Yup.string().required("experience required"),
     job_description: Yup.string()
-      .min(100)
-      .required("job description is required"),
-    bio: Yup.string().min(100).max(500).required("bio is required"),
+      .min(100, "mimimum 100 charecter required")
+      .required("job description required"),
+    bio: Yup.string()
+      .min(100, "minimum 100 charecter required")
+      .max(500, "maximum character 500")
+      .required("bio  required"),
   });
   const [filePic, setFilePic] = useState("");
   const photoChange = (e) => {
@@ -148,14 +153,16 @@ const SetUp = () => {
   const [skills, setSkill] = useState([]);
   const [existingEmail, setExistingEmail] = useState(true);
   const [resData, setResData] = useState();
+
   const verifyRequestButton = () => {
     let email = $("#EmailInputSignUpForm").val();
     setLoadingActive(true);
     axios
-      .post("http://13.52.16.160:8082/identity/verify-email", { email })
+      .post("http://13.52.16.160:8082/identity/verify-email", {
+        email: email,
+      })
       .then((res) => {
         if (res?.data?.status === "Failed") {
-          setResData(res.data);
           setShow(false);
           setExistingEmail(false);
           setLoadingActive(false);
@@ -185,7 +192,6 @@ const SetUp = () => {
   };
 
   const handleOTPSubmit = (e) => {
-    setShow(false);
     let email = $("#EmailInputSignUpForm").val();
     e.preventDefault();
     axios
@@ -195,8 +201,8 @@ const SetUp = () => {
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
+          setShow(false);
           setVerifyButtonText("verified");
-          setOtpResponse(false);
           $(".emailVerifyBtnProfessional").css("pointer-events", "none");
           handleOTP("");
         } else {
@@ -233,84 +239,89 @@ const SetUp = () => {
                 }}
                 validationSchema={SetUpSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  setLoading(true);
-                  axios
-                    .post(
-                      "http://13.52.16.160:8082/identity/signup_professional",
-                      values
-                    )
-                    .then((res) => {
-                      if (res?.data?.status === "Success") {
-                        const signupuser = new FormData();
-                        signupuser.append("image", filePic);
-                        signupuser.append("user_id", res?.data?.data.user_id);
-                        signupuser.append(
-                          "user_token",
-                          res?.data?.data.user_token
-                        );
-                        signupuser.append("role", res?.data?.data.role);
+                  if (!filePic) {
+                    return;
+                  } else {
+                    setLoading(true);
+                    axios
+                      .post(
+                        "http://13.52.16.160:8082/identity/signup_professional",
+                        values
+                      )
+                      .then((res) => {
+                        if (res?.data?.status === "Success") {
+                          const signupuser = new FormData();
+                          signupuser.append("image", filePic);
+                          signupuser.append("user_id", res?.data?.data.user_id);
+                          signupuser.append(
+                            "user_token",
+                            res?.data?.data.user_token
+                          );
+                          signupuser.append("role", res?.data?.data.role);
 
-                        signupuser &&
-                          axios
-                            .post(
-                              "http://13.52.16.160:8082/identity/professional_profile",
-                              signupuser
-                            )
-                            .then((respo) => {
-                              console.log(respo);
-                              const getcookies = {
-                                user_id: res?.data?.data?.user_id,
-                                user_token: res?.data?.data?.user_token,
-                                role: res?.data?.data?.role,
-                              };
-                              setCookies(
-                                "user_info",
-                                JSON.stringify(getcookies)
-                              );
-                              if (respo?.data?.status === "Success") {
-                                contextData?.dispatch({
-                                  type: "FETCH_USER_DATA",
-                                  value: res?.data?.data,
-                                });
-                                localStorage.setItem(
-                                  "user_data",
-                                  JSON.stringify(res?.data?.data)
+                          signupuser &&
+                            axios
+                              .post(
+                                "http://13.52.16.160:8082/identity/professional_profile",
+                                signupuser
+                              )
+                              .then((respo) => {
+                                console.log(respo);
+                                const getcookies = {
+                                  user_id: res?.data?.data?.user_id,
+                                  user_token: res?.data?.data?.user_token,
+                                  role: res?.data?.data?.role,
+                                };
+                                setCookies(
+                                  "user_info",
+                                  JSON.stringify(getcookies)
                                 );
-                                setLoading(false);
-                                navigate("/categoryArchitecture", {
-                                  replace: true,
-                                });
-                                contextData.setShowDisclamer(true);
-                                if (!contextData?.profileData) {
-                                  axios
-                                    .post(
-                                      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                      {
-                                        user_id: res?.data?.data?.user_id,
-                                        user_token: res?.data?.data?.user_token,
-                                        role: res?.data?.data?.role,
-                                      }
-                                    )
-                                    .then((response) => {
-                                      contextData?.dispatch({
-                                        type: "FETCH_PROFILE_DATA",
-                                        value: response?.data?.data,
+                                if (respo?.data?.status === "Success") {
+                                  contextData?.dispatch({
+                                    type: "FETCH_USER_DATA",
+                                    value: res?.data?.data,
+                                  });
+                                  localStorage.setItem(
+                                    "user_data",
+                                    JSON.stringify(res?.data?.data)
+                                  );
+                                  setLoading(false);
+                                  navigate("/categoryArchitecture", {
+                                    replace: true,
+                                  });
+                                  contextData.setShowDisclamer(true);
+                                  if (!contextData?.profileData) {
+                                    axios
+                                      .post(
+                                        "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                        {
+                                          user_id: res?.data?.data?.user_id,
+                                          user_token:
+                                            res?.data?.data?.user_token,
+                                          role: res?.data?.data?.role,
+                                        }
+                                      )
+                                      .then((response) => {
+                                        contextData?.dispatch({
+                                          type: "FETCH_PROFILE_DATA",
+                                          value: response?.data?.data,
+                                        });
+                                        localStorage.setItem(
+                                          "profileImageNameGmail",
+                                          JSON.stringify(response?.data?.data)
+                                        );
                                       });
-                                      localStorage.setItem(
-                                        "profileImageNameGmail",
-                                        JSON.stringify(response?.data?.data)
-                                      );
-                                    });
+                                  }
                                 }
-                              }
-                            });
-                      } else {
-                        localStorage.clear();
+                              });
+                        } else {
+                          localStorage.clear();
 
-                        navigate("/setup");
-                        setLoading(false);
-                      }
-                    });
+                          navigate("/setup");
+                          setLoading(false);
+                        }
+                      });
+                  }
                 }}
               >
                 {({
@@ -409,6 +420,13 @@ const SetUp = () => {
                                   className="w-100 justify-content-around"
                                 />
                               </div>
+                              {OtpResponse ? (
+                                <p className="text-danger ">
+                                  Please retry with valid OTP
+                                </p>
+                              ) : (
+                                ""
+                              )}
                               <button
                                 variant="secondary"
                                 type="button"
@@ -420,13 +438,6 @@ const SetUp = () => {
                                     : { pointerEvents: "none" }
                                 }
                               >
-                                {OtpResponse ? (
-                                  <p className="text-danger ">
-                                    Please retry with valid OTP
-                                  </p>
-                                ) : (
-                                  ""
-                                )}
                                 Submit
                               </button>
                             </div>
@@ -572,17 +583,19 @@ const SetUp = () => {
                             id="photo"
                             onChange={(event) => {
                               photoChange(event);
+                              setprofileerr("none");
                             }}
                           />
 
-                          <ErrorMessage
-                            name="photograph"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
+                          <span style={{ color: "red" }} className={profileerr}>
+                            profile image required
+                          </span>
                         </div>
                       </div>
-                      <div className="col-md-9 col-xl-10  my-md-3 my-1">
+                      <div
+                        className="col-md-9 col-xl-10  my-md-3 my-1"
+                        style={{ position: "relative" }}
+                      >
                         <Field
                           as="textarea"
                           maxLength="500"
@@ -592,7 +605,15 @@ const SetUp = () => {
                           name="bio"
                           placeholder="About"
                         ></Field>
-                        <p>{values.bio.length}/500</p>
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: "-9%",
+                            left: "2%",
+                          }}
+                        >
+                          <p>{values.bio.length}/500</p>
+                        </div>
                         <ErrorMessage
                           name="bio"
                           component="div"
@@ -762,27 +783,15 @@ const SetUp = () => {
                           Continue
                           <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                         </button>
-                      ) : filePic ? (
-                        <button type="submit" className="create-account-btn">
-                          Continue
-                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
-                        </button>
                       ) : (
                         <button
-                          type="button"
-                          className="create-account-btn"
                           onClick={() => {
-                            toast.error("All Field are required!", {
-                              position: "top-right",
-                              autoClose: 2000,
-                              hideProgressBar: true,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                              theme: "colored",
-                            });
+                            if (!filePic) {
+                              setprofileerr("block");
+                            }
                           }}
+                          type="submit"
+                          className="create-account-btn"
                         >
                           Continue
                           <i className="fa-solid  fa-arrow-right-long ms-3"></i>

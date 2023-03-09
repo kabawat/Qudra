@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import ClientDashboardAside from "../../components/ClientDashboardAside";
 import { HeaderDashboard } from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -9,8 +9,50 @@ import OngoingPane from "../../components/dashboard_tabs/Client/OngoingPane";
 import CompletedPane from "../../components/dashboard_tabs/Client/CompletedPane";
 import Likes from "../../components/dashboard_tabs/Client/Likes";
 import Rating from "../../components/dashboard_tabs/Client/Ratings";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const ClientDashboard = () => {
+  const navigate = useNavigate()
   const contextData = useContext(Global);
+  useEffect(() => {
+    const user_data = JSON.parse(localStorage.getItem("user_data"))
+    if (user_data) {
+      axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+        ...user_data
+      }).then((res) => {
+        localStorage.setItem(
+          "profileImageNameGmail",
+          JSON.stringify(res?.data?.data)
+        );
+        contextData?.dispatch({
+          type: "FETCH_PROFILE_DATA",
+          value: res?.data?.data,
+        });
+
+        contextData?.dispatch({
+          type: "FETCH_USER_DATA",
+          value: user_data
+        });
+
+        localStorage.setItem(
+          "user_data",
+          JSON.stringify(user_data)
+        );
+        if (res?.data?.data?.category_selected === true) {
+          // navigate("/");
+        } else {
+          console.log(res)
+          if (user_data?.role === "client") {
+            contextData.setShowDisclamer(true);
+            navigate("/client-architechture");
+          } else {
+            contextData.setShowDisclamer(true);
+            navigate("/categoryArchitecture");
+          }
+        }
+      });
+    }
+  }, [])
   return (
     <>
       <div className="dashboard">

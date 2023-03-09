@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Header2 } from "../../components/Header";
-import { Formik, Form } from "formik";
-import { json, useFetchers, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import Global from "../../context/Global";
 import axios from "axios";
@@ -35,35 +34,20 @@ const ClientCategoriesArchitectural = () => {
   };
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const pageSetter = () => {
-    if (page != 2) {
-      setPage(page + 1);
-    }
-  };
 
-  const backSetter = () => {
-    // if (page != 1) {
-    //   setPage(page - 1);
-    // } else {
-    //   navigate(-1);
-    // }
-    navigate("/edit-back-profile");
-  };
   const SkipPage = () => {
-    localStorage.setItem(
-      "SelectedCatagories",
-      JSON.stringify({
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        category: {
-          cat_id: [[].push(contextData?.userData?.category_id)],
-        },
-        sel_sub_cat: { 1: [] },
-      })
+    localStorage.setItem("SelectedCatagories", JSON.stringify({
+      user_id: contextData?.userData?.user_id,
+      user_token: contextData?.userData?.user_token,
+      role: contextData?.userData?.role,
+      category: {
+        cat_id: [[].push(contextData?.userData?.category_id)],
+      },
+      sel_sub_cat: { 1: [] },
+    })
     );
     localStorage.setItem("selectImg", JSON.stringify(selectList));
-    navigate("/categoryvisualization");
+    navigate("/client-visualisation");
   };
   const submitData = (event) => {
     event.preventDefault();
@@ -87,7 +71,7 @@ const ClientCategoriesArchitectural = () => {
           sel_sub_cat: { 1: valueArray },
         })
       );
-      navigate("/categoryvisualization");
+      navigate("/client-visualisation");
     } else {
       toast.error("You must select an category!", {
         position: "top-right",
@@ -102,15 +86,25 @@ const ClientCategoriesArchitectural = () => {
     }
   };
   useEffect(() => {
-    axios
-      .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
-      .then((res) => {
-        contextData?.dispatch({
-          type: "STATIC_ARCHITECTURE_DESIGN",
-          value: res?.data,
-        });
+    axios.get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1").then((res) => {
+      contextData?.dispatch({
+        type: "STATIC_ARCHITECTURE_DESIGN",
+        value: res?.data,
       });
+    });
   }, []);
+
+  // edit profile back 
+  const handleEditProfileButton = () => {
+    axios
+      .put("http://13.52.16.160:8082/identity/update_account", { ...JSON.parse(localStorage.getItem('user_data')) })
+      .then((res) => {
+        console.log(res?.data)
+        if (res?.data?.status === "Success") {
+          navigate("/edit-profile", { state: res?.data?.data });
+        }
+      });
+  };
   return (
     <>
       <div className="create-account">
@@ -124,6 +118,12 @@ const ClientCategoriesArchitectural = () => {
                   <h6 className="text-center">I Do Architectural Designing</h6>
                 </div>
                 <br />
+                <div
+                  className="me-auto" style={{
+                    fontSize: "25px", color: "#01a78a", cursor: "pointer",
+                  }}>
+                  <i style={{ fontSize: "30px" }} className="fa-solid fa-arrow-left-long" onClick={handleEditProfileButton}></i>
+                </div>
                 <div className="row">
                   {selectList &&
                     contextData?.static_architecture_design?.data?.length &&
