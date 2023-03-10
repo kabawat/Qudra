@@ -155,7 +155,6 @@ const ProfessionalProfile = () => {
   const [likepro, setLikepro] = useState(false);
   const handleLikeButton = () => {
     setLikepro(!likepro);
-    console.log(contextData?.professional_user_profile_data);
     axios
       .post("http://13.52.16.160:8082/identity/like-save", {
         client_id: contextData?.userData?.user_id,
@@ -526,7 +525,6 @@ const ProfessionalProfile = () => {
                             value={ratingreview.rating}
                             style={{ color: "red" }}
                             onChange={(val) => {
-                              console.log(val);
                               setRating({
                                 ...ratingreview,
                                 rating: val,

@@ -188,7 +188,6 @@ const Chat = () => {
                 });
             }
           })
-          .catch((err) => console.log(err));
     }
   }, [contextData?.userData, otherUserId, dataChange]);
   if (wskt) {

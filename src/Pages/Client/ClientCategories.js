@@ -26,12 +26,7 @@ const ClientCategory = () => {
     $(".form-preferred-deadline .task-dropdown-2").slideToggle();
   }
   const toggleDisabled = (target) => {
-    // let targetElement = document.getElementById(`${parseInt(target.id)}rate`);
     let IconTarget = document.getElementById(`greenIcon${parseInt(target.id)}`);
-    // target.checked
-    //   ? (targetElement.disabled = false)
-    //   : (targetElement.disabled = true);
-    // console.log(IconTarget)
     if (target?.checked) {
       IconTarget.style.backgroundColor = "#01A78A";
       IconTarget.style.color = "#FFFFFF";

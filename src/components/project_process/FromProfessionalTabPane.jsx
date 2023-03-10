@@ -75,7 +75,6 @@ const FromProfessionalTabPane = ({ location }) => {
         }
       });
   };
-  console.log(location?.state);
   return (
     <div className="create-account">
       <Header2 />

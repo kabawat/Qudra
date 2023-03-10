@@ -78,7 +78,6 @@ const ClientBuySellDesign = () => {
           }
         });
     } else {
-      console.log("toast.error");
       toast.error("You must select an category!", {
         position: "top-right",
         autoClose: 2000,
@@ -143,7 +142,6 @@ const ClientBuySellDesign = () => {
           }
         });
     } else {
-      console.log("toast.error");
       toast.error("You must select an category!", {
         position: "top-right",
         autoClose: 2000,

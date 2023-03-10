@@ -18,17 +18,17 @@ const SignUpSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Password must be aleast 8 characters long!")
     .max(30, "Password is too long!")
-    .required("Required"),
-  email: Yup.string().email("Please enter a valid email").required("Required"),
+    .required("Password required"),
+  email: Yup.string().email("Enter a valid email").required("Email required"),
   last_name: Yup.string()
-    .min(3, "Please enter your last name")
-    .required("Required"),
+    .min(3, "Enter valid Last name")
+    .required("Last name required"),
   mobile_no: Yup.string()
-    .min(3, "Please enter your mobile number")
-    .required("Required"),
+    .min(12, "Enter valid mobile number")
+    .required("Mobile number required"),
   first_name: Yup.string()
-    .min(3, "Please enter your first name")
-    .required("Required"),
+    .min(3, "Enter valid first name")
+    .required("First name required"),
   agreedTerms: Yup.bool().oneOf(
     [true],
     "Accept Terms & Conditions is required"
@@ -83,6 +83,34 @@ const EditProfileClient = () => {
     }
   };
 
+  const handleCancel = () => {
+    axios.post(
+      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+      {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: "client",
+      }
+    ).then((res) => {
+      localStorage.setItem(
+        "profileImageNameGmail",
+        JSON.stringify(res?.data?.data)
+      );
+      contextData?.dispatch({
+        type: "FETCH_PROFILE_DATA",
+        value: res?.data?.data,
+      });
+      if (res.data.data.category_selected) {
+        navigate("/clientdashboard", {
+          state: { role: "client" },
+        });
+      } else {
+        navigate("/client-architechture", {
+          state: { role: "client" },
+        });
+      }
+    });
+  }
   return (
     <>
       {isLoading ? (
@@ -107,24 +135,56 @@ const EditProfileClient = () => {
                   <Form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      axios
-                        .post(
-                          "http://13.52.16.160:8082/identity/update_account",
-                          {
-                            user_id: contextData?.userData?.user_id,
-                            user_token: contextData?.userData?.user_token,
-                            role: "client",
-                            ...values,
-                          }
-                        )
-                        .then((res) => {
-                          if (res?.data?.status === "Success") {
-                            navigate("/clientdashboard", {
-                              state: { role: "client" },
-                            });
-                            contextData.dispatch({ type: "LOG_OUT" });
-                          }
-                        });
+                      const { email_verify, first_name, last_name, mobile_no, nation } = values;
+                      if (email_verify && first_name && last_name && mobile_no && nation) {
+                        axios
+                          .post(
+                            "http://13.52.16.160:8082/identity/update_account",
+                            {
+                              user_id: contextData?.userData?.user_id,
+                              user_token: contextData?.userData?.user_token,
+                              role: "client",
+                              ...values,
+                            }
+                          ).then((res) => {
+                            if (res?.data?.status === "Success") {
+                              axios.post(
+                                "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                {
+                                  user_id: contextData?.userData?.user_id,
+                                  user_token: contextData?.userData?.user_token,
+                                  role: "client",
+                                }
+                              ).then((res) => {
+                                localStorage.setItem(
+                                  "profileImageNameGmail",
+                                  JSON.stringify(res?.data?.data)
+                                );
+                                contextData?.dispatch({
+                                  type: "FETCH_PROFILE_DATA",
+                                  value: res?.data?.data,
+                                });
+                                if (res.data.data.category_selected) {
+                                  navigate("/clientdashboard", {
+                                    state: { role: "client" },
+                                  });
+                                } else {
+                                  navigate("/client-architechture", {
+                                    state: { role: "client" },
+                                  });
+                                }
+                              });
+                            }
+                          });
+                        // .then((res) => {
+                        //   if (res?.data?.status === "Success") {
+                        //     navigate("/clientdashboard", {
+                        //       state: { role: "client" },
+                        //     });
+                        //     contextData.dispatch({ type: "LOG_OUT" });
+                        //   }
+                        // });
+                      }
                     }}
                   >
                     <h1>Edit Profile</h1>
@@ -186,13 +246,12 @@ const EditProfileClient = () => {
                         <CountrySelect
                           value={value}
                           onChange={(val) => {
-                            console.log("val", val);
                             setValue(val);
                             setFieldValue("nation", val?.name);
                             let id = val.id;
                             setimgcode(id.toLocaleUpperCase());
                           }}
-                          flags={true}
+                          flags={false}
                           placeholder="Select An Country"
                           name="nation"
                         />
@@ -251,6 +310,7 @@ const EditProfileClient = () => {
                             onChange={(event) => {
                               photoChange(event);
                             }}
+                            accept="image/*"
                           />
 
                           <ErrorMessage
@@ -286,9 +346,9 @@ const EditProfileClient = () => {
                           <label className="form-check-label ms-2">
                             Yes, I understand and agree to the
                             <a
-                              href="#"
+                              href="/terms-condition"
                               className="theme-text-color text-decoration-none"
-                            >
+                            >{" "}
                               Quadra Terms of Service User Agreement Privacy
                               Policy
                             </a>
@@ -304,10 +364,11 @@ const EditProfileClient = () => {
 
                     <div className="d-md-flex align-items-center justify-content-center my-md-5 my-2">
                       <button type="button" className="logInbtn mx-3">
-                        <Link to="/clientdashboard" style={style}>
+                        {/* to="/clientdashboard"  */}
+                        <button onClick={handleCancel} style={{ ...style, border: 'none', background: 'none' }}>
                           <i className="fa-solid  fa-arrow-left-long me-3"></i>
                           Cancel
-                        </Link>
+                        </button>
                       </button>
                       <button
                         type="submit"
@@ -335,7 +396,7 @@ const EditProfileClient = () => {
             pauseOnHover
             theme="colored"
           />
-        </div>
+        </div >
       )}
     </>
   );

@@ -31,7 +31,6 @@ import React, { useRef } from "react";
 export default function Model(props) {
   const group = useRef();
   const { nodes, materials } = useGLTF("/static/modals/scene.gltf");
-  console.log(useGLTF("http://192.168.1.13:3000/static/modals/scene.gltf"));
   return (
     <>
       <group ref={group} {...props} dispose={null}>

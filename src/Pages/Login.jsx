@@ -126,7 +126,6 @@ const Login = () => {
         if (res?.data?.data?.category_selected === true) {
           navigate("/");
         } else {
-          console.log(res)
           if (user_data?.role === "client") {
             contextData.setShowDisclamer(true);
             navigate("/client-architechture");
@@ -163,7 +162,6 @@ const Login = () => {
                         user_token: res?.data?.data?.user_token,
                         role: res?.data?.data?.role,
                       }).then((res) => {
-                        console.log("dashbored", res);
                         localStorage.setItem(
                           "profileImageNameGmail",
                           JSON.stringify(res?.data?.data)
@@ -174,7 +172,11 @@ const Login = () => {
                         });
                       });
                       if (res?.data?.data?.category_selected === false) {
-                        navigate("/categoryArchitecture");
+                        if (res?.data?.data?.role === "client") {
+                          navigate("/client-architechture");
+                        }else{
+                          navigate("/categoryArchitecture");
+                        }
                       } else {
                         if (res?.data?.data?.role === "client") {
                           navigate("/clientdashboard", { replace: true });

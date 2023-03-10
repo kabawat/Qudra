@@ -101,7 +101,6 @@ const ProfessionalBuyAndSale = () => {
         ].unactive_icon;
     }
   };
-  console.log(state);
   const [editprice, seteditprice] = useState();
 
   const [page, setPage] = useState(1);
@@ -217,7 +216,6 @@ const ProfessionalBuyAndSale = () => {
           }
         });
     } else {
-      console.log("toast.error");
       toast.error("You must select an category!", {
         position: "top-right",
         autoClose: 5000,
@@ -285,7 +283,6 @@ const ProfessionalBuyAndSale = () => {
   };
 
   const handleEditDesign = (data) => {
-    console.log(data);
     setLoader(true);
     axios
       .post(
@@ -942,8 +939,6 @@ const ProfessionalBuyAndSale = () => {
                                 >
                                   <GiCancel
                                     onClick={() => {
-                                      console.log("suraj");
-                                      // setimgPreview("");
                                       setclsstyle("none");
                                     }}
                                   />
@@ -999,8 +994,6 @@ const ProfessionalBuyAndSale = () => {
                                     size={25}
                                     color="gray"
                                     onClick={() => {
-                                      console.log("suraj");
-
                                       setvidstyle("none");
                                       setvidlbl("");
                                     }}
@@ -1022,7 +1015,6 @@ const ProfessionalBuyAndSale = () => {
                                         "..." +
                                         name.slice(-4)
                                       : name;
-                                  console.log(trimmedFileName);
                                   setvidlbl(trimmedFileName);
                                   setvidstyle("block");
                                 }}
@@ -1055,8 +1047,6 @@ const ProfessionalBuyAndSale = () => {
                                         "..." +
                                         name.slice(-4)
                                       : name;
-                                  console.log(trimmedFileName);
-
                                   setziplbl(trimmedFileName);
                                   setzipstyle("block");
                                 }}
@@ -1074,7 +1064,6 @@ const ProfessionalBuyAndSale = () => {
                                     size={25}
                                     color="gray"
                                     onClick={() => {
-                                      console.log("suraj");
                                       setzipstyle("none");
                                       setziplbl("");
                                     }}
@@ -1163,7 +1152,6 @@ const ProfessionalBuyAndSale = () => {
                       }}
                       validationSchema={SetUpSchema}
                       onSubmit={(values, { setSubmitting }) => {
-                        console.log("values: ", values);
                         if (
                           !values?.image ||
                           !values?.video ||
@@ -1218,7 +1206,6 @@ const ProfessionalBuyAndSale = () => {
                                     name="price"
                                     value={values.price}
                                     onChange={(e) => {
-                                      console.log(e.target.value);
                                       setFieldValue("price", e.target.value);
                                     }}
                                   />
@@ -1269,8 +1256,6 @@ const ProfessionalBuyAndSale = () => {
                                     >
                                       <GiCancel
                                         onClick={() => {
-                                          console.log("suraj");
-                                          // setimgPreview("");
                                           setclsstyle("none");
                                         }}
                                       />
@@ -1283,9 +1268,6 @@ const ProfessionalBuyAndSale = () => {
                                       setFieldValue("image", e.target.files[0]);
 
                                       setimgPreview(
-                                        URL.createObjectURL(e.target.files[0])
-                                      );
-                                      console.log(
                                         URL.createObjectURL(e.target.files[0])
                                       );
 
@@ -1338,7 +1320,6 @@ const ProfessionalBuyAndSale = () => {
                                         size={25}
                                         color="grey"
                                         onClick={() => {
-                                          console.log("suraj");
                                           setvidstyle("none");
                                           setvidlbl("");
                                         }}
@@ -1359,7 +1340,6 @@ const ProfessionalBuyAndSale = () => {
                                             "..." +
                                             name.slice(-4)
                                           : name;
-                                      console.log(trimmedFileName);
                                       setFieldValue("video", e.target.files[0]);
                                       setvidlbl(trimmedFileName);
                                       setvidstyle("block");
@@ -1384,7 +1364,6 @@ const ProfessionalBuyAndSale = () => {
                                     accept="zip/*"
                                     name="project"
                                     onChange={(e) => {
-                                      console.log("suraj");
                                       setFieldValue(
                                         "project",
                                         e.target.files[0]
@@ -1397,7 +1376,6 @@ const ProfessionalBuyAndSale = () => {
                                             "..." +
                                             name.slice(-4)
                                           : name;
-                                      console.log(trimmedFileName);
                                       setzipstyle("block");
                                       setziplbl(trimmedFileName);
                                     }}
@@ -1422,7 +1400,6 @@ const ProfessionalBuyAndSale = () => {
                                         size={25}
                                         color="grey"
                                         onClick={() => {
-                                          console.log("suraj");
                                           setzipstyle("none");
                                           setziplbl("");
                                         }}

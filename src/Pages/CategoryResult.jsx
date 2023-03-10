@@ -103,7 +103,6 @@ const CategoryResult = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const contextData = useContext(Global);
   const location = useLocation();
-  console.log(location?.state);
   const buttonStyle = {
     padding: "10px 30px",
     borderRadius: "10px",

@@ -97,7 +97,6 @@ const Home = () => {
         if (res?.data?.data?.category_selected === true) {
           navigate("/");
         } else {
-          console.log(res)
           if (user_data?.role === "client") {
             contextData.setShowDisclamer(true);
             navigate("/client-architechture");

@@ -23,17 +23,17 @@ const SignUpSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Password must be aleast 8 characters long!")
     .max(30, "Password is too long!")
-    .required("Required"),
-  email: Yup.string().email("Please enter a valid email").required("Required"),
+    .required("Password required"),
+  email: Yup.string().email("Enter a valid email").required("Email Required"),
   last_name: Yup.string()
-    .min(3, "Please enter your last name")
-    .required("Required"),
+    .min(3, "Enter your last name")
+    .required("Last name required"),
   mobile_no: Yup.string()
-    .min(3, "Please enter your mobile number")
-    .required("Required"),
+    .min(12, "Enter valid mobile number")
+    .required("Mobile number required"),
   first_name: Yup.string()
-    .min(3, "Please enter your first name")
-    .required("Required"),
+    .min(3, "Minium 3 characters required")
+    .required("First name required"),
   agreedTerms: Yup.bool().oneOf(
     [true],
     "Accept Terms & Conditions is required"
@@ -46,18 +46,16 @@ const style = {
 };
 
 const SignIn = () => {
-  const [profileerr, setprofileerr] = useState("none");
   const [viewPassword, setViewPassword] = useState(false);
   const [loadingActive, setLoadingActive] = useState(false);
   const [verifyTextExist, setVerifyTextExist] = useState();
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
-
+  const [errdisplay, seterrdisplay] = useState("none");
   const [OtpResponse, setOtpResponse] = useState("verify");
-  const [OtpResult, setOtpResult] = useState(false);
-
+  const [optdisplay, setoptdisplay] = useState("none");
   let navigate = useNavigate();
-
+  const [imgcode, setimgcode] = useState("");
   const [emailExists, setEmailExists] = useState(false);
 
   const verifyRequestButton = () => {
@@ -99,17 +97,21 @@ const SignIn = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           setOtpResponse("verified");
+          handleOTP("");
           setShow(false);
-        } else if (res?.data?.status === "Failed") {
+          setoptdisplay("none");
+        } else {
           setOtpResponse("verify");
           handleOTP("");
           setValidateOTP(true);
         }
         if (res?.data?.message !== "Otp expired") {
-          setOtpResponse("verified");
+          // setOtpResponse("verify");
+          handleOTP("");
         } else {
-          setOtpResponse("verify");
           setValidateOTP(true);
+          handleOTP("");
+          setOtpResponse("verify");
         }
       });
   };
@@ -118,8 +120,8 @@ const SignIn = () => {
 
   const handleClose = () => {
     setShow(false);
-    setValidateOTP(false);
     setOtpResponse("verify");
+    setoptdisplay("block");
   };
   const [existingEmail, setExistingEmail] = useState(false);
   const handleEmailFocus = () => {
@@ -145,15 +147,13 @@ const SignIn = () => {
     }
   };
   const [value, setValue] = useState({
-    // alpha2: "in",
-    // alpha3: "ind",
-    // flag: "in",
-    // id: "in",
-    // ioc: "ind",
-    // name: "INDIA",
+    alpha2: "in",
+    alpha3: "ind",
+    flag: "in",
+    id: "in",
+    ioc: "ind",
+    name: "INDIA",
   });
-
-  const [firsterror, SetFirsterror] = useState("");
 
   return (
     <>
@@ -300,7 +300,6 @@ const SignIn = () => {
                             name="email"
                             onInput={handleEmailFocus}
                           />
-
                           <button
                             onClick={verifyRequestButton}
                             type="button"
@@ -340,14 +339,14 @@ const SignIn = () => {
                                   separator={<span>-</span>}
                                   className="w-100 justify-content-around"
                                 />
-                                {validateOTP ? (
-                                  <p className="text-danger">
-                                    Please Enter a valid OTP !
-                                  </p>
-                                ) : (
-                                  ""
-                                )}
                               </div>
+                              {validateOTP ? (
+                                <p className="text-danger m-auto mt-1">
+                                  Please Enter a valid OTP !
+                                </p>
+                              ) : (
+                                ""
+                              )}
                               <button
                                 variant="secondary"
                                 type="button"
@@ -377,6 +376,23 @@ const SignIn = () => {
                         ) : (
                           ""
                         )}
+                        <div className={optdisplay}>
+                          <span className="text-danger">Enter otp again</span>
+                          <button
+                            type="button"
+                            style={{
+                              border: "0",
+                              background: "0",
+                              margin: "0 10px",
+                              textDecoration: "underline",
+                            }}
+                            onClick={() => {
+                              setShow("block");
+                            }}
+                          >
+                            click
+                          </button>
+                        </div>
                       </div>
                       <div className="col-md my-md-3 my-1">
                         <div className="create-account-input">
@@ -433,13 +449,27 @@ const SignIn = () => {
                             setFieldValue("nation", countryName);
                           }}
                         ></CountryDropdown> */}
+                        {/* <img
+                          style={{
+                            top: "37%",
+                            position: "absolute",
+                            // top:'34px',
+                            left: "5%",
+                            width: "18px",
+                            zIndex: "4545",
+                          }}
+                          alt="United States"
+                          src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
+                        /> */}
                         <CountrySelect
                           value={value}
                           onChange={(val) => {
                             setValue(val);
+                            let id = val.id;
+                            setimgcode(id.toLocaleUpperCase());
                             setFieldValue("nation", val?.name);
                           }}
-                          flags={true}
+                          flags={false}
                           placeholder="Select An Country"
                           name="nation"
                         />
@@ -517,18 +547,17 @@ const SignIn = () => {
                             id="photo"
                             accept="image/*"
                             onChange={(event) => {
+                              seterrdisplay("none");
                               photoChange(event);
                             }}
                           />
 
-                          <ErrorMessage
-                            name="photograph"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
+                          <span className={errdisplay} style={{ color: "red" }}>
+                            profiel picture is required
+                          </span>
                         </div>
                       </div>
-                      <div className="col-9 m-auto">
+                      <div className="col-9">
                         <div className="form-check my-3">
                           <Field
                             type="checkbox"
@@ -553,9 +582,8 @@ const SignIn = () => {
                           />
                           <label className="form-check-label ms-2">
                             Yes, I understand and agree to the
-                            <a href="#"
-                              className="theme-text-color text-decoration-none"> Quadra Terms of Service User Agreement Privacy
-                              Policy
+                            <a href="#" className="theme-text-color text-decoration-none"
+                            > Quadra Terms of Service User Agreement Privacy Policy
                             </a>
                           </label>
                           <ErrorMessage
@@ -574,14 +602,27 @@ const SignIn = () => {
                         </div>
                       )}
                     </div>
-
-                    <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
-                      {OtpResponse === "verify" ? (
+                    <div className="d-md-flex align-items-center justify-content-center my-md-5 my-2">
+                      {OtpResponse === "verified" ? (
+                        <button
+                          type="submit"
+                          className="create-account-btn"
+                          style={{ pointerEvents: "all" }}
+                          onClick={() => {
+                            if (!filePic) {
+                              seterrdisplay("block");
+                            }
+                          }}
+                        >
+                          Create My Account
+                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                        </button>
+                      ) : (
                         <button
                           type="button"
                           className="create-account-btn"
                           onClick={() => {
-                            toast.error("Must Verify Email First !", {
+                            toast.error("Must Email verify ", {
                               position: "top-right",
                               autoClose: 2000,
                               hideProgressBar: true,
@@ -593,31 +634,17 @@ const SignIn = () => {
                             });
                           }}
                         >
-                          Continue
-                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            if (!filePic) {
-                              setprofileerr("block");
-                            }
-                          }}
-                          type="submit"
-                          className="create-account-btn"
-                        >
-                          Continue
+                          Create My Account
                           <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                         </button>
                       )}
                       <button type="button" className="logInbtn">
-                        <Link to="/select-sign-in" style={style}>
+                        <Link to="/login" style={style}>
                           Log In
                           <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                         </Link>
                       </button>
                     </div>
-
                     <div className="d-flex align-items-center my-3 justify-content-center">
                       <div className="horizontal-line"></div>
                       <p className="m-0 mx-2">Login With</p>

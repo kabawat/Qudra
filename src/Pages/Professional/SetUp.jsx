@@ -273,7 +273,6 @@ const SetUp = () => {
                               signupuser
                             )
                             .then((respo) => {
-                              console.log(respo);
                               const getcookies = {
                                 user_id: res?.data?.data?.user_id,
                                 user_token: res?.data?.data?.user_token,
@@ -533,7 +532,6 @@ const SetUp = () => {
                         <CountrySelect
                           value={value}
                           onChange={(val) => {
-                            console.log("val", val);
                             setValue(val);
                             setFieldValue("nation", val?.name);
                             let id = val.id;

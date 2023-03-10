@@ -99,7 +99,6 @@ const ClientCategoriesArchitectural = () => {
     axios
       .put("http://13.52.16.160:8082/identity/update_account", { ...JSON.parse(localStorage.getItem('user_data')) })
       .then((res) => {
-        console.log(res?.data)
         if (res?.data?.status === "Success") {
           navigate("/edit-profile", { state: res?.data?.data });
         }

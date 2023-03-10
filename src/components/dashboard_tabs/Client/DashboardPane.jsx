@@ -39,7 +39,6 @@ const DashboardPane = () => {
     onGoingProjectArray.push(i + 1);
   }
   useEffect(() => {
-    console.log(onGoingProject?.final_data);
   }, []);
   const { data } = useDemoConfig({
     series: 1,

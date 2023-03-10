@@ -68,6 +68,15 @@ const Header2 = ({ link }) => {
                   {window.location.pathname === '/professional-buy-and-sale' && (
                     <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
                   )}
+                  {window.location.pathname === '/client-architechture' && (
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  )}
+                  {window.location.pathname === '/client-visualisation' && (
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  )}
+                  {window.location.pathname === '/client-buy-sell' && (
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  )}
                 </li>
               </ul>
               <Modal centered show={show} onHide={() => setShow(false)} style={{ zIndex: 1000000 }}>
@@ -117,7 +126,6 @@ const HeaderHome = () => {
       { pageLanguage: "en" },
       "google_translate_element"
     );
-    console.log("wdidbhw");
   };
   return (
     <div>
@@ -894,7 +902,6 @@ const HeaderDashboard = () => {
         }
       });
   };
-  console.log(contextData.userData)
   return (
     <>
       <header className="dashboard-header bg-white custom-border-radius-one">

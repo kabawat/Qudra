@@ -226,8 +226,7 @@ const EditProfileProfessional = () => {
                       user_token: contextData?.userData?.user_token,
                       role: "professional",
                       ...data,
-                    })
-                    .then((res) => {
+                    }).then((res) => {
                       if (res?.data?.status === "Success") {
                         axios.post(
                           "http://13.52.16.160:8082/identity/get_dashboard_profile/",

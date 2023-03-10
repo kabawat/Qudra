@@ -29,7 +29,6 @@ const CatagoryResultCard = ({ res, key, catagoryId, subCatagoryId }) => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
   const showCatagories = (catagoryId, subCatagoryId) => {
-    console.log(catagoryId, subCatagoryId);
     if (contextData?.userData?.role === "client") {
       contextData?.professional_user_profile_data?.details?.professional_id &&
         axios

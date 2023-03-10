@@ -142,7 +142,6 @@ const PortfolioPane = () => {
         });
     }
   }, []);
-  console.log(contextData);
   useEffect(() => {
     if (contextData?.userData) {
       PortfolioData?.sub_catagory_data && fetchUserSubCata();
@@ -709,14 +708,12 @@ const PortfolioPane = () => {
                                 name="image"
                                 accept="image/*"
                                 onChange={(e) => {
-                                  console.log(e.target.files[0]);
                                   setFieldValue("image", e?.target?.files[0]);
                                   setimgPreview(
                                     URL.createObjectURL(e.target.files[0])
                                   );
                                   setgetevent(e);
                                   setdisplaycls("block");
-                                  console.log("hello");
                                 }}
                               />
                             </div>
@@ -771,8 +768,6 @@ const PortfolioPane = () => {
                         sub_cata_id: "",
                       }}
                       onSubmit={(values, { setSubmitting }) => {
-                        console.log(values);
-
                         const catagoryUpload = new FormData();
                         catagoryUpload.append(
                           "user_id",
@@ -908,7 +903,6 @@ const PortfolioPane = () => {
                                       type="file"
                                       name="image"
                                       onChange={(e) => {
-                                        console.log(e.target.files[0]);
                                         setFieldValue(
                                           "image",
                                           e?.target?.files[0]
