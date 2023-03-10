@@ -19,10 +19,10 @@ import { Header2 } from "../components/Header";
 import { Cookies, useCookies } from "react-cookie";
 const apiUrl = "";
 const LoginSchema = Yup.object().shape({
-  password: Yup.string().required("Required"),
+  password: Yup.string().required("Password required"),
   user_name: Yup.string()
-    .email("Please enter a valid email")
-    .required("Required"),
+    .email("Enter a valid email")
+    .required("Email required"),
 });
 const buttonStyle = {
   border: "none",

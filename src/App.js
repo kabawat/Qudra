@@ -64,6 +64,7 @@ function App() {
               path="/professionaldashboard"
               element={<ProfessionalDashboard />}
             />
+           
             <Route
               exact
               path="/professionalprofile/:professional_id"

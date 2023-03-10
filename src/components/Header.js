@@ -77,6 +77,9 @@ const Header2 = ({ link }) => {
                   {window.location.pathname === '/client-buy-sell' && (
                     <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
                   )}
+                  {window.location.pathname === '/edit-profile' && (
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  )}
                 </li>
               </ul>
               <Modal centered show={show} onHide={() => setShow(false)} style={{ zIndex: 1000000 }}>

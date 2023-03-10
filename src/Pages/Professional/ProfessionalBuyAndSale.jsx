@@ -879,6 +879,7 @@ const ProfessionalBuyAndSale = () => {
                         catagoryUpload
                       )
                       .then((res) => {
+                        console.log(res)
                         if (res?.data?.status === "Success") {
                           dispatch({
                             type: "UPLOAD_DESIGNS_MODAL",
@@ -1077,7 +1078,7 @@ const ProfessionalBuyAndSale = () => {
                           <div className="d-flex justify-content-center">
                             <button
                               type="submit"
-                              onClick={blankfields}
+                              // onClick={blankfields}
                               className="ModalCategorySubmit"
                             >
                               Submit
