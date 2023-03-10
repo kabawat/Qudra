@@ -75,8 +75,6 @@ const languages = [
 ];
 
 const SetUp = () => {
-  const [profileerr, setprofileerr] = useState("none");
-
   const [cookies, setCookies] = useCookies(["user_info"]);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
@@ -84,44 +82,46 @@ const SetUp = () => {
   const [value, setValue] = useState({
     alpha2: "in",
     alpha3: "ind",
-    flag: "in",
+    flag: "IN",
     id: "in",
     ioc: "ind",
-    name: "INDIA",
+    name: "India",
   });
 
   const [disply, setdisply] = useState("none");
 
-  const [imgcode, setimgcode] = useState("");
+  const[otpdisplay,setotpdisplay]=useState("none")
+  const [imgcode, setimgcode] = useState("in");
   const [viewPassword, setViewPassword] = useState(false);
   const SetUpSchema = Yup.object().shape({
     password: Yup.string()
       .min(8, "Password must be aleast 8 characters long!")
       .max(30, "Password is too long!")
-      .required(" password required"),
+      .required("Required"),
     email: Yup.string()
-      .email(" enter a valid email")
-      .required(" email required"),
+      .email(" Enter  valid email")
+      .required("Email required"),
     mobile_no: Yup.string()
-      .min(10, " enter a valid phone number")
-      .required(" enter phone number"),
+      .min(10, "Minimum 10 number required")
+      .required("Enter valid phone number"),
     last_name: Yup.string()
-      .min(3, "minimum 3 charecter required")
-      .required(" last name required"),
+      .min(3, "Minimum 3 character required")
+      .required("Last name required"),
     first_name: Yup.string()
-      .min(3, "minimum 3 charecter required")
-      .required(" first name required"),
-    languages: Yup.array().required("languages  required"),
-    education: Yup.string().required("Education required"),
-    skills: Yup.array().required(),
-    experience: Yup.string().required("experience required"),
+      .min(3, "Minimum 3 character required")
+      .required("First name required"),
+      experience: Yup.string().required("Experience required"),
+    languages: Yup.array().required('Languages required'),
+    education: Yup.string().required("Education  required"),
+    skills: Yup.array().required('Skills required '),
+
     job_description: Yup.string()
-      .min(100, "mimimum 100 charecter required")
-      .required("job description required"),
-    bio: Yup.string()
-      .min(100, "minimum 100 charecter required")
-      .max(500, "maximum character 500")
-      .required("bio  required"),
+      .min(100,'Minimum 100 character required')
+      .required("Job description  required"),
+      bio: Yup.string()
+      .min(100, "Minimum 100 charecter required")
+      .max(500)
+      .required("About required"),
   });
   const [filePic, setFilePic] = useState("");
   const photoChange = (e) => {
@@ -147,24 +147,26 @@ const SetUp = () => {
   for (let i = 0; i < 45; i++) {
     rows.push(i);
   }
+
+
+  const [profileerr, setprofileerr] = useState("none");
   const [educationSelect, setEducationSelect] = useState("");
   const [educationInput, setEducationInput] = useState("");
   const [language, setLanguage] = useState([]);
   const [skills, setSkill] = useState([]);
   const [existingEmail, setExistingEmail] = useState(true);
   const [resData, setResData] = useState();
-
   const verifyRequestButton = () => {
     let email = $("#EmailInputSignUpForm").val();
     setLoadingActive(true);
     axios
-      .post("http://13.52.16.160:8082/identity/verify-email", {
-        email: email,
-      })
+      .post("http://13.52.16.160:8082/identity/verify-email", { email })
       .then((res) => {
         if (res?.data?.status === "Failed") {
+          setResData(res.data);
           setShow(false);
           setExistingEmail(false);
+          handleOTP("");
           setLoadingActive(false);
           setVerifyButtonText("verify ");
         } else {
@@ -182,7 +184,11 @@ const SetUp = () => {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () =>{
+    
+    setShow(false)
+    setotpdisplay("block")
+  };
   const [OtpResponse, setOtpResponse] = useState(false);
 
   const handleEmailFocus = () => {
@@ -192,6 +198,7 @@ const SetUp = () => {
   };
 
   const handleOTPSubmit = (e) => {
+    
     let email = $("#EmailInputSignUpForm").val();
     e.preventDefault();
     axios
@@ -201,7 +208,8 @@ const SetUp = () => {
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
-          setShow(false);
+          setShow(false)
+          setotpdisplay("none")
           setVerifyButtonText("verified");
           $(".emailVerifyBtnProfessional").css("pointer-events", "none");
           handleOTP("");
@@ -210,6 +218,8 @@ const SetUp = () => {
           setOtpResponse(true);
         }
       });
+ 
+
   };
   return (
     <>
@@ -239,89 +249,84 @@ const SetUp = () => {
                 }}
                 validationSchema={SetUpSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  if (!filePic) {
-                    return;
-                  } else {
-                    setLoading(true);
-                    axios
-                      .post(
-                        "http://13.52.16.160:8082/identity/signup_professional",
-                        values
-                      )
-                      .then((res) => {
-                        if (res?.data?.status === "Success") {
-                          const signupuser = new FormData();
-                          signupuser.append("image", filePic);
-                          signupuser.append("user_id", res?.data?.data.user_id);
-                          signupuser.append(
-                            "user_token",
-                            res?.data?.data.user_token
-                          );
-                          signupuser.append("role", res?.data?.data.role);
+                  setLoading(true);
+                  axios
+                    .post(
+                      "http://13.52.16.160:8082/identity/signup_professional",
+                      values
+                    )
+                    .then((res) => {
+                      if (res?.data?.status === "Success") {
+                        const signupuser = new FormData();
+                        signupuser.append("image", filePic);
+                        signupuser.append("user_id", res?.data?.data.user_id);
+                        signupuser.append(
+                          "user_token",
+                          res?.data?.data.user_token
+                        );
+                        signupuser.append("role", res?.data?.data.role);
 
-                          signupuser &&
-                            axios
-                              .post(
-                                "http://13.52.16.160:8082/identity/professional_profile",
-                                signupuser
-                              )
-                              .then((respo) => {
-                                console.log(respo);
-                                const getcookies = {
-                                  user_id: res?.data?.data?.user_id,
-                                  user_token: res?.data?.data?.user_token,
-                                  role: res?.data?.data?.role,
-                                };
-                                setCookies(
-                                  "user_info",
-                                  JSON.stringify(getcookies)
+                        signupuser &&
+                          axios
+                            .post(
+                              "http://13.52.16.160:8082/identity/professional_profile",
+                              signupuser
+                            )
+                            .then((respo) => {
+                              console.log(respo);
+                              const getcookies = {
+                                user_id: res?.data?.data?.user_id,
+                                user_token: res?.data?.data?.user_token,
+                                role: res?.data?.data?.role,
+                              };
+                              setCookies(
+                                "user_info",
+                                JSON.stringify(getcookies)
+                              );
+                              if (respo?.data?.status === "Success") {
+                                contextData?.dispatch({
+                                  type: "FETCH_USER_DATA",
+                                  value: res?.data?.data,
+                                });
+                                localStorage.setItem(
+                                  "user_data",
+                                  JSON.stringify(res?.data?.data)
                                 );
-                                if (respo?.data?.status === "Success") {
-                                  contextData?.dispatch({
-                                    type: "FETCH_USER_DATA",
-                                    value: res?.data?.data,
-                                  });
-                                  localStorage.setItem(
-                                    "user_data",
-                                    JSON.stringify(res?.data?.data)
-                                  );
-                                  setLoading(false);
-                                  navigate("/categoryArchitecture", {
-                                    replace: true,
-                                  });
-                                  contextData.setShowDisclamer(true);
-                                  if (!contextData?.profileData) {
-                                    axios
-                                      .post(
-                                        "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                        {
-                                          user_id: res?.data?.data?.user_id,
-                                          user_token:
-                                            res?.data?.data?.user_token,
-                                          role: res?.data?.data?.role,
-                                        }
-                                      )
-                                      .then((response) => {
-                                        contextData?.dispatch({
-                                          type: "FETCH_PROFILE_DATA",
-                                          value: response?.data?.data,
-                                        });
-                                        localStorage.setItem(
-                                          "profileImageNameGmail",
-                                          JSON.stringify(response?.data?.data)
-                                        );
+                                setLoading(false);
+                                navigate("/categoryArchitecture", {
+                                  replace: true,
+                                });
+                                contextData.setShowDisclamer(true);
+                                if (!contextData?.profileData) {
+                                  axios
+                                    .post(
+                                      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                      {
+                                        user_id: res?.data?.data?.user_id,
+                                        user_token: res?.data?.data?.user_token,
+                                        role: res?.data?.data?.role,
+                                      }
+                                    )
+                                    .then((response) => {
+                                      contextData?.dispatch({
+                                        type: "FETCH_PROFILE_DATA",
+                                        value: response?.data?.data,
                                       });
-                                  }
+                                      localStorage.setItem(
+                                        "profileImageNameGmail",
+                                        JSON.stringify(response?.data?.data)
+                                      );
+                                    });
                                 }
-                              });
-                        } else {
-                          localStorage.clear();
+                              }
+                            });
+                      } else {
+                        localStorage.clear();
 
-                          navigate("/setup");
-                          setLoading(false);
-                        }
-                      });
-                  }
+                        navigate("/setup");
+                        setLoading(false);
+                      }
+                    });
                 }}
               >
                 {({
@@ -378,7 +383,7 @@ const SetUp = () => {
                             name="email"
                             onInput={handleEmailFocus}
                           />
-
+                         
                           <button
                             onClick={verifyRequestButton}
                             type="button"
@@ -395,11 +400,12 @@ const SetUp = () => {
                           >
                             {loadingActive ? <ReactLotti /> : verifyButtonText}
                           </button>
+                          
 
                           <Modal
                             show={show}
                             className="OtpInputModal"
-                            // onHide={handleClose}
+                            onHide={handleClose}
                             size="sm"
                             aria-labelledby="contained-modal-title-vcenter"
                             centered
@@ -421,12 +427,12 @@ const SetUp = () => {
                                 />
                               </div>
                               {OtpResponse ? (
-                                <p className="text-danger ">
-                                  Please retry with valid OTP
-                                </p>
-                              ) : (
-                                ""
-                              )}
+                        <p className="text-danger m-auto">
+                          Please retry with valid OTP
+                        </p>
+                      ) : (
+                        ""
+                      )}
                               <button
                                 variant="secondary"
                                 type="button"
@@ -449,8 +455,7 @@ const SetUp = () => {
                             component="div"
                             className="m-2 text-danger"
                           />
-                        </div>
-                        {!existingEmail ? (
+                            {!existingEmail ? (
                           <p className="text-danger">
                             {resData.message}
                             {/* Email is already registered ! */}
@@ -458,6 +463,18 @@ const SetUp = () => {
                         ) : (
                           ""
                         )}
+                        </div>
+                        <div  className={otpdisplay}>
+                          <span
+                          style={{color:"red"}}
+                          >please enter valid otp</span>
+                          <button type="button"
+                          style={{border:'0',background:'0',margin:'0 10px',textDecoration:'underline'}}
+                          onClick={()=>{
+                            setShow(true)
+                          }}
+                          >click</button>
+                          </div>
                       </div>
                       <div className="col-md my-md-3 my-1">
                         <div className="create-account-input">
@@ -490,6 +507,7 @@ const SetUp = () => {
                           />
                         </div>
                       </div>
+                      
                     </div>
                     <div className="row">
                       <div
@@ -499,7 +517,7 @@ const SetUp = () => {
                           // left:'10px',
                         }}
                       >
-                        <img
+                        {/* <img
                           className={disply}
                           style={{
                             top: "37%",
@@ -511,7 +529,7 @@ const SetUp = () => {
                           }}
                           alt="img"
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
-                        />
+                        /> */}
                         <CountrySelect
                           value={value}
                           onChange={(val) => {
@@ -522,7 +540,7 @@ const SetUp = () => {
                             setimgcode(id.toLocaleUpperCase());
                             setdisply("block");
                           }}
-                          flags={true}
+                          flags={false}
                           placeholder="Select An Country"
                           name="nation"
                         />
@@ -586,16 +604,17 @@ const SetUp = () => {
                               setprofileerr("none");
                             }}
                           />
-
-                          <span style={{ color: "red" }} className={profileerr}>
+                      <span style={{marginTop:'10px' }} className={`${profileerr} text-danger `}>
                             profile image required
                           </span>
+                          <ErrorMessage
+                            name="photograph"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
                         </div>
                       </div>
-                      <div
-                        className="col-md-9 col-xl-10  my-md-3 my-1"
-                        style={{ position: "relative" }}
-                      >
+                      <div className="col-md-9 col-xl-10  my-md-3 my-1" style={{position:'relative'}}>
                         <Field
                           as="textarea"
                           maxLength="500"
@@ -605,15 +624,7 @@ const SetUp = () => {
                           name="bio"
                           placeholder="About"
                         ></Field>
-                        <div
-                          style={{
-                            position: "absolute",
-                            bottom: "-9%",
-                            left: "2%",
-                          }}
-                        >
-                          <p>{values.bio.length}/500</p>
-                        </div>
+                        <div style={{position:'absolute',bottom:'-7%' ,left:'3%'}}><p>{values.bio.length}/500</p></div>
                         <ErrorMessage
                           name="bio"
                           component="div"
@@ -625,7 +636,6 @@ const SetUp = () => {
                       <div className="col my-md-3 my-1">
                         <Field
                           as="textarea"
-                          maxLength="500"
                           className="form-control"
                           name="job_description"
                           id="exampleFormControlTextarea1"

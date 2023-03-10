@@ -356,7 +356,7 @@ const ProfessionalBuyAndSale = () => {
                           onClick={() => {
                             showImagesSection
                               ? backButtonFunc()
-                              : navigate("/categoryArchitecture");
+                              : navigate("/categoryvisualization");
                             localStorage.removeItem("SelectedCatagories");
                           }}
                         ></i>

@@ -35,7 +35,6 @@ import ProjectDetails from "./components/ProjectDetails";
 import ScrollToTop from "./Hooks/ScrollToTop";
 import EditProfile from "./Pages/EditProfile";
 import TermsAndCondition from "./Pages/TermsAndCondition";
-import EditBackProfile from "./Pages/Professional/EditBackProfile";
 function App() {
   return (
     <GlobalData>
@@ -64,11 +63,6 @@ function App() {
               exact
               path="/professionaldashboard"
               element={<ProfessionalDashboard />}
-            />
-            <Route
-              exact
-              path="/edit-back-profile"
-              element={<EditBackProfile />}
             />
             <Route
               exact

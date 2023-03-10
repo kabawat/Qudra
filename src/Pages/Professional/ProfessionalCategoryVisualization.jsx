@@ -129,10 +129,8 @@ const ProfessionalCategoryVisualization = () => {
                     fontSize: "25px",
                     color: "#01a78a",
                     cursor: "pointer",
-                  }}
-                >
-                  <i
-                    style={{ fontSize: "30px" }}
+                  }}>
+                  <i style={{ fontSize: "30px" }}
                     className="fa-solid fa-arrow-left-long"
                     onClick={() => {
                       navigate("/categoryArchitecture");

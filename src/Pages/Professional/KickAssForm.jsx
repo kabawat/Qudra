@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Header2 } from "../../components/Header";
 import { infoIcon } from "../../components/images";
 import Global from "../../context/Global";
+import Loader from "../../components/Loader";
 const KickAssForm = () => {
   const [kickassPoints, setKickassPoints] = useState([]);
   useEffect(() => {
@@ -17,7 +18,7 @@ const KickAssForm = () => {
   }, []);
 
   return (
-    <>
+    kickassPoints.length ?
       <div className="create-account">
         <Header2 />
         <main className="create-account-main">
@@ -65,8 +66,8 @@ const KickAssForm = () => {
             </form>
           </div>
         </main>
-      </div>
-    </>
+      </div> : <Loader />
+  
   );
 };
 

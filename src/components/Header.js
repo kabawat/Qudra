@@ -15,7 +15,23 @@ const style = {
   fontFamily: "Raleway",
 };
 
+const buttonStyle = {
+  border: 'none',
+  color: '#fff',
+  fontFamily: "Raleway",
+  outline: "none",
+  background: "none"
+}
 const Header2 = ({ link }) => {
+  const navigate = useNavigate()
+  const [show, setShow] = useState(false);
+  const contextData = useContext(Global);
+  const logoutHandle = () => {
+    setShow(false);
+    localStorage.clear();
+    contextData?.dispatch({ type: "LOG_OUT" });
+    navigate("/");
+  }
   return (
     <>
       <header className="create-account-header">
@@ -43,8 +59,36 @@ const Header2 = ({ link }) => {
                   {window.location.pathname === "/login" && (
                     <Link to="/join">Sign up</Link>
                   )}
+                  {window.location.pathname === '/categoryArchitecture' && (
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  )}
+                  {window.location.pathname === '/categoryvisualization' && (
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  )}
+                  {window.location.pathname === '/professional-buy-and-sale' && (
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  )}
                 </li>
               </ul>
+              <Modal centered show={show} onHide={() => setShow(false)} style={{ zIndex: 1000000 }}>
+                <Modal.Header closeButton>
+                  <Modal.Title>
+                    Are you sure you want to Log out?
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Footer >
+                  <Button
+                    variant="secondary"
+                    onClick={() => setShow(false)}>
+                    Not Now
+                  </Button>
+                  <Button
+                    className="theme-bg-color border-0"
+                    onClick={logoutHandle}>
+                    Sign Out
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
           </div>
         </div>
@@ -322,7 +366,7 @@ const Header3 = () => {
                   {window.location.pathname === "/select-sign-in" ? (
                     ""
                   ) : (
-                    <Link to="/select-sign-in" className="text-black">
+                    <Link to="/select-sign-in" className="text-black" style={{color:"#fff !important"}}>
                       Sign In
                     </Link>
                   )}
@@ -982,8 +1026,7 @@ const HeaderDashboard = () => {
                     navigate(
                       `/professionalprofile/${contextData?.userData?.user_id}`
                     );
-                  }}
-                >
+                  }}>
                   <img
                     src={
                       contextData?.profileData &&
@@ -1011,7 +1054,6 @@ const HeaderDashboard = () => {
                       width: "50px",
                       height: "50px",
                       cursor: "pointer",
-
                       borderRadius: "50%",
                     }}
                   />

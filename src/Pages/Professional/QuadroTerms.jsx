@@ -6,6 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { infoIcon } from "../../components/images";
 import { Link, useNavigate } from "react-router-dom";
 import Global from "../../context/Global";
+import Loader from "../../components/Loader";
 const LoginSchema = Yup.object().shape({
   checkTerms: Yup.bool().oneOf([true], "Accept Terms & Conditions is required"),
 });
@@ -23,8 +24,8 @@ const QuadroTerms = () => {
   }, []);
   let navigate = useNavigate();
   return (
-    <>
-      <div className="create-account">
+    profilePoints.length ?
+      <div className="create-account" >
         <Header2 />
         <main className="create-account-main">
           <div className="container mb-5">
@@ -115,8 +116,7 @@ const QuadroTerms = () => {
             </Formik>
           </div>
         </main>
-      </div>
-    </>
+      </div> : <Loader />
   );
 };
 

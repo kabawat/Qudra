@@ -153,7 +153,32 @@ const EditProfileProfessional = () => {
   location?.state?.skills.map((res) => {
     arraySkills.push({ label: res, value: res });
   });
+  // professionaldashboard
 
+  const updateCancel = () => {
+    axios.post(
+      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+      {...JSON.parse(localStorage.getItem("user_data"))}
+    ).then((res) => {
+      localStorage.setItem(
+        "profileImageNameGmail",
+        JSON.stringify(res?.data?.data)
+      );
+      contextData?.dispatch({
+        type: "FETCH_PROFILE_DATA",
+        value: res?.data?.data,
+      });
+      if (res.data.data.category_selected) {
+        navigate("/professionaldashboard", {
+          state: { role: "professional" },
+        });
+      } else {
+        navigate("/categoryArchitecture", {
+          state: { role: "professional" },
+        });
+      }
+    });
+  }
   return (
     <>
       {isLoading ? (
@@ -204,29 +229,31 @@ const EditProfileProfessional = () => {
                     })
                     .then((res) => {
                       if (res?.data?.status === "Success") {
-                        axios
-                          .post(
-                            "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                            {
-                              user_id: contextData?.userData?.user_id,
-                              user_token: contextData?.userData?.user_token,
-                              role: "professional",
-                            }
-                          )
-                          .then((res) => {
-                            console.log("dashbored", res);
-                            localStorage.setItem(
-                              "profileImageNameGmail",
-                              JSON.stringify(res?.data?.data)
-                            );
-                            contextData?.dispatch({
-                              type: "FETCH_PROFILE_DATA",
-                              value: res?.data?.data,
-                            });
+                        axios.post(
+                          "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                          {
+                            user_id: contextData?.userData?.user_id,
+                            user_token: contextData?.userData?.user_token,
+                            role: "professional",
+                          }
+                        ).then((res) => {
+                          localStorage.setItem(
+                            "profileImageNameGmail",
+                            JSON.stringify(res?.data?.data)
+                          );
+                          contextData?.dispatch({
+                            type: "FETCH_PROFILE_DATA",
+                            value: res?.data?.data,
                           });
-
-                        navigate("/professionaldashboard", {
-                          state: { role: "professional" },
+                          if (res.data.data.category_selected) {
+                            navigate("/professionaldashboard", {
+                              state: { role: "professional" },
+                            });
+                          } else {
+                            navigate("/categoryArchitecture", {
+                              state: { role: "professional" },
+                            });
+                          }
                         });
                       }
                     });
@@ -292,13 +319,12 @@ const EditProfileProfessional = () => {
                         <CountrySelect
                           value={value}
                           onChange={(val) => {
-                            console.log("val", val);
                             setValue(val);
                             setFieldValue("nation", val?.name);
                             let id = val.id;
                             setimgcode(id.toLocaleUpperCase());
                           }}
-                          flags={true}
+                          flags={false}
                           placeholder="Select An Country"
                           name="nation"
                         />
@@ -453,7 +479,7 @@ const EditProfileProfessional = () => {
                             <option value="Masters"> Masters</option>
                             <option value="Other">Other</option>
                           </Field>
-                       
+
                           <ErrorMessage
                             name="education"
                             component="div"
@@ -515,11 +541,9 @@ const EditProfileProfessional = () => {
                     </div>
 
                     <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
-                      <button type="button" className="logInbtn mx-3">
-                        <Link to="/professionaldashboard" style={style}>
-                          <i className="fa-solid  fa-arrow-left-long me-3"></i>
-                          Cancel
-                        </Link>
+                      <button type="button" onClick={updateCancel} className="logInbtn mx-3">
+                        <i className="fa-solid  fa-arrow-left-long me-3"></i>
+                        Cancel
                       </button>
                       <button type="submit" className="create-account-btn mx-3">
                         Update

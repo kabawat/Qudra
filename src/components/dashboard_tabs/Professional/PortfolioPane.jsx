@@ -5,7 +5,7 @@ import { IoVideocamOutline } from "react-icons/io5";
 import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { MultiSelect } from "react-multi-select-component";
-
+import { BsCurrencyDollar } from "react-icons/bs";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import { BiEuro } from "react-icons/bi";
@@ -18,7 +18,7 @@ const PortfolioPane = () => {
   const contextData = useContext(Global);
   const [displaycls, setdisplaycls] = useState("none");
   const [loader, setLoader] = useState(false);
-  const [imgPreview, setimgPreview] = useState("");
+  const [imgPreview, setimgPreview] = useState();
   const [showUploadDesign, setUploadDesign] = useState({
     home: true,
     architecture: false,
@@ -60,7 +60,10 @@ const PortfolioPane = () => {
     }
   };
   const [PortfolioData, dispatch] = useReducer(reducer, initialState);
-
+  const [getevent, setgetevent] = useState("");
+  const fileclear = (e) => {
+    e.target.value = null;
+  };
   useEffect(() => {
     axios
       .post(
@@ -147,19 +150,19 @@ const PortfolioPane = () => {
   }, [PortfolioData?.sub_catagory_data, PortfolioData?.upload_designs_modal]);
   const languagesArchitecture = [
     contextData?.static_architecture_design?.data?.length &&
-      contextData?.static_architecture_design?.data?.filter((ress) => {
-        return ress !== "" ||
-          null ||
-          (PortfolioData?.selected_catagories &&
-            PortfolioData?.selected_catagories[1].includes(
-              ress?.sub_category_id
-            ))
-          ? {
-              label: ress?.sub_category,
-              value: ress?.sub_category_id,
-            }
-          : "";
-      }),
+    contextData?.static_architecture_design?.data?.filter((ress) => {
+      return ress !== "" ||
+        null ||
+        (PortfolioData?.selected_catagories &&
+          PortfolioData?.selected_catagories[1].includes(
+            ress?.sub_category_id
+          ))
+        ? {
+          label: ress?.sub_category,
+          value: ress?.sub_category_id,
+        }
+        : "";
+    }),
   ];
   const newCatagoriesArchitecture =
     languagesArchitecture[0] &&
@@ -182,19 +185,19 @@ const PortfolioPane = () => {
 
   const languagesVisualization = [
     contextData?.static_visualization_design?.data?.length &&
-      contextData?.static_visualization_design?.data?.filter((ress) => {
-        return ress !== "" ||
-          null ||
-          (PortfolioData?.selected_catagories &&
-            PortfolioData?.selected_catagories[2].includes(
-              ress?.sub_category_id
-            ))
-          ? {
-              label: ress?.sub_category,
-              value: ress?.sub_category_id,
-            }
-          : "";
-      }),
+    contextData?.static_visualization_design?.data?.filter((ress) => {
+      return ress !== "" ||
+        null ||
+        (PortfolioData?.selected_catagories &&
+          PortfolioData?.selected_catagories[2].includes(
+            ress?.sub_category_id
+          ))
+        ? {
+          label: ress?.sub_category,
+          value: ress?.sub_category_id,
+        }
+        : "";
+    }),
   ];
   const newCatagoriesVisualization =
     languagesVisualization[0] &&
@@ -477,7 +480,7 @@ const PortfolioPane = () => {
                           $
                           {
                             PortfolioData?.preview_catagory_designs?.price[
-                              index
+                            index
                             ]
                           }
                           / sq.mtr
@@ -509,9 +512,9 @@ const PortfolioPane = () => {
                               </Button>
                             </div>
                             {PortfolioData?.sub_catagory_data &&
-                            PortfolioData?.sub_catagory_data?.CataId == 2 ? (
+                              PortfolioData?.sub_catagory_data?.CataId == 2 ? (
                               PortfolioData?.sub_catagory_data?.Video ===
-                              "True" ? (
+                                "True" ? (
                                 <div className="col-xxl-6 col-lg-12 col-6">
                                   <Button
                                     style={{
@@ -612,15 +615,15 @@ const PortfolioPane = () => {
                 <Modal.Body>
                   <h4>
                     {PortfolioData?.sub_catagory_data &&
-                    PortfolioData?.sub_catagory_data.CataId == 1
+                      PortfolioData?.sub_catagory_data.CataId == 1
                       ? "Upload Your Price And Image "
                       : canUploadVideo === "True"
-                      ? "Upload Your Price, Image And Video"
-                      : "Upload Your Price And Image"}
+                        ? "Upload Your Price, Image And Video"
+                        : "Upload Your Price And Image"}
                   </h4>
 
                   {PortfolioData?.sub_catagory_data &&
-                  PortfolioData?.sub_catagory_data.CataId == 1 ? (
+                    PortfolioData?.sub_catagory_data.CataId == 1 ? (
                     <Formik
                       initialValues={{
                         price: "",
@@ -659,15 +662,15 @@ const PortfolioPane = () => {
                           .then((res) => {
                             res.data.status === "Success"
                               ? dispatch({
-                                  type: "UPLOAD_DESIGNS_MODAL",
-                                  value: false,
-                                })
+                                type: "UPLOAD_DESIGNS_MODAL",
+                                value: false,
+                              })
                               : dispatch({
-                                  type: "UPLOAD_DESIGNS_MODAL",
-                                  value: true,
-                                });
+                                type: "UPLOAD_DESIGNS_MODAL",
+                                value: true,
+                              });
                             setLoader(false);
-                            setimgPreview("");
+                            setimgPreview();
                           });
                       }}
                     >
@@ -676,7 +679,7 @@ const PortfolioPane = () => {
                           <div className="row">
                             <div className="col">
                               <div className="selectprice">
-                                <BiEuro />
+                                <BsCurrencyDollar />
                                 <Field
                                   type="text"
                                   placeholder="Enter Your Price Per Square Meter"
@@ -711,11 +714,16 @@ const PortfolioPane = () => {
                                   setimgPreview(
                                     URL.createObjectURL(e.target.files[0])
                                   );
+                                  setgetevent(e);
                                   setdisplaycls("block");
                                   console.log("hello");
                                 }}
                               />
                             </div>
+                            {
+                              (imgPreview === null) ? <div style={{ color: 'red' }}>Image required</div> : ''
+                            }
+
                             <div
                               className={displaycls}
                               style={{
@@ -738,8 +746,9 @@ const PortfolioPane = () => {
                                 }}
                                 onClick={() => {
                                   setFieldValue("image", "");
-                                  setimgPreview("");
+                                  setimgPreview(null);
                                   setdisplaycls("none");
+                                  fileclear(getevent);
                                 }}
                               >
                                 <AiFillDelete size={30} />
@@ -831,9 +840,8 @@ const PortfolioPane = () => {
                             </div>
                           </div>
                           <div
-                            className={`row ${
-                              canUploadVideo ? "mt-4" : "mt-2"
-                            }`}
+                            className={`row ${canUploadVideo ? "mt-4" : "mt-2"
+                              }`}
                           >
                             {canUploadVideo === "True" ? (
                               <>
@@ -950,7 +958,7 @@ const PortfolioPane = () => {
             </div>
 
             {PortfolioData?.sub_catagory_data &&
-            PortfolioData?.sub_catagory_data.CataId == 1 ? (
+              PortfolioData?.sub_catagory_data.CataId == 1 ? (
               <button
                 className="dashboard-theme-color mb-5"
                 onClick={() => {
@@ -1070,9 +1078,9 @@ const PortfolioPane = () => {
                 .then((res) => {
                   return res?.data?.status === "Success"
                     ? (dispatch({
-                        type: "ARCHITECTURE_DESIGN_UPLOAD_MODAL",
-                        value: false,
-                      }),
+                      type: "ARCHITECTURE_DESIGN_UPLOAD_MODAL",
+                      value: false,
+                    }),
                       setCatagoriesDropdown([]))
                     : "";
                 });
@@ -1147,9 +1155,9 @@ const PortfolioPane = () => {
                 .then((res) => {
                   return res?.data?.status === "Success"
                     ? (dispatch({
-                        type: "VISUALIZATION_DESIGN_UPLOAD_MODAL",
-                        value: false,
-                      }),
+                      type: "VISUALIZATION_DESIGN_UPLOAD_MODAL",
+                      value: false,
+                    }),
                       setCatagoriesDropdown([]))
                     : "";
                 });

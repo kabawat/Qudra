@@ -1,38 +1,52 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
+
 @font-face {
   font-family: Alienware;
   src: url(../fonts/Ailerons-Typeface.otf);
 }
+
 @font-face {
   font-family: customFontFamily;
   src: url(../fonts/Omega+Sans+Regular.ttf);
 }
+
 * {
   padding: 0;
   margin: 0;
   font-family: customFontFamily, "Poppins", sans-serif;
   scroll-behavior: smooth;
 }
+
 .form-image-input:hover {
   cursor: pointer;
 }
+
 select {
   cursor: pointer;
 }
+
 select option:hover {
   cursor: pointer;
 }
+
 body {
   top: 0 !important;
 }
+
 .TypeAnimationHomePage {
   font-family: Alienware;
 }
+
 img {
   max-width: 100%;
 }
+
+button {
+  cursor: pointer !important;
+}
+
 .swiper-pagination-fraction {
   bottom: 10px;
   left: 50%;
@@ -45,23 +59,29 @@ img {
   justify-self: center;
   padding: 3px;
 }
+
 .Find_Talent {
   background: url(../img/second-section-bg.jpg) no-repeat;
   background-size: 100%;
   padding: 80px 0px;
 }
+
 .fs-20 {
   font-size: 20px !important;
 }
+
 .fs-21 {
   font-size: 21px !important;
 }
+
 .fs-24 {
   font-size: 24px !important;
 }
+
 .goog-te-banner-frame {
   display: none !important;
 }
+
 .border-radius {
   border-radius: 20px;
 }
@@ -69,6 +89,7 @@ img {
 .none {
   display: none !important;
 }
+
 .block {
   display: block;
 }
@@ -480,9 +501,11 @@ section.earners-review-carousel .carousel-control-prev-icon::after {
   content: "\f060" !important;
   font-family: FontAwesome;
 }
+
 .object-fit-contain {
   object-fit: contain !important;
 }
+
 .object-fit {
   object-fit: cover;
 }
@@ -690,21 +713,14 @@ footer .quadra-copyright p {
   padding: 0 20px 0 0;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  input {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton input {
   border-radius: 30px;
   width: auto;
   padding: 10px 20px;
   margin: 10px 0;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton {
   display: unset;
 }
 
@@ -713,11 +729,7 @@ header.home-page-header ul li {
   font-size: 20px;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  button[type="submit"] {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
   position: absolute;
   right: 5px;
   padding: 11px 16px;
@@ -732,11 +744,7 @@ header.home-page-header .mobile-menu .mobile-menu-content ul li {
   list-style: none;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  button[type="submit"] {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
   position: absolute;
   right: 2px;
   padding: 10px 14px;
@@ -864,9 +872,7 @@ header.dashboard-header .dashboard-user-notification {
   cursor: pointer;
 }
 
-header.dashboard-header
-  .dashboard-user-notification
-  .dashboard-user-notification-number {
+header.dashboard-header .dashboard-user-notification .dashboard-user-notification-number {
   position: absolute;
   min-width: 20px;
   background-color: #01a78a;
@@ -1104,10 +1110,12 @@ header.dashboard-header h6 {
   font-weight: 275;
   /* font-family: "Poppins"; */
 }
-.Residential-Architecture-page .card:hover > .card-img-overlay {
+
+.Residential-Architecture-page .card:hover>.card-img-overlay {
   opacity: 1;
   background: #000000ad;
 }
+
 .dashboard main #dashboard-menu-bar .total-earning-row h4 {
   font-size: 20px;
   color: #3f4953;
@@ -1133,11 +1141,7 @@ header.dashboard-header h6 {
   padding: 15px 0;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional {
   background-image: url(../img/become-professional-earner-banner.png);
   padding: 60px 0 60px 60px;
   border-radius: 30px;
@@ -1145,12 +1149,7 @@ header.dashboard-header h6 {
   background-size: 100% 100%;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  h4 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h4 {
   font-size: 32px;
   line-height: 51px;
   color: #ffffff;
@@ -1158,12 +1157,7 @@ header.dashboard-header h6 {
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  h3 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h3 {
   font-size: 35px;
   line-height: 51px;
   color: #ffffff;
@@ -1171,12 +1165,7 @@ header.dashboard-header h6 {
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  p {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional p {
   font-size: 18px;
   line-height: 34px;
   color: #ffffff;
@@ -1185,12 +1174,7 @@ header.dashboard-header h6 {
   width: 70%;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  button {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional button {
   font-size: 20px;
   line-height: 32px;
   color: #01a78a;
@@ -1202,46 +1186,27 @@ header.dashboard-header h6 {
   border-radius: 50px;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box {
   box-shadow: 0px 2px 2px 2px #adadad38;
   border-radius: 25px;
   padding: 15px 0;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h3 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h3 {
   font-size: 22px;
   color: #3a3939;
   font-weight: 600;
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h6 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h6 {
   font-size: 16px;
   color: #3a3939;
   font-weight: 300;
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h2 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h2 {
   font-size: 32px;
   color: #01a78a;
   font-weight: 600;
@@ -1342,9 +1307,10 @@ header.dashboard-header h6 {
 .create-account header.create-account-header ul li a {
   list-style: none;
   margin-left: 20px;
-  color: white;
+  color: white !important;
   text-decoration: none;
   cursor: pointer;
+  font-size: 20px;
 }
 
 .create-account main.create-account-main form .check:checked {
@@ -1398,13 +1364,7 @@ header.dashboard-header h6 {
 }
 
 .create-account main.create-account-main form input:focus,
-.create-account
-  main.create-account-main
-  form
-  select:focus.create-account
-  main.create-account-main
-  form
-  textarea:focus {
+.create-account main.create-account-main form select:focus.create-account main.create-account-main form textarea:focus {
   outline: none;
   box-shadow: none;
 }
@@ -1414,11 +1374,7 @@ header.dashboard-header h6 {
   border-radius: 50px;
 }
 
-.create-account
-  main.create-account-main
-  form
-  .create-account-input
-  input::placeholder,
+.create-account main.create-account-main form .create-account-input input::placeholder,
 .create-account main.create-account-main form select::placeholder,
 .create-account main.create-account-main form textarea::placeholder,
 .create-account main.create-account-main form .create-account-input input,
@@ -1449,9 +1405,11 @@ header.dashboard-header h6 {
 .create-account main.create-account-main form .create-account-input {
   position: relative;
 }
+
 .create-account main.create-account-main form .create-account-input :hover {
   cursor: pointer;
 }
+
 .create-account main.create-account-main form .create-account-input i,
 .create-account main.create-account-main form .create-account-input img {
   position: absolute;
@@ -1602,11 +1560,7 @@ header.dashboard-header h6 {
   display: none;
 }
 
-.create-account
-  main.create-account-main
-  form
-  .create-account-input
-  .policy-span {
+.create-account main.create-account-main form .create-account-input .policy-span {
   padding: 15px 20px;
   font-size: 14px;
   color: #000000;
@@ -1823,11 +1777,7 @@ section.chatbox .chats-main .chats-show {
   flex-direction: column;
 }
 
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input {
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input {
   background: #eeeeee;
   padding: 15px 30px;
   border: 0px;
@@ -1848,21 +1798,9 @@ section.chatbox .chats-main .chats-show .chatbox-text-input-box button {
   right: 20px;
 }
 
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input:focus,
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input::placeholder,
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input:focus-visible {
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus,
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input::placeholder,
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus-visible {
   border: 0;
   outline: 0;
   font-size: 18px;
@@ -2101,9 +2039,11 @@ main.profile-page section.profile-page-sec-two .user-profile-info h4 {
   font-weight: 300;
   /* font-family: "Poppins"; */
 }
+
 .makeStyles-copyIcon-23 p {
   margin: auto;
 }
+
 main.profile-page section.profile-page-sec-three {
   padding: 100px;
   margin: 210px 0 0 0;
@@ -2165,9 +2105,11 @@ main.profile-page section.profile-page-sec-six h3 {
   font-weight: 500;
   /* font-family: "Poppins"; */
 }
+
 .makeStyles-copyIcon-7 p {
   margin: auto !important;
 }
+
 main.profile-page section.profile-page-sec-six h5 {
   font-size: 20px;
   /* font-family: "poppins"; */
@@ -2245,10 +2187,12 @@ main.profile-page section.profile-page-sec-six h6 {
   border-radius: 20px;
   box-shadow: 4px 4px 4px #dddddd;
 }
+
 .facebook_login_button {
   background-color: transparent;
   border: none;
 }
+
 .country-select {
   width: 100%;
 }
@@ -2274,12 +2218,15 @@ main.profile-page section.profile-page-sec-six h6 {
   border-radius: 25px 0 0 25px !important;
   border-right: none !important;
 }
+
 .country-select.inside .flag-dropdown:hover .selected-flag {
   background-color: #ffffff00 !important;
 }
+
 .country-select.inside .flag-dropdown:hover .selected-flag {
   background-color: transparent !important;
 }
+
 .react-tel-input .flag-dropdown.open .selected-flag,
 .react-tel-input .selected-flag:hover,
 .react-tel-input .selected-flag:focus {
@@ -2291,6 +2238,7 @@ main.profile-page section.profile-page-sec-six h6 {
   place-items: center;
   height: 100%;
 }
+
 .chats-show {
   position: relative;
 }
@@ -2299,6 +2247,7 @@ main.profile-page section.profile-page-sec-six h6 {
   transform: scale(1.2);
   height: 100%;
 }
+
 .rate-input {
   font-size: 10px;
   height: 100%;
@@ -2306,6 +2255,7 @@ main.profile-page section.profile-page-sec-six h6 {
   background-color: transparent;
   border-bottom: 1px solid black !important;
 }
+
 .rate-input:focus-visible {
   outline: none !important;
   border: none !important;
@@ -2316,20 +2266,24 @@ main.profile-page section.profile-page-sec-six h6 {
   background-color: #01a78a !important;
   color: white !important;
 }
+
 #heroes {
   width: 100%;
   overflow: hidden;
   height: calc(100vh - 117px);
 }
+
 canvas {
   display: block;
   width: 100%;
   height: 100%;
 }
+
 .category-button {
   display: flex;
   justify-content: center;
 }
+
 .category-button h6 {
   padding: 10px 20px;
   border-radius: 5px;
@@ -2338,9 +2292,11 @@ canvas {
   background-color: #ebfdff;
   border-bottom: 2px solid #01a78a;
 }
+
 .category-box {
   position: relative;
 }
+
 .category-box input[type="checkbox"] {
   cursor: pointer;
   position: absolute;
@@ -2351,10 +2307,12 @@ canvas {
   left: 0;
   opacity: 0;
 }
+
 .sel-service {
   display: flex;
   justify-content: flex-end;
 }
+
 .sel-service h6 {
   font-size: 16px;
   font-weight: 400;
@@ -2366,6 +2324,7 @@ canvas {
   box-shadow: 6px 6px 6px #00000029;
   border-radius: 5px;
 }
+
 .icon-box {
   border-radius: 5px;
   background-color: #f1f1f1;
@@ -2373,10 +2332,12 @@ canvas {
   display: grid;
   place-items: center;
 }
+
 .icon-box img {
   max-height: 100px;
   max-width: 100px;
 }
+
 .right_bottom_icon {
   display: flex;
   align-items: center;
@@ -2393,23 +2354,28 @@ canvas {
   height: 40px;
   color: #01a78a;
 }
+
 .plus_icon {
   font-size: "25px";
   color: "#01a78a";
 }
+
 .client_area_field {
   border: 1px solid #ced4da;
   border-radius: 50px;
   font-size: 14px;
   font-family: Poppins;
 }
+
 .no_border {
   border: none !important;
 }
+
 .no_border:focus-visible,
 .no_border:active {
   border: none !important;
 }
+
 .green_semi_rounded {
   background-color: #01a78a;
   color: white;
@@ -2420,12 +2386,14 @@ canvas {
   align-items: center;
   justify-content: center;
 }
+
 .purchase_dialog {
   background-color: #01a78a;
   color: white;
   font-size: 15px;
   border-radius: 5px;
 }
+
 .purchase_dialog .puchase_box {
   background-color: white;
   border-radius: 5px;
@@ -2435,9 +2403,11 @@ canvas {
   font-size: 18px;
   text-align: center;
 }
+
 .buy_design_box {
   position: relative;
 }
+
 .buy_design_text {
   position: absolute;
   top: 0;
@@ -2452,17 +2422,21 @@ canvas {
   height: 100% !important;
   width: 100% !important;
 }
+
 .buy_button {
   border: 1px solid white;
   border-radius: 15px;
 }
+
 .CustomZIndexOne {
   z-index: 999;
 }
+
 .buy_design_text .buy_button {
   color: white;
   text-decoration: none;
 }
+
 .cart_page_main h3 {
   font-size: 24px;
   font-weight: 600;
@@ -2475,22 +2449,26 @@ canvas {
   border-bottom: 1px solid #e5e5e5;
   padding-bottom: 13px;
 }
+
 .leftShoppingCart img {
   width: 80px;
   height: 80px;
   border-radius: 12px;
 }
+
 .leftShoppingCart h5 {
   color: #159482;
   font-size: 18px;
   font-weight: 600;
 }
+
 .leftShoppingCart p {
   color: black;
   font-size: 12px;
   font-weight: 300;
   margin: 0;
 }
+
 .rightShoppingCart h4 {
   font-size: 16px;
   font-weight: 600;
@@ -2502,6 +2480,7 @@ canvas {
   outline: none;
   border: 0;
 }
+
 .payementFormMain form {
   padding: 50px;
 }
@@ -2515,10 +2494,12 @@ canvas {
   font-size: 14px;
   border: 1px solid #b2b2b2;
 }
+
 .payementFormMain button svg {
   margin-right: 12px;
   font-size: 28px;
 }
+
 .cardExpiry div,
 .cardExpiry div:focus {
   box-shadow: none;
@@ -2526,34 +2507,40 @@ canvas {
   border-right: 0;
   border: none;
 }
+
 .css-1okebmr-indicatorSeparator {
   display: none;
 }
+
 .PaymentCardSubmitButton,
 .PaymentCardSubmitButton svg {
   background-color: #00a78b !important;
   color: white !important;
 }
+
 .PaymentCardSubmitButton {
   width: 50% !important;
   margin: auto;
-  padding-right: 0 !important
-  ;
-  margin-top: 28px !important ;
+  padding-right: 0 !important;
+  margin-top: 28px !important;
 }
+
 .rightShoppingCart .totalProductAmount h4 {
   font-size: 24px;
   font-weight: 400;
 }
+
 .LanguageSelectBox .googleTranslateLanguageDropdown {
   position: absolute;
   left: 0;
   top: 0;
   opacity: 0;
 }
+
 .LanguageSelectBox {
   position: relative;
 }
+
 .right_bottom_icon input {
   z-index: 999;
   opacity: 0;
@@ -2568,9 +2555,11 @@ canvas {
   border: 0;
   border-radius: 50px;
 }
+
 .otherInputDropDown {
   display: none;
 }
+
 .otherInputDropDown input {
   padding: 15px 50px;
   width: 100%;
@@ -2589,6 +2578,7 @@ canvas {
   border-radius: 50px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s;
 }
+
 .dropdown-container {
   border-radius: 51px !important;
   padding: 5px 5px 5px 40px;
@@ -2602,16 +2592,20 @@ canvas {
   left: 0;
   position: absolute;
 }
+
 .dropdown-container:focus-within {
   box-shadow: none !important;
   border-color: #ccc !important;
 }
+
 .create-account-input img {
   z-index: 0;
 }
+
 .create-account-email-input {
   position: relative;
 }
+
 .create-account-email-input button {
   background: #109e83;
   color: white;
@@ -2624,18 +2618,22 @@ canvas {
   transform: translate(-9%, -50%);
   padding: 10px 20px;
 }
+
 .loadingOuter {
   padding: 0 !important;
 }
+
 .OtpInputModal input {
   width: 28px !important;
 }
+
 .OtpInputModal .otp-box-Main {
   padding: 30px 30px 10px 30px;
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
+
 .OtpInputModal button.otpSubmitButton {
   padding: 4px 20px;
   width: 110px;
@@ -2646,6 +2644,7 @@ canvas {
   background: #0f8972;
   color: white;
 }
+
 .OtpInputModal .modal-title {
   font-size: 20px;
 }
@@ -2660,29 +2659,35 @@ canvas {
   width: 28px !important;
   height: 28px;
 }
+
 .resetPasswordModal .create-account-input {
   position: relative;
   margin: 20px 0;
 }
+
 .resetPasswordModal .create-account-input input {
   padding: 13px 10px 13px 45px;
   border-radius: 50px;
 }
+
 .resetPasswordModal .create-account-input img,
 .resetPasswordModal .create-account-input i {
   position: absolute;
   top: 15px;
   left: 17px;
 }
+
 .resetPasswordModal .create-account-input i {
   font-size: 21px;
   top: 16px;
   color: #b1b1b1;
 }
+
 .owl-prev.disabled,
 .owl-next.disabled {
   opacity: 0 !important;
 }
+
 .modalControllers {
   background-color: red;
   right: 0;
@@ -2690,6 +2695,7 @@ canvas {
   width: 400px;
   padding: 10px 0;
 }
+
 .modalProfessionalDashboard .imageDropBoxDashboardProfessional {
   position: relative;
   padding: 10px;
@@ -2697,9 +2703,11 @@ canvas {
   border: 1px dashed black;
   flex-direction: column;
 }
+
 .modalProfessionalDashboard .imageDropBoxDashboardProfessional p {
   margin: 0;
 }
+
 .modalProfessionalDashboard .imageDropBoxDashboardProfessional button {
   background-color: #00a78b;
   color: white;
@@ -2707,6 +2715,7 @@ canvas {
   border: 0;
   padding: 10px 0;
 }
+
 .modalProfessionalDashboard .imageDropBoxDashboardProfessional input {
   position: absolute;
   width: 50%;
@@ -2714,6 +2723,7 @@ canvas {
   z-index: 999;
   opacity: 0;
 }
+
 .modalProfessionalDashboard select,
 .modalProfessionalDashboard select:focus,
 .modalProfessionalDashboard select:focus-visible {
@@ -2722,6 +2732,7 @@ canvas {
   padding: 15px 0 15px 40px;
   color: #828282 !important;
 }
+
 .modalProfessionalDashboard input.priceInput,
 .modalProfessionalDashboard input.priceInput:focus {
   width: 100%;
@@ -2729,6 +2740,7 @@ canvas {
   padding: 15px 0 15px 40px;
   border: 1px solid rgb(118, 118, 118);
 }
+
 .modalProfessionalDashboard .ModalCategorySubmit {
   width: 200px;
   margin: auto;
@@ -2738,10 +2750,12 @@ canvas {
   border: 0;
   color: white;
 }
+
 .modalProfessionalDashboard .selectCategoryMain,
 .modalProfessionalDashboard .selectprice {
   position: relative;
 }
+
 .modalProfessionalDashboard .selectCategoryMain svg,
 .modalProfessionalDashboard .selectprice svg {
   font-size: 30px;
@@ -2750,21 +2764,25 @@ canvas {
   left: 10px;
   color: #828282 !important;
 }
+
 .modalProfessionalDashboard h4 {
   text-align: center;
   padding-bottom: 50px;
   padding-top: 27px;
 }
+
 .inputImageFeaturedImage {
   height: 100%;
   opacity: 0;
   z-index: 999;
   position: absolute;
 }
+
 .inputImageFeaturedImagePara {
   margin: 0;
   padding-left: 48px;
 }
+
 .LoadingMain {
   margin: 0;
   padding: 0;
@@ -2816,33 +2834,33 @@ canvas {
   transform: translate3d(-50%, -50%, calc(var(--depth) * 0.5vmin));
   background: #00ad8e;
 }
+
 .LoadingMain .cuboid .side:nth-of-type(2) {
-  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin))
-    rotateY(180deg);
+  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin)) rotateY(180deg);
   background: hsl(var(--hue), var(--sat), 25%);
 }
+
 .LoadingMain .cuboid .side:nth-of-type(3) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(90deg)
-    translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 75%);
 }
+
 .LoadingMain .cuboid .side:nth-of-type(4) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(-90deg)
-    translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(-90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: #009379;
 }
+
 .LoadingMain .cuboid .side:nth-of-type(5) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(90deg)
-    translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: #008971;
 }
+
 .LoadingMain .cuboid .side:nth-of-type(6) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(-90deg)
-    translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(-90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 20%);
 }
 
@@ -2875,9 +2893,11 @@ canvas {
   25% {
     transform: translate3d(0vmin, 0vmin, -10vmin);
   }
+
   75% {
     transform: translate3d(10vmin, 0vmin, -10vmin);
   }
+
   100% {
     transform: translate3d(10vmin, 0vmin, -5vmin);
   }
@@ -2887,9 +2907,11 @@ canvas {
   25% {
     transform: translate3d(0vmin, 0vmin, 0vmin);
   }
+
   75% {
     transform: translate3d(0vmin, 0vmin, 0vmin);
   }
+
   100% {
     transform: translate3d(0vmin, 0vmin, -5vmin);
   }
@@ -2899,9 +2921,11 @@ canvas {
   25% {
     transform: translate3d(10vmin, 0vmin, 10vmin);
   }
+
   75% {
     transform: translate3d(0vmin, 0vmin, 10vmin);
   }
+
   100% {
     transform: translate3d(0vmin, 0vmin, 5vmin);
   }
@@ -2911,22 +2935,27 @@ canvas {
   25% {
     transform: translate3d(10vmin, 0vmin, 0vmin);
   }
+
   75% {
     transform: translate3d(10vmin, 0vmin, 0vmin);
   }
+
   100% {
     transform: translate3d(10vmin, 0vmin, 5vmin);
   }
 }
+
 .professionalDisclamerModal ol li {
   color: white;
   margin: 10px 0;
 }
+
 .professionalDisclamerModal .h4 {
   font-size: 20px;
   width: 100%;
   text-align: center;
 }
+
 .modalProfessionalDashboard .selectCategoryMain input[type="file"] {
   height: 100%;
   width: 50%;
@@ -2934,20 +2963,24 @@ canvas {
   opacity: 0;
   z-index: 999;
 }
+
 .modalProfessionalDashboard .selectCategoryMain {
   padding-left: 48px;
 }
+
 .subCataSelectInnerMainDiv {
   position: relative;
   border: 1px solid rgb(118, 118, 118);
   border-radius: 5px;
 }
+
 .subCataSelectInnerMainDiv {
   position: relative;
   padding: 15px 0 15px 40px;
   display: flex;
   align-items: center;
 }
+
 .subCataSelectInnerMainDiv svg {
   position: absolute;
   font-size: 30px;
@@ -2955,6 +2988,7 @@ canvas {
   left: 10px;
   color: #828282 !important;
 }
+
 .subCataSelectInnerMainDiv input {
   top: 0;
   right: 0;
@@ -2965,23 +2999,28 @@ canvas {
   opacity: 0;
   z-index: 999;
 }
+
 .subCataSelectInnerMainDiv p {
   margin: 0;
   width: 100%;
 }
+
 .chatBoxFileSelectMainBox {
   display: flex;
 }
+
 .chatBoxFileSelectMainBox .fileSelectLinkChatbox svg {
   color: white;
   z-index: 0;
   width: 30px;
   height: 50px;
 }
+
 .fileSelectLinkChatbox {
   position: relative;
   width: 50px;
 }
+
 .fileSelectLinkChatbox input {
   left: 0;
   top: 0;
@@ -2991,6 +3030,7 @@ canvas {
   opacity: 0;
   height: 100%;
 }
+
 .chatBoxFileSelectMainBox button,
 .chatBoxFileSelectMainBox button svg {
   width: 30px;
@@ -3007,16 +3047,19 @@ canvas {
   outline: 0;
   padding: 0 20px;
 }
+
 .rce-button,
 .rce-button-icon--container {
   align-items: center;
   display: flex;
   width: 20%;
 }
+
 button.rce-mbox-photo--img__block-item.rce-mbox-photo--download {
   justify-content: center;
   align-items: center;
 }
+
 .rce-mbox-photo--img img {
   height: 100%;
   min-height: 100px;
@@ -3024,9 +3067,11 @@ button.rce-mbox-photo--img__block-item.rce-mbox-photo--download {
   -webkit-user-select: none;
   user-select: none;
 }
+
 #chatsdisplaybox::-webkit-scrollbar {
   width: 0;
 }
+
 #chatusersdisplaybox::-webkit-scrollbar {
   width: 0;
 }
@@ -3052,10 +3097,12 @@ button.closeModalPreviewData {
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(0.8);
   }
 }
+
 .LoginPageemailVerifyBtn {
   position: absolute;
   right: 7px;
@@ -3068,6 +3115,7 @@ button.closeModalPreviewData {
   color: white;
   border: 0;
 }
+
 .ProjectDetailsPageProjectDetailsSection .project-details {
   color: #01a78a;
   padding: 4px 12px;
@@ -3091,12 +3139,14 @@ button.closeModalPreviewData {
   border-radius: 50px;
   display: block;
 }
+
 .product-details-submit-form h6 {
   font-size: 14px;
   color: #000000;
   font-weight: 300;
   /* font-family: "Poppins"; */
 }
+
 .product-details-submit-form input,
 .product-details-submit-form input:focus-visible,
 .product-details-submit-form input:active,
@@ -3111,6 +3161,7 @@ button.closeModalPreviewData {
   /* font-family: "Poppins"; */
   outline: none;
 }
+
 .productDetailsUploadModalProfilePage input,
 .productDetailsUploadModalProfilePage input:focus,
 .productDetailsUploadModalProfilePage input:focus-visible {
@@ -3127,18 +3178,22 @@ button.closeModalPreviewData {
   visibility: hidden;
   transition: 0s ease-in-out;
 }
+
 .visibleForEdit {
   position: relative;
 }
+
 .cardTitleVisible {
   position: absolute;
   top: 8%;
   right: 8%;
 }
+
 .card-img-overlay:hover {
   background: rgba(0, 0, 0, 0.5);
   transition: 0.2s ease-in-out;
 }
+
 .visibleForEdit:hover .row {
   visibility: visible;
   /* transition: all 0s linear; */
@@ -3154,6 +3209,7 @@ button.closeModalPreviewData {
   border-radius: 7px;
   border: 1px solid #7e7e7e;
 }
+
 .productDetailsUploadModalProfilePage button.btn-close {
   width: 10px;
   height: 10px;
@@ -3167,6 +3223,7 @@ button.closeModalPreviewData {
   right: 15px;
   position: absolute;
 }
+
 .productDetailsUploadModalProfilePage button[type="submit"] {
   font-size: 16px;
   opacity: 1;
@@ -3180,9 +3237,11 @@ button.closeModalPreviewData {
   margin-top: 30px;
   display: block;
 }
+
 .productDetailsUploadModalProfilePage .modal-content {
   padding: 50px;
 }
+
 .productDetailsUploadModalProfilePage .h4 {
   font-size: 26px;
   text-align: center;
@@ -3192,6 +3251,7 @@ button.closeModalPreviewData {
   font-weight: 600;
   /* font-family: "Poppins"; */
 }
+
 .notificationDropdownBox {
   position: absolute;
   top: 50px;
@@ -3202,9 +3262,11 @@ button.closeModalPreviewData {
   z-index: 999;
   user-select: none;
 }
+
 .notificationDropdownBox::-webkit-scrollbar {
   width: 0;
 }
+
 .notificationDropdownBox .message {
   background-color: #fff;
   padding-bottom: 15px;
@@ -3213,10 +3275,12 @@ button.closeModalPreviewData {
   border-top: 1px solid;
   font-size: 14px;
 }
+
 .notificationDropdownBox .message:hover {
   background-color: #efefef;
   cursor: pointer;
 }
+
 .notificationDropdownBox p {
   font-size: 12px;
   text-align: start;
@@ -3225,6 +3289,7 @@ button.closeModalPreviewData {
   margin: 0;
   color: #01a78a;
 }
+
 .notificationDropdownBox .arrowMessageBox {
   position: absolute;
   width: 25px;
@@ -3236,9 +3301,11 @@ button.closeModalPreviewData {
   transform: translate(0, 50%) rotate(45deg);
   border: 1px solid rgb(122, 120, 120);
 }
+
 .scroll-width-zero::-webkit-scrollbar {
   width: 0;
 }
+
 .ProjectDetailsPageMilestoneSectionForm .milestoneBox {
   display: flex;
   justify-content: space-between;
@@ -3258,6 +3325,7 @@ input[name="milestone_name_fifth"] {
   padding: 10px;
   border: none;
 }
+
 input[name="milestone_date_one"],
 input[name="milestone_date_one"]::placeholder,
 input[name="milestone_date_two"],
@@ -3281,6 +3349,7 @@ input[name="milestone_date_fifth"]::placeholder {
   color: #01a78a;
   margin: 0;
 }
+
 .myProjectTable h2 {
   font-size: 40px;
   color: #01a78a;
@@ -3297,6 +3366,7 @@ input[name="milestone_date_fifth"]::placeholder {
   font-weight: 300;
   /* font-family: "Poppins"; */
 }
+
 .myProjectTable h5 {
   opacity: 0.8;
   font-size: 14px;
@@ -3305,9 +3375,11 @@ input[name="milestone_date_fifth"]::placeholder {
   /* font-family: "Poppins"; */
   margin: 0;
 }
+
 .myProjectTable .searchActiveProject {
   position: relative;
 }
+
 .myProjectTable .searchActiveProject input {
   width: 100%;
   font-size: 13px;
@@ -3322,6 +3394,7 @@ input[name="milestone_date_fifth"]::placeholder {
   color: #01a78a !important;
   font-size: 25px;
 }
+
 .myProjectTable .searchActiveProject button {
   position: absolute;
   right: 14px;
@@ -3332,15 +3405,19 @@ input[name="milestone_date_fifth"]::placeholder {
   background-color: white;
   border: 0;
 }
+
 .myProjectTable div.row {
   min-height: 142px;
 }
+
 .myProjectTable div.row.MyProjectDisplayRow:nth-of-type(even) {
   background-color: #f2f2f2;
 }
+
 .myProjectTable div.row.MyProjectDisplayRow:nth-of-type(odd) {
   background-color: white;
 }
+
 .myProjectTable button.LikeButton {
   padding: 10px;
   border-radius: 50px;
@@ -3349,13 +3426,16 @@ input[name="milestone_date_fifth"]::placeholder {
   border: 0;
   filter: drop-shadow(1px 2px 4px #8f8f8f);
 }
+
 .myProjectTable button.LikeButton svg {
   font-size: 25px;
 }
+
 .underline_hover:hover {
   text-decoration: underline;
   cursor: pointer;
 }
+
 .projectMilestoneInfo .milestoneBox {
   display: flex;
   justify-content: space-between;
@@ -3370,6 +3450,7 @@ input[name="milestone_date_fifth"]::placeholder {
 .projectMilestoneInfo .milestoneBox p {
   margin: 0;
 }
+
 .projectMilestoneInfo .milestoneBox button {
   border-radius: 0 50px 50px 0;
   position: absolute;
@@ -3381,23 +3462,29 @@ input[name="milestone_date_fifth"]::placeholder {
   color: white;
   right: 0;
 }
+
 .paginationBoxProfessionalDashboard .page-link {
   color: #009379;
 }
+
 .makeStyles-iconContainer-3 {
   text-align: center !important;
 }
+
 .makeStyles-iconContainer-11 {
   text-align: center !important;
 }
+
 .paginationBoxProfessionalDashboard li.page-item.active .page-link {
   border: 1px solid #009379;
   color: #fff;
   background-color: #009379;
 }
+
 .ratingMainBoxProfessionalProfile {
   position: relative;
 }
+
 .ratingMainBoxProfessionalProfile .ratingBox {
   position: absolute;
   bottom: -44px;
@@ -3408,9 +3495,11 @@ input[name="milestone_date_fifth"]::placeholder {
   transform: translate(-50%, 0);
   border-radius: 5px;
 }
+
 textarea:focus-visible {
   outline: none;
 }
+
 .ratingMainBoxProfessionalProfile .ratingBox .forRatingArrow {
   background: linear-gradient(136deg, #adadad 50%, transparent 50%);
   position: absolute;
@@ -3420,12 +3509,14 @@ textarea:focus-visible {
   left: 50%;
   height: 12px;
 }
+
 button.seeAllNotificationButton {
   width: 100%;
   padding: 5px;
   color: white;
   background: radial-gradient(#1d7465, #000000);
 }
+
 .clientProductDiplayModal img,
 .clientProductDiplayModal video {
   width: 100%;
@@ -3441,17 +3532,21 @@ button.seeAllNotificationButton {
   border: 0;
   z-index: 9999;
 }
+
 .buy_design_img {
   height: 250px;
 }
+
 .clientProductDiplayModal .swiper-button-prev,
 .clientProductDiplayModal .swiper-button-next {
   color: black;
   box-shadow: 2px 2px 2px black;
 }
+
 .dropdown-content {
   z-index: 99999999;
 }
+
 .clientUploadCatagoryButton {
   padding: 10px 30px;
   margin-top: 28px;
@@ -3462,12 +3557,14 @@ button.seeAllNotificationButton {
   margin-left: auto;
   display: block;
 }
+
 .viewPasswordIcons {
   position: absolute;
   right: 0;
   top: 26px;
   transform: translate(-25px, -50%);
 }
+
 .react-resizable {
   max-width: 100%;
 }

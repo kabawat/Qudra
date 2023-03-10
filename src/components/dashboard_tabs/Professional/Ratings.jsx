@@ -92,8 +92,9 @@ const Ratings = () => {
     <div id="liked-save" className="container-fluid  myProjectTable">
       <h2 className="ps-5"> Ratings </h2>
       <div className="m-md-5 mx-2 shadow">
-        <div className="row  align-items-center MyProjectDisplayRow">
-          {rating?.final_data?.length ? (
+
+        {rating?.final_data?.length ?
+          <div className="row  align-items-center MyProjectDisplayRow">
             <div className="searchActiveProject col-8 ms-auto">
               <input
                 type="text"
@@ -105,10 +106,8 @@ const Ratings = () => {
                 <BsSearch />
               </button>
             </div>
-          ) : (
-            ""
-          )}
-        </div>
+          </div> : ''}
+
         {rating?.final_data?.length ? (
           rating?.final_data?.map((res, index) => (
             <div className="row MyProjectDisplayRow" key={index}>
