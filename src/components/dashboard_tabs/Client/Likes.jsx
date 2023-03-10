@@ -49,7 +49,7 @@ const Likes = () => {
     } else {
       setLikes([]);
     }
-  }, [search]);
+  }, []);
 
   const [searchPageId, setSearchPageId] = useState({
     page: 1,

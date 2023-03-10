@@ -46,7 +46,7 @@ const Ratings = () => {
     } else {
       setRating([]);
     }
-  }, [search]);
+  }, []);
 
   const handleSearch = () => {
     axios
