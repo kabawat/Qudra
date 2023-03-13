@@ -16,7 +16,8 @@ import Global from "../../context/Global";
 import { BsArrowRight } from "react-icons/bs";
 import Modal from "react-bootstrap/Modal";
 import { BsPlusLg } from "react-icons/bs";
-import { BiCategory, BiEuro } from "react-icons/bi";
+import { BiCategory } from "react-icons/bi";
+import { BsCurrencyDollar } from "react-icons/bs";
 import axios from "axios";
 import { MultiSelect } from "react-multi-select-component";
 import { GiCancel } from "react-icons/gi";
@@ -43,6 +44,24 @@ const ProfessionalBuyAndSale = () => {
     preview_catagory_designs: [],
     selected_catagories: null,
     buy_sale_design_modal: false,
+  };
+
+  const [imgclear, setimgclear] = useState("");
+  const [vidclear, setvidclear] = useState("");
+  const [zipclear, setzipclear] = useState("");
+  const [imgdisplay, setimgdisplay] = useState("none");
+  const [viddisplay, setviddisplay] = useState("none");
+  const [zipdisplay, setzipdisplay] = useState("none");
+  const [pricedisplay, setpricedisplay] = useState("none");
+
+  const imgnull = (e) => {
+    e.target.value = null;
+  };
+  const vidnull = (e) => {
+    e.target.value = null;
+  };
+  const zipnull = (e) => {
+    e.target.value = null;
   };
 
   useEffect(() => {
@@ -707,17 +726,6 @@ const ProfessionalBuyAndSale = () => {
                         )}
 
                         <div className=" col-12 my-md-4 my-3 d-flex align-items-center justify-content-end">
-                          <button
-                            type="submit"
-                            className="create-account-btn"
-                            onClick={() =>
-                              isRedirect
-                                ? navigate("/professionaldashboard")
-                                : ""
-                            }
-                          >
-                            Continue <BsArrowRight style={{ color: "white" }} />
-                          </button>
                           {!isRedirect ? (
                             <button
                               type="button"
@@ -730,6 +738,17 @@ const ProfessionalBuyAndSale = () => {
                           ) : (
                             ""
                           )}
+                          <button
+                            type="submit"
+                            className="create-account-btn"
+                            onClick={() =>
+                              isRedirect
+                                ? navigate("/professionaldashboard")
+                                : ""
+                            }
+                          >
+                            Continue <BsArrowRight style={{ color: "white" }} />
+                          </button>
                         </div>
                       </div>
                     )}
@@ -852,48 +871,66 @@ const ProfessionalBuyAndSale = () => {
                   }}
                   validationSchema={SetUpSchema}
                   onSubmit={(values, { setSubmitting }) => {
-                    const catagoryUpload = new FormData();
+                    console.log("suraj", values.image);
+                    if (!values?.image) {
+                      console.log("image");
+                      setimgdisplay("block");
+                    } else if (!values?.video) {
+                      setviddisplay("block");
+                    } else if (!values?.project) {
+                      setzipdisplay("block");
+                    } else {
+                      const catagoryUpload = new FormData();
 
-                    catagoryUpload.append(
-                      "user_id",
-                      contextData?.userData?.user_id
-                    );
-                    catagoryUpload.append(
-                      "user_token",
-                      contextData?.userData?.user_token
-                    );
-                    catagoryUpload.append("role", contextData?.userData?.role);
-                    catagoryUpload.append(
-                      "sub_category_id",
-                      modalSubCatagoryID
-                    );
-                    catagoryUpload.append("category_id", "3");
-                    catagoryUpload.append("image", values?.image);
-                    catagoryUpload.append("price", values?.price);
-                    catagoryUpload.append("video", values?.video);
-                    catagoryUpload.append("project", values?.project);
-                    setLoader(true);
-                    axios
-                      .post(
-                        "http://13.52.16.160:8082/professional/sell_design",
-                        catagoryUpload
-                      )
-                      .then((res) => {
-                        console.log(res)
-                        if (res?.data?.status === "Success") {
-                          dispatch({
-                            type: "UPLOAD_DESIGNS_MODAL",
-                            value: false,
-                          });
-                          setLoader(false);
-                        } else {
-                          dispatch({
-                            type: "UPLOAD_DESIGNS_MODAL",
-                            value: true,
-                          });
-                          setLoader(false);
-                        }
-                      });
+                      catagoryUpload.append(
+                        "user_id",
+                        contextData?.userData?.user_id
+                      );
+                      catagoryUpload.append(
+                        "user_token",
+                        contextData?.userData?.user_token
+                      );
+                      catagoryUpload.append(
+                        "role",
+                        contextData?.userData?.role
+                      );
+                      catagoryUpload.append(
+                        "sub_category_id",
+                        modalSubCatagoryID
+                      );
+                      catagoryUpload.append("category_id", "3");
+                      catagoryUpload.append("image", values?.image);
+                      catagoryUpload.append("price", values?.price);
+                      catagoryUpload.append("video", values?.video);
+                      catagoryUpload.append("project", values?.project);
+
+                      setLoader(true);
+                      console.log(catagoryUpload);
+                      axios
+                        .post(
+                          "http://13.52.16.160:8082/professional/sell_design",
+                          catagoryUpload
+                        )
+                        .then((res) => {
+                          if (res?.data?.status === "Success") {
+                            dispatch({
+                              type: "UPLOAD_DESIGNS_MODAL",
+                              value: false,
+                            });
+                            setLoader(false);
+                            blankfields();
+                            setimgdisplay("none");
+                            setviddisplay("none");
+                            setzipdisplay("none");
+                          } else {
+                            dispatch({
+                              type: "UPLOAD_DESIGNS_MODAL",
+                              value: true,
+                            });
+                            setLoader(false);
+                          }
+                        });
+                    }
                   }}
                 >
                   {({ isSubmitting, setFieldValue }) => (
@@ -902,16 +939,21 @@ const ProfessionalBuyAndSale = () => {
                         <div className="row">
                           <div className="col">
                             <div className="selectprice">
-                              <BiEuro />
+                              <BsCurrencyDollar />
                               <Field
                                 type="text"
                                 placeholder="Enter Your Price Per Square Meter"
                                 className="priceInput"
                                 name="price"
                               />
+                              <ErrorMessage
+                                name="price"
+                                component="div"
+                                className="m-2 text-danger"
+                              />
                             </div>
                           </div>
-                          <div className="col">
+                          <div className="col uploadimageCat">
                             <div
                               className="selectCategoryMain h-100 d-flex align-items-center"
                               style={{
@@ -920,17 +962,22 @@ const ProfessionalBuyAndSale = () => {
                               }}
                             >
                               <BiCategory />
-                              <p className="m-0">
+                              <p className="m-0 ">
                                 Choose Featured Image to Display
                               </p>
                               <div
                                 className={clsstyle}
                                 style={{
                                   width: "70px",
+                                  height: "45px",
                                   marginLeft: "10%",
                                 }}
                               >
-                                <img src={imgPreview} alt="preview" />
+                                <img
+                                  src={imgPreview}
+                                  alt="preview"
+                                  style={{ height: "100%", width: "100%" }}
+                                />
                                 <span
                                   style={{
                                     position: "absolute",
@@ -940,7 +987,10 @@ const ProfessionalBuyAndSale = () => {
                                 >
                                   <GiCancel
                                     onClick={() => {
+                                      // setimgPreview("");
+                                      imgnull(imgclear);
                                       setclsstyle("none");
+                                      setFieldValue("image", null);
                                     }}
                                   />
                                 </span>
@@ -954,23 +1004,25 @@ const ProfessionalBuyAndSale = () => {
                                     URL.createObjectURL(e.target.files[0])
                                   );
                                   setclsstyle("block");
+                                  setimgclear(e);
+                                  setimgdisplay("none");
                                 }}
                                 accept="image/*"
                               />
                             </div>
+                            <span
+                              style={{ color: "red", paddingTop: "7px" }}
+                              className={imgdisplay}
+                            >
+                              Image required
+                            </span>
                           </div>
                           <div className="row">
                             <div className="col"></div>
-                            <div className="col">
-                              <ErrorMessage
-                                name="price"
-                                component="div"
-                                className="m-2 text-danger"
-                              />
-                            </div>
+                            <div className="col"></div>
                           </div>
                         </div>
-                        <div className="row m-0 pb-3 mb-3">
+                        <div className="row m-0 pb-3 mb-3 pt-3  ">
                           <div className="col ps-0">
                             <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
                               <button className="w-100" type="button">
@@ -997,6 +1049,8 @@ const ProfessionalBuyAndSale = () => {
                                     onClick={() => {
                                       setvidstyle("none");
                                       setvidlbl("");
+                                      vidnull(vidclear);
+                                      setFieldValue("video", null);
                                     }}
                                   />
                                 </span>
@@ -1008,6 +1062,7 @@ const ProfessionalBuyAndSale = () => {
                                 name="project"
                                 onChange={(e) => {
                                   setFieldValue("video", e.target.files[0]);
+                                  setvidclear(e);
                                   let name = e.target.files[0].name;
                                   const maxLength = 20;
                                   const trimmedFileName =
@@ -1016,11 +1071,19 @@ const ProfessionalBuyAndSale = () => {
                                         "..." +
                                         name.slice(-4)
                                       : name;
+                                  console.log(trimmedFileName);
                                   setvidlbl(trimmedFileName);
                                   setvidstyle("block");
+                                  setviddisplay("none");
                                 }}
                               />
                             </div>
+                            <span
+                              style={{ color: "red" }}
+                              className={viddisplay}
+                            >
+                              Video required
+                            </span>
                           </div>
                           <div className="col pe-0">
                             <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
@@ -1048,8 +1111,12 @@ const ProfessionalBuyAndSale = () => {
                                         "..." +
                                         name.slice(-4)
                                       : name;
+                                  console.log(trimmedFileName);
+
                                   setziplbl(trimmedFileName);
                                   setzipstyle("block");
+                                  setzipclear(e);
+                                  setzipdisplay("none");
                                 }}
                               />
                               <div className={zipstyle}>
@@ -1065,20 +1132,28 @@ const ProfessionalBuyAndSale = () => {
                                     size={25}
                                     color="gray"
                                     onClick={() => {
+                                      console.log("suraj");
                                       setzipstyle("none");
                                       setziplbl("");
+                                      zipnull(zipclear);
+                                      setFieldValue("project", null);
                                     }}
                                   />
                                 </span>
                               </div>
                             </div>
+                            <span
+                              style={{ color: "red" }}
+                              className={zipdisplay}
+                            >
+                              Zip required
+                            </span>
                           </div>
                         </div>
                         <div className="row pb-5">
                           <div className="d-flex justify-content-center">
                             <button
                               type="submit"
-                              // onClick={blankfields}
                               className="ModalCategorySubmit"
                             >
                               Submit
@@ -1199,7 +1274,7 @@ const ProfessionalBuyAndSale = () => {
                             <div className="row">
                               <div className="col">
                                 <div className="selectprice">
-                                  <BiEuro />
+                                  <BsCurrencyDollar />
                                   <Field
                                     type="text"
                                     placeholder="Enter Your Price Per Square Meter"

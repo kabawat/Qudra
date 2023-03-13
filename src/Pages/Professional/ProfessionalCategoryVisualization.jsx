@@ -129,8 +129,10 @@ const ProfessionalCategoryVisualization = () => {
                     fontSize: "25px",
                     color: "#01a78a",
                     cursor: "pointer",
-                  }}>
-                  <i style={{ fontSize: "30px" }}
+                  }}
+                >
+                  <i
+                    style={{ fontSize: "30px" }}
                     className="fa-solid fa-arrow-left-long"
                     onClick={() => {
                       navigate("/categoryArchitecture");
@@ -199,20 +201,19 @@ const ProfessionalCategoryVisualization = () => {
 
                   <div className=" col-12 my-md-4 my-3 d-flex align-items-center justify-content-end">
                     <button
-                      type="submit"
-                      className="create-account-btn"
-                      // onClick={() => navigate("/client-visualisation")}
-                    >
-                      Continue <BsArrowRight style={{ color: "white" }} />
-                    </button>
-
-                    <button
                       style={{ border: "1px solid" }}
                       type="button"
                       className="bg-white theme-text-color create-account-btn"
                       onClick={SkipPage}
                     >
                       Skip <BsArrowRight className="theme-text-color" />
+                    </button>
+                    <button
+                      type="submit"
+                      className="create-account-btn"
+                      // onClick={() => navigate("/client-visualisation")}
+                    >
+                      Continue <BsArrowRight style={{ color: "white" }} />
                     </button>
                   </div>
                 </div>

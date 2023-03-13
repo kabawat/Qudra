@@ -80,45 +80,41 @@ const SetUp = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [value, setValue] = useState({
-    alpha2: "in",
-    alpha3: "ind",
-    flag: "IN",
-    id: "in",
-    ioc: "ind",
-    name: "India",
+    // alpha2: "in",
+    // alpha3: "ind",
+    // flag: "IN",
+    // id: "in",
+    // ioc: "ind",
+    // name: "India",
   });
 
   const [disply, setdisply] = useState("none");
 
-  const[otpdisplay,setotpdisplay]=useState("none")
+  const [otpdisplay, setotpdisplay] = useState("none");
   const [imgcode, setimgcode] = useState("in");
   const [viewPassword, setViewPassword] = useState(false);
   const SetUpSchema = Yup.object().shape({
     password: Yup.string()
       .min(8, "Password must be aleast 8 characters long!")
       .max(30, "Password is too long!")
-      .required("Required"),
-    email: Yup.string()
-      .email(" Enter  valid email")
-      .required("Email required"),
-    mobile_no: Yup.string()
-      .min(10, "Minimum 10 number required")
-      .required("Enter valid phone number"),
+      .required("Password required"),
+    email: Yup.string().email(" Enter  valid email").required("Email required"),
+    mobile_no: Yup.string().required("Enter valid phone number"),
+    // .min(12, "Enter valid mobile number")
     last_name: Yup.string()
       .min(3, "Minimum 3 character required")
       .required("Last name required"),
     first_name: Yup.string()
       .min(3, "Minimum 3 character required")
       .required("First name required"),
-      experience: Yup.string().required("Experience required"),
-    languages: Yup.array().required('Languages required'),
+    experience: Yup.string().required("Experience required"),
+    languages: Yup.array().required("Languages required"),
     education: Yup.string().required("Education  required"),
-    skills: Yup.array().required('Skills required '),
-
+    skills: Yup.array().required("Skills required "),
     job_description: Yup.string()
-      .min(100,'Minimum 100 character required')
+      .min(100, "Minimum 100 character required")
       .required("Job description  required"),
-      bio: Yup.string()
+    bio: Yup.string()
       .min(100, "Minimum 100 charecter required")
       .max(500)
       .required("About required"),
@@ -147,7 +143,6 @@ const SetUp = () => {
   for (let i = 0; i < 45; i++) {
     rows.push(i);
   }
-
 
   const [profileerr, setprofileerr] = useState("none");
   const [educationSelect, setEducationSelect] = useState("");
@@ -184,10 +179,10 @@ const SetUp = () => {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () =>{
-    
-    setShow(false)
-    setotpdisplay("block")
+  const handleClose = () => {
+    setShow(false);
+    setotpdisplay("block");
+    handleOTP("");
   };
   const [OtpResponse, setOtpResponse] = useState(false);
 
@@ -198,7 +193,6 @@ const SetUp = () => {
   };
 
   const handleOTPSubmit = (e) => {
-    
     let email = $("#EmailInputSignUpForm").val();
     e.preventDefault();
     axios
@@ -208,8 +202,8 @@ const SetUp = () => {
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
-          setShow(false)
-          setotpdisplay("none")
+          setShow(false);
+          setotpdisplay("none");
           setVerifyButtonText("verified");
           $(".emailVerifyBtnProfessional").css("pointer-events", "none");
           handleOTP("");
@@ -218,8 +212,6 @@ const SetUp = () => {
           setOtpResponse(true);
         }
       });
- 
-
   };
   return (
     <>
@@ -382,7 +374,7 @@ const SetUp = () => {
                             name="email"
                             onInput={handleEmailFocus}
                           />
-                         
+
                           <button
                             onClick={verifyRequestButton}
                             type="button"
@@ -399,7 +391,6 @@ const SetUp = () => {
                           >
                             {loadingActive ? <ReactLotti /> : verifyButtonText}
                           </button>
-                          
 
                           <Modal
                             show={show}
@@ -426,12 +417,12 @@ const SetUp = () => {
                                 />
                               </div>
                               {OtpResponse ? (
-                        <p className="text-danger m-auto">
-                          Please retry with valid OTP
-                        </p>
-                      ) : (
-                        ""
-                      )}
+                                <p className="text-danger m-auto">
+                                  Please retry with valid OTP
+                                </p>
+                              ) : (
+                                ""
+                              )}
                               <button
                                 variant="secondary"
                                 type="button"
@@ -454,26 +445,34 @@ const SetUp = () => {
                             component="div"
                             className="m-2 text-danger"
                           />
-                            {!existingEmail ? (
-                          <p className="text-danger">
-                            {resData.message}
-                            {/* Email is already registered ! */}
-                          </p>
-                        ) : (
-                          ""
-                        )}
+                          {!existingEmail ? (
+                            <p className="text-danger">
+                              {resData.message}
+                              {/* Email is already registered ! */}
+                            </p>
+                          ) : (
+                            ""
+                          )}
                         </div>
-                        <div  className={otpdisplay}>
-                          <span
-                          style={{color:"red"}}
-                          >please enter valid otp</span>
-                          <button type="button"
-                          style={{border:'0',background:'0',margin:'0 10px',textDecoration:'underline'}}
-                          onClick={()=>{
-                            setShow(true)
-                          }}
-                          >click</button>
-                          </div>
+                        <div className={otpdisplay}>
+                          <span style={{ color: "red" }}>
+                            please enter valid otp
+                          </span>
+                          <button
+                            type="button"
+                            style={{
+                              border: "0",
+                              background: "0",
+                              margin: "0 10px",
+                              textDecoration: "underline",
+                            }}
+                            onClick={() => {
+                              setShow(true);
+                            }}
+                          >
+                            click
+                          </button>
+                        </div>
                       </div>
                       <div className="col-md my-md-3 my-1">
                         <div className="create-account-input">
@@ -506,7 +505,6 @@ const SetUp = () => {
                           />
                         </div>
                       </div>
-                      
                     </div>
                     <div className="row">
                       <div
@@ -602,7 +600,10 @@ const SetUp = () => {
                               setprofileerr("none");
                             }}
                           />
-                      <span style={{marginTop:'10px' }} className={`${profileerr} text-danger `}>
+                          <span
+                            style={{ marginTop: "10px" }}
+                            className={`${profileerr} text-danger `}
+                          >
                             profile image required
                           </span>
                           <ErrorMessage
@@ -612,7 +613,10 @@ const SetUp = () => {
                           />
                         </div>
                       </div>
-                      <div className="col-md-9 col-xl-10  my-md-3 my-1" style={{position:'relative'}}>
+                      <div
+                        className="col-md-9 col-xl-10  my-md-3 my-1"
+                        style={{ position: "relative" }}
+                      >
                         <Field
                           as="textarea"
                           maxLength="500"
@@ -622,7 +626,15 @@ const SetUp = () => {
                           name="bio"
                           placeholder="About"
                         ></Field>
-                        <div style={{position:'absolute',bottom:'-7%' ,left:'3%'}}><p>{values.bio.length}/500</p></div>
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: "-7%",
+                            left: "3%",
+                          }}
+                        >
+                          <p>{values.bio.length}/500</p>
+                        </div>
                         <ErrorMessage
                           name="bio"
                           component="div"

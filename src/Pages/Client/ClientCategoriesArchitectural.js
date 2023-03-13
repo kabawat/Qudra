@@ -36,15 +36,17 @@ const ClientCategoriesArchitectural = () => {
   const navigate = useNavigate();
 
   const SkipPage = () => {
-    localStorage.setItem("SelectedCatagories", JSON.stringify({
-      user_id: contextData?.userData?.user_id,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
-      category: {
-        cat_id: [[].push(contextData?.userData?.category_id)],
-      },
-      sel_sub_cat: { 1: [] },
-    })
+    localStorage.setItem(
+      "SelectedCatagories",
+      JSON.stringify({
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+        category: {
+          cat_id: [[].push(contextData?.userData?.category_id)],
+        },
+        sel_sub_cat: { 1: [] },
+      })
     );
     localStorage.setItem("selectImg", JSON.stringify(selectList));
     navigate("/client-visualisation");
@@ -86,18 +88,22 @@ const ClientCategoriesArchitectural = () => {
     }
   };
   useEffect(() => {
-    axios.get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1").then((res) => {
-      contextData?.dispatch({
-        type: "STATIC_ARCHITECTURE_DESIGN",
-        value: res?.data,
+    axios
+      .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
+      .then((res) => {
+        contextData?.dispatch({
+          type: "STATIC_ARCHITECTURE_DESIGN",
+          value: res?.data,
+        });
       });
-    });
   }, []);
 
-  // edit profile back 
+  // edit profile back
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", { ...JSON.parse(localStorage.getItem('user_data')) })
+      .put("http://13.52.16.160:8082/identity/update_account", {
+        ...JSON.parse(localStorage.getItem("user_data")),
+      })
       .then((res) => {
         if (res?.data?.status === "Success") {
           navigate("/edit-profile", { state: res?.data?.data });
@@ -118,10 +124,18 @@ const ClientCategoriesArchitectural = () => {
                 </div>
                 <br />
                 <div
-                  className="me-auto" style={{
-                    fontSize: "25px", color: "#01a78a", cursor: "pointer",
-                  }}>
-                  <i style={{ fontSize: "30px" }} className="fa-solid fa-arrow-left-long" onClick={handleEditProfileButton}></i>
+                  className="me-auto"
+                  style={{
+                    fontSize: "25px",
+                    color: "#01a78a",
+                    cursor: "pointer",
+                  }}
+                >
+                  <i
+                    style={{ fontSize: "30px" }}
+                    className="fa-solid fa-arrow-left-long"
+                    onClick={handleEditProfileButton}
+                  ></i>
                 </div>
                 <div className="row">
                   {selectList &&
@@ -184,9 +198,6 @@ const ClientCategoriesArchitectural = () => {
                     )}
 
                   <div className="col-md-6 col-12 my-md-4 my-3 d-flex align-items-center justify-content-center">
-                    <button type="submit" className="create-account-btn">
-                      Continue <BsArrowRight style={{ color: "white" }} />
-                    </button>
                     <button
                       style={{ border: "1px solid" }}
                       type="button"
@@ -194,6 +205,9 @@ const ClientCategoriesArchitectural = () => {
                       onClick={SkipPage}
                     >
                       Skip <BsArrowRight className="theme-text-color" />
+                    </button>
+                    <button type="submit" className="create-account-btn">
+                      Continue <BsArrowRight style={{ color: "white" }} />
                     </button>
                   </div>
                 </div>

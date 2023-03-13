@@ -29,7 +29,7 @@ const SignUpSchema = Yup.object().shape({
     .min(3, "Enter your last name")
     .required("Last name required"),
   mobile_no: Yup.string()
-    .min(12, "Enter valid mobile number")
+    // .min(12, "Enter valid mobile number")
     .required("Mobile number required"),
   first_name: Yup.string()
     .min(3, "Minium 3 characters required")
@@ -122,6 +122,7 @@ const SignIn = () => {
     setShow(false);
     setOtpResponse("verify");
     setoptdisplay("block");
+    handleOTP("");
   };
   const [existingEmail, setExistingEmail] = useState(false);
   const handleEmailFocus = () => {
@@ -582,8 +583,13 @@ const SignIn = () => {
                           />
                           <label className="form-check-label ms-2">
                             Yes, I understand and agree to the
-                            <a href="#" className="theme-text-color text-decoration-none"
-                            > Quadra Terms of Service User Agreement Privacy Policy
+                            <a
+                              href="#"
+                              className="theme-text-color text-decoration-none"
+                            >
+                              {" "}
+                              Quadra Terms of Service User Agreement Privacy
+                              Policy
                             </a>
                           </label>
                           <ErrorMessage

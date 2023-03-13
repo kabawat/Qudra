@@ -239,19 +239,19 @@ const ClientCategory = () => {
                         <div className="col-md-6 col-12 my-md-4 my-3 d-flex align-items-center justify-content-center">
                           <button
                             type="button"
-                            className="create-account-btn"
-                            onClick={pageSetter}
-                          >
-                            Continue
-                          </button>
-                          <button
-                            type="button"
                             className="logInbtn"
                             style={{ marginTop: "0" }}
                           >
                             <Link to="/login" style={style}>
                               Skip
                             </Link>
+                          </button>
+                          <button
+                            type="button"
+                            className="create-account-btn"
+                            onClick={pageSetter}
+                          >
+                            Continue
                           </button>
                         </div>
                       </div>

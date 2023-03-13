@@ -83,6 +83,12 @@ const EditProfileProfessional = () => {
     // ioc: "usa",
     name: location?.state?.nation,
   });
+
+  const [formData, setFormData] = useState({
+    language: false,
+    skills: false,
+  });
+
   const [imgcode, setimgcode] = useState(getCode(location?.state?.nation));
   const SetUpSchema = Yup.object().shape({
     mobile_no: Yup.string()
@@ -156,29 +162,33 @@ const EditProfileProfessional = () => {
   // professionaldashboard
 
   const updateCancel = () => {
-    axios.post(
-      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-      {...JSON.parse(localStorage.getItem("user_data"))}
-    ).then((res) => {
-      localStorage.setItem(
-        "profileImageNameGmail",
-        JSON.stringify(res?.data?.data)
-      );
-      contextData?.dispatch({
-        type: "FETCH_PROFILE_DATA",
-        value: res?.data?.data,
+    axios
+      .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+        ...JSON.parse(localStorage.getItem("user_data")),
+      })
+      .then((res) => {
+        localStorage.setItem(
+          "profileImageNameGmail",
+          JSON.stringify(res?.data?.data)
+        );
+        contextData?.dispatch({
+          type: "FETCH_PROFILE_DATA",
+          value: res?.data?.data,
+        });
+        if (res.data.data.category_selected) {
+          navigate("/professionaldashboard", {
+            state: { role: "professional" },
+          });
+        } else {
+          navigate("/categoryArchitecture", {
+            state: { role: "professional" },
+          });
+        }
       });
-      if (res.data.data.category_selected) {
-        navigate("/professionaldashboard", {
-          state: { role: "professional" },
-        });
-      } else {
-        navigate("/categoryArchitecture", {
-          state: { role: "professional" },
-        });
-      }
-    });
-  }
+  };
+  useEffect(() => {
+    console.log(formData);
+  });
   return (
     <>
       {isLoading ? (
@@ -205,6 +215,9 @@ const EditProfileProfessional = () => {
                 }}
                 validationSchema={SetUpSchema}
                 onSubmit={(value) => {
+                  let skill = false;
+                  let lang = false;
+
                   const skills = value.skills.map((curItem) => {
                     if (curItem.value) {
                       return curItem.value;
@@ -219,6 +232,15 @@ const EditProfileProfessional = () => {
                       return curItem;
                     }
                   });
+                  if (languages.length < 1) {
+                    lang = true;
+                    return false;
+                  }
+                  if (skills.length < 1) {
+                    skill = true;
+                    return false;
+                  }
+                  setFormData({ language: lang, skills: skill });
                   const data = { ...value, languages, skills };
                   axios
                     .post("http://13.52.16.160:8082/identity/update_account", {
@@ -226,34 +248,37 @@ const EditProfileProfessional = () => {
                       user_token: contextData?.userData?.user_token,
                       role: "professional",
                       ...data,
-                    }).then((res) => {
+                    })
+                    .then((res) => {
                       if (res?.data?.status === "Success") {
-                        axios.post(
-                          "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                          {
-                            user_id: contextData?.userData?.user_id,
-                            user_token: contextData?.userData?.user_token,
-                            role: "professional",
-                          }
-                        ).then((res) => {
-                          localStorage.setItem(
-                            "profileImageNameGmail",
-                            JSON.stringify(res?.data?.data)
-                          );
-                          contextData?.dispatch({
-                            type: "FETCH_PROFILE_DATA",
-                            value: res?.data?.data,
+                        axios
+                          .post(
+                            "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                            {
+                              user_id: contextData?.userData?.user_id,
+                              user_token: contextData?.userData?.user_token,
+                              role: "professional",
+                            }
+                          )
+                          .then((res) => {
+                            localStorage.setItem(
+                              "profileImageNameGmail",
+                              JSON.stringify(res?.data?.data)
+                            );
+                            contextData?.dispatch({
+                              type: "FETCH_PROFILE_DATA",
+                              value: res?.data?.data,
+                            });
+                            if (res.data.data.category_selected) {
+                              navigate("/professionaldashboard", {
+                                state: { role: "professional" },
+                              });
+                            } else {
+                              navigate("/categoryArchitecture", {
+                                state: { role: "professional" },
+                              });
+                            }
                           });
-                          if (res.data.data.category_selected) {
-                            navigate("/professionaldashboard", {
-                              state: { role: "professional" },
-                            });
-                          } else {
-                            navigate("/categoryArchitecture", {
-                              state: { role: "professional" },
-                            });
-                          }
-                        });
                       }
                     });
                 }}
@@ -392,15 +417,28 @@ const EditProfileProfessional = () => {
                           />
                         </div>
                       </div>
-                      <div className="col-md-9 col-xl-10  my-md-3 my-1">
+                      <div
+                        className="col-md-9 col-xl-10  my-md-3 my-1"
+                        style={{ position: "relative" }}
+                      >
                         <Field
                           as="textarea"
                           className="form-control h-100"
                           id="exampleFormControlTextarea1"
                           rows="6"
                           name="bio"
+                          maxLength="500"
                           placeholder="About"
                         ></Field>
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: "-7%",
+                            left: "3%",
+                          }}
+                        >
+                          <p>{values.bio.length}/500</p>
+                        </div>
                         <ErrorMessage
                           name="bio"
                           component="div"
@@ -540,7 +578,11 @@ const EditProfileProfessional = () => {
                     </div>
 
                     <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
-                      <button type="button" onClick={updateCancel} className="logInbtn mx-3">
+                      <button
+                        type="button"
+                        onClick={updateCancel}
+                        className="logInbtn mx-3"
+                      >
                         <i className="fa-solid  fa-arrow-left-long me-3"></i>
                         Cancel
                       </button>

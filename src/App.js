@@ -38,7 +38,7 @@ import TermsAndCondition from "./Pages/TermsAndCondition";
 function App() {
   return (
     <GlobalData>
-      <BrowserRouter >
+      <BrowserRouter basename={"/"}>
         <ScrollToTop />
         <IconContext.Provider
           value={{ color: "black", className: "global-class-name" }}
@@ -64,7 +64,7 @@ function App() {
               path="/professionaldashboard"
               element={<ProfessionalDashboard />}
             />
-           
+
             <Route
               exact
               path="/professionalprofile/:professional_id"

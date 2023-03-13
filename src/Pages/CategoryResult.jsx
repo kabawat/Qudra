@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext,  useReducer } from "react";
 import { ChatHeader } from "../components/Header";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper";
+import {  Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -208,7 +208,7 @@ const CategoryResult = () => {
                                   </Button>
                                 </div>
                                 {contextData.cataNameAndCataId &&
-                                contextData.cataNameAndCataId.CataId == 2 ? (
+                                contextData.cataNameAndCataId.CataId === 2 ? (
                                   state?.can_upload_video === "True" ? (
                                     <div className="col">
                                       <Button

@@ -111,11 +111,12 @@ const ProfessionalCategoryArchitecture = () => {
       });
   }, []);
 
-
-  // edit profile back 
+  // edit profile back
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", { ...JSON.parse(localStorage.getItem('user_data')) })
+      .put("http://13.52.16.160:8082/identity/update_account", {
+        ...JSON.parse(localStorage.getItem("user_data")),
+      })
       .then((res) => {
         if (res?.data?.status === "Success") {
           navigate("/edit-profile", { state: res?.data?.data });
@@ -210,9 +211,6 @@ const ProfessionalCategoryArchitecture = () => {
                     )}
 
                   <div className="col-md-6 col-12 my-md-4 my-3 d-flex align-items-center justify-content-center">
-                    <button type="submit" className="create-account-btn">
-                      Continue <BsArrowRight style={{ color: "white" }} />
-                    </button>
                     <button
                       style={{ border: "1px solid" }}
                       type="button"
@@ -220,6 +218,9 @@ const ProfessionalCategoryArchitecture = () => {
                       onClick={SkipPage}
                     >
                       Skip <BsArrowRight className="theme-text-color" />
+                    </button>
+                    <button type="submit" className="create-account-btn">
+                      Continue <BsArrowRight style={{ color: "white" }} />
                     </button>
                   </div>
                 </div>

@@ -1,17 +1,17 @@
 import React, { useContext, useState, useEffect, useReducer } from "react";
-import $ from "jquery";
-import { BsArrowRight, BsPlusLg, BsImage } from "react-icons/bs";
+import { BsPlusLg, BsImage } from "react-icons/bs";
 import { IoVideocamOutline } from "react-icons/io5";
 import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { MultiSelect } from "react-multi-select-component";
 import { BsCurrencyDollar } from "react-icons/bs";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import { BiEuro } from "react-icons/bi";
 import LoadingModal from "../../Modals/LoadingModal";
 import Global from "../../../context/Global";
-import { toast } from "react-toastify";
+import * as Yup from "yup";
+
 import { AiFillDelete } from "react-icons/ai";
 const PortfolioPane = () => {
   const [canUploadVideo, setCanUploadVideo] = useState("False");
@@ -57,6 +57,7 @@ const PortfolioPane = () => {
         return { ...state, selected_catagories: action.value };
       case "DELETE_PROJECT":
         return { ...state, delete_project_modal: action.value };
+      default: { }
     }
   };
   const [PortfolioData, dispatch] = useReducer(reducer, initialState);
@@ -83,10 +84,13 @@ const PortfolioPane = () => {
   }, [
     PortfolioData?.architecture_design_upload_modal,
     PortfolioData?.visualization_design_upload_modal,
+    contextData?.userData,
   ]);
-
+  const [errimgdisplay, seterrimgdisplay] = useState("none");
   const [catagoriesDropdown, setCatagoriesDropdown] = useState([]);
-
+  const SetUpSchema = Yup.object().shape({
+    price: Yup.string().required("Please enter a price"),
+  });
   const deleteProject = () => {
     axios
       .post("http://13.52.16.160:8082/professional/delete_designs", {
@@ -106,17 +110,15 @@ const PortfolioPane = () => {
   };
 
   const fetchUserSubCata = () => {
-    axios
-      .post("http://13.52.16.160:8082/professional/sub_cat_data", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        category_id: parseInt(PortfolioData?.sub_catagory_data?.CataId),
-        sub_category_id: PortfolioData?.sub_catagory_data?.SubCataId,
-      })
-      .then((res) => {
-        dispatch({ type: "SUB_CATAGORY_DESIGNS", value: res?.data });
-      });
+    axios.post("http://13.52.16.160:8082/professional/sub_cat_data", {
+      user_id: contextData?.userData?.user_id,
+      user_token: contextData?.userData?.user_token,
+      role: contextData?.userData?.role,
+      category_id: parseInt(PortfolioData?.sub_catagory_data?.CataId),
+      sub_category_id: PortfolioData?.sub_catagory_data?.SubCataId,
+    }).then((res) => {
+      dispatch({ type: "SUB_CATAGORY_DESIGNS", value: res?.data });
+    });
   };
 
   useEffect(() => {
@@ -141,12 +143,20 @@ const PortfolioPane = () => {
           });
         });
     }
-  }, []);
+  }, [contextData]);
   useEffect(() => {
     if (contextData?.userData) {
-      PortfolioData?.sub_catagory_data && fetchUserSubCata();
+      PortfolioData?.sub_catagory_data && axios.post("http://13.52.16.160:8082/professional/sub_cat_data", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+        category_id: parseInt(PortfolioData?.sub_catagory_data?.CataId),
+        sub_category_id: PortfolioData?.sub_catagory_data?.SubCataId,
+      }).then((res) => {
+        dispatch({ type: "SUB_CATAGORY_DESIGNS", value: res?.data });
+      });;
     }
-  }, [PortfolioData?.sub_catagory_data, PortfolioData?.upload_designs_modal]);
+  }, [contextData?.userData,  PortfolioData?.sub_catagory_data, PortfolioData?.upload_designs_modal]);
   const languagesArchitecture = [
     contextData?.static_architecture_design?.data?.length &&
     contextData?.static_architecture_design?.data?.filter((ress) => {
@@ -511,7 +521,7 @@ const PortfolioPane = () => {
                               </Button>
                             </div>
                             {PortfolioData?.sub_catagory_data &&
-                              PortfolioData?.sub_catagory_data?.CataId == 2 ? (
+                              PortfolioData?.sub_catagory_data?.CataId === 2 ? (
                               PortfolioData?.sub_catagory_data?.Video ===
                                 "True" ? (
                                 <div className="col-xxl-6 col-lg-12 col-6">
@@ -608,13 +618,14 @@ const PortfolioPane = () => {
                   onClick={() => {
                     dispatch({ type: "UPLOAD_DESIGNS_MODAL", value: false });
                     blankfield();
+                    seterrimgdisplay("none");
                   }}
                   className="border-0"
                 ></Modal.Header>
                 <Modal.Body>
                   <h4>
                     {PortfolioData?.sub_catagory_data &&
-                      PortfolioData?.sub_catagory_data.CataId == 1
+                      PortfolioData?.sub_catagory_data.CataId === 1
                       ? "Upload Your Price And Image "
                       : canUploadVideo === "True"
                         ? "Upload Your Price, Image And Video"
@@ -622,13 +633,15 @@ const PortfolioPane = () => {
                   </h4>
 
                   {PortfolioData?.sub_catagory_data &&
-                    PortfolioData?.sub_catagory_data.CataId == 1 ? (
+                    PortfolioData?.sub_catagory_data.CataId === 1 ? (
                     <Formik
                       initialValues={{
                         price: "",
                         sub_cata_id: "",
                       }}
+                      validationSchema={SetUpSchema}
                       onSubmit={(values, { setSubmitting }) => {
+                        console.log("suraj");
                         const catagoryUpload = new FormData();
                         catagoryUpload.append(
                           "user_id",
@@ -652,25 +665,29 @@ const PortfolioPane = () => {
                           "sub_category_id",
                           PortfolioData?.sub_catagory_data?.SubCataId
                         );
-                        setLoader(true);
-                        axios
-                          .post(
-                            "http://13.52.16.160:8082/professional/arc_design",
-                            catagoryUpload
-                          )
-                          .then((res) => {
-                            res.data.status === "Success"
-                              ? dispatch({
-                                type: "UPLOAD_DESIGNS_MODAL",
-                                value: false,
-                              })
-                              : dispatch({
-                                type: "UPLOAD_DESIGNS_MODAL",
-                                value: true,
-                              });
-                            setLoader(false);
-                            setimgPreview();
-                          });
+                        if (!values?.image) {
+                          seterrimgdisplay("block");
+                        } else {
+                          setLoader(true);
+                          axios
+                            .post(
+                              "http://13.52.16.160:8082/professional/arc_design",
+                              catagoryUpload
+                            )
+                            .then((res) => {
+                              res.data.status === "Success"
+                                ? dispatch({
+                                  type: "UPLOAD_DESIGNS_MODAL",
+                                  value: false,
+                                })
+                                : dispatch({
+                                  type: "UPLOAD_DESIGNS_MODAL",
+                                  value: true,
+                                });
+                              setLoader(false);
+                              setimgPreview();
+                            });
+                        }
                       }}
                     >
                       {({ isSubmitting, setFieldValue }) => (
@@ -686,6 +703,11 @@ const PortfolioPane = () => {
                                   name="price"
                                 />
                               </div>
+                              <ErrorMessage
+                                name="price"
+                                component="div"
+                                className="m-2 text-danger"
+                              />{" "}
                             </div>
                           </div>
                           <div className="row m-0 pb-5 mb-3">
@@ -714,13 +736,13 @@ const PortfolioPane = () => {
                                   );
                                   setgetevent(e);
                                   setdisplaycls("block");
+                                  seterrimgdisplay("none");
                                 }}
                               />
                             </div>
-                            {
-                              (imgPreview === null) ? <div style={{ color: 'red' }}>Image required</div> : ''
-                            }
-
+                            <span className={`${errimgdisplay} text-danger`}>
+                              Image required
+                            </span>
                             <div
                               className={displaycls}
                               style={{
@@ -952,7 +974,7 @@ const PortfolioPane = () => {
             </div>
 
             {PortfolioData?.sub_catagory_data &&
-              PortfolioData?.sub_catagory_data.CataId == 1 ? (
+              PortfolioData?.sub_catagory_data.CataId ===1 ? (
               <button
                 className="dashboard-theme-color mb-5"
                 onClick={() => {

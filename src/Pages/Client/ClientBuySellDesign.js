@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Header2 } from "../../components/Header";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
-import $ from "jquery";
 import { BsArrowRight } from "react-icons/bs";
 import Global from "../../context/Global";
 import axios from "axios";
@@ -10,16 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const ClientBuySellDesign = () => {
   const contextData = useContext(Global);
-
-  // const [targetId, setTargetId] = useState([]);
-  // function handleClick1() {
-  //   $(".form-preferred-deadline button i").toggleClass("i-rotate");
-  //   $(".form-preferred-deadline .task-dropdown-2").slideToggle();
-  // }
-
   const toggleDisabled = (target) => {
     let IconTarget = document.getElementById(`${parseInt(target.id)}icon`);
-    // setTargetId([parseInt(target.id)])
     if (target.checked) {
       IconTarget.src =
         contextData?.static_buy_sale_design?.data[
@@ -33,29 +24,11 @@ const ClientBuySellDesign = () => {
     }
   };
 
-  const [page, setPage] = useState(1);
-
-  const style = {
-    color: "#01a78a",
-    textDecoration: "none",
-  };
   const navigate = useNavigate();
 
-  const pageSetter = () => {
-    if (page != 2) {
-      setPage(page + 1);
-    }
-  };
-
-  const backSetter = () => {
-    if (page != 1) {
-      setPage(page - 1);
-    } else {
-      navigate(-1);
-    }
-  };
-
-  const [selectedCatagories, setSelectedCatagories] = useState(JSON.parse(localStorage.getItem("SelectedCatagories")));
+  const [selectedCatagories, ] = useState(
+    JSON.parse(localStorage.getItem("SelectedCatagories"))
+  );
 
   const formSubmit = (valueArray) => {
     if (valueArray.length) {
@@ -90,27 +63,6 @@ const ClientBuySellDesign = () => {
       });
     }
   };
-  // const formSubmit = (valueArray) => {
-
-  //   axios
-  //     .post("http://13.52.16.160:8082/client/sel_sub_category", {
-  //       user_id: contextData?.userData?.user_id,
-  //       user_token: contextData?.userData?.user_token,
-  //       role: contextData?.userData?.role,
-  //       category: {
-  //         cat_id: [...selectedCatagories?.cat_id, 3],
-  //       },
-  //       sel_sub_cat: {
-  //         ...selectedCatagories.sel_sub_cat,
-  //         3: valueArray,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       if (res?.data?.status === "Success") {
-  //         navigate("/clientdashboard");
-  //       }
-  //     });
-  // };
   useEffect(() => {
     axios
       .get(`http://13.52.16.160:8082/quadra/sub_categories?category_id=3`)
@@ -120,7 +72,7 @@ const ClientBuySellDesign = () => {
           value: res?.data,
         });
       });
-  }, []);
+  }, [contextData]);
   const handleSkipButton = () => {
     if (selectedCatagories.length) {
       axios
@@ -169,24 +121,24 @@ const ClientBuySellDesign = () => {
                 }
                 formSubmit(valueArray);
               }}
-            // onSubmit={(values, { setSubmitting }) => {
-            //   var valueArray = [];
-            //   for (let x in values) {
-            //     valueArray.push(values[x]);
-            //   }
-            //   valueArray.length
-            //     ? formSubmit(valueArray)
-            //     : toast.error("You must select an category!", {
-            //       position: "top-right",
-            //       autoClose: 5000,
-            //       hideProgressBar: false,
-            //       closeOnClick: true,
-            //       pauseOnHover: true,
-            //       draggable: true,
-            //       progress: undefined,
-            //       theme: "colored",
-            //     });
-            // }}
+              // onSubmit={(values, { setSubmitting }) => {
+              //   var valueArray = [];
+              //   for (let x in values) {
+              //     valueArray.push(values[x]);
+              //   }
+              //   valueArray.length
+              //     ? formSubmit(valueArray)
+              //     : toast.error("You must select an category!", {
+              //       position: "top-right",
+              //       autoClose: 5000,
+              //       hideProgressBar: false,
+              //       closeOnClick: true,
+              //       pauseOnHover: true,
+              //       draggable: true,
+              //       progress: undefined,
+              //       theme: "colored",
+              //     });
+              // }}
             >
               {({ isSubmitting, setFieldValue, values }) => (
                 <Form>
@@ -278,19 +230,19 @@ const ClientBuySellDesign = () => {
 
                       <div className="col-md-6 col-12 my-md-4 my-3 d-flex align-items-center justify-content-center">
                         <button
-                          type="submit"
-                          className="create-account-btn"
-                        // onClick={() => navigate("/client-visualisation")}
-                        >
-                          Continue <BsArrowRight style={{ color: "white" }} />
-                        </button>
-                        <button
                           style={{ border: "1px solid" }}
                           type="button"
                           className="bg-white theme-text-color create-account-btn"
                           onClick={handleSkipButton}
                         >
                           Skip <BsArrowRight className="theme-text-color" />
+                        </button>
+                        <button
+                          type="submit"
+                          className="create-account-btn"
+                          // onClick={() => navigate("/client-visualisation")}
+                        >
+                          Continue <BsArrowRight style={{ color: "white" }} />
                         </button>
                       </div>
                     </div>

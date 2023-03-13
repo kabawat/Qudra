@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Header2 } from "../../components/Header";
-import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import Global from "../../context/Global";
@@ -201,20 +200,19 @@ const ClientCatagoryVisualization = () => {
 
                   <div className=" col-12 my-md-4 my-3 d-flex align-items-center justify-content-end">
                     <button
-                      type="submit"
-                      className="create-account-btn"
-                    // onClick={() => navigate("/client-visualisation")}
-                    >
-                      Continue <BsArrowRight style={{ color: "white" }} />
-                    </button>
-
-                    <button
                       style={{ border: "1px solid" }}
                       type="button"
                       className="bg-white theme-text-color create-account-btn"
                       onClick={SkipPage}
                     >
                       Skip <BsArrowRight className="theme-text-color" />
+                    </button>
+                    <button
+                      type="submit"
+                      className="create-account-btn"
+                      // onClick={() => navigate("/client-visualisation")}
+                    >
+                      Continue <BsArrowRight style={{ color: "white" }} />
                     </button>
                   </div>
                 </div>
