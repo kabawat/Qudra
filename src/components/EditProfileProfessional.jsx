@@ -71,7 +71,7 @@ const languages = [
 
 const EditProfileProfessional = () => {
   const location = useLocation();
-
+  const [state, setState] = useState(false);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ const EditProfileProfessional = () => {
     name: location?.state?.nation,
   });
 
-  const [formData, setFormData] = useState({
+  const [form_Data, setFormData] = useState({
     language: false,
     skills: false,
   });
@@ -92,21 +92,22 @@ const EditProfileProfessional = () => {
   const [imgcode, setimgcode] = useState(getCode(location?.state?.nation));
   const SetUpSchema = Yup.object().shape({
     mobile_no: Yup.string()
-      .min(10, "please enter a valid phone number")
-      .required("Please enter your phone number"),
+      .min(10, "Enter a valid phone number")
+      .required("Enter  phone number"),
     last_name: Yup.string()
-      .min(3, "Please enter your last name")
-      .required("Required"),
+      .min(3, "Minimum 3 character required")
+      .required(" Last name required"),
     first_name: Yup.string()
-      .min(3, "Please enter your first name")
-      .required("Required"),
-    languages: Yup.array().required(),
-    education: Yup.string().required("Education is required"),
-    skills: Yup.array().required(),
+      .min(3, "Minimum 3 character required ")
+      .required("First name required"),
+    // languages: Yup.array().required('suraj '),
+    education: Yup.string().required("Education  required"),
+    // skills: Yup.array().required("Skills required"),
     job_description: Yup.string()
-      .min(100)
-      .required("job_description is required"),
-    bio: Yup.string().min(100).max(500).required("bio is required"),
+      .min(100, "Minimum 100 character required")
+      .required("Job description  required"),
+    nation: Yup.string().required("Country name required"),
+    bio: Yup.string().min(100).max(500).required("About required"),
   });
   const [filePic, setFilePic] = useState(location?.state?.professional_image);
   const photoChange = (e) => {
@@ -186,9 +187,16 @@ const EditProfileProfessional = () => {
         }
       });
   };
-  useEffect(() => {
-    console.log(formData);
-  });
+  // useEffect(() => {
+  //   if (form_Data.language == true) {
+  //     console.log("data fill karlo");
+  //   }
+
+  //   if (form_Data.skills == true) {
+  //     alert("data fill karlo");
+  //   }
+  // });
+
   return (
     <>
       {isLoading ? (
@@ -215,8 +223,8 @@ const EditProfileProfessional = () => {
                 }}
                 validationSchema={SetUpSchema}
                 onSubmit={(value) => {
-                  let skill = false;
-                  let lang = false;
+                  let skill = true;
+                  let lang = true;
 
                   const skills = value.skills.map((curItem) => {
                     if (curItem.value) {
@@ -232,15 +240,18 @@ const EditProfileProfessional = () => {
                       return curItem;
                     }
                   });
-                  if (languages.length < 1) {
-                    lang = true;
-                    return false;
+                  if (value.nation.length < 1) {
+                    console.log("hey");
                   }
-                  if (skills.length < 1) {
-                    skill = true;
-                    return false;
-                  }
+                  lang = languages.length < 1 ? true : false;
+                  skill = skills.length < 1 ? true : false;
+
                   setFormData({ language: lang, skills: skill });
+                  console.log(form_Data);
+                  if (lang || skill) {
+                    return false;
+                  }
+
                   const data = { ...value, languages, skills };
                   axios
                     .post("http://13.52.16.160:8082/identity/update_account", {
@@ -328,7 +339,7 @@ const EditProfileProfessional = () => {
                           // left:'10px',
                         }}
                       >
-                        <img
+                        {/* <img
                           style={{
                             top: "37%",
                             position: "absolute",
@@ -339,20 +350,25 @@ const EditProfileProfessional = () => {
                           }}
                           alt="United States"
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
-                        />
+                        /> */}
                         <CountrySelect
                           value={value}
                           onChange={(val) => {
                             setValue(val);
                             setFieldValue("nation", val?.name);
-                            let id = val.id;
-                            setimgcode(id.toLocaleUpperCase());
+                            // let id = val.id;
+                            // setimgcode(id.toLocaleUpperCase());
                           }}
-                          flags={false}
+                          flags={true}
                           placeholder="Select An Country"
                           name="nation"
                         />
                       </div>
+                      <ErrorMessage
+                        name="nation"
+                        component="div"
+                        className="m-2 text-danger"
+                      />
                       <div className="col-md my-md-3 my-1">
                         <div className="form-group">
                           <PhoneInput
@@ -482,14 +498,13 @@ const EditProfileProfessional = () => {
                             labelledBy="Select"
                             name="languages"
                           />
-                          <ErrorMessage
-                            name="languages"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
+
+                          <p className="text-danger">
+                            {form_Data.language ? "Languages required" : ""}
+                          </p>
                         </div>
                       </div>
-                      <div className="col-md my-md-3 my-1">
+                      {/* <div className="col-md my-md-3 my-1">
                         <div className="create-account-input">
                           <img src="/static/images/EducationIcon.png" alt="" />
                           <Field
@@ -523,6 +538,63 @@ const EditProfileProfessional = () => {
                             className="m-2 text-danger"
                           />
                         </div>
+                      </div> */}
+
+                      <div className="col-md my-md-3 my-1">
+                        <div className="create-account-input">
+                          <img src="/static/images/EducationIcon.png" alt="" />
+                          <Field
+                            id="educationSelect"
+                            as="select"
+                            value={
+                              educationSelect
+                                ? educationSelect
+                                : location?.state?.education !== "Bachelors" ||
+                                  "Masters"
+                                ? "Other"
+                                : location?.state?.education
+                            }
+                            className="form-select form-education-select"
+                            onChange={(e) => {
+                              setEducationSelect(e.target.value);
+                              if (e.target.value !== "Other") {
+                                setFieldValue("education", e.target.value);
+                                setEducationInput("");
+                              }
+                            }}
+                          >
+                            <option value="" disabled>
+                              Education
+                            </option>
+                            <option value="Bachelors"> Bachelors</option>
+                            <option value="Masters"> Masters</option>
+                            <option value="Other">Other</option>
+                          </Field>
+                          {educationSelect !== "Bachelors"
+                            ? educationSelect !== "Masters" && (
+                                <input
+                                  type="text"
+                                  className="mt-2"
+                                  placeholder="Enter Here Your Other"
+                                  value={
+                                    !state
+                                      ? location?.state?.education
+                                      : educationInput
+                                  }
+                                  onChange={(e) => {
+                                    setEducationInput(e.target.value);
+                                    setFieldValue("education", e.target.value);
+                                    setState(true);
+                                  }}
+                                />
+                              )
+                            : ""}
+                          <ErrorMessage
+                            name="education"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
                       </div>
                     </div>
                     <div className="row justify-content-center">
@@ -545,11 +617,9 @@ const EditProfileProfessional = () => {
                             name={skills}
                           />
 
-                          <ErrorMessage
-                            name="skills"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
+                          <p className="text-danger">
+                            {form_Data.skills ? "Skills required" : ""}
+                          </p>
                         </div>
                       </div>
                       <div className="my-md-3 col-md-6  my-1">

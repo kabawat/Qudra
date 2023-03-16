@@ -183,6 +183,7 @@ const SetUp = () => {
     setShow(false);
     setotpdisplay("block");
     handleOTP("");
+    OtpResponse(false);
   };
   const [OtpResponse, setOtpResponse] = useState(false);
 
@@ -456,7 +457,7 @@ const SetUp = () => {
                         </div>
                         <div className={otpdisplay}>
                           <span style={{ color: "red" }}>
-                            please enter valid otp
+                            Please enter valid otp
                           </span>
                           <button
                             type="button"
@@ -532,8 +533,8 @@ const SetUp = () => {
                           onChange={(val) => {
                             setValue(val);
                             setFieldValue("nation", val?.name);
-                            let id = val.id;
-                            setimgcode(id.toLocaleUpperCase());
+                            // let id = val.id;
+                            // setimgcode(id.toLocaleUpperCase());
                             setdisply("block");
                           }}
                           flags={false}
@@ -604,7 +605,7 @@ const SetUp = () => {
                             style={{ marginTop: "10px" }}
                             className={`${profileerr} text-danger `}
                           >
-                            profile image required
+                            Profile image required
                           </span>
                           <ErrorMessage
                             name="photograph"
@@ -704,11 +705,12 @@ const SetUp = () => {
                             <option value="" disabled>
                               Education
                             </option>
+
                             <option value="Bachelors"> Bachelors</option>
                             <option value="Masters"> Masters</option>
                             <option value="Other">Other</option>
                           </Field>
-                          {/* {educationSelect === "Other" ? (
+                          {educationSelect === "Other" ? (
                             <input
                               type="text"
                               className="mt-2"
@@ -721,7 +723,7 @@ const SetUp = () => {
                             />
                           ) : (
                             ""
-                          )} */}
+                          )}
                           <ErrorMessage
                             name="education"
                             component="div"

@@ -79,7 +79,7 @@ const GlobalData = (props) => {
         value: JSON.parse(localStorage.getItem("profileImageNameGmail")),
       });
     }
-  }, [contextData?.profileData,contextData?.userData, contextData?.showDisclamer]);
+  }, [contextData?.profileData, contextData?.showDisclamer]);
   const skillsOpt = [
     { label: "Rhino 3D", value: "Rhino 3D" },
     { label: "Revit Architecture", value: "Revit Architecture" },

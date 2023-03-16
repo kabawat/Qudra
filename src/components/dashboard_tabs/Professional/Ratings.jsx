@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { BsSearch } from "react-icons/bs";
+import { BsSearch, BsFillSuitHeartFill } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import Rating from "@mui/material/Rating";
 import Pagination from "react-bootstrap/Pagination";
@@ -13,41 +13,38 @@ const Ratings = () => {
   });
   const [rating, setRating] = useState();
   const [search, setSearch] = useState("");
+
+  const fetchRatingData = () => {
+    axios
+      .post("http://13.52.16.160:8082/identity/get-like-save", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+        ...projectPageId,
+        search_for: "rating",
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setRating(res?.data?.data);
+        }
+      });
+  };
+
   const projectPaginationArray = [];
   for (let i = 0; i < rating?.total_data / projectPageId?.page_size; i++) {
     projectPaginationArray.push(i + 1);
   }
   useEffect(() => {
-    axios.post("http://13.52.16.160:8082/identity/get-like-save", {
-      user_id: contextData?.userData?.user_id,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
-      ...projectPageId,
-      search_for: "rating",
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setRating(res?.data?.data);
-      }
-    });
-  }, [projectPageId, contextData]);
+    fetchRatingData();
+  }, [projectPageId]);
 
   useEffect(() => {
     if (!search) {
-      axios.post("http://13.52.16.160:8082/identity/get-like-save", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
-          ...projectPageId,
-          search_for: "rating",
-        }).then((res) => {
-          if (res?.data?.status === "Success") {
-            setRating(res?.data?.data);
-          }
-        });
+      fetchRatingData();
     } else {
       setRating([]);
     }
-  }, [contextData,search,projectPageId]);
+  }, []);
 
   const handleSearch = () => {
     axios
@@ -89,7 +86,7 @@ const Ratings = () => {
           setRating(res?.data?.data);
         }
       });
-  }, [searchPageId,contextData,search]);
+  }, [searchPageId]);
 
   return (
     <div id="liked-save" className="container-fluid  myProjectTable">

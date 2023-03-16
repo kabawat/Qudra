@@ -871,9 +871,9 @@ const ProfessionalBuyAndSale = () => {
                   }}
                   validationSchema={SetUpSchema}
                   onSubmit={(values, { setSubmitting }) => {
-                    console.log("suraj", values.image);
+                    // console.log("suraj", values.image);
                     if (!values?.image) {
-                      console.log("image");
+                      // console.log("image");
                       setimgdisplay("block");
                     } else if (!values?.video) {
                       setviddisplay("block");
@@ -905,7 +905,7 @@ const ProfessionalBuyAndSale = () => {
                       catagoryUpload.append("project", values?.project);
 
                       setLoader(true);
-                      console.log(catagoryUpload);
+                      // console.log(catagoryUpload);
                       axios
                         .post(
                           "http://13.52.16.160:8082/professional/sell_design",
@@ -1071,7 +1071,7 @@ const ProfessionalBuyAndSale = () => {
                                         "..." +
                                         name.slice(-4)
                                       : name;
-                                  console.log(trimmedFileName);
+                                  // console.log(trimmedFileName);
                                   setvidlbl(trimmedFileName);
                                   setvidstyle("block");
                                   setviddisplay("none");
@@ -1079,8 +1079,8 @@ const ProfessionalBuyAndSale = () => {
                               />
                             </div>
                             <span
-                              style={{ color: "red" }}
-                              className={viddisplay}
+                              style={{}}
+                              className={`${viddisplay} text-danger`}
                             >
                               Video required
                             </span>
@@ -1111,7 +1111,7 @@ const ProfessionalBuyAndSale = () => {
                                         "..." +
                                         name.slice(-4)
                                       : name;
-                                  console.log(trimmedFileName);
+                                  // console.log(trimmedFileName);
 
                                   setziplbl(trimmedFileName);
                                   setzipstyle("block");
@@ -1132,7 +1132,7 @@ const ProfessionalBuyAndSale = () => {
                                     size={25}
                                     color="gray"
                                     onClick={() => {
-                                      console.log("suraj");
+                                      // console.log("suraj");
                                       setzipstyle("none");
                                       setziplbl("");
                                       zipnull(zipclear);

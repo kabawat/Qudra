@@ -148,13 +148,19 @@ const SignIn = () => {
     }
   };
   const [value, setValue] = useState({
-    alpha2: "in",
-    alpha3: "ind",
-    flag: "in",
-    id: "in",
-    ioc: "ind",
-    name: "INDIA",
+    // alpha2: "in",
+    // alpha3: "ind",
+    // flag: "in",
+    // id: "in",
+    // ioc: "ind",
+    // name: "INDIA",
   });
+
+  function onKeyDown(keyEvent) {
+    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+      keyEvent.preventDefault();
+    }
+  }
 
   return (
     <>
@@ -252,7 +258,7 @@ const SignIn = () => {
                 }}
               >
                 {({ setFieldValue }) => (
-                  <Form>
+                  <Form onKeyDown={onKeyDown}>
                     <h1>Create Account</h1>
                     <h3>You’re on your way to connecting with great talent!</h3>
                     <div className="row">

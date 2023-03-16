@@ -5,6 +5,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Global from "../../context/Global";
 import { Modal } from "react-bootstrap";
+import FileViewer from "react-file-viewer";
 const FromClientTabPane = ({ location }) => {
   const contextData = useContext(Global);
   const customStyleOne = {

@@ -1,4 +1,5 @@
 {
+
   "name": "quadra",
   "version": "0.1.0",
   "private": true,
@@ -59,7 +60,7 @@
     "react-select-country-list": "^2.2.3",
     "react-share-social": "^0.1.55",
     "react-toastify": "^9.0.8",
-    "react-type-animation": "^2.1.2",
+    "react-type-animation": "^2.1.1",
     "serve-build": "^0.1.0",
     "socket.io-client": "^4.5.1",
     "star-rating-react": "^0.0.1",

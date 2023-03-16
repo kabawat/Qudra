@@ -36,42 +36,45 @@ const ProfessionalProfile = () => {
         professional_id: params?.professional_id,
       })
       .then((respo) => {
-        setLikepro(respo.data.data.liked)
+        setLikepro(respo.data.data.liked);
         if (respo?.data?.status === "Success") {
           if (contextData?.userData?.role === "client") {
-            axios.post(
-              "http://13.52.16.160:8082/professional/professional_sub_cat", {
-              client_id: contextData?.userData?.user_id,
-              professional_id: params?.professional_id,
-              role: contextData?.userData?.role,
-              user_token: contextData?.userData?.user_token,
-            }
-            ).then((res) => {
-              if (res?.data?.status === "Success") {
-                contextData?.dispatch({
-                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                  value: {
-                    details: respo?.data?.data,
-                    selected_catagories: res?.data?.response,
-                  },
-                });
-                setLoader(false);
-              } else {
-                contextData?.dispatch({
-                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                  value: {
-                    details: respo?.data?.data,
-                    selected_catagories: {
-                      1: [],
-                      2: [],
-                      3: [],
+            axios
+              .post(
+                "http://13.52.16.160:8082/professional/professional_sub_cat",
+                {
+                  client_id: contextData?.userData?.user_id,
+                  professional_id: params?.professional_id,
+                  role: contextData?.userData?.role,
+                  user_token: contextData?.userData?.user_token,
+                }
+              )
+              .then((res) => {
+                if (res?.data?.status === "Success") {
+                  contextData?.dispatch({
+                    type: "PROFESSIONAL_USER_PROFILE_DATA",
+                    value: {
+                      details: respo?.data?.data,
+                      selected_catagories: res?.data?.response,
                     },
-                  },
-                });
-                navigate(-1);
-                setLoader(false);
-              }
-            });
+                  });
+                  setLoader(false);
+                } else {
+                  contextData?.dispatch({
+                    type: "PROFESSIONAL_USER_PROFILE_DATA",
+                    value: {
+                      details: respo?.data?.data,
+                      selected_catagories: {
+                        1: [],
+                        2: [],
+                        3: [],
+                      },
+                    },
+                  });
+                  navigate(-1);
+                  setLoader(false);
+                }
+              });
           } else {
             axios
               .post(
@@ -154,13 +157,14 @@ const ProfessionalProfile = () => {
 
   const handleLikeButton = () => {
     setLikepro(!likepro);
-    axios.post("http://13.52.16.160:8082/identity/like-save", {
-      client_id: contextData?.userData?.user_id,
-      user_token: contextData?.userData?.user_token,
-      professional_id:
-        contextData?.professional_user_profile_data?.details?.professional_id,
-      role: contextData?.userData?.role,
-    })
+    axios
+      .post("http://13.52.16.160:8082/identity/like-save", {
+        client_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        professional_id:
+          contextData?.professional_user_profile_data?.details?.professional_id,
+        role: contextData?.userData?.role,
+      })
       .then((res) => {
         if (res?.data?.status === "Success") {
           toast(
@@ -302,13 +306,19 @@ const ProfessionalProfile = () => {
           >
             {contextData?.userData?.role === "client" && (
               <NavLink to="/clientdashboard" style={{ color: "white" }}>
-                <i class="fa-solid fa-arrow-left-long pe-3"></i>
+                <i
+                  class="fa-solid fa-arrow-left-long pe-3"
+                  style={{ fontSize: "30px" }}
+                ></i>
               </NavLink>
             )}
 
             {contextData?.userData?.role === "professional" && (
               <NavLink to="/professionaldashboard" style={{ color: "white" }}>
-                <i class="fa-solid fa-arrow-left-long pe-3"></i>
+                <i
+                  class="fa-solid fa-arrow-left-long pe-3"
+                  style={{ fontSize: "30px" }}
+                ></i>
               </NavLink>
             )}
           </button>
@@ -387,8 +397,8 @@ const ProfessionalProfile = () => {
                         name="read-only"
                         value={parseInt(
                           contextData?.professional_user_profile_data &&
-                          contextData?.professional_user_profile_data?.details
-                            ?.ratings
+                            contextData?.professional_user_profile_data?.details
+                              ?.ratings
                         )}
                         readOnly
                       />
@@ -614,7 +624,7 @@ const ProfessionalProfile = () => {
                           }}
                         />
                       )}
-                      <h4>Like this Profile</h4>
+                      <h4>{likepro ? "Liked" : "Like this Profile"}</h4>
                     </div>
                   </div>
                 </div>
@@ -635,108 +645,108 @@ const ProfessionalProfile = () => {
       </section>
       {contextData?.professional_user_profile_data?.selected_catagories[1]
         ?.length && (
-          <section
-            className="Top_Earners  profile-page-sec-four"
-            style={windowSize?.width > 768 ? customStyleOne : customStyleTwo}
-          >
-            <div className="container">
-              <div className="Top_Earners_Ineer">
-                <h2>Architecture Designs Portfolio</h2>
-              </div>
-              <OwlCarousel
-                className="owl-carousel portfolio-slider owl-theme"
-                {...options}
-              >
-                {contextData?.static_architecture_design?.data?.length &&
-                  contextData?.static_architecture_design?.data?.map(
-                    (res, key) => {
-                      return contextData?.professional_user_profile_data &&
-                        contextData?.professional_user_profile_data?.selected_catagories[1].includes(
-                          res.sub_category_id
-                        ) ? (
-                        <CatagoryResultCard
-                          key={key}
-                          res={res}
-                          catagoryId={1}
-                          subCatagoryId={res.sub_category_id}
-                        />
-                      ) : (
-                        ""
-                      );
-                    }
-                  )}
-              </OwlCarousel>
+        <section
+          className="Top_Earners  profile-page-sec-four"
+          style={windowSize?.width > 768 ? customStyleOne : customStyleTwo}
+        >
+          <div className="container">
+            <div className="Top_Earners_Ineer">
+              <h2>Architecture Designs Portfolio</h2>
             </div>
-          </section>
-        )}
+            <OwlCarousel
+              className="owl-carousel portfolio-slider owl-theme"
+              {...options}
+            >
+              {contextData?.static_architecture_design?.data?.length &&
+                contextData?.static_architecture_design?.data?.map(
+                  (res, key) => {
+                    return contextData?.professional_user_profile_data &&
+                      contextData?.professional_user_profile_data?.selected_catagories[1].includes(
+                        res.sub_category_id
+                      ) ? (
+                      <CatagoryResultCard
+                        key={key}
+                        res={res}
+                        catagoryId={1}
+                        subCatagoryId={res.sub_category_id}
+                      />
+                    ) : (
+                      ""
+                    );
+                  }
+                )}
+            </OwlCarousel>
+          </div>
+        </section>
+      )}
 
       {contextData?.professional_user_profile_data?.selected_catagories[2]
         ?.length && (
-          <section className="Top_Earners Recent_Earners profile-page-sec-four">
-            <div className="container">
-              <div className="Top_Earners_Ineer">
-                <h2>3D Visualization Designs Portfolio</h2>
-              </div>
-              <OwlCarousel
-                className="owl-carousel portfolio-slider owl-theme"
-                {...options}
-              >
-                {contextData?.static_visualization_design?.data?.length &&
-                  contextData?.static_visualization_design?.data?.map(
-                    (res, key) => {
-                      return contextData?.professional_user_profile_data &&
-                        contextData?.professional_user_profile_data?.selected_catagories[2].includes(
-                          res.sub_category_id
-                        ) ? (
-                        <CatagoryResultCard
-                          key={key}
-                          res={res}
-                          catagoryId={2}
-                          subCatagoryId={res.sub_category_id}
-                        />
-                      ) : (
-                        // <div
-                        //   key={key}
-                        //   className="theme-bg-color d-block"
-                        //   onClick={() => {
-                        //     showCatagories(res, 2);
-                        //   }}
-                        // >
-                        //   <div
-                        //     className="card border-0 flex-row bg-dark text-white"
-                        //     style={{
-                        //       justifyContent: "center",
-                        //       alignItems: "center",
-                        //       display: "flex",
-                        //     }}
-                        //   >
-                        //     <img
-                        //       src={res?.unactive_icon}
-                        //       className="card-img"
-                        //       alt="..."
-                        //       style={{
-                        //         width: "50px",
-                        //         height: "50px",
-                        //         borderRadius: 0,
-                        //         filter: " brightness(8.5)",
-                        //         zIndex: 999,
-                        //       }}
-                        //     />
-                        //     <div className="card-img-overlay theme-bg-color">
-                        //       <h4 className="card-title text-capitalize">
-                        //         {res?.sub_category}
-                        //       </h4>
-                        //     </div>
-                        //   </div>
-                        // </div>
-                        ""
-                      );
-                    }
-                  )}
-              </OwlCarousel>
+        <section className="Top_Earners Recent_Earners profile-page-sec-four">
+          <div className="container">
+            <div className="Top_Earners_Ineer">
+              <h2>3D Visualization Designs Portfolio</h2>
             </div>
-          </section>
-        )}
+            <OwlCarousel
+              className="owl-carousel portfolio-slider owl-theme"
+              {...options}
+            >
+              {contextData?.static_visualization_design?.data?.length &&
+                contextData?.static_visualization_design?.data?.map(
+                  (res, key) => {
+                    return contextData?.professional_user_profile_data &&
+                      contextData?.professional_user_profile_data?.selected_catagories[2].includes(
+                        res.sub_category_id
+                      ) ? (
+                      <CatagoryResultCard
+                        key={key}
+                        res={res}
+                        catagoryId={2}
+                        subCatagoryId={res.sub_category_id}
+                      />
+                    ) : (
+                      // <div
+                      //   key={key}
+                      //   className="theme-bg-color d-block"
+                      //   onClick={() => {
+                      //     showCatagories(res, 2);
+                      //   }}
+                      // >
+                      //   <div
+                      //     className="card border-0 flex-row bg-dark text-white"
+                      //     style={{
+                      //       justifyContent: "center",
+                      //       alignItems: "center",
+                      //       display: "flex",
+                      //     }}
+                      //   >
+                      //     <img
+                      //       src={res?.unactive_icon}
+                      //       className="card-img"
+                      //       alt="..."
+                      //       style={{
+                      //         width: "50px",
+                      //         height: "50px",
+                      //         borderRadius: 0,
+                      //         filter: " brightness(8.5)",
+                      //         zIndex: 999,
+                      //       }}
+                      //     />
+                      //     <div className="card-img-overlay theme-bg-color">
+                      //       <h4 className="card-title text-capitalize">
+                      //         {res?.sub_category}
+                      //       </h4>
+                      //     </div>
+                      //   </div>
+                      // </div>
+                      ""
+                    );
+                  }
+                )}
+            </OwlCarousel>
+          </div>
+        </section>
+      )}
 
       <section className="profile-page-sec-five">
         <div className="container">

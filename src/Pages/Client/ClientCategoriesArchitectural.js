@@ -120,7 +120,9 @@ const ClientCategoriesArchitectural = () => {
               <>
                 <h1>Choose Categories</h1>
                 <div className="category-button">
-                  <h6 className="text-center">I Do Architectural Designing</h6>
+                  <h6 className="text-center">
+                    I Want Architectural Designing
+                  </h6>
                 </div>
                 <br />
                 <div

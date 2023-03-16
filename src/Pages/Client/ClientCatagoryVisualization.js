@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Header2 } from "../../components/Header";
+import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import Global from "../../context/Global";

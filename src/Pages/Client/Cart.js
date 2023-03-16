@@ -8,7 +8,7 @@ import Select from "react-select";
 import Footer from "../../components/Footer";
 import $ from "jquery";
 const Cart = () => {
-  const [, setCurrentTab] = useState("dashboard");
+  const [currentTab, setCurrentTab] = useState("dashboard");
 
   const months = [
     { value: "01", label: "01" },

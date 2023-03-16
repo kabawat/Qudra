@@ -16,14 +16,14 @@ const style = {
 };
 
 const buttonStyle = {
-  border: 'none',
-  color: '#fff',
+  border: "none",
+  color: "#fff",
   fontFamily: "Raleway",
   outline: "none",
-  background: "none"
-}
+  background: "none",
+};
 const Header2 = ({ link }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
   const logoutHandle = () => {
@@ -31,7 +31,7 @@ const Header2 = ({ link }) => {
     localStorage.clear();
     contextData?.dispatch({ type: "LOG_OUT" });
     navigate("/");
-  }
+  };
   return (
     <>
       <header className="create-account-header">
@@ -59,44 +59,96 @@ const Header2 = ({ link }) => {
                   {window.location.pathname === "/login" && (
                     <Link to="/join">Sign up</Link>
                   )}
-                  {window.location.pathname === '/categoryArchitecture' && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  {window.location.pathname === "/categoryArchitecture" && (
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
+                      logout
+                    </button>
                   )}
-                  {window.location.pathname === '/categoryvisualization' && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  {window.location.pathname === "/categoryvisualization" && (
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
+                      logout
+                    </button>
                   )}
-                  {window.location.pathname === '/professional-buy-and-sale' && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  {window.location.pathname ===
+                    "/professional-buy-and-sale" && (
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
+                      logout
+                    </button>
                   )}
-                  {window.location.pathname === '/client-architechture' && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  {window.location.pathname === "/client-architechture" && (
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
+                      logout
+                    </button>
                   )}
-                  {window.location.pathname === '/client-visualisation' && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  {window.location.pathname === "/client-visualisation" && (
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
+                      logout
+                    </button>
                   )}
-                  {window.location.pathname === '/client-buy-sell' && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  {window.location.pathname === "/client-buy-sell" && (
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
+                      logout
+                    </button>
                   )}
-                  {window.location.pathname === '/edit-profile' && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>logout</button>
+                  {window.location.pathname === "/edit-profile" && (
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
+                      logout
+                    </button>
                   )}
                 </li>
               </ul>
-              <Modal centered show={show} onHide={() => setShow(false)} style={{ zIndex: 1000000 }}>
+              <Modal
+                centered
+                show={show}
+                onHide={() => setShow(false)}
+                style={{ zIndex: 1000000 }}
+              >
                 <Modal.Header closeButton>
-                  <Modal.Title>
-                    Are you sure you want to Log out?
-                  </Modal.Title>
+                  <Modal.Title>Are you sure you want to Log out?</Modal.Title>
                 </Modal.Header>
-                <Modal.Footer >
-                  <Button
-                    variant="secondary"
-                    onClick={() => setShow(false)}>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={() => setShow(false)}>
                     Not Now
                   </Button>
                   <Button
                     className="theme-bg-color border-0"
-                    onClick={logoutHandle}>
+                    onClick={logoutHandle}
+                  >
                     Sign Out
                   </Button>
                 </Modal.Footer>
@@ -110,7 +162,9 @@ const Header2 = ({ link }) => {
 };
 
 const HeaderHome = () => {
-  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('user_data')));
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("user_data"))
+  );
 
   const textClick = () => {
     $(".mobile-menu").css("top", "0");
@@ -162,7 +216,9 @@ const HeaderHome = () => {
                       <li>
                         <Link
                           to={
-                            userData?.role === "client" ? "/clientdashboard" : "/professionaldashboard"
+                            userData?.role === "client"
+                              ? "/clientdashboard"
+                              : "/professionaldashboard"
                           }
                           state={{ fromHomePage: true }}
                         >
@@ -189,10 +245,10 @@ const HeaderHome = () => {
                         <Link
                           to="/"
                           onClick={() => setShow(true)}
-                        // onClick={() => {
-                        //   localStorage.clear();
-                        //   setUserData("");
-                        // }}
+                          // onClick={() => {
+                          //   localStorage.clear();
+                          //   setUserData("");
+                          // }}
                         >
                           Sign Out
                         </Link>
@@ -300,10 +356,10 @@ const HeaderHome = () => {
                               <Link
                                 to="/"
                                 onClick={() => setShow(true)}
-                              // onClick={() => {
-                              //   localStorage.clear();
-                              //   setUserData("");
-                              // }}
+                                // onClick={() => {
+                                //   localStorage.clear();
+                                //   setUserData("");
+                                // }}
                               >
                                 Sign Out
                               </Link>
@@ -377,7 +433,11 @@ const Header3 = () => {
                   {window.location.pathname === "/select-sign-in" ? (
                     ""
                   ) : (
-                    <Link to="/select-sign-in" className="text-black" style={{color:"#fff !important"}}>
+                    <Link
+                      to="/select-sign-in"
+                      className="text-black"
+                      style={{ color: "#fff !important" }}
+                    >
                       Sign In
                     </Link>
                   )}
@@ -533,11 +593,16 @@ const ChatHeader = () => {
                 }
                 className="text-decoration-none text-dark m-0 h2"
               >
+                <i
+                  class="fa-solid fa-arrow-left-long pe-3"
+                  style={{ color: "#01a78a" }}
+                ></i>{" "}
                 Dashboard
               </Link>
               <div
-                className={`d-flex align-items-center ${widowSize.width > 992 ? "border-end" : ""
-                  }  py-4`}
+                className={`d-flex align-items-center ${
+                  widowSize.width > 992 ? "border-end" : ""
+                }  py-4`}
               >
                 <div
                   className="dashboard-user-notification me-md-3 me-2"
@@ -922,8 +987,9 @@ const HeaderDashboard = () => {
                 Dashboard
               </Link>
               <div
-                className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""
-                  }  py-4`}
+                className={`d-flex align-items-center ${
+                  widowSize?.width > 992 ? "border-end" : ""
+                }  py-4`}
               >
                 <div
                   className="dashboard-user-notification me-md-3 me-2"
@@ -1036,7 +1102,8 @@ const HeaderDashboard = () => {
                     navigate(
                       `/professionalprofile/${contextData?.userData?.user_id}`
                     );
-                  }}>
+                  }}
+                >
                   <img
                     src={
                       contextData?.profileData &&

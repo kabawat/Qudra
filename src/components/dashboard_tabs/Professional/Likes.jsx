@@ -35,20 +35,8 @@ const Likes = () => {
       });
   };
   useEffect(() => {
-    axios
-      .post("http://13.52.16.160:8082/identity/get-like-save", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        ...projectPageId,
-        search_for: "like",
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setLikes(res?.data?.data);
-        }
-      });
-  }, [projectPageId, contextData]);
+    fetchLikeData();
+  }, [projectPageId]);
 
   useEffect(() => {
     if (!search) {
@@ -56,19 +44,7 @@ const Likes = () => {
         page: 1,
         page_size: 5,
       });
-      axios
-        .post("http://13.52.16.160:8082/identity/get-like-save", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
-          ...projectPageId,
-          search_for: "like",
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            setLikes(res?.data?.data);
-          }
-        });
+      fetchLikeData();
     } else {
       setLikes([]);
     }

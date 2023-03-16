@@ -24,10 +24,10 @@ const SignUpSchema = Yup.object().shape({
     .min(3, "Enter valid Last name")
     .required("Last name required"),
   mobile_no: Yup.string()
-    .min(12, "Enter valid mobile number")
+    .min(10, "Enter valid mobile number")
     .required("Mobile number required"),
   first_name: Yup.string()
-    .min(3, "Enter valid first name")
+    .min(3, "Minimum 3 character required")
     .required("First name required"),
   agreedTerms: Yup.bool().oneOf(
     [true],
@@ -49,7 +49,8 @@ const EditProfileClient = () => {
     // alpha2: "us",
     // alpha3: "usa",
     // flag: "🇺🇸",
-    id: getCode(location?.state?.nation).toLocaleLowerCase(),
+    id: getCode(location?.state?.nation),
+    // .toLocaleLowerCase()
     // ioc: "usa",
     name: location?.state?.nation,
   });
@@ -84,33 +85,40 @@ const EditProfileClient = () => {
   };
 
   const handleCancel = () => {
-    axios.post(
-      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-      {
+    axios
+      .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
         user_id: contextData?.userData?.user_id,
         user_token: contextData?.userData?.user_token,
         role: "client",
-      }
-    ).then((res) => {
-      localStorage.setItem(
-        "profileImageNameGmail",
-        JSON.stringify(res?.data?.data)
-      );
-      contextData?.dispatch({
-        type: "FETCH_PROFILE_DATA",
-        value: res?.data?.data,
+      })
+      .then((res) => {
+        localStorage.setItem(
+          "profileImageNameGmail",
+          JSON.stringify(res?.data?.data)
+        );
+        contextData?.dispatch({
+          type: "FETCH_PROFILE_DATA",
+          value: res?.data?.data,
+        });
+        if (res.data.data.category_selected) {
+          navigate("/clientdashboard", {
+            state: { role: "client" },
+          });
+        } else {
+          navigate("/client-architechture", {
+            state: { role: "client" },
+          });
+        }
       });
-      if (res.data.data.category_selected) {
-        navigate("/clientdashboard", {
-          state: { role: "client" },
-        });
-      } else {
-        navigate("/client-architechture", {
-          state: { role: "client" },
-        });
-      }
-    });
+  };
+
+  const [nationErr, setNationerr] = useState(false);
+  const [mobErr, setMoberr] = useState(false);
+  function handleSubmit(values, actions) {
+    // handle form submission logic here
+    actions.setSubmitting(false);
   }
+
   return (
     <>
       {isLoading ? (
@@ -121,6 +129,7 @@ const EditProfileClient = () => {
           <main className="create-account-main">
             <div className="container">
               <Formik
+                onSubmit={handleSubmit}
                 enableReinitialize
                 initialValues={{
                   first_name: location?.state?.first_name,
@@ -131,12 +140,35 @@ const EditProfileClient = () => {
                 }}
                 validationSchema={SignUpSchema}
               >
-                {({ values, handleSubmit, setFieldValue }) => (
+                {({ values, handleSubmit, setFieldValue, isSubmitting }) => (
                   <Form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      const { email_verify, first_name, last_name, mobile_no, nation } = values;
-                      if (email_verify && first_name && last_name && mobile_no && nation) {
+                      if (values.mobile_no.length < 10) {
+                        setMoberr(true);
+                        return false;
+                      }
+                      if (!values.nation) {
+                        setNationerr(true);
+                        return false;
+                      } else if (values.nation) {
+                        setNationerr(false);
+                      }
+
+                      const {
+                        email_verify,
+                        first_name,
+                        last_name,
+                        mobile_no,
+                        nation,
+                      } = values;
+                      if (
+                        email_verify &&
+                        first_name &&
+                        last_name &&
+                        mobile_no &&
+                        nation
+                      ) {
                         axios
                           .post(
                             "http://13.52.16.160:8082/identity/update_account",
@@ -146,34 +178,38 @@ const EditProfileClient = () => {
                               role: "client",
                               ...values,
                             }
-                          ).then((res) => {
+                          )
+                          .then((res) => {
                             if (res?.data?.status === "Success") {
-                              axios.post(
-                                "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                {
-                                  user_id: contextData?.userData?.user_id,
-                                  user_token: contextData?.userData?.user_token,
-                                  role: "client",
-                                }
-                              ).then((res) => {
-                                localStorage.setItem(
-                                  "profileImageNameGmail",
-                                  JSON.stringify(res?.data?.data)
-                                );
-                                contextData?.dispatch({
-                                  type: "FETCH_PROFILE_DATA",
-                                  value: res?.data?.data,
+                              axios
+                                .post(
+                                  "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                  {
+                                    user_id: contextData?.userData?.user_id,
+                                    user_token:
+                                      contextData?.userData?.user_token,
+                                    role: "client",
+                                  }
+                                )
+                                .then((res) => {
+                                  localStorage.setItem(
+                                    "profileImageNameGmail",
+                                    JSON.stringify(res?.data?.data)
+                                  );
+                                  contextData?.dispatch({
+                                    type: "FETCH_PROFILE_DATA",
+                                    value: res?.data?.data,
+                                  });
+                                  if (res.data.data.category_selected) {
+                                    navigate("/clientdashboard", {
+                                      state: { role: "client" },
+                                    });
+                                  } else {
+                                    navigate("/client-architechture", {
+                                      state: { role: "client" },
+                                    });
+                                  }
                                 });
-                                if (res.data.data.category_selected) {
-                                  navigate("/clientdashboard", {
-                                    state: { role: "client" },
-                                  });
-                                } else {
-                                  navigate("/client-architechture", {
-                                    state: { role: "client" },
-                                  });
-                                }
-                              });
                             }
                           });
                         // .then((res) => {
@@ -246,6 +282,7 @@ const EditProfileClient = () => {
                         <CountrySelect
                           value={value}
                           onChange={(val) => {
+                            setNationerr(false);
                             setValue(val);
                             setFieldValue("nation", val?.name);
                             let id = val.id;
@@ -255,6 +292,9 @@ const EditProfileClient = () => {
                           placeholder="Select An Country"
                           name="nation"
                         />
+                        {nationErr && (
+                          <p className="text-danger">Country name required</p>
+                        )}
                       </div>
                       <div className="col-md my-md-3 my-1">
                         <div className="form-group">
@@ -278,11 +318,9 @@ const EditProfileClient = () => {
                             }}
                           />
                         </div>
-                        <ErrorMessage
-                          name="mobile_no"
-                          component="div"
-                          className="m-2 text-danger"
-                        />
+                        {mobErr && (
+                          <p className="text-danger">Enter valid number</p>
+                        )}
                       </div>
                     </div>
                     <div className="row">
@@ -348,7 +386,8 @@ const EditProfileClient = () => {
                             <a
                               href="/terms-condition"
                               className="theme-text-color text-decoration-none"
-                            >{" "}
+                            >
+                              {" "}
                               Quadra Terms of Service User Agreement Privacy
                               Policy
                             </a>
@@ -365,7 +404,14 @@ const EditProfileClient = () => {
                     <div className="d-md-flex align-items-center justify-content-center my-md-5 my-2">
                       <button type="button" className="logInbtn mx-3">
                         {/* to="/clientdashboard"  */}
-                        <button onClick={handleCancel} style={{ ...style, border: 'none', background: 'none' }}>
+                        <button
+                          onClick={handleCancel}
+                          style={{
+                            ...style,
+                            border: "none",
+                            background: "none",
+                          }}
+                        >
                           <i className="fa-solid  fa-arrow-left-long me-3"></i>
                           Cancel
                         </button>
@@ -373,6 +419,7 @@ const EditProfileClient = () => {
                       <button
                         type="submit"
                         className="create-account-btn mx-3"
+                        disabled={isSubmitting}
                         style={{ pointerEvents: "all" }}
                       >
                         Edit Profile
@@ -396,7 +443,7 @@ const EditProfileClient = () => {
             pauseOnHover
             theme="colored"
           />
-        </div >
+        </div>
       )}
     </>
   );
