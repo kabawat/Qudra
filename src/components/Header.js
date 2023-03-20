@@ -26,9 +26,11 @@ const Header2 = ({ link }) => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
+  const [, , removeCookie] = useCookies()
   const logoutHandle = () => {
     setShow(false);
     localStorage.clear();
+    removeCookie('user_data')
     contextData?.dispatch({ type: "LOG_OUT" });
     navigate("/");
   };
@@ -81,15 +83,15 @@ const Header2 = ({ link }) => {
                   )}
                   {window.location.pathname ===
                     "/professional-buy-and-sale" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
-                      logout
-                    </button>
-                  )}
+                      <button
+                        onClick={() => {
+                          setShow(true);
+                        }}
+                        style={buttonStyle}
+                      >
+                        logout
+                      </button>
+                    )}
                   {window.location.pathname === "/client-architechture" && (
                     <button
                       onClick={() => {
@@ -162,6 +164,7 @@ const Header2 = ({ link }) => {
 };
 
 const HeaderHome = () => {
+  const [, , removeCookie] = useCookies()
   const [userData, setUserData] = useState(
     JSON.parse(localStorage.getItem("user_data"))
   );
@@ -242,16 +245,7 @@ const HeaderHome = () => {
                     )}
                     {contextData?.userData && (
                       <li>
-                        <Link
-                          to="/"
-                          onClick={() => setShow(true)}
-                          // onClick={() => {
-                          //   localStorage.clear();
-                          //   setUserData("");
-                          // }}
-                        >
-                          Sign Out
-                        </Link>
+                        <Link to="/" onClick={() => setShow(true)}>Sign Out</Link>
                       </li>
                     )}
 
@@ -274,6 +268,7 @@ const HeaderHome = () => {
                             closeBtnClick();
                             setShow(false);
                             localStorage.clear();
+                            removeCookie('user_data')
                             contextData?.dispatch({ type: "LOG_OUT" });
                           }}
                         >
@@ -332,11 +327,6 @@ const HeaderHome = () => {
                       &times;
                     </Link>
                     <div className="mobile-menu-content">
-                      {/* <Link to="#">About</Link>
-                                    <Link to="#">Services</Link>
-                                    <Link to="#">Clients</Link>
-                                    <Link to="#">Contact</Link>  */}
-
                       <ul className="  align-items-center m-0 ps-0">
                         {contextData?.userData && (
                           <>
@@ -355,12 +345,7 @@ const HeaderHome = () => {
                             <li>
                               <Link
                                 to="/"
-                                onClick={() => setShow(true)}
-                                // onClick={() => {
-                                //   localStorage.clear();
-                                //   setUserData("");
-                                // }}
-                              >
+                                onClick={() => setShow(true)}>
                                 Sign Out
                               </Link>
                             </li>
@@ -378,14 +363,12 @@ const HeaderHome = () => {
                         )}
 
                         <li>
-                          <Link
-                            to="/join"
+                          <Link to="/join"
                             onClick={() =>
                               setBusinessClick(
                                 localStorage.setItem("Business", true)
                               )
-                            }
-                          >
+                            }>
                             Businewdwadawss
                           </Link>
                         </li>
@@ -400,10 +383,6 @@ const HeaderHome = () => {
                           <div id="google_translate_element"></div>
                         </li>
                       </ul>
-                      {/* <form className="headerSearchButton " action="action_page.php">
-                                        <input type="text" placeholder="Search..." name="search">
-                                        <button type="submit" className="theme-bg-color"><i className="fa fa-search"></i></button>
-                                    </form>  */}
                     </div>
                   </div>
                 </div>
@@ -417,7 +396,6 @@ const HeaderHome = () => {
 };
 
 const Header3 = () => {
-  const navigate = useNavigate();
   return (
     <>
       <header className="create-account-header">
@@ -442,18 +420,6 @@ const Header3 = () => {
                     </Link>
                   )}
                 </li>
-                {/* <li
-                  className="language-select text-black"
-                  onClick={languageClick}
-                >
-                  <div id="google_translate_element"></div>
-                </li> */}
-                {/* <div className="language-dropdown-slider">
-                  <li className="m-0 py-1 border-bottom ">Hindi</li>
-                  <li className="m-0 py-1 border-bottom ">French</li>
-                  <li className="m-0 py-1 border-bottom ">Italic</li>
-                  <li className="m-0 py-1 ">Dutch</li>
-                </div> */}
               </ul>
             </div>
           </div>
@@ -465,6 +431,7 @@ const Header3 = () => {
 
 const ChatHeader = () => {
   const navigate = useNavigate();
+  const [, , removeCookie] = useCookies()
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");
@@ -600,9 +567,8 @@ const ChatHeader = () => {
                 Dashboard
               </Link>
               <div
-                className={`d-flex align-items-center ${
-                  widowSize.width > 992 ? "border-end" : ""
-                }  py-4`}
+                className={`d-flex align-items-center ${widowSize.width > 992 ? "border-end" : ""
+                  }  py-4`}
               >
                 <div
                   className="dashboard-user-notification me-md-3 me-2"
@@ -836,6 +802,7 @@ const ChatHeader = () => {
             onClick={() => {
               setShow(false);
               localStorage.clear();
+              removeCookie('user_data')
               contextData?.dispatch({ type: "LOG_OUT" });
               navigate("/");
             }}
@@ -849,6 +816,7 @@ const ChatHeader = () => {
 };
 
 const HeaderDashboard = () => {
+  const [, , removeCookie] = useCookies()
   const navigate = useNavigate();
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
@@ -987,9 +955,8 @@ const HeaderDashboard = () => {
                 Dashboard
               </Link>
               <div
-                className={`d-flex align-items-center ${
-                  widowSize?.width > 992 ? "border-end" : ""
-                }  py-4`}
+                className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""
+                  }  py-4`}
               >
                 <div
                   className="dashboard-user-notification me-md-3 me-2"

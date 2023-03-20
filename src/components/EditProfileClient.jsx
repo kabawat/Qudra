@@ -212,14 +212,6 @@ const EditProfileClient = () => {
                                 });
                             }
                           });
-                        // .then((res) => {
-                        //   if (res?.data?.status === "Success") {
-                        //     navigate("/clientdashboard", {
-                        //       state: { role: "client" },
-                        //     });
-                        //     contextData.dispatch({ type: "LOG_OUT" });
-                        //   }
-                        // });
                       }
                     }}
                   >

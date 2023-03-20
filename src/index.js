@@ -7,11 +7,12 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css"; // or include from a CDN
 import "react-bootstrap-country-select/dist/react-bootstrap-country-select.css";
 
+import GlobalData from "./context/GlobalData";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <>
+  <GlobalData>
     <App />
-  </>
+  </GlobalData>
 );
 
 // If you want to start measuring performance in your app, pass a function

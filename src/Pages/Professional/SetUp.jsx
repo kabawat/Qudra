@@ -75,7 +75,7 @@ const languages = [
 ];
 
 const SetUp = () => {
-  const [cookies, setCookies] = useCookies(["user_info"]);
+  const [cookies, setCookies] = useCookies(["user_data"]);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -88,10 +88,7 @@ const SetUp = () => {
     // name: "India",
   });
 
-  const [disply, setdisply] = useState("none");
-
   const [otpdisplay, setotpdisplay] = useState("none");
-  const [imgcode, setimgcode] = useState("in");
   const [viewPassword, setViewPassword] = useState(false);
   const SetUpSchema = Yup.object().shape({
     password: Yup.string()
@@ -214,41 +211,42 @@ const SetUp = () => {
         }
       });
   };
-  return (
-    <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="create-account">
-          <Header2 />
-          <main className="create-account-main">
-            <div className="container mb-5">
-              <Formik
-                initialValues={{
-                  first_name: "",
-                  last_name: "",
-                  email: "",
-                  email_verify: "True",
-                  nation: "",
-                  mobile_no: "",
-                  bio: "",
-                  job_description: "",
-                  password: "",
-                  languages: "",
-                  education: "",
-                  skills: "",
-                  mobile_verify: "True",
-                  experience: "",
-                }}
-                validationSchema={SetUpSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                  setLoading(true);
-                  axios
-                    .post(
+
+  if (cookies?.user_data === undefined) {
+    return (
+      <>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="create-account">
+            <Header2 />
+            <main className="create-account-main">
+              <div className="container mb-5">
+                <Formik
+                  initialValues={{
+                    first_name: "",
+                    last_name: "",
+                    email: "",
+                    email_verify: "True",
+                    nation: "",
+                    mobile_no: "",
+                    bio: "",
+                    job_description: "",
+                    password: "",
+                    languages: "",
+                    education: "",
+                    skills: "",
+                    mobile_verify: "True",
+                    experience: "",
+                  }}
+                  validationSchema={SetUpSchema}
+                  onSubmit={(values, { setSubmitting }) => {
+                    setLoading(true);
+                    axios.post(
                       "http://13.52.16.160:8082/identity/signup_professional",
                       values
-                    )
-                    .then((res) => {
+                    ).then((res) => {
+                      console.log(res.data)
                       if (res?.data?.status === "Success") {
                         const signupuser = new FormData();
                         signupuser.append("image", filePic);
@@ -258,60 +256,41 @@ const SetUp = () => {
                           res?.data?.data.user_token
                         );
                         signupuser.append("role", res?.data?.data.role);
+                        signupuser && axios.post("http://13.52.16.160:8082/identity/professional_profile", signupuser)
+                          .then((respo) => {
+                            if (respo?.data?.status === "Success") {
+                              contextData?.dispatch({
+                                type: "FETCH_USER_DATA",
+                                value: res?.data?.data,
+                              });
 
-                        signupuser &&
-                          axios
-                            .post(
-                              "http://13.52.16.160:8082/identity/professional_profile",
-                              signupuser
-                            )
-                            .then((respo) => {
-                              const getcookies = {
-                                user_id: res?.data?.data?.user_id,
-                                user_token: res?.data?.data?.user_token,
-                                role: res?.data?.data?.role,
-                              };
-                              setCookies(
-                                "user_info",
-                                JSON.stringify(getcookies)
-                              );
-                              if (respo?.data?.status === "Success") {
-                                contextData?.dispatch({
-                                  type: "FETCH_USER_DATA",
-                                  value: res?.data?.data,
-                                });
-                                localStorage.setItem(
-                                  "user_data",
-                                  JSON.stringify(res?.data?.data)
-                                );
-                                setLoading(false);
-                                navigate("/categoryArchitecture", {
-                                  replace: true,
-                                });
-                                contextData.setShowDisclamer(true);
-                                if (!contextData?.profileData) {
-                                  axios
-                                    .post(
-                                      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                      {
-                                        user_id: res?.data?.data?.user_id,
-                                        user_token: res?.data?.data?.user_token,
-                                        role: res?.data?.data?.role,
-                                      }
-                                    )
-                                    .then((response) => {
-                                      contextData?.dispatch({
-                                        type: "FETCH_PROFILE_DATA",
-                                        value: response?.data?.data,
-                                      });
-                                      localStorage.setItem(
-                                        "profileImageNameGmail",
-                                        JSON.stringify(response?.data?.data)
-                                      );
-                                    });
+                              setCookies("user_data", JSON.stringify(res?.data?.data));
+                              localStorage.setItem("user_data", JSON.stringify(res?.data?.data));
+
+                              setLoading(false);
+                              navigate("/categoryArchitecture", {
+                                replace: true,
+                              });
+                              contextData.setShowDisclamer(true);
+                              if (!contextData?.profileData) {
+                                axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+                                  user_id: res?.data?.data?.user_id,
+                                  user_token: res?.data?.data?.user_token,
+                                  role: res?.data?.data?.role,
                                 }
+                                ).then((response) => {
+                                  contextData?.dispatch({
+                                    type: "FETCH_PROFILE_DATA",
+                                    value: response?.data?.data,
+                                  });
+                                  localStorage.setItem(
+                                    "profileImageNameGmail",
+                                    JSON.stringify(response?.data?.data)
+                                  );
+                                });
                               }
-                            });
+                            }
+                          });
                       } else {
                         localStorage.clear();
 
@@ -319,203 +298,203 @@ const SetUp = () => {
                         setLoading(false);
                       }
                     });
-                }}
-              >
-                {({
-                  isSubmitting,
-                  setFieldValue,
-                  validateForm,
-                  validateField,
-                  values,
-                }) => (
-                  <Form>
-                    <h1>Lets Set Up like A Pro</h1>
-                    <div className="row">
-                      <div className="col-md my-md-3 my-1">
-                        <div className="create-account-input">
-                          <Field
-                            name="first_name"
-                            type="text"
-                            className="form-control"
-                            placeholder="First Name"
-                          />
-                          <i className="fa-regular fa-user"></i>
-                          <ErrorMessage
-                            name="first_name"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
+                  }}
+                >
+                  {({
+                    isSubmitting,
+                    setFieldValue,
+                    validateForm,
+                    validateField,
+                    values,
+                  }) => (
+                    <Form>
+                      <h1>Lets Set Up like A Pro</h1>
+                      <div className="row">
+                        <div className="col-md my-md-3 my-1">
+                          <div className="create-account-input">
+                            <Field
+                              name="first_name"
+                              type="text"
+                              className="form-control"
+                              placeholder="First Name"
+                            />
+                            <i className="fa-regular fa-user"></i>
+                            <ErrorMessage
+                              name="first_name"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md my-md-3 my-1">
+                          <div className="create-account-input">
+                            <Field
+                              name="last_name"
+                              type="text"
+                              className="form-control"
+                              placeholder="Last Name"
+                            />
+                            <i className="fa-regular fa-user"></i>
+                            <ErrorMessage
+                              name="last_name"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md my-md-3 my-1">
-                        <div className="create-account-input">
-                          <Field
-                            name="last_name"
-                            type="text"
-                            className="form-control"
-                            placeholder="Last Name"
-                          />
-                          <i className="fa-regular fa-user"></i>
-                          <ErrorMessage
-                            name="last_name"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md my-md-3 my-1">
-                        <div className="create-account-input create-account-email-input ">
-                          <Field
-                            id="EmailInputSignUpForm"
-                            type="email"
-                            className="form-control"
-                            placeholder="Enter Your Mail"
-                            name="email"
-                            onInput={handleEmailFocus}
-                          />
+                      <div className="row">
+                        <div className="col-md my-md-3 my-1">
+                          <div className="create-account-input create-account-email-input ">
+                            <Field
+                              id="EmailInputSignUpForm"
+                              type="email"
+                              className="form-control"
+                              placeholder="Enter Your Mail"
+                              name="email"
+                              onInput={handleEmailFocus}
+                            />
 
-                          <button
-                            onClick={verifyRequestButton}
-                            type="button"
-                            className={
-                              loadingActive
-                                ? "emailVerifyBtnProfessional loadingOuter"
-                                : "emailVerifyBtnProfessional "
-                            }
-                            style={
-                              $("#EmailInputSignUpForm").val()
-                                ? { pointerEvents: "all" }
-                                : { pointerEvents: "none" }
-                            }
-                          >
-                            {loadingActive ? <ReactLotti /> : verifyButtonText}
-                          </button>
-
-                          <Modal
-                            show={show}
-                            className="OtpInputModal"
-                            onHide={handleClose}
-                            size="sm"
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered
-                          >
-                            <Modal.Header closeButton>
-                              <Modal.Title>Enter your OTP</Modal.Title>
-                            </Modal.Header>
-                            <div
-                              className="otp-box-Main"
-                              onSubmit={handleOTPSubmit}
+                            <button
+                              onClick={verifyRequestButton}
+                              type="button"
+                              className={
+                                loadingActive
+                                  ? "emailVerifyBtnProfessional loadingOuter"
+                                  : "emailVerifyBtnProfessional "
+                              }
+                              style={
+                                $("#EmailInputSignUpForm").val()
+                                  ? { pointerEvents: "all" }
+                                  : { pointerEvents: "none" }
+                              }
                             >
-                              <div className="col">
-                                <OtpInput
-                                  value={otp}
-                                  onChange={handleOTP}
-                                  numInputs={6}
-                                  separator={<span>-</span>}
-                                  className="w-100 justify-content-around"
-                                />
-                              </div>
-                              {OtpResponse ? (
-                                <p className="text-danger m-auto">
-                                  Please retry with valid OTP
-                                </p>
-                              ) : (
-                                ""
-                              )}
-                              <button
-                                variant="secondary"
-                                type="button"
-                                className="otpSubmitButton"
-                                onClick={handleOTPSubmit}
-                                style={
-                                  otp̥Length === 6
-                                    ? { pointerEvents: "all" }
-                                    : { pointerEvents: "none" }
-                                }
-                              >
-                                Submit
-                              </button>
-                            </div>
-                          </Modal>
+                              {loadingActive ? <ReactLotti /> : verifyButtonText}
+                            </button>
 
-                          <i className="fa-regular fa-envelope"></i>
-                          <ErrorMessage
-                            name="email"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                          {!existingEmail ? (
-                            <p className="text-danger">
-                              {resData.message}
-                              {/* Email is already registered ! */}
-                            </p>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                        <div className={otpdisplay}>
-                          <span style={{ color: "red" }}>
-                            Please enter valid otp
-                          </span>
-                          <button
-                            type="button"
-                            style={{
-                              border: "0",
-                              background: "0",
-                              margin: "0 10px",
-                              textDecoration: "underline",
-                            }}
-                            onClick={() => {
-                              setShow(true);
-                            }}
-                          >
-                            click
-                          </button>
-                        </div>
-                      </div>
-                      <div className="col-md my-md-3 my-1">
-                        <div className="create-account-input">
-                          <Field
-                            type={viewPassword ? "text" : "password"}
-                            className="form-control"
-                            placeholder="Password"
-                            name="password"
-                          />
-                          <div className="viewPasswordIcons">
-                            {viewPassword ? (
-                              <RiEyeCloseLine
-                                onClick={() => {
-                                  setViewPassword(false);
-                                }}
-                              />
+                            <Modal
+                              show={show}
+                              className="OtpInputModal"
+                              onHide={handleClose}
+                              size="sm"
+                              aria-labelledby="contained-modal-title-vcenter"
+                              centered
+                            >
+                              <Modal.Header closeButton>
+                                <Modal.Title>Enter your OTP</Modal.Title>
+                              </Modal.Header>
+                              <div
+                                className="otp-box-Main"
+                                onSubmit={handleOTPSubmit}
+                              >
+                                <div className="col">
+                                  <OtpInput
+                                    value={otp}
+                                    onChange={handleOTP}
+                                    numInputs={6}
+                                    separator={<span>-</span>}
+                                    className="w-100 justify-content-around"
+                                  />
+                                </div>
+                                {OtpResponse ? (
+                                  <p className="text-danger m-auto">
+                                    Please retry with valid OTP
+                                  </p>
+                                ) : (
+                                  ""
+                                )}
+                                <button
+                                  variant="secondary"
+                                  type="button"
+                                  className="otpSubmitButton"
+                                  onClick={handleOTPSubmit}
+                                  style={
+                                    otp̥Length === 6
+                                      ? { pointerEvents: "all" }
+                                      : { pointerEvents: "none" }
+                                  }
+                                >
+                                  Submit
+                                </button>
+                              </div>
+                            </Modal>
+
+                            <i className="fa-regular fa-envelope"></i>
+                            <ErrorMessage
+                              name="email"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                            {!existingEmail ? (
+                              <p className="text-danger">
+                                {resData.message}
+                                {/* Email is already registered ! */}
+                              </p>
                             ) : (
-                              <RiEyeLine
-                                onClick={() => {
-                                  setViewPassword(true);
-                                }}
-                              />
+                              ""
                             )}
                           </div>
-                          <img src="./static/images/LockIcon.png" alt="" />
-                          <ErrorMessage
-                            name="password"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
+                          <div className={otpdisplay}>
+                            <span style={{ color: "red" }}>
+                              Please enter valid otp
+                            </span>
+                            <button
+                              type="button"
+                              style={{
+                                border: "0",
+                                background: "0",
+                                margin: "0 10px",
+                                textDecoration: "underline",
+                              }}
+                              onClick={() => {
+                                setShow(true);
+                              }}
+                            >
+                              click
+                            </button>
+                          </div>
+                        </div>
+                        <div className="col-md my-md-3 my-1">
+                          <div className="create-account-input">
+                            <Field
+                              type={viewPassword ? "text" : "password"}
+                              className="form-control"
+                              placeholder="Password"
+                              name="password"
+                            />
+                            <div className="viewPasswordIcons">
+                              {viewPassword ? (
+                                <RiEyeCloseLine
+                                  onClick={() => {
+                                    setViewPassword(false);
+                                  }}
+                                />
+                              ) : (
+                                <RiEyeLine
+                                  onClick={() => {
+                                    setViewPassword(true);
+                                  }}
+                                />
+                              )}
+                            </div>
+                            <img src="./static/images/LockIcon.png" alt="" />
+                            <ErrorMessage
+                              name="password"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div
-                        className="col-md my-md-3 my-1"
-                        style={{
-                          position: "relative",
-                          // left:'10px',
-                        }}
-                      >
-                        {/* <img
+                      <div className="row">
+                        <div
+                          className="col-md my-md-3 my-1"
+                          style={{
+                            position: "relative",
+                            // left:'10px',
+                          }}
+                        >
+                          {/* <img
                           className={disply}
                           style={{
                             top: "37%",
@@ -528,319 +507,331 @@ const SetUp = () => {
                           alt="img"
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
                         /> */}
-                        <CountrySelect
-                          value={value}
-                          onChange={(val) => {
-                            setValue(val);
-                            setFieldValue("nation", val?.name);
-                            // let id = val.id;
-                            // setimgcode(id.toLocaleUpperCase());
-                            setdisply("block");
-                          }}
-                          flags={false}
-                          placeholder="Select An Country"
-                          name="nation"
-                        />
-                      </div>
-
-                      <div className="col-md my-md-3 my-1">
-                        <div className="form-group">
-                          <PhoneInput
-                            placeholder="Enter phone number"
-                            country={value?.alpha2}
-                            enableAreaCodes
-                            name="mobile_no"
-                            onChange={(pho, country) =>
-                              setFieldValue(
-                                "mobile_no",
-                                `+${country.dialCode}${pho}`
-                              )
-                            }
-                            inputStyle={{
-                              padding: "26px",
-                              width: "100%",
-                              borderRadius: "50px",
-                              paddingLeft: "45px",
+                          <CountrySelect
+                            value={value}
+                            onChange={(val) => {
+                              setValue(val);
+                              setFieldValue("nation", val?.name);
                             }}
+                            flags={false}
+                            placeholder="Select An Country"
+                            name="nation"
                           />
                         </div>
-                        <ErrorMessage
-                          name="mobile_no"
-                          component="div"
-                          className="m-2 text-danger"
-                        />
-                      </div>
-                    </div>
 
-                    <div className="row">
-                      <div className="col-md-3 col-xl-2 my-md-3 my-1">
-                        <div>
-                          <div
-                            className="form-image-input"
-                            onClick={() => {
-                              document.getElementById("photo").click();
-                            }}
-                          >
-                            <img
-                              id="imgPreview"
-                              src="/static/images/ImageInput.png"
-                              alt="pic"
-                              accept="images/*"
-                            />
-                            <div className="plus-image-overlay">
-                              <i className="fa fa-plus"></i>
-                            </div>
-                          </div>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            name="photograph"
-                            id="photo"
-                            onChange={(event) => {
-                              photoChange(event);
-                              setprofileerr("none");
-                            }}
-                          />
-                          <span
-                            style={{ marginTop: "10px" }}
-                            className={`${profileerr} text-danger `}
-                          >
-                            Profile image required
-                          </span>
-                          <ErrorMessage
-                            name="photograph"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="col-md-9 col-xl-10  my-md-3 my-1"
-                        style={{ position: "relative" }}
-                      >
-                        <Field
-                          as="textarea"
-                          maxLength="500"
-                          className="form-control h-100"
-                          id="exampleFormControlTextarea1"
-                          rows="6"
-                          name="bio"
-                          placeholder="About"
-                        ></Field>
-                        <div
-                          style={{
-                            position: "absolute",
-                            bottom: "-7%",
-                            left: "3%",
-                          }}
-                        >
-                          <p>{values.bio.length}/500</p>
-                        </div>
-                        <ErrorMessage
-                          name="bio"
-                          component="div"
-                          className="m-2 text-danger"
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col my-md-3 my-1">
-                        <Field
-                          as="textarea"
-                          className="form-control"
-                          name="job_description"
-                          id="exampleFormControlTextarea1"
-                          rows="6"
-                          placeholder="Job Description"
-                        ></Field>
-
-                        <ErrorMessage
-                          name="job_description"
-                          component="div"
-                          className="m-2 text-danger"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div className="col-md my-md-3 my-1">
-                        <div className="create-account-input">
-                          <img src="/static/images/LanguagesIcon.png" alt="" />
-                          <MultiSelect
-                            options={languages}
-                            value={language}
-                            onChange={(language) => {
-                              setFieldValue(
-                                "languages",
-                                language.map((val) => val?.value)
-                              );
-                              setLanguage(language);
-                            }}
-                            labelledBy="Select"
-                            name="languages"
-                          />
-                          <ErrorMessage
-                            name="languages"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md my-md-3 my-1">
-                        <div className="create-account-input">
-                          <img src="/static/images/EducationIcon.png" alt="" />
-                          <Field
-                            id="educationSelect"
-                            as="select"
-                            value={educationSelect}
-                            className="form-select form-education-select"
-                            onChange={(e) => {
-                              setEducationSelect(e.target.value);
-                              if (e.target.value !== "another") {
-                                setFieldValue("education", e.target.value);
-                                setEducationInput("");
+                        <div className="col-md my-md-3 my-1">
+                          <div className="form-group">
+                            <PhoneInput
+                              placeholder="Enter phone number"
+                              country={value?.alpha2}
+                              enableAreaCodes
+                              name="mobile_no"
+                              onChange={(pho, country) =>
+                                setFieldValue(
+                                  "mobile_no",
+                                  `+${country.dialCode}${pho}`
+                                )
                               }
-                            }}
-                          >
-                            <option value="" disabled>
-                              Education
-                            </option>
-
-                            <option value="Bachelors"> Bachelors</option>
-                            <option value="Masters"> Masters</option>
-                            <option value="Other">Other</option>
-                          </Field>
-                          {educationSelect === "Other" ? (
-                            <input
-                              type="text"
-                              className="mt-2"
-                              placeholder="Enter Here Your Other"
-                              value={educationInput}
-                              onChange={(e) => {
-                                setEducationInput(e.target.value);
-                                setFieldValue("education", e.target.value);
+                              inputStyle={{
+                                padding: "26px",
+                                width: "100%",
+                                borderRadius: "50px",
+                                paddingLeft: "45px",
                               }}
                             />
-                          ) : (
-                            ""
-                          )}
+                          </div>
                           <ErrorMessage
-                            name="education"
+                            name="mobile_no"
                             component="div"
                             className="m-2 text-danger"
                           />
                         </div>
                       </div>
-                    </div>
-                    <div className="row justify-content-center">
-                      <div className="my-md-3 col-md-6  my-1">
-                        <div className="create-account-input">
-                          <img src="./static/images/SkillsIcon.png" alt="" />
 
-                          <MultiSelect
-                            options={contextData.skillsOpt}
-                            value={skills}
-                            onChange={(skills) => {
-                              setFieldValue(
-                                "skills",
-                                skills.map((val) => val?.value)
-                              );
-                              setSkill(skills);
-                            }}
-                            labelledBy="Select"
-                            name={skills}
-                          />
-
-                          <ErrorMessage
-                            name="skills"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
+                      <div className="row">
+                        <div className="col-md-3 col-xl-2 my-md-3 my-1">
+                          <div>
+                            <div
+                              className="form-image-input"
+                              onClick={() => {
+                                document.getElementById("photo").click();
+                              }}
+                            >
+                              <img
+                                id="imgPreview"
+                                src="/static/images/ImageInput.png"
+                                alt="pic"
+                                accept="images/*"
+                              />
+                              <div className="plus-image-overlay">
+                                <i className="fa fa-plus"></i>
+                              </div>
+                            </div>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              name="photograph"
+                              id="photo"
+                              onChange={(event) => {
+                                photoChange(event);
+                                setprofileerr("none");
+                              }}
+                            />
+                            <span
+                              style={{ marginTop: "10px" }}
+                              className={`${profileerr} text-danger `}
+                            >
+                              Profile image required
+                            </span>
+                            <ErrorMessage
+                              name="photograph"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="my-md-3 col-md-6  my-1">
-                        <div className="create-account-input">
-                          <img src="./static/images/SkillsIcon.png" alt="" />
+                        <div
+                          className="col-md-9 col-xl-10  my-md-3 my-1"
+                          style={{ position: "relative" }}
+                        >
                           <Field
-                            as="select"
-                            name="experience"
-                            className="form-select"
-                            style={{ cursor: "pointer" }}
+                            as="textarea"
+                            maxLength="500"
+                            className="form-control h-100"
+                            id="exampleFormControlTextarea1"
+                            rows="6"
+                            name="bio"
+                            placeholder="About"
+                          ></Field>
+                          <div
+                            style={{
+                              position: "absolute",
+                              bottom: "-7%",
+                              left: "3%",
+                            }}
                           >
-                            <option value="" disabled>
-                              Experience
-                            </option>
-                            {rows.map((years) => (
-                              <option value={years}>{years} Years</option>
-                            ))}
-                            <option value={45}>45 Years</option>
-                          </Field>
+                            <p>{values.bio.length}/500</p>
+                          </div>
                           <ErrorMessage
-                            name="experience"
+                            name="bio"
                             component="div"
                             className="m-2 text-danger"
                           />
                         </div>
                       </div>
-                    </div>
+                      <div className="row">
+                        <div className="col my-md-3 my-1">
+                          <Field
+                            as="textarea"
+                            className="form-control"
+                            name="job_description"
+                            id="exampleFormControlTextarea1"
+                            rows="6"
+                            placeholder="Job Description"
+                          ></Field>
 
-                    <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
-                      {verifyButtonText === "verify" ? (
-                        <button
-                          type="button"
-                          className="create-account-btn"
-                          onClick={() => {
-                            toast.error("Must Verify Email First !", {
-                              position: "top-right",
-                              autoClose: 2000,
-                              hideProgressBar: true,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                              theme: "colored",
-                            });
-                          }}
-                        >
-                          Continue
-                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            if (!filePic) {
-                              setprofileerr("block");
-                            }
-                          }}
-                          type="submit"
-                          className="create-account-btn"
-                        >
-                          Continue
-                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
-                        </button>
-                      )}
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            </div>
-          </main>
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-          />
-        </div>
-      )}
-    </>
-  );
+                          <ErrorMessage
+                            name="job_description"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-md my-md-3 my-1">
+                          <div className="create-account-input">
+                            <img src="/static/images/LanguagesIcon.png" alt="" />
+                            <MultiSelect
+                              options={languages}
+                              value={language}
+                              onChange={(language) => {
+                                setFieldValue(
+                                  "languages",
+                                  language.map((val) => val?.value)
+                                );
+                                setLanguage(language);
+                              }}
+                              labelledBy="Select"
+                              name="languages"
+                            />
+                            <ErrorMessage
+                              name="languages"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md my-md-3 my-1">
+                          <div className="create-account-input">
+                            <img src="/static/images/EducationIcon.png" alt="" />
+                            <Field
+                              id="educationSelect"
+                              as="select"
+                              value={educationSelect}
+                              className="form-select form-education-select"
+                              onChange={(e) => {
+                                setEducationSelect(e.target.value);
+                                if (e.target.value !== "another") {
+                                  setFieldValue("education", e.target.value);
+                                  setEducationInput("");
+                                }
+                              }}
+                            >
+                              <option value="" disabled>
+                                Education
+                              </option>
+
+                              <option value="Bachelors"> Bachelors</option>
+                              <option value="Masters"> Masters</option>
+                              <option value="Other">Other</option>
+                            </Field>
+                            {educationSelect === "Other" ? (
+                              <input
+                                type="text"
+                                className="mt-2"
+                                placeholder="Enter Here Your Other"
+                                value={educationInput}
+                                onChange={(e) => {
+                                  setEducationInput(e.target.value);
+                                  setFieldValue("education", e.target.value);
+                                }}
+                              />
+                            ) : (
+                              ""
+                            )}
+                            <ErrorMessage
+                              name="education"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row justify-content-center">
+                        <div className="my-md-3 col-md-6  my-1">
+                          <div className="create-account-input">
+                            <img src="./static/images/SkillsIcon.png" alt="" />
+
+                            <MultiSelect
+                              options={contextData.skillsOpt}
+                              value={skills}
+                              onChange={(skills) => {
+                                setFieldValue(
+                                  "skills",
+                                  skills.map((val) => val?.value)
+                                );
+                                setSkill(skills);
+                              }}
+                              labelledBy="Select"
+                              name={skills}
+                            />
+
+                            <ErrorMessage
+                              name="skills"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
+                        </div>
+                        <div className="my-md-3 col-md-6  my-1">
+                          <div className="create-account-input">
+                            <img src="./static/images/SkillsIcon.png" alt="" />
+                            <Field
+                              as="select"
+                              name="experience"
+                              className="form-select"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <option value="" disabled>
+                                Experience
+                              </option>
+                              {rows.map((years) => (
+                                <option value={years}>{years} Years</option>
+                              ))}
+                              <option value={45}>45 Years</option>
+                            </Field>
+                            <ErrorMessage
+                              name="experience"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
+                        {verifyButtonText === "verify" ? (
+                          <button
+                            type="button"
+                            className="create-account-btn"
+                            onClick={() => {
+                              toast.error("Must Verify Email First !", {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "colored",
+                              });
+                            }}
+                          >
+                            Continue
+                            <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              if (!filePic) {
+                                setprofileerr("block");
+                              }
+                            }}
+                            type="submit"
+                            className="create-account-btn"
+                          >
+                            Continue
+                            <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                          </button>
+                        )}
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </main>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
+          </div>
+        )}
+      </>
+    )
+  } else {
+    if (contextData?.profileData?.category_selected) {
+      if (cookies.user_data.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    } else {
+      if (cookies.user_data.role === "professional") {
+        navigate('/categoryArchitecture')
+      } else {
+        navigate('/client-architechture')
+      }
+    }
+  }
 };
 
 export default SetUp;

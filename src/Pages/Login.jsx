@@ -29,15 +29,13 @@ const buttonStyle = {
   backgroundColor: "transparent",
 };
 const Login = () => {
-
-  const [cookie, setCookie, removeCookie] = useCookies()
+  const [cookie, setCookie] = useCookies()
 
   const [verifyButtonText, setVerifyButtonText] = useState("Verify");
   const [viewPassword, setViewPassword] = useState(false);
 
   const contextData = useContext(Global);
   const [resetEmailInput, setResetEmailInput] = useState("");
-
   const [resetPasswordInput, setResetPasswordInput] = useState("");
 
   const location = useLocation();
@@ -50,97 +48,41 @@ const Login = () => {
     navigate("/select-sign-in");
   }
   const [error, setError] = useState(false);
-  const [submitAPI, setSubmitAPI] = useState(
-    "http://13.52.16.160:8082/quadra/login_admin"
-  );
-  const [modalShow, setModalShow] = React.useState(false);
-
   const [otp, handleOTP] = useState("");
-
+  const [modalShow, setModalShow] = React.useState(false);
   const handleResetRequest = () => {
-    axios
-      .post("http://13.52.16.160:8082/identity/forget-password", {
-        email: resetEmailInput,
-        role: roleAPI,
-        otp: otp,
-        password: resetPasswordInput,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Failed") {
-          setVerifyButtonText("Verify");
-        } else {
-          setModalShow(false);
-        }
-        toast(
-          <div
-            className={`text-center ${res?.data?.status === "Failed" ? "text-danger" : "text-success"
-              } fw-bold`}
-          >
-            {res?.data?.status === "Failed" ? res?.data?.message : ""}
-            {res?.data?.status === "Success" ? res?.data?.message : ""}
-          </div>
-        );
-      });
+    axios.post("http://13.52.16.160:8082/identity/forget-password", {
+      email: resetEmailInput,
+      role: roleAPI,
+      otp: otp,
+      password: resetPasswordInput,
+    }).then((res) => {
+      if (res?.data?.status === "Failed") {
+        setVerifyButtonText("Verify");
+      } else {
+        setModalShow(false);
+      }
+      toast(
+        <div className={`text-center ${res?.data?.status === "Failed" ? "text-danger" : "text-success"} fw-bold`}>
+          {res?.data?.status === "Failed" ? res?.data?.message : ""}
+          {res?.data?.status === "Success" ? res?.data?.message : ""}
+        </div>
+      );
+    });
   };
 
   const verifyRequestButton = () => {
-    let email = $("#EmailInputSignUpForm").val();
-    axios
-      .post("http://13.52.16.160:8082/identity/generate-otp", {
-        email: resetEmailInput,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setVerifyButtonText("Sent");
-        } else {
-          setVerifyButtonText("Please Enter a Valid Email");
-        }
-      });
+    axios.post("http://13.52.16.160:8082/identity/generate-otp", { email: resetEmailInput, }).then((res) => {
+      if (res?.data?.status === "Success") {
+        setVerifyButtonText("Sent");
+      } else {
+        setVerifyButtonText("Please Enter a Valid Email");
+      }
+    });
   };
-
-
-  useEffect(() => {
-    const user_data = JSON.parse(localStorage.getItem("user_data"))
-    if (user_data) {
-      axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-        ...user_data
-      }).then((res) => {
-        localStorage.setItem(
-          "profileImageNameGmail",
-          JSON.stringify(res?.data?.data)
-        );
-        contextData?.dispatch({
-          type: "FETCH_PROFILE_DATA",
-          value: res?.data?.data,
-        });
-
-        contextData?.dispatch({
-          type: "FETCH_USER_DATA",
-          value: user_data
-        });
-
-        localStorage.setItem(
-          "user_data",
-          JSON.stringify(user_data)
-        );
-        if (res?.data?.data?.category_selected === true) {
-          navigate("/");
-        } else {
-          if (user_data?.role === "client") {
-            contextData.setShowDisclamer(true);
-            navigate("/client-architechture");
-          } else {
-            contextData.setShowDisclamer(true);
-            navigate("/categoryArchitecture");
-          }
-        }
-      });
-    }
-  }, [])
-
-  return (
-    <>
-      {roleAPI && (
+  if (cookie?.user_data === undefined || cookie?.user_data === null) {
+    return (
+      roleAPI && (
         <div className="create-account">
           <Header2 />
           <main className="create-account-main">
@@ -156,7 +98,7 @@ const Login = () => {
                   setError(false);
                   axios.post("http://13.52.16.160:8082/identity/account-login", values).then((res) => {
                     if (res?.data?.status === "Success") {
-                      setCookie("user_info", JSON.stringify({ ...res?.data?.data }));
+                      setCookie("user_data", JSON.stringify({ ...res?.data?.data }));
                       axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
                         user_id: res?.data?.data?.user_id,
                         user_token: res?.data?.data?.user_token,
@@ -174,7 +116,7 @@ const Login = () => {
                       if (res?.data?.data?.category_selected === false) {
                         if (res?.data?.data?.role === "client") {
                           navigate("/client-architechture");
-                        }else{
+                        } else {
                           navigate("/categoryArchitecture");
                         }
                       } else {
@@ -425,9 +367,20 @@ const Login = () => {
             </div>
           </main>
         </div>
-      )}
-    </>
-  );
+      )
+    );
+  } else {
+    if (cookie?.user_data.category_selected) {
+      if (cookie?.user_data?.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+
+        navigate('/clientdashboard')
+      }
+    } else {
+      navigate('/client-architechture')
+    }
+  }
 };
 
 export default React.memo(Login);

@@ -30,96 +30,79 @@ import ClientCatagoryVisualization from "./Pages/Client/ClientCatagoryVisualizat
 import ClientBuySellDesign from "./Pages/Client/ClientBuySellDesign";
 import ProfessionalBuyAndSale from "./Pages/Professional/ProfessionalBuyAndSale";
 import Loader from "./components/Loader";
-import GlobalData from "./context/GlobalData";
 import ProjectDetails from "./components/ProjectDetails";
 import ScrollToTop from "./Hooks/ScrollToTop";
 import EditProfile from "./Pages/EditProfile";
 import TermsAndCondition from "./Pages/TermsAndCondition";
+import Global from "./context/Global";
+import { useContext, useEffect } from "react";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 function App() {
+  const contextData = useContext(Global);
+  const [cookie,] = useCookies()
+  useEffect(() => {
+    axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+      ...cookie?.user_data
+    }).then((res) => {
+      if (res.data.status === "Success") {
+        localStorage.setItem(
+          "profileImageNameGmail",
+          JSON.stringify(res?.data?.data)
+        );
+        contextData?.dispatch({
+          type: "FETCH_PROFILE_DATA",
+          value: res?.data?.data,
+        });
+      }
+    }).catch(error => {
+      console.log(error.response.data)
+    })
+  }, [])
   return (
-    <GlobalData>
-      <BrowserRouter basename={"/"}>
-        <ScrollToTop />
-        <IconContext.Provider
-          value={{ color: "black", className: "global-class-name" }}
-        >
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/Loader" element={<Loader />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/client-sign-up" element={<SignIn />} />
-            <Route exact path="/join" element={<Join />} />
-            <Route exact path="/select-sign-in" element={<SignInSelect />} />
-            <Route exact path="/quadroterms" element={<QuadroTerms />} />
-            <Route exact path="/getverified" element={<GetVerified />} />
-            <Route exact path="/setup" element={<SetUp />} />
-            <Route exact path="/kickassform" element={<KickAssForm />} />
+    <BrowserRouter basename={"/"}>
+      <ScrollToTop />
+      <IconContext.Provider value={{ color: "black", className: "global-class-name" }} >
+        <Routes>
 
-            <Route exact path="/taskform" element={<TaskForm />} />
-            <Route exact path="/chat" element={<Chat />} />
-            <Route exact path="/categoryresult" element={<CategoryResult />} />
-            {/* Professional Routes */}
-            <Route
-              exact
-              path="/professionaldashboard"
-              element={<ProfessionalDashboard />}
-            />
+          <Route path="*" element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/Loader" element={<Loader />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/quadroterms" element={<QuadroTerms />} />
+          <Route path="/setup" element={<SetUp />} />
+          <Route path="/kickassform" element={<KickAssForm />} />
+          <Route path="/taskform" element={<TaskForm />} />
 
-            <Route
-              exact
-              path="/professionalprofile/:professional_id"
-              element={<ProfessionalProfile />}
-            />
-            <Route
-              exact
-              path="/categoryArchitecture"
-              element={<ProfessionalCategoryArchitecture />}
-            />
-            <Route
-              exact
-              path="/categoryvisualization"
-              element={<ProfessionalCategoryVisualization />}
-            />
-            <Route
-              exact
-              path="/professional-buy-and-sale"
-              element={<ProfessionalBuyAndSale />}
-            />
+          <Route path="/client-sign-up" element={<SignIn />} />
+          <Route path="/select-sign-in" element={<SignInSelect />} />
 
-            {/* Client Routes */}
-            <Route
-              exact
-              path="/clientdashboard"
-              element={<ClientDashboard />}
-            />
-            <Route exact path="/clientCategory" element={<ClientCategory />} />
-            <Route exact path="/cart" element={<Cart />} />
-            <Route
-              exact
-              path="/client-architechture"
-              element={<ClientCategoriesArchitectural />}
-            />
-            <Route
-              exact
-              path="/client-visualisation"
-              element={<ClientCatagoryVisualization />}
-            />
-            <Route
-              exact
-              path="/client-buy-sell"
-              element={<ClientBuySellDesign />}
-            />
-            <Route exact path="/project-details" element={<ProjectDetails />} />
-            <Route exact path="/edit-profile" element={<EditProfile />} />
-            <Route
-              exact
-              path="/terms-condition"
-              element={<TermsAndCondition />}
-            />
-          </Routes>
-        </IconContext.Provider>
-      </BrowserRouter>
-    </GlobalData>
+          {/* Professional Routes */}
+          <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
+
+          <Route path="/categoryArchitecture" element={<ProfessionalCategoryArchitecture />} />
+          <Route path="/categoryvisualization" element={<ProfessionalCategoryVisualization />} />
+          <Route path="/professional-buy-and-sale" element={<ProfessionalBuyAndSale />} />
+
+          {/* Client Routes */}
+          <Route path="/clientdashboard" element={<ClientDashboard />} />
+          <Route path="/clientCategory" element={<ClientCategory />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/client-architechture" element={<ClientCategoriesArchitectural />} />
+          <Route path="/client-visualisation" element={<ClientCatagoryVisualization />} />
+          <Route path="/client-buy-sell" element={<ClientBuySellDesign />} />
+          <Route path="/project-details" element={<ProjectDetails />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/terms-condition" element={<TermsAndCondition />} />
+
+          <Route path="/categoryresult" element={<CategoryResult />} />
+          <Route path="/getverified" element={<GetVerified />} />
+        </Routes>
+      </IconContext.Provider>
+    </BrowserRouter>
   );
 }
 

@@ -16,14 +16,13 @@ const DashboardPane = () => {
   });
   useEffect(() => {
     contextData?.userData &&
-      axios
-        .post("http://13.52.16.160:8082/identity/filter_projects", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
-          project_status: "approved",
-          ...onGoingProjectPageId,
-        })
+      axios.post("http://13.52.16.160:8082/identity/filter_projects", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+        project_status: "approved",
+        ...onGoingProjectPageId,
+      })
         .then((res) => {
           if (res?.data?.status === "Success") {
             setOnGoingProject(res?.data?.data);
