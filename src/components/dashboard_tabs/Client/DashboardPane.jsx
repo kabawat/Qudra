@@ -6,20 +6,22 @@ import BuyDesign from "./BuyDesign";
 import Pagination from "react-bootstrap/Pagination";
 import Global from "../../../context/Global";
 import useDemoConfig from "../../../components/Graph/Client/useDemoConfig";
+import { useCookies } from "react-cookie";
 const DashboardPane = () => {
   const contextData = useContext(Global);
   const [buyDesigns, setBuyDesigns] = useState(false);
+  const [cookies] = useCookies()
   const [onGoingProject, setOnGoingProject] = useState([]);
   const [onGoingProjectPageId, setOnGoingProjectPageId] = useState({
     page: 1,
     page_size: 5,
   });
   useEffect(() => {
-    contextData?.userData &&
+    cookies?.user_data &&
       axios.post("http://13.52.16.160:8082/identity/filter_projects", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
         project_status: "approved",
         ...onGoingProjectPageId,
       })

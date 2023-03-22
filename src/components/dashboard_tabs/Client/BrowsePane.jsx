@@ -10,9 +10,11 @@ import "swiper/css/thumbs";
 import "react-toastify/dist/ReactToastify.css";
 import Global from "../../../context/Global";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 const BrowsePane = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
+  const [cookies,] = useCookies()
   const [showCatagory, setShowCatagory] = useState({});
   const [catagoriesDropdown, SetCatagoriesDropdown] = useState([]);
   const [browserProfessionalSearchInput, setBrowserProfessionalSearchInput] =
@@ -29,20 +31,18 @@ const BrowsePane = () => {
   const [uploadSubCatagoryModal, setUploadSubCatagoryModal] = useState(false);
 
   useEffect(() => {
-    if (contextData?.userData && contextData?.userData.role === "client") {
+    if (cookies?.user_data && cookies?.user_data.role === "client") {
       !defaultProfessionalProfile?.length &&
-        axios
-          .post("http://13.52.16.160:8082/client/browse_profesional_list", {
-            client_id: contextData?.userData?.user_id,
-            user_token: contextData?.userData?.user_token,
-            role: contextData?.userData?.role,
-            ...browseProfessinalPageId,
-          })
-          .then((res) => {
-            if (res?.data?.status === "Success") {
-              setDefaultProfessionalProfile(res?.data?.data);
-            }
-          });
+        axios.post("http://13.52.16.160:8082/client/browse_profesional_list", {
+          client_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          ...browseProfessinalPageId,
+        }).then((res) => {
+          if (res?.data?.status === "Success") {
+            setDefaultProfessionalProfile(res?.data?.data);
+          }
+        });
     }
   }, [
     browseProfessinalPageId,
@@ -70,7 +70,7 @@ const BrowsePane = () => {
     let i = 0;
     i <
     browseProfessionalData?.total_data /
-      browseProfessinalSearchPageId?.page_size;
+    browseProfessinalSearchPageId?.page_size;
     i++
   ) {
     paginationSearchArray.push(i + 1);
@@ -79,9 +79,9 @@ const BrowsePane = () => {
     if (browserProfessionalSearchInput) {
       axios
         .post("http://13.52.16.160:8082/client/search_professional", {
-          client_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
+          client_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
           search_data: browserProfessionalSearchInput,
           ...browseProfessinalSearchPageId,
           filter_by: filterProject,
@@ -103,9 +103,9 @@ const BrowsePane = () => {
   const uploadCatagory = () => {
     axios
       .post("http://13.52.16.160:8082/client/client_selected_cat", {
-        client_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
@@ -116,17 +116,17 @@ const BrowsePane = () => {
 
   const languagesArchitecture = [
     contextData?.static_architecture_design?.data &&
-      contextData?.static_architecture_design?.data?.filter((ress) => {
-        return ress !== "" ||
-          null ||
-          (clientSelectedCatagory &&
-            clientSelectedCatagory[1].includes(ress?.sub_category_id))
-          ? {
-              label: ress?.sub_category,
-              value: ress?.sub_category_id,
-            }
-          : "";
-      }),
+    contextData?.static_architecture_design?.data?.filter((ress) => {
+      return ress !== "" ||
+        null ||
+        (clientSelectedCatagory &&
+          clientSelectedCatagory[1].includes(ress?.sub_category_id))
+        ? {
+          label: ress?.sub_category,
+          value: ress?.sub_category_id,
+        }
+        : "";
+    }),
   ];
   const newCatagoriesArchitecture =
     languagesArchitecture[0] &&
@@ -148,17 +148,17 @@ const BrowsePane = () => {
 
   const languagesVisualization = [
     contextData?.static_visualization_design?.data &&
-      contextData?.static_visualization_design?.data?.filter((ress) => {
-        return ress !== "" ||
-          null ||
-          (clientSelectedCatagory &&
-            clientSelectedCatagory[0][2]?.includes(ress?.sub_category_id))
-          ? {
-              label: ress?.sub_category,
-              value: ress?.sub_category_id,
-            }
-          : "";
-      }),
+    contextData?.static_visualization_design?.data?.filter((ress) => {
+      return ress !== "" ||
+        null ||
+        (clientSelectedCatagory &&
+          clientSelectedCatagory[0][2]?.includes(ress?.sub_category_id))
+        ? {
+          label: ress?.sub_category,
+          value: ress?.sub_category_id,
+        }
+        : "";
+    }),
   ];
   const newCatagoriesVisualization =
     languagesVisualization[0] &&
@@ -180,17 +180,17 @@ const BrowsePane = () => {
 
   const languagesBuySale = [
     contextData?.static_buy_sale_design?.data &&
-      contextData?.static_buy_sale_design?.data?.filter((ress) => {
-        return ress !== "" ||
-          null ||
-          (clientSelectedCatagory &&
-            clientSelectedCatagory[3].includes(ress?.sub_category_id))
-          ? {
-              label: ress?.sub_category,
-              value: ress?.sub_category_id,
-            }
-          : "";
-      }),
+    contextData?.static_buy_sale_design?.data?.filter((ress) => {
+      return ress !== "" ||
+        null ||
+        (clientSelectedCatagory &&
+          clientSelectedCatagory[3].includes(ress?.sub_category_id))
+        ? {
+          label: ress?.sub_category,
+          value: ress?.sub_category_id,
+        }
+        : "";
+    }),
   ];
   const newCatagoriesBuySale =
     languagesBuySale[0] &&
@@ -220,22 +220,22 @@ const BrowsePane = () => {
                 e.preventDefault();
                 browserProfessionalSearchInput
                   ? axios
-                      .post(
-                        "http://13.52.16.160:8082/client/search_professional",
-                        {
-                          client_id: contextData?.userData?.user_id,
-                          user_token: contextData?.userData?.user_token,
-                          role: contextData?.userData?.role,
-                          search_data: browserProfessionalSearchInput,
-                          ...browseProfessinalSearchPageId,
-                          filter_by: filterProject,
-                        }
-                      )
-                      .then((res) => {
-                        if (res?.data?.status === "Success") {
-                          setBrowserProfessionalData(res?.data?.data);
-                        } else setBrowserProfessionalData(null);
-                      })
+                    .post(
+                      "http://13.52.16.160:8082/client/search_professional",
+                      {
+                        client_id: cookies?.user_data?.user_id,
+                        user_token: cookies?.user_data?.user_token,
+                        role: cookies?.user_data?.role,
+                        search_data: browserProfessionalSearchInput,
+                        ...browseProfessinalSearchPageId,
+                        filter_by: filterProject,
+                      }
+                    )
+                    .then((res) => {
+                      if (res?.data?.status === "Success") {
+                        setBrowserProfessionalData(res?.data?.data);
+                      } else setBrowserProfessionalData(null);
+                    })
                   : setBrowserProfessionalData(null);
               }}
             >
@@ -252,19 +252,16 @@ const BrowsePane = () => {
                           setBrowserProfessionalData(null);
                         }
                       }}
-                      placeholder={`${
-                        filterProject === "sub_category"
-                          ? "Search Professional by Catagory Name"
-                          : ""
-                      }${
-                        filterProject === "nation"
+                      placeholder={`${filterProject === "sub_category"
+                        ? "Search Professional by Catagory Name"
+                        : ""
+                        }${filterProject === "nation"
                           ? "Search Professional by Country Name"
                           : ""
-                      }${
-                        filterProject === "price_range"
+                        }${filterProject === "price_range"
                           ? "Search Professional by Price"
                           : ""
-                      }...`}
+                        }...`}
                       className="form-control my-4"
                     />
                     <div className="position-relative d-flex justify-content-center align-items-center ms-5">
@@ -324,225 +321,225 @@ const BrowsePane = () => {
             <div className="row">
               {browserProfessionalSearchInput
                 ? browseProfessionalData &&
-                  browseProfessionalData?.final_data?.map((res) => (
-                    <div className="col-xxl-4 col-md-6  my-3">
-                      <div className="item">
-                        <div className="henry-section">
-                          <div className="henry-img">
-                            <img src={res?.avatar} alt={res?.name} />
-                            <div className="online"></div>
-                          </div>
-                          <div className="henry-text">
-                            <h6>{res?.name}</h6>
-                            <span>
-                              <img
-                                src="./static/images/project.png"
-                                className="object-fit"
-                                alt={res?.projects}
-                              />
-                              {res?.projects}+ Projects Done
-                            </span>
-                          </div>
+                browseProfessionalData?.final_data?.map((res) => (
+                  <div className="col-xxl-4 col-md-6  my-3">
+                    <div className="item">
+                      <div className="henry-section">
+                        <div className="henry-img">
+                          <img src={res?.avatar} alt={res?.name} />
+                          <div className="online"></div>
                         </div>
-                        <div className="add-hire">
-                          <Rating
-                            name="read-only"
-                            value={parseInt(res?.ratings)}
-                            readOnly
-                          />
-                          <div className="add-btn">
-                            <button
-                              onClick={() => {
-                                navigate(
-                                  `/professionalprofile/${res?.professional_id}`
-                                );
-                                contextData?.dispatch({
-                                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                                  value: null,
-                                });
-                              }}
-                            >
-                              View Profile
-                              <img
-                                src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                                alt="add/hire"
-                              />
-                            </button>
-                          </div>
+                        <div className="henry-text">
+                          <h6>{res?.name}</h6>
+                          <span>
+                            <img
+                              src="./static/images/project.png"
+                              className="object-fit"
+                              alt={res?.projects}
+                            />
+                            {res?.projects}+ Projects Done
+                          </span>
+                        </div>
+                      </div>
+                      <div className="add-hire">
+                        <Rating
+                          name="read-only"
+                          value={parseInt(res?.ratings)}
+                          readOnly
+                        />
+                        <div className="add-btn">
+                          <button
+                            onClick={() => {
+                              navigate(
+                                `/professionalprofile/${res?.professional_id}`
+                              );
+                              contextData?.dispatch({
+                                type: "PROFESSIONAL_USER_PROFILE_DATA",
+                                value: null,
+                              });
+                            }}
+                          >
+                            View Profile
+                            <img
+                              src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
+                              alt="add/hire"
+                            />
+                          </button>
                         </div>
                       </div>
                     </div>
-                  ))
+                  </div>
+                ))
                 : defaultProfessionalProfile &&
-                  defaultProfessionalProfile?.final_data?.map((res, key) => (
-                    <div className="col-xxl-4 col-md-6  my-3" key={key}>
-                      <div className="item">
-                        <div className="henry-section">
-                          <div className="henry-img">
-                            <img src={res?.avatar} alt={res?.name} />
-                            <div className="online"></div>
-                          </div>
-                          <div className="henry-text">
-                            <h6>{res?.name}</h6>
-                            <span>
-                              <img
-                                src="./static/images/project.png"
-                                className="object-fit"
-                                alt={res?.projects}
-                              />
-                              {res?.projects}+ Projects Done
-                            </span>
-                          </div>
+                defaultProfessionalProfile?.final_data?.map((res, key) => (
+                  <div className="col-xxl-4 col-md-6  my-3" key={key}>
+                    <div className="item">
+                      <div className="henry-section">
+                        <div className="henry-img">
+                          <img src={res?.avatar} alt={res?.name} />
+                          <div className="online"></div>
                         </div>
-                        <div className="add-hire">
-                          <Rating
-                            name="read-only"
-                            value={parseInt(res?.ratings)}
-                            readOnly
-                          />
-                          <div className="add-btn">
-                            <button
-                              onClick={() => {
-                                navigate(
-                                  `/professionalprofile/${res?.professional_id}`
-                                );
-                                contextData?.dispatch({
-                                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                                  value: null,
-                                });
-                              }}
-                            >
-                              View Profile
-                              <img
-                                src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                                alt="add/hire"
-                              />
-                            </button>
-                          </div>
+                        <div className="henry-text">
+                          <h6>{res?.name}</h6>
+                          <span>
+                            <img
+                              src="./static/images/project.png"
+                              className="object-fit"
+                              alt={res?.projects}
+                            />
+                            {res?.projects}+ Projects Done
+                          </span>
+                        </div>
+                      </div>
+                      <div className="add-hire">
+                        <Rating
+                          name="read-only"
+                          value={parseInt(res?.ratings)}
+                          readOnly
+                        />
+                        <div className="add-btn">
+                          <button
+                            onClick={() => {
+                              navigate(
+                                `/professionalprofile/${res?.professional_id}`
+                              );
+                              contextData?.dispatch({
+                                type: "PROFESSIONAL_USER_PROFILE_DATA",
+                                value: null,
+                              });
+                            }}
+                          >
+                            View Profile
+                            <img
+                              src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
+                              alt="add/hire"
+                            />
+                          </button>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                ))}
               <div>
                 {browserProfessionalSearchInput
                   ? browseProfessionalData &&
-                    browseProfessionalData?.total_data >
-                      browseProfessinalSearchPageId?.page_size && (
-                      <Pagination className="ps-5 paginationBoxProfessionalDashboard">
-                        <Pagination.First
-                          onClick={() => {
-                            setBrowseProfessionalSearchPageId({
-                              page: 1,
-                              page_size: 10,
-                            });
-                          }}
-                        />
-                        <Pagination.Prev
+                  browseProfessionalData?.total_data >
+                  browseProfessinalSearchPageId?.page_size && (
+                    <Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                      <Pagination.First
+                        onClick={() => {
+                          setBrowseProfessionalSearchPageId({
+                            page: 1,
+                            page_size: 10,
+                          });
+                        }}
+                      />
+                      <Pagination.Prev
+                        onClick={() => {
+                          setBrowseProfessionalSearchPageId((prev) => ({
+                            ...prev,
+                            page:
+                              browseProfessinalSearchPageId?.page !== 1
+                                ? browseProfessinalSearchPageId?.page - 1
+                                : 1,
+                          }));
+                        }}
+                      />
+                      {paginationSearchArray?.map((res, key) => (
+                        <Pagination.Item
+                          key={key}
+                          active={browseProfessinalSearchPageId?.page === res}
                           onClick={() => {
                             setBrowseProfessionalSearchPageId((prev) => ({
                               ...prev,
-                              page:
-                                browseProfessinalSearchPageId?.page !== 1
-                                  ? browseProfessinalSearchPageId?.page - 1
-                                  : 1,
+                              page: res,
                             }));
                           }}
-                        />
-                        {paginationSearchArray?.map((res, key) => (
-                          <Pagination.Item
-                            key={key}
-                            active={browseProfessinalSearchPageId?.page === res}
-                            onClick={() => {
-                              setBrowseProfessionalSearchPageId((prev) => ({
-                                ...prev,
-                                page: res,
-                              }));
-                            }}
-                          >
-                            {res}
-                          </Pagination.Item>
-                        ))}
-                        <Pagination.Next
-                          onClick={() => {
-                            setBrowseProfessionalSearchPageId((prev) => ({
-                              ...prev,
-                              page:
-                                paginationSearchArray?.length !==
+                        >
+                          {res}
+                        </Pagination.Item>
+                      ))}
+                      <Pagination.Next
+                        onClick={() => {
+                          setBrowseProfessionalSearchPageId((prev) => ({
+                            ...prev,
+                            page:
+                              paginationSearchArray?.length !==
                                 browseProfessinalSearchPageId?.page
-                                  ? browseProfessinalSearchPageId?.page + 1
-                                  : browseProfessinalSearchPageId?.page,
-                            }));
-                          }}
-                        />
-                        <Pagination.Last
-                          onClick={() => {
-                            setBrowseProfessionalSearchPageId((prev) => ({
-                              ...prev,
-                              page: paginationSearchArray?.length,
-                            }));
-                          }}
-                        />
-                      </Pagination>
-                    )
+                                ? browseProfessinalSearchPageId?.page + 1
+                                : browseProfessinalSearchPageId?.page,
+                          }));
+                        }}
+                      />
+                      <Pagination.Last
+                        onClick={() => {
+                          setBrowseProfessionalSearchPageId((prev) => ({
+                            ...prev,
+                            page: paginationSearchArray?.length,
+                          }));
+                        }}
+                      />
+                    </Pagination>
+                  )
                   : defaultProfessionalProfile &&
-                    defaultProfessionalProfile?.total_data >
-                      browseProfessinalPageId?.page_size && (
-                      <Pagination className="ps-5 paginationBoxProfessionalDashboard">
-                        <Pagination.First
-                          onClick={() => {
-                            setBrowseProfessionalPageId({
-                              page: 1,
-                              page_size: 10,
-                            });
-                          }}
-                        />
-                        <Pagination.Prev
+                  defaultProfessionalProfile?.total_data >
+                  browseProfessinalPageId?.page_size && (
+                    <Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                      <Pagination.First
+                        onClick={() => {
+                          setBrowseProfessionalPageId({
+                            page: 1,
+                            page_size: 10,
+                          });
+                        }}
+                      />
+                      <Pagination.Prev
+                        onClick={() => {
+                          setBrowseProfessionalPageId((prev) => ({
+                            ...prev,
+                            page:
+                              browseProfessinalPageId?.page !== 1
+                                ? browseProfessinalPageId?.page - 1
+                                : 1,
+                          }));
+                        }}
+                      />
+                      {paginationArray?.map((res, key) => (
+                        <Pagination.Item
+                          key={key}
+                          active={browseProfessinalPageId?.page === res}
                           onClick={() => {
                             setBrowseProfessionalPageId((prev) => ({
                               ...prev,
-                              page:
-                                browseProfessinalPageId?.page !== 1
-                                  ? browseProfessinalPageId?.page - 1
-                                  : 1,
+                              page: res,
                             }));
                           }}
-                        />
-                        {paginationArray?.map((res, key) => (
-                          <Pagination.Item
-                            key={key}
-                            active={browseProfessinalPageId?.page === res}
-                            onClick={() => {
-                              setBrowseProfessionalPageId((prev) => ({
-                                ...prev,
-                                page: res,
-                              }));
-                            }}
-                          >
-                            {res}
-                          </Pagination.Item>
-                        ))}
-                        <Pagination.Next
-                          onClick={() => {
-                            setBrowseProfessionalPageId((prev) => ({
-                              ...prev,
-                              page:
-                                paginationArray?.length !==
+                        >
+                          {res}
+                        </Pagination.Item>
+                      ))}
+                      <Pagination.Next
+                        onClick={() => {
+                          setBrowseProfessionalPageId((prev) => ({
+                            ...prev,
+                            page:
+                              paginationArray?.length !==
                                 browseProfessinalPageId?.page
-                                  ? browseProfessinalPageId?.page + 1
-                                  : browseProfessinalPageId?.page,
-                            }));
-                          }}
-                        />
-                        <Pagination.Last
-                          onClick={() => {
-                            setBrowseProfessionalPageId((prev) => ({
-                              ...prev,
-                              page: paginationArray?.length,
-                            }));
-                          }}
-                        />
-                      </Pagination>
-                    )}
+                                ? browseProfessinalPageId?.page + 1
+                                : browseProfessinalPageId?.page,
+                          }));
+                        }}
+                      />
+                      <Pagination.Last
+                        onClick={() => {
+                          setBrowseProfessionalPageId((prev) => ({
+                            ...prev,
+                            page: paginationArray?.length,
+                          }));
+                        }}
+                      />
+                    </Pagination>
+                  )}
               </div>
             </div>
           </div>
@@ -643,9 +640,9 @@ const BrowsePane = () => {
                           .post(
                             "http://13.52.16.160:8082/client/add_client_cat",
                             {
-                              client_id: contextData?.userData?.user_id,
-                              user_token: contextData?.userData?.user_token,
-                              role: contextData?.userData?.role,
+                              client_id: cookies?.user_data?.user_id,
+                              user_token: cookies?.user_data?.user_token,
+                              role: cookies?.user_data?.role,
                               category_id: showCatagory?.catagory_id,
                               new_sub_cat: values?.new_sub_cat,
                             }

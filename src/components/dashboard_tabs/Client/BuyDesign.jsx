@@ -10,11 +10,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useCookies } from "react-cookie";
 const BuyDesign = ({ setBuyDesigns }) => {
   const [purchaseDesigns, setPurchaseDesigns] = useState();
   const contextData = useContext(Global);
   const [showPurchaseDesignModal, setShowPurchaseDesignModal] = useState(false);
-
+  const [cookies] = useCookies()
   const [purchaseDesignsPagination, setPurchaseDesignsPagination] = useState({
     page: 1,
     page_size: 8,
@@ -22,12 +23,12 @@ const BuyDesign = ({ setBuyDesigns }) => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
-    contextData?.userData &&
+    cookies?.user_data &&
       axios
         .post("http://13.52.16.160:8082/client/client_buysell_projects", {
-          client_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
+          client_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
           ...purchaseDesignsPagination,
         })
         .then((res) => {
@@ -221,7 +222,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                     ...prev,
                     page:
                       purchaseDesignsArray?.length !==
-                      purchaseDesignsPagination?.page
+                        purchaseDesignsPagination?.page
                         ? purchaseDesignsPagination?.page + 1
                         : purchaseDesignsPagination?.page,
                   }));

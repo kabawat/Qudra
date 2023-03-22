@@ -6,9 +6,12 @@ import Global from "../../context/Global";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useCookies } from "react-cookie";
 const ClientCategoriesArchitectural = () => {
   const contextData = useContext(Global);
+  const [cookies] = useCookies()
   const [selectList, setSelectList] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     let list = {};
     const selectImg = JSON.parse(localStorage.getItem("selectImg"));
@@ -32,8 +35,6 @@ const ClientCategoriesArchitectural = () => {
       [name]: parseInt(value),
     });
   };
-  const [page, setPage] = useState(1);
-  const navigate = useNavigate();
 
   const SkipPage = () => {
     localStorage.setItem(
@@ -102,7 +103,7 @@ const ClientCategoriesArchitectural = () => {
   const handleEditProfileButton = () => {
     axios
       .put("http://13.52.16.160:8082/identity/update_account", {
-        ...JSON.parse(localStorage.getItem("user_data")),
+        ...cookies?.user_data,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
@@ -110,128 +111,142 @@ const ClientCategoriesArchitectural = () => {
         }
       });
   };
-  return (
-    <>
-      <div className="create-account">
-        <main className="create-account-main">
-          <div className="container mb-5">
-            <Header2 link={true} />
-            <form onSubmit={submitData}>
-              <>
-                <h1>Choose Categories</h1>
-                <div className="category-button">
-                  <h6 className="text-center">
-                    I Want Architectural Designing
-                  </h6>
-                </div>
-                <br />
-                <div
-                  className="me-auto"
-                  style={{
-                    fontSize: "25px",
-                    color: "#01a78a",
-                    cursor: "pointer",
-                  }}
-                >
-                  <i
-                    style={{ fontSize: "30px" }}
-                    className="fa-solid fa-arrow-left-long"
-                    onClick={handleEditProfileButton}
-                  ></i>
-                </div>
-                <div className="row">
-                  {selectList &&
-                    contextData?.static_architecture_design?.data?.length &&
-                    contextData?.static_architecture_design?.data.map(
-                      (name, i) => {
-                        return (
-                          <div
-                            className="col-sm-6 my-md-4 px-lg-5 px-md-2"
-                            key={i}
+  
+  if (cookies?.user_data) {
+    console.log(cookies)
+    if (cookies?.user_data?.role === 'client') {
+      if (cookies?.user_data?.category_selected) {
+        navigate('/clientdashboard')
+      } else {
+        return (
+          <>
+            <div className="create-account">
+              <main className="create-account-main">
+                <div className="container mb-5">
+                  <Header2 link={true} />
+                  <form onSubmit={submitData}>
+                    <>
+                      <h1>Choose Categories</h1>
+                      <div className="category-button">
+                        <h6 className="text-center">
+                          I Want Architectural Designing
+                        </h6>
+                      </div>
+                      <br />
+                      <div
+                        className="me-auto"
+                        style={{
+                          fontSize: "25px",
+                          color: "#01a78a",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <i
+                          style={{ fontSize: "30px" }}
+                          className="fa-solid fa-arrow-left-long"
+                          onClick={handleEditProfileButton}
+                        ></i>
+                      </div>
+                      <div className="row">
+                        {selectList &&
+                          contextData?.static_architecture_design?.data?.length &&
+                          contextData?.static_architecture_design?.data.map(
+                            (name, i) => {
+                              return (
+                                <div
+                                  className="col-sm-6 my-md-4 px-lg-5 px-md-2"
+                                  key={i}
+                                >
+                                  <div
+                                    className="px-1 shadow-box"
+                                    style={{
+                                      position: "relative",
+                                      overflow: "hidden",
+                                    }}
+                                  >
+                                    <div className="row  category-box">
+                                      <div className="col-md-3 col-12 h-100 text-center  px-2">
+                                        <div className="p-md-1 p-lg-3 icon-box">
+                                          <img
+                                            id={i + "icon"}
+                                            src={
+                                              selectList[`checkbox${i}`]
+                                                ? name?.active_icon
+                                                : name?.unactive_icon
+                                            }
+                                            alt={name?.sub_category}
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="col-md-9 col-12 d-sm-flex align-items-center px-3 p-md-0">
+                                        <div>
+                                          <h6 className="m-0 py-2 text-md-start text-center">
+                                            {name?.sub_category}
+                                          </h6>
+                                          <input
+                                            type="checkbox"
+                                            name={`${i}checkbox`}
+                                            id={`checkbox${i}`}
+                                            value={name?.sub_category_id}
+                                            checked={selectList[`checkbox${i}`]}
+                                            className="large-checkbox"
+                                            style={{ cursor: "pointer" }}
+                                            onChange={toggleDisabled}
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div
+                                    className="text-danger my-2"
+                                    id={`error${i}`}
+                                  ></div>
+                                </div>
+                              );
+                            }
+                          )}
+
+                        <div className="col-md-6 col-12 my-md-4 my-3 d-flex align-items-center justify-content-center">
+                          <button
+                            style={{ border: "1px solid" }}
+                            type="button"
+                            className="bg-white theme-text-color create-account-btn"
+                            onClick={SkipPage}
                           >
-                            <div
-                              className="px-1 shadow-box"
-                              style={{
-                                position: "relative",
-                                overflow: "hidden",
-                              }}
-                            >
-                              <div className="row  category-box">
-                                <div className="col-md-3 col-12 h-100 text-center  px-2">
-                                  <div className="p-md-1 p-lg-3 icon-box">
-                                    <img
-                                      id={i + "icon"}
-                                      src={
-                                        selectList[`checkbox${i}`]
-                                          ? name?.active_icon
-                                          : name?.unactive_icon
-                                      }
-                                      alt={name?.sub_category}
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-md-9 col-12 d-sm-flex align-items-center px-3 p-md-0">
-                                  <div>
-                                    <h6 className="m-0 py-2 text-md-start text-center">
-                                      {name?.sub_category}
-                                    </h6>
-                                    <input
-                                      type="checkbox"
-                                      name={`${i}checkbox`}
-                                      id={`checkbox${i}`}
-                                      value={name?.sub_category_id}
-                                      checked={selectList[`checkbox${i}`]}
-                                      className="large-checkbox"
-                                      style={{ cursor: "pointer" }}
-                                      onChange={toggleDisabled}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div
-                              className="text-danger my-2"
-                              id={`error${i}`}
-                            ></div>
-                          </div>
-                        );
-                      }
-                    )}
-
-                  <div className="col-md-6 col-12 my-md-4 my-3 d-flex align-items-center justify-content-center">
-                    <button
-                      style={{ border: "1px solid" }}
-                      type="button"
-                      className="bg-white theme-text-color create-account-btn"
-                      onClick={SkipPage}
-                    >
-                      Skip <BsArrowRight className="theme-text-color" />
-                    </button>
-                    <button type="submit" className="create-account-btn">
-                      Continue <BsArrowRight style={{ color: "white" }} />
-                    </button>
-                  </div>
+                            Skip <BsArrowRight className="theme-text-color" />
+                          </button>
+                          <button type="submit" className="create-account-btn">
+                            Continue <BsArrowRight style={{ color: "white" }} />
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  </form>
                 </div>
-              </>
-            </form>
-          </div>
-        </main>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-      </div>
-    </>
-  );
+              </main>
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />
+            </div>
+          </>
+        );
+      }
+    } else {
+      navigate('/professionaldashboard')
+    }
+  } else {
+    navigate('/select-sign-in')
+  }
 };
 
 export default ClientCategoriesArchitectural;

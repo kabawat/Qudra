@@ -40,24 +40,27 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 function App() {
   const contextData = useContext(Global);
-  const [cookie,] = useCookies()
+  const [cookie, , removeCookie] = useCookies()
   useEffect(() => {
-    axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-      ...cookie?.user_data
-    }).then((res) => {
-      if (res.data.status === "Success") {
-        localStorage.setItem(
-          "profileImageNameGmail",
-          JSON.stringify(res?.data?.data)
-        );
-        contextData?.dispatch({
-          type: "FETCH_PROFILE_DATA",
-          value: res?.data?.data,
-        });
-      }
-    }).catch(error => {
-      console.log(error.response.data)
-    })
+    // axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+    //   ...cookie?.user_data
+    // }).then((res) => {
+    //   if (res.data.status === "Success") {
+    //     localStorage.setItem(
+    //       "profileImageNameGmail",
+    //       JSON.stringify(res?.data?.data)
+    //     );
+    //     contextData?.dispatch({
+    //       type: "FETCH_PROFILE_DATA",
+    //       value: res?.data?.data,
+    //     });
+    //   } else {
+    //     removeCookie('user_data')
+    //   }
+    // }).catch(error => {
+    //   removeCookie('user_data')
+    //   console.log(error.response.data)
+    // })
   }, [])
   return (
     <BrowserRouter basename={"/"}>
@@ -77,20 +80,19 @@ function App() {
 
           <Route path="/client-sign-up" element={<SignIn />} />
           <Route path="/select-sign-in" element={<SignInSelect />} />
-
-          {/* Professional Routes */}
+          <Route path="/clientdashboard" element={<ClientDashboard />} />
           <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
-          <Route path="/chat" element={<Chat />} />
           <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
-
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/professional-buy-and-sale" element={<ProfessionalBuyAndSale />} />
           <Route path="/categoryArchitecture" element={<ProfessionalCategoryArchitecture />} />
           <Route path="/categoryvisualization" element={<ProfessionalCategoryVisualization />} />
-          <Route path="/professional-buy-and-sale" element={<ProfessionalBuyAndSale />} />
+
+          {/* Professional Routes */}
 
           {/* Client Routes */}
-          <Route path="/clientdashboard" element={<ClientDashboard />} />
-          <Route path="/clientCategory" element={<ClientCategory />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/clientCategory" element={<ClientCategory />} />
           <Route path="/client-architechture" element={<ClientCategoriesArchitectural />} />
           <Route path="/client-visualisation" element={<ClientCatagoryVisualization />} />
           <Route path="/client-buy-sell" element={<ClientBuySellDesign />} />
@@ -107,3 +109,9 @@ function App() {
 }
 
 export default App;
+
+
+
+// %7B%22user_id%22%3A5%2C%22user_token%22%3A%22241417f8-2e53-4da7-9e49-faf04d399b95pbkdf2_sha256%24390000%24YWvirq1HL24erG2vM7%247K7IZenCsrd6XwhjcDVhT%2FNzZo4%2F3M%2BuG%2BGU9qSFYE8%3D031fc663ee475b7511aaba43a8973b2ed1779bad8d5b422b4044d392dc7676d6%22%2C%22role%22%3A%22client%22%2C%22category_selected%22%3Atrue%7D
+
+// %7B%22user_id%22%3A5%2C%22user_token%22%3A%22241417f8-2e53-4da7-9e49-faf04d399b95pbkdf2_sha256%24390000%24YWviDLVSrq1HL24erG2vM7%247K7IZenCsrd6XwhjcDVhT%2FNzZo4%2F3M%2BuG%2BGU9qSFYE8%3D031fc663ee475b7511aaba43a8973b2ed1779bad8d5b422b4044d392dc7676d6%22%2C%22role%22%3A%22client%22%2C%22category_selected%22%3Atrue%7D

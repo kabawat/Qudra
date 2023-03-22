@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { Header2 } from "../../components/Header";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link, redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import $ from "jquery";
@@ -314,11 +314,12 @@ const ProfessionalBuyAndSale = () => {
         dispatch({ type: "PREVIEW_DATA_MODAL", value: false });
       });
   };
-
-
-  if (contextData?.userData !== undefined && contextData?.userData !== null) {
-    if (!contextData?.profileData?.category_selected) {
-      if (cookies.user_data.role === "professional") {
+  // console.log(cookies?.user_data)
+  if (cookies?.user_data) {
+    if (cookies?.user_data?.role === "professional") {
+      // console.log("1",location?.state)
+      // console.log("2", cookies?.user_data)
+      if (location?.state || cookies?.user_data?.selected_catagories === false) {
         return (
           <>
             <div className="create-account">
@@ -1556,15 +1557,14 @@ const ProfessionalBuyAndSale = () => {
           </>
         );
       } else {
-        navigate('/')
+        navigate('/professionaldashboard')
       }
     } else {
-      navigate('/professionaldashboard')
+      navigate('/client-buy-sell')
     }
   } else {
-    navigate('/')
+    navigate('/select-sign-in')
   }
-
 };
 
 export default ProfessionalBuyAndSale;

@@ -80,7 +80,20 @@ const Login = () => {
       }
     });
   };
-  if (cookie?.user_data === undefined || cookie?.user_data === null) {
+  console.log(cookie?.user_data)
+  if (cookie?.user_data) {
+    if (cookie?.user_data.category_selected) {
+      if (cookie?.user_data?.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+
+        navigate('/clientdashboard')
+      }
+    } else {
+      navigate('/client-architechture')
+    }
+
+  } else {
     return (
       roleAPI && (
         <div className="create-account">
@@ -133,10 +146,7 @@ const Login = () => {
                         type: "FETCH_USER_DATA",
                         value: res?.data?.data,
                       });
-                      localStorage.setItem(
-                        "user_data",
-                        JSON.stringify(res?.data?.data)
-                      );
+                      localStorage.setItem("user_data", JSON.stringify(res?.data?.data));
                     } else {
                       setError(true);
                       setSubmitting(false);
@@ -369,17 +379,6 @@ const Login = () => {
         </div>
       )
     );
-  } else {
-    if (cookie?.user_data.category_selected) {
-      if (cookie?.user_data?.role === "professional") {
-        navigate('/professionaldashboard')
-      } else {
-
-        navigate('/clientdashboard')
-      }
-    } else {
-      navigate('/client-architechture')
-    }
   }
 };
 

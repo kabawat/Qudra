@@ -26,7 +26,7 @@ const Header2 = ({ link }) => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
-  const [, , removeCookie] = useCookies()
+  const [cookies,,removeCookie] = useCookies()
   const logoutHandle = () => {
     setShow(false);
     localStorage.clear();
@@ -62,73 +62,38 @@ const Header2 = ({ link }) => {
                     <Link to="/join">Sign up</Link>
                   )}
                   {window.location.pathname === "/categoryArchitecture" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/categoryvisualization" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname ===
                     "/professional-buy-and-sale" && (
-                      <button
-                        onClick={() => {
-                          setShow(true);
-                        }}
-                        style={buttonStyle}
-                      >
+                      <button onClick={() => { setShow(true); }} style={buttonStyle}>
                         logout
                       </button>
                     )}
                   {window.location.pathname === "/client-architechture" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/client-visualisation" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/client-buy-sell" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/edit-profile" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
                       logout
                     </button>
                   )}
@@ -164,7 +129,7 @@ const Header2 = ({ link }) => {
 };
 
 const HeaderHome = () => {
-  const [, , removeCookie] = useCookies()
+  const [cookies,,removeCookie] = useCookies()
   const [userData, setUserData] = useState(
     JSON.parse(localStorage.getItem("user_data"))
   );
@@ -205,7 +170,7 @@ const HeaderHome = () => {
               <div className="col-lg-9 col-md-8 col-5 d-flex align-items-center">
                 <div className="w-100 d-flex align-items-center justify-content-end">
                   <ul className="  align-items-center m-0 ps-0">
-                    {!contextData?.userData && (
+                    {!cookies?.user_data && (
                       <li>
                         <Link
                           to="/join"
@@ -215,7 +180,7 @@ const HeaderHome = () => {
                         </Link>
                       </li>
                     )}
-                    {contextData?.userData && (
+                    {cookies?.user_data && (
                       <li>
                         <Link
                           to={
@@ -238,12 +203,12 @@ const HeaderHome = () => {
                         </Link>
                       </li>
                     )}
-                    {!contextData?.userData && (
+                    {!cookies?.user_data && (
                       <li>
                         <Link to="/select-sign-in">Sign In</Link>
                       </li>
                     )}
-                    {contextData?.userData && (
+                    {cookies?.user_data && (
                       <li>
                         <Link to="/" onClick={() => setShow(true)}>Sign Out</Link>
                       </li>
@@ -276,19 +241,19 @@ const HeaderHome = () => {
                         </Button>
                       </Modal.Footer>
                     </Modal>
-                    {contextData?.userData?.role === "client" && (
+                    {cookies?.user_data?.role === "client" && (
                       <li>
                         <Link
                           to={
-                            !contextData?.userData ? "/join" : "clientdashboard"
+                            !cookies?.user_data ? "/join" : "clientdashboard"
                           }
                         >
                           Business
                         </Link>
                       </li>
                     )}
-                    {contextData?.userData?.role !== "professional" &&
-                      contextData?.userData?.role !== "client" && (
+                    {cookies?.user_data?.role !== "professional" &&
+                      cookies?.user_data?.role !== "client" && (
                         <li>
                           <Link to="/client-sign-up">Business</Link>
                         </li>
@@ -328,7 +293,7 @@ const HeaderHome = () => {
                     </Link>
                     <div className="mobile-menu-content">
                       <ul className="  align-items-center m-0 ps-0">
-                        {contextData?.userData && (
+                        {cookies?.user_data && (
                           <>
                             <li>
                               <Link
@@ -351,7 +316,7 @@ const HeaderHome = () => {
                             </li>
                           </>
                         )}
-                        {!contextData?.userData && (
+                        {!cookies?.user_data && (
                           <>
                             <li>
                               <Link to="/join">Join</Link>
@@ -431,7 +396,7 @@ const Header3 = () => {
 
 const ChatHeader = () => {
   const navigate = useNavigate();
-  const [, , removeCookie] = useCookies()
+  const [cookies,,removeCookie] = useCookies()
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");
@@ -445,9 +410,9 @@ const ChatHeader = () => {
   const handleNotification = (res) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_details", {
-        professional_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        professional_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
         project_id: res?.detail?.project_id,
       })
       .then((respo) => {
@@ -467,9 +432,9 @@ const ChatHeader = () => {
   const handleClientAcceptation = (client_id, client_project_id) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        client_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
         professional_id: client_id,
         project_id: client_project_id,
       })
@@ -479,9 +444,9 @@ const ChatHeader = () => {
             .post(
               "http://13.52.16.160:8082/client/particular_project_details",
               {
-                client_id: contextData?.userData?.user_id,
-                user_token: contextData?.userData?.user_token,
-                role: contextData?.userData?.role,
+                client_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
                 project_id: client_project_id,
               }
             )
@@ -509,12 +474,12 @@ const ChatHeader = () => {
   });
   const [notificationArray, setNotificationArray] = useState();
   const handleNotificationBox = () => {
-    contextData?.userData &&
+    cookies?.user_data &&
       axios
         .post("http://13.52.16.160:8082/identity/get-notifications", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
           ...notificationPageId,
         })
         .then((res) => {
@@ -528,17 +493,17 @@ const ChatHeader = () => {
 
   const handleEditProfileButton = () => {
     axios.put("http://13.52.16.160:8082/identity/update_account", {
-      user_id: contextData?.userData?.user_id,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
     });
   };
   const bringnotificationCount = () => {
     axios
       .post("http://13.52.16.160:8082/identity/unread_notification_count", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
@@ -554,7 +519,7 @@ const ChatHeader = () => {
             <div className="col-xxl-9 col-xl-8 col-lg-7 d-block  d-flex align-items-center  justify-content-between ">
               <Link
                 to={
-                  contextData?.userData?.role === "client"
+                  cookies?.user_data?.role === "client"
                     ? "/clientdashboard"
                     : "/professionaldashboard"
                 }
@@ -675,21 +640,21 @@ const ChatHeader = () => {
               </div>
             </div>
             <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap">
-              {contextData?.userData?.role === "professional" ? (
+              {cookies?.user_data?.role === "professional" ? (
                 <div
                   onClick={() => {
                     axios
                       .post(
                         "http://13.52.16.160:8082/professional/professional_profile",
                         {
-                          professional_id: contextData?.userData?.user_id,
-                          user_token: contextData?.userData?.user_token,
+                          professional_id: cookies?.user_data?.user_id,
+                          user_token: cookies?.user_data?.user_token,
                           role: "professional",
                         }
                       )
                       .then((respo) => {
                         navigate(
-                          `/professionalprofile/${contextData?.userData?.user_id}`
+                          `/professionalprofile/${cookies?.user_data?.user_id}`
                         );
                       });
                   }}
@@ -816,7 +781,7 @@ const ChatHeader = () => {
 };
 
 const HeaderDashboard = () => {
-  const [, , removeCookie] = useCookies()
+  const [cookies,,removeCookie] = useCookies()
   const navigate = useNavigate();
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
@@ -831,9 +796,9 @@ const HeaderDashboard = () => {
   const handleNotification = (res) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_details", {
-        professional_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        professional_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
         project_id: res?.detail?.project_id,
       })
       .then((respo) => {
@@ -853,9 +818,9 @@ const HeaderDashboard = () => {
   const handleClientAcceptation = (client_id, client_project_id) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        client_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
         professional_id: client_id,
         project_id: client_project_id,
       })
@@ -865,9 +830,9 @@ const HeaderDashboard = () => {
             .post(
               "http://13.52.16.160:8082/client/particular_project_details",
               {
-                client_id: contextData?.userData?.user_id,
-                user_token: contextData?.userData?.user_token,
-                role: contextData?.userData?.role,
+                client_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
                 project_id: client_project_id,
               }
             )
@@ -895,12 +860,12 @@ const HeaderDashboard = () => {
   });
   const [notificationArray, setNotificationArray] = useState();
   const handleNotificationBox = () => {
-    contextData?.userData &&
+    cookies?.user_data &&
       axios
         .post("http://13.52.16.160:8082/identity/get-notifications", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
           ...notificationPageId,
         })
         .then((res) => {
@@ -914,9 +879,9 @@ const HeaderDashboard = () => {
   const handleEditProfileButton = () => {
     axios
       .put("http://13.52.16.160:8082/identity/update_account", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
@@ -928,9 +893,9 @@ const HeaderDashboard = () => {
   const bringnotificationCount = () => {
     axios
       .post("http://13.52.16.160:8082/identity/unread_notification_count", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
@@ -946,7 +911,7 @@ const HeaderDashboard = () => {
             <div className="col-xxl-9 col-xl-8 col-lg-7 d-block  d-flex align-items-center  justify-content-between ">
               <Link
                 to={
-                  contextData?.userData?.role === "client"
+                  cookies?.user_data?.role === "client"
                     ? "/clientdashboard"
                     : "/professionaldashboard"
                 }
@@ -1063,11 +1028,11 @@ const HeaderDashboard = () => {
               </div>
             </div>
             <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap">
-              {contextData?.userData?.role === "professional" ? (
+              {cookies?.user_data?.role === "professional" ? (
                 <div
                   onClick={() => {
                     navigate(
-                      `/professionalprofile/${contextData?.userData?.user_id}`
+                      `/professionalprofile/${cookies?.user_data?.user_id}`
                     );
                   }}
                 >
@@ -1180,6 +1145,7 @@ const HeaderDashboard = () => {
             onClick={() => {
               setShow(false);
               localStorage.clear();
+              removeCookie('user_data')
               contextData?.dispatch({ type: "LOG_OUT" });
               navigate("/");
             }}

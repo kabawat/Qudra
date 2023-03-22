@@ -63,7 +63,7 @@ const Dashboard = () => {
       }
     }
   } else {
-    navigate('/')
+    navigate('/select-sign-in')
   }
 };
 

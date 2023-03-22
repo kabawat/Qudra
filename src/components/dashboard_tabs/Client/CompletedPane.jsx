@@ -6,11 +6,13 @@ import Pagination from "react-bootstrap/Pagination";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useCookies } from "react-cookie";
 
 const CompletedPane = () => {
   const navigate = useNavigate();
   const contextData = useContext(Global);
   const [completedProject, setCompletedProject] = useState([]);
+  const [cookies] = useCookies()
   const [completedProjectPageId, setCompletedProjectPageId] = useState({
     page: 1,
     page_size: 5,
@@ -18,9 +20,9 @@ const CompletedPane = () => {
   useEffect(() => {
     axios
       .post("http://13.52.16.160:8082/identity/filter_projects", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
         project_status: "completed",
         ...completedProjectPageId,
       })
@@ -42,9 +44,9 @@ const CompletedPane = () => {
   const handleProjectNameClick = (client_id, project_id) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        client_id: contextData?.userData?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        client_id: cookies?.user_data?.user_id,
         project_id: project_id,
       })
       .then((res) => {

@@ -17,6 +17,7 @@ import "react-phone-input-2/lib/style.css";
 import axios from "axios";
 import Global from "../context/Global";
 import { getCode } from "country-list";
+import { useCookies } from "react-cookie";
 
 const languages = [
   { label: "Albanian", value: "Albanian" },
@@ -74,6 +75,7 @@ const EditProfileProfessional = () => {
   const [state, setState] = useState(false);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
+  const [cookies] = useCookies()
   const navigate = useNavigate();
   const [value, setValue] = useState({
     // alpha2: "us",
@@ -116,10 +118,10 @@ const EditProfileProfessional = () => {
     setFilePic(file);
     const signupuser = new FormData();
     signupuser.append("image", file);
-    signupuser.append("user_id", contextData?.userData?.user_id);
-    signupuser.append("user_token", contextData?.userData?.user_token);
+    signupuser.append("user_id", cookies?.user_data.user_id);
+    signupuser.append("user_token", cookies?.user_data.user_token);
 
-    signupuser.append("role", contextData?.userData?.role);
+    signupuser.append("role", cookies?.user_data.role);
     signupuser &&
       axios.post(
         "http://13.52.16.160:8082/identity/professional_profile",
@@ -164,9 +166,7 @@ const EditProfileProfessional = () => {
 
   const updateCancel = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-        ...JSON.parse(localStorage.getItem("user_data")),
-      })
+      .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", { ...cookies?.user_data })
       .then((res) => {
         localStorage.setItem(
           "profileImageNameGmail",
@@ -255,8 +255,8 @@ const EditProfileProfessional = () => {
                   const data = { ...value, languages, skills };
                   axios
                     .post("http://13.52.16.160:8082/identity/update_account", {
-                      user_id: contextData?.userData?.user_id,
-                      user_token: contextData?.userData?.user_token,
+                      user_id: cookies?.user_data.user_id,
+                      user_token: cookies?.user_data.user_token,
                       role: "professional",
                       ...data,
                     })
@@ -266,8 +266,8 @@ const EditProfileProfessional = () => {
                           .post(
                             "http://13.52.16.160:8082/identity/get_dashboard_profile/",
                             {
-                              user_id: contextData?.userData?.user_id,
-                              user_token: contextData?.userData?.user_token,
+                              user_id: cookies?.user_data.user_id,
+                              user_token: cookies?.user_data.user_token,
                               role: "professional",
                             }
                           )
@@ -551,8 +551,8 @@ const EditProfileProfessional = () => {
                                 ? educationSelect
                                 : location?.state?.education !== "Bachelors" ||
                                   "Masters"
-                                ? "Other"
-                                : location?.state?.education
+                                  ? "Other"
+                                  : location?.state?.education
                             }
                             className="form-select form-education-select"
                             onChange={(e) => {
@@ -572,22 +572,22 @@ const EditProfileProfessional = () => {
                           </Field>
                           {educationSelect !== "Bachelors"
                             ? educationSelect !== "Masters" && (
-                                <input
-                                  type="text"
-                                  className="mt-2"
-                                  placeholder="Enter Here Your Other"
-                                  value={
-                                    !state
-                                      ? location?.state?.education
-                                      : educationInput
-                                  }
-                                  onChange={(e) => {
-                                    setEducationInput(e.target.value);
-                                    setFieldValue("education", e.target.value);
-                                    setState(true);
-                                  }}
-                                />
-                              )
+                              <input
+                                type="text"
+                                className="mt-2"
+                                placeholder="Enter Here Your Other"
+                                value={
+                                  !state
+                                    ? location?.state?.education
+                                    : educationInput
+                                }
+                                onChange={(e) => {
+                                  setEducationInput(e.target.value);
+                                  setFieldValue("education", e.target.value);
+                                  setState(true);
+                                }}
+                              />
+                            )
                             : ""}
                           <ErrorMessage
                             name="education"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import Global from "./Global";
+import { useCookies } from "react-cookie";
 const initialState = {
   userData: null,
   profileData: null,
@@ -63,21 +64,33 @@ const reducer = (state, action) => {
 
 const GlobalData = (props) => {
   const [contextData, dispatch] = useReducer(reducer, initialState);
-
+  const [cookies, , removeCookie] = useCookies()
   const [showDisclamer, setShowDisclamer] = useState();
   useEffect(() => {
     if (!contextData?.userData) {
       dispatch({
         type: "FETCH_USER_DATA",
-        value: JSON.parse(localStorage.getItem("user_data")),
+        value: cookies.user_data,
       });
     }
 
     if (!contextData?.profileData) {
-      dispatch({
-        type: "FETCH_PROFILE_DATA",
-        value: JSON.parse(localStorage.getItem("profileImageNameGmail")),
-      });
+      axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+        ...cookies?.user_data
+      }).then((res) => {
+        if (res.data.status === "Success") {
+          dispatch({
+            type: "FETCH_PROFILE_DATA",
+            value: res?.data?.data,
+          });
+        } else {
+          console.log(cookies)
+          removeCookie('user_data')
+        }
+      }).catch(error => {
+        removeCookie('user_data')
+        console.log(error)
+      })
     }
   }, [contextData?.profileData, contextData?.showDisclamer]);
   const skillsOpt = [

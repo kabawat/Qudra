@@ -2,24 +2,17 @@ import React, { useEffect, useState, useContext } from "react";
 import { Header2 } from "../../components/Header";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
-import $ from "jquery";
 import { BsArrowRight } from "react-icons/bs";
 import Global from "../../context/Global";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useCookies } from "react-cookie";
 const ClientBuySellDesign = () => {
   const contextData = useContext(Global);
-
-  // const [targetId, setTargetId] = useState([]);
-  // function handleClick1() {
-  //   $(".form-preferred-deadline button i").toggleClass("i-rotate");
-  //   $(".form-preferred-deadline .task-dropdown-2").slideToggle();
-  // }
-
+  const [cookies, setCookies] = useCookies()
   const toggleDisabled = (target) => {
     let IconTarget = document.getElementById(`${parseInt(target.id)}icon`);
-    // setTargetId([parseInt(target.id)])
     if (target.checked) {
       IconTarget.src =
         contextData?.static_buy_sale_design?.data[
@@ -63,9 +56,9 @@ const ClientBuySellDesign = () => {
     if (valueArray.length) {
       axios
         .post("http://13.52.16.160:8082/client/sel_sub_category", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
           category: {
             cat_id: [...selectedCatagories?.cat_id, 3],
           },
@@ -76,6 +69,7 @@ const ClientBuySellDesign = () => {
         })
         .then((res) => {
           if (res?.data?.status === "Success") {
+            setCookies('user_data', { ...cookies.user_data, category_selected: true })
             navigate("/clientdashboard");
           }
         });
@@ -171,24 +165,24 @@ const ClientBuySellDesign = () => {
                 }
                 formSubmit(valueArray);
               }}
-              // onSubmit={(values, { setSubmitting }) => {
-              //   var valueArray = [];
-              //   for (let x in values) {
-              //     valueArray.push(values[x]);
-              //   }
-              //   valueArray.length
-              //     ? formSubmit(valueArray)
-              //     : toast.error("You must select an category!", {
-              //       position: "top-right",
-              //       autoClose: 5000,
-              //       hideProgressBar: false,
-              //       closeOnClick: true,
-              //       pauseOnHover: true,
-              //       draggable: true,
-              //       progress: undefined,
-              //       theme: "colored",
-              //     });
-              // }}
+            // onSubmit={(values, { setSubmitting }) => {
+            //   var valueArray = [];
+            //   for (let x in values) {
+            //     valueArray.push(values[x]);
+            //   }
+            //   valueArray.length
+            //     ? formSubmit(valueArray)
+            //     : toast.error("You must select an category!", {
+            //       position: "top-right",
+            //       autoClose: 5000,
+            //       hideProgressBar: false,
+            //       closeOnClick: true,
+            //       pauseOnHover: true,
+            //       draggable: true,
+            //       progress: undefined,
+            //       theme: "colored",
+            //     });
+            // }}
             >
               {({ isSubmitting, setFieldValue, values }) => (
                 <Form>
@@ -290,7 +284,7 @@ const ClientBuySellDesign = () => {
                         <button
                           type="submit"
                           className="create-account-btn"
-                          // onClick={() => navigate("/client-visualisation")}
+                        // onClick={() => navigate("/client-visualisation")}
                         >
                           Continue <BsArrowRight style={{ color: "white" }} />
                         </button>

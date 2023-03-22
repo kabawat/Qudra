@@ -23,6 +23,7 @@ import OwlCarousel from "react-owl-carousel";
 import { useNavigate } from "react-router-dom";
 import HeroesSection from "../components/HeroesSection";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 const options1 = {
   loop: false,
   margin: 10,
@@ -58,7 +59,7 @@ const options2 = {
 };
 
 const Home = () => {
-
+  const [cookies] = useCookies()
   const contextData = useContext(Global);
   const navigate = useNavigate();
   useEffect(() => {
@@ -70,7 +71,7 @@ const Home = () => {
     };
   }, []);
   useEffect(() => {
-    const user_data = JSON.parse(localStorage.getItem("user_data"))
+    const user_data = cookies.user_data
     if (user_data) {
       axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
         ...user_data

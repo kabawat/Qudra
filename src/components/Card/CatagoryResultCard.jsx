@@ -5,6 +5,7 @@ import { useContext } from "react";
 import Global from "../../context/Global";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 const Wrapper = styled.div`
   .theme-bg-color {
     height: 270px;
@@ -28,14 +29,15 @@ const Wrapper = styled.div`
 const CatagoryResultCard = ({ res, key, catagoryId, subCatagoryId }) => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
+  const [cookies] = useCookies()
   const showCatagories = (catagoryId, subCatagoryId) => {
-    if (contextData?.userData?.role === "client") {
+    if (cookies?.user_data?.role === "client") {
       contextData?.professional_user_profile_data?.details?.professional_id &&
         axios
           .post("http://13.52.16.160:8082/professional/sub_cat_data", {
-            client_id: contextData?.userData?.user_id,
-            user_token: contextData?.userData?.user_token,
-            role: contextData?.userData?.role,
+            client_id: cookies?.user_data?.user_id,
+            user_token: cookies?.user_data?.user_token,
+            role: cookies?.user_data?.role,
             category_id: catagoryId,
             sub_category_id: subCatagoryId,
             professional_id:
@@ -48,12 +50,12 @@ const CatagoryResultCard = ({ res, key, catagoryId, subCatagoryId }) => {
             }
           });
     }
-    if (contextData?.userData?.role === "professional") {
+    if (cookies?.user_data?.role === "professional") {
       axios
         .post("http://13.52.16.160:8082/professional/sub_cat_data", {
-          user_token: contextData?.userData?.user_token,
-          user_id: contextData?.userData?.user_id,
-          role: contextData?.userData?.role,
+          user_token: cookies?.user_data?.user_token,
+          user_id: cookies?.user_data?.user_id,
+          role: cookies?.user_data?.role,
           category_id: catagoryId,
           sub_category_id: subCatagoryId,
         })

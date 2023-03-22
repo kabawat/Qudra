@@ -264,12 +264,11 @@ const ProfessionalProfile = () => {
     setShowRatingReview(false);
   };
   const [showRatingReview, setShowRatingReview] = useState(false);
-
   const [verified, setVerified] = useState(false);
 
-  if (contextData?.userData !== undefined && contextData?.userData !== null) {
-    if (contextData?.profileData?.category_selected) {
-      if (cookies.user_data.role === "professional") {
+  if (cookies?.user_data) {
+    if (cookies?.user_data?.category_selected) {
+      if (cookies.user_data.role === "client") {
         return contextData?.professional_user_profile_data ? (
           <main className="profile-page">
             <section className="profile-page-sec-one">

@@ -24,19 +24,18 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 const Chat = () => {
+  const [cookies] = useCookies()
+  const navigate = useNavigate();
   const contextData = useContext(Global);
-
   const [chatsUserTitle, setChatsUserTitle] = useState({
     userPic: noUserPic,
     userSelected: "No chat selected",
   });
-
   const searchInput = () => {
     $(".search__submit").attr("type", "submit");
   };
 
   const [messageInput, setMessageInput] = useState("");
-
   const messageEndRef = useRef();
 
   useEffect(() => {
@@ -68,23 +67,23 @@ const Chat = () => {
     page_size: 20,
   });
   const allChatUserUpdate = () => {
-    if (contextData?.userData?.role === "professional") {
-      contextData?.userData &&
+    if (cookies?.user_data?.role === "professional") {
+      cookies?.user_data &&
         axios.post("http://13.52.16.160:8082/chat/all_chat_user/", {
-            professional_id: contextData?.userData?.user_id,
-            role: contextData?.userData?.role,
-            user_token: contextData?.userData?.user_token,
+            professional_id: cookies?.user_data?.user_id,
+            role: cookies?.user_data?.role,
+            user_token: cookies?.user_data?.user_token,
           }).then((res) => {
             setAllChatUser(res?.data?.data?.clients_list);
             setSearchState(false);
           });
     } else {
-      contextData?.userData &&
+      cookies?.user_data &&
         axios
           .post("http://13.52.16.160:8082/chat/all_chat_user/", {
-            client_id: contextData?.userData?.user_id,
-            role: contextData?.userData?.role,
-            user_token: contextData?.userData?.user_token,
+            client_id: cookies?.user_data?.user_id,
+            role: cookies?.user_data?.role,
+            user_token: cookies?.user_data?.user_token,
           })
           .then((res) => {
             setAllChatUser(res?.data?.data?.professional_list);
@@ -93,21 +92,21 @@ const Chat = () => {
     }
   };
   useEffect(() => {
-    if (contextData?.userData?.role === "professional") {
-      contextData?.userData &&
+    if (cookies?.user_data?.role === "professional") {
+      cookies?.user_data &&
         axios
           .post("http://13.52.16.160:8082/chat/all_chat_user/", {
-            professional_id: contextData?.userData?.user_id,
-            role: contextData?.userData?.role,
-            user_token: contextData?.userData?.user_token,
+            professional_id: cookies?.user_data?.user_id,
+            role: cookies?.user_data?.role,
+            user_token: cookies?.user_data?.user_token,
           })
           .then((res) => {
             if (res?.data?.status === "Success") {
               setAllChatUser(res?.data?.data?.clients_list);
               axios
                 .post("http://13.52.16.160:8082/chat/get_room_id/", {
-                  professional_id: contextData?.userData?.user_id,
-                  user_token: contextData?.userData?.user_token,
+                  professional_id: cookies?.user_data?.user_id,
+                  user_token: cookies?.user_data?.user_token,
                   role: "professional",
                   client_id:
                     res?.data?.data?.clients_list[otherUserId]?.client_id,
@@ -120,8 +119,8 @@ const Chat = () => {
                 });
               axios
                 .post("http://13.52.16.160:8082/chat/all_chats/", {
-                  professional_id: contextData?.userData?.user_id,
-                  user_token: contextData?.userData?.user_token,
+                  professional_id: cookies?.user_data?.user_id,
+                  user_token: cookies?.user_data?.user_token,
                   role: "professional",
                   client_id:
                     res?.data?.data?.clients_list[otherUserId]?.client_id,
@@ -134,21 +133,21 @@ const Chat = () => {
             }
           });
     } else {
-      contextData?.userData &&
+      cookies?.user_data &&
         axios
           .post("http://13.52.16.160:8082/chat/all_chat_user/", {
-            client_id: contextData?.userData?.user_id,
-            role: contextData?.userData?.role,
-            user_token: contextData?.userData?.user_token,
+            client_id: cookies?.user_data?.user_id,
+            role: cookies?.user_data?.role,
+            user_token: cookies?.user_data?.user_token,
           })
           .then((res) => {
             if (res?.data?.status === "Success") {
               setAllChatUser(res?.data?.data?.professional_list);
               axios
                 .post("http://13.52.16.160:8082/chat/get_room_id/", {
-                  client_id: contextData?.userData?.user_id,
-                  role: contextData?.userData?.role,
-                  user_token: contextData?.userData?.user_token,
+                  client_id: cookies?.user_data?.user_id,
+                  role: cookies?.user_data?.role,
+                  user_token: cookies?.user_data?.user_token,
                   professional_id:
                     res?.data?.data?.professional_list[otherUserId]
                       ?.professional_id,
@@ -161,9 +160,9 @@ const Chat = () => {
                 });
               axios
                 .post("http://13.52.16.160:8082/chat/all_chats/", {
-                  client_id: contextData?.userData?.user_id,
-                  role: contextData?.userData?.role,
-                  user_token: contextData?.userData?.user_token,
+                  client_id: cookies?.user_data?.user_id,
+                  role: cookies?.user_data?.role,
+                  user_token: cookies?.user_data?.user_token,
                   professional_id:
                     res?.data?.data?.professional_list[otherUserId]
                       ?.professional_id,
@@ -176,7 +175,7 @@ const Chat = () => {
             }
           })
     }
-  }, [contextData?.userData, otherUserId, dataChange]);
+  }, [cookies?.user_data, otherUserId, dataChange]);
   if (wskt) {
     wskt.onmessage = function (event) {
       var data = JSON.parse(event.data);
@@ -188,15 +187,15 @@ const Chat = () => {
       IsSearchUserFound(false);
     } else if (chatsearchfullnamedata.first_name) {
       axios.post("http://13.52.16.160:8082/chat/search_profile_chat/", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
           first_name: chatsearchfullnamedata.first_name,
           last_name: chatsearchfullnamedata.last_name,
         }).then((res) => {
           if (res?.data?.status === "Success") {
             setSearchState(true);
-            if (contextData?.userData?.role === "professional") {
+            if (cookies?.user_data?.role === "professional") {
               if (res.data.data.client_list != "No result Found") {
                 setAllChatUser(res?.data?.data?.client_list);
                 IsSearchUserFound(true);
@@ -205,7 +204,7 @@ const Chat = () => {
                 IsSearchUserFound(false);
               }
             }
-            if (contextData?.userData?.role === "client") {
+            if (cookies?.user_data?.role === "client") {
               if (res.data.data.professional_list != "No result Found") {
                 setAllChatUser(res?.data?.data?.professional_list);
                 IsSearchUserFound(true);
@@ -223,9 +222,8 @@ const Chat = () => {
       allChatUserUpdate();
     }
   }, [searchPara]);
-  const [cookies] = useCookies()
-  const navigate = useNavigate();
-  if (contextData?.userData !== undefined && contextData?.userData !== null) {
+  
+  if (cookies?.user_data) {
     if (contextData?.profileData?.category_selected) {
       return (<>
         <ChatHeader />
@@ -325,16 +323,16 @@ const Chat = () => {
                               onClick={() => {
                                 // setCurrentActiveChatPane("first");
                                 if (
-                                  contextData?.userData?.role === "client"
+                                  cookies?.user_data?.role === "client"
                                 ) {
                                   axios
                                     .post(
                                       "http://13.52.16.160:8082/chat/get_room_id/",
                                       {
                                         client_id:
-                                          contextData?.userData.user_id,
+                                          cookies?.user_data.user_id,
                                         user_token:
-                                          contextData?.userData.user_token,
+                                          cookies?.user_data.user_token,
                                         role: "professional",
                                         professional_id:
                                           data?.professional_id,
@@ -354,10 +352,10 @@ const Chat = () => {
                                       {
                                         client_id: data?.client_id,
                                         user_token:
-                                          contextData?.userData.user_token,
+                                          cookies?.user_data.user_token,
                                         role: "professional",
                                         professional_id:
-                                          contextData?.userData.user_id,
+                                          cookies?.user_data.user_id,
                                       }
                                     )
                                     .then((res) => {
@@ -415,7 +413,7 @@ const Chat = () => {
                             ))}
                       </Nav>
                     ) : isSearchUserFound === true ? (
-                      contextData?.userData?.role ===
+                      cookies?.user_data?.role ===
                       "professional" ? (
                         <Nav variant="pills" className="flex-column">
                           {allChatUser &&
@@ -436,10 +434,10 @@ const Chat = () => {
                                           "http://13.52.16.160:8082/chat/get_room_id/",
                                           {
                                             professional_id:
-                                              contextData?.userData
+                                              cookies?.user_data
                                                 .user_id,
                                             user_token:
-                                              contextData?.userData
+                                              cookies?.user_data
                                                 .user_token,
                                             role: "professional",
                                             client_id: data?.client_id,
@@ -483,12 +481,12 @@ const Chat = () => {
                                           "http://13.52.16.160:8082/chat/get_room_id/",
                                           {
                                             client_id:
-                                              contextData?.userData
+                                              cookies?.user_data
                                                 ?.user_id,
                                             user_token:
-                                              contextData?.userData
+                                              cookies?.user_data
                                                 ?.user_token,
-                                            role: contextData?.userData
+                                            role: cookies?.user_data
                                               ?.role,
                                             professional_id: data?.professional_id,
                                           }
@@ -581,7 +579,7 @@ const Chat = () => {
                                 wskt.send(
                                   JSON.stringify({
                                     message: messageInput,
-                                    sender: contextData?.userData?.role,
+                                    sender: cookies?.user_data?.role,
                                     type: "message",
                                   })
                                 );
@@ -594,28 +592,28 @@ const Chat = () => {
                               onSubmit={(values, { setSubmitting }) => {
                                 const fileUpload = new FormData();
                                 fileUpload.append("attachment", values.file);
-                                if (contextData?.userData.role === "professional") {
+                                if (cookies?.user_data.role === "professional") {
                                   fileUpload.append(
                                     "professional_id",
-                                    contextData?.userData?.user_id
+                                    cookies?.user_data?.user_id
                                   );
                                 } else {
                                   fileUpload.append(
                                     "cliend_id",
-                                    contextData?.userData.user_id
+                                    cookies?.user_data.user_id
                                   );
                                 }
                                 fileUpload.append(
                                   "role",
-                                  contextData?.userData.role
+                                  cookies?.user_data.role
                                 );
                                 fileUpload.append(
                                   "user_token",
-                                  contextData?.userData.user_token
+                                  cookies?.user_data.user_token
                                 );
 
                                 if (
-                                  contextData?.userData.role === "professional"
+                                  cookies?.user_data.role === "professional"
                                 ) {
                                   fileUpload.append(
                                     "client_id",
@@ -639,7 +637,7 @@ const Chat = () => {
                                           message: res?.data?.data?.file_path,
                                           attachment_id:
                                             res?.data?.data?.attchment_id,
-                                          sender: contextData?.userData?.role,
+                                          sender: cookies?.user_data?.role,
                                           type: "file",
                                         })
                                       );

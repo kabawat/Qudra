@@ -9,7 +9,21 @@ const SignInSelect = () => {
   const navigate = useNavigate();
   const contextData = useContext(Global);
   const [cookies] = useCookies()
-  if (contextData?.userData === undefined || contextData?.userData === null) {
+  if (cookies?.user_data) {
+    if (contextData?.profileData?.category_selected) {
+      if (cookies?.user_data?.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    } else {
+      if (cookies?.user_data?.role === "professional") {
+        navigate('/categoryArchitecture')
+      } else {
+        navigate('/client-architechture')
+      }
+    }
+  } else {
     return (
       <>
         <div className="create-account let-get-started">
@@ -50,20 +64,6 @@ const SignInSelect = () => {
         </div>
       </>
     );
-  } else {
-    if (contextData?.profileData?.category_selected) {
-      if (cookies.user_data.role === "professional") {
-        navigate('/professionaldashboard')
-      } else {
-        navigate('/clientdashboard')
-      }
-    } else {
-      if (cookies.user_data.role === "professional") {
-        navigate('/categoryArchitecture')
-      } else {
-        navigate('/client-architechture')
-      }
-    }
   }
 };
 

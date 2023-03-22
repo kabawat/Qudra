@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Global from "../context/Global";
 import CountrySelect from "react-bootstrap-country-select";
 import { getCode } from "country-list";
+import { useCookies } from "react-cookie";
 
 const SignUpSchema = Yup.object().shape({
   password: Yup.string()
@@ -44,7 +45,7 @@ const EditProfileClient = () => {
   const contextData = useContext(Global);
   const location = useLocation();
   const [isLoading, setLoading] = useState(false);
-
+  const [cookies] = useCookies()
   const [value, setValue] = useState({
     // alpha2: "us",
     // alpha3: "usa",
@@ -66,10 +67,10 @@ const EditProfileClient = () => {
     setFilePic(file);
     const signupuser = new FormData();
     signupuser.append("image", file);
-    signupuser.append("user_id", contextData?.userData?.user_id);
-    signupuser.append("user_token", contextData?.userData?.user_token);
+    signupuser.append("user_id", cookies?.user_data.user_id);
+    signupuser.append("user_token", cookies?.user_data.user_token);
 
-    signupuser.append("role", contextData?.userData?.role);
+    signupuser.append("role", cookies?.user_data.role);
     signupuser &&
       axios.post(
         "http://13.52.16.160:8082/identity/client_profile",
@@ -87,8 +88,8 @@ const EditProfileClient = () => {
   const handleCancel = () => {
     axios
       .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
         role: "client",
       })
       .then((res) => {
@@ -173,8 +174,8 @@ const EditProfileClient = () => {
                           .post(
                             "http://13.52.16.160:8082/identity/update_account",
                             {
-                              user_id: contextData?.userData?.user_id,
-                              user_token: contextData?.userData?.user_token,
+                              user_id: cookies?.user_data.user_id,
+                              user_token: cookies?.user_data.user_token,
                               role: "client",
                               ...values,
                             }
@@ -185,9 +186,9 @@ const EditProfileClient = () => {
                                 .post(
                                   "http://13.52.16.160:8082/identity/get_dashboard_profile/",
                                   {
-                                    user_id: contextData?.userData?.user_id,
+                                    user_id: cookies?.user_data.user_id,
                                     user_token:
-                                      contextData?.userData?.user_token,
+                                      cookies?.user_data.user_token,
                                     role: "client",
                                   }
                                 )

@@ -126,9 +126,9 @@ const ProfessionalCategoryArchitecture = () => {
       });
   };
 
-  if (contextData?.userData !== undefined && contextData?.userData !== null) {
-    if (!contextData?.profileData?.category_selected) {
-      if (cookies.user_data.role === "professional") {
+  if (cookies?.user_data) {
+    if (contextData?.profileData?.category_selected === false) {
+      if (cookies?.user_data?.role === "professional") {
         return (
           <>
             <div className="create-account">
@@ -250,13 +250,13 @@ const ProfessionalCategoryArchitecture = () => {
           </>
         );
       } else {
-        navigate('/')
+        navigate('/client-architechture')
       }
     } else {
       navigate('/professionaldashboard')
     }
   } else {
-    navigate('/')
+    navigate('/select-sign-in')
   }
 };
 
