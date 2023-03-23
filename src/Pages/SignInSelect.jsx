@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { Header3 } from "../components/Header";
@@ -9,6 +9,15 @@ const SignInSelect = () => {
   const navigate = useNavigate();
   const contextData = useContext(Global);
   const [cookies] = useCookies()
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    }
+  }, [])
   if (cookies?.user_data) {
     if (contextData?.profileData?.category_selected) {
       if (cookies?.user_data?.role === "professional") {

@@ -117,7 +117,7 @@ const ProfessionalCategoryArchitecture = () => {
   const handleEditProfileButton = () => {
     axios
       .put("http://13.52.16.160:8082/identity/update_account", {
-        ...JSON.parse(localStorage.getItem("user_data")),
+        ...cookies?.user_data,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {

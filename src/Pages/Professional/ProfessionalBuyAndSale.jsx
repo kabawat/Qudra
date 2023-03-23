@@ -25,7 +25,7 @@ import Loader from "../../components/Loader";
 import { useCookies } from "react-cookie";
 const ProfessionalBuyAndSale = () => {
   const contextData = useContext(Global);
-  const [cookies,] = useCookies()
+  const [cookies, setCookies] = useCookies()
   const ref = useRef();
   const [clsstyle, setclsstyle] = useState("none");
   const [loader, setLoader] = useState(false);
@@ -121,28 +121,9 @@ const ProfessionalBuyAndSale = () => {
         ].unactive_icon;
     }
   };
-  const [editprice, seteditprice] = useState();
 
   const [page, setPage] = useState(1);
-  const style = {
-    color: "#01a78a",
-    textDecoration: "none",
-  };
   const navigate = useNavigate();
-  const pageSetter = () => {
-    if (page != 2) {
-      setPage(page + 1);
-    }
-  };
-
-  const backSetter = () => {
-    if (page != 1) {
-      setPage(page - 1);
-    } else {
-      navigate(-1);
-    }
-  };
-
   const [selectedCatagories, setSelectedCatagories] = useState(
     JSON.parse(localStorage.getItem("SelectedCatagories"))
   );
@@ -232,6 +213,7 @@ const ProfessionalBuyAndSale = () => {
         })
         .then((res) => {
           if (res?.data?.status === "Success") {
+            setCookies('user_data', { ...cookies.user_data, category_selected: true })
             navigate("/professionaldashboard");
           }
         });
@@ -295,6 +277,7 @@ const ProfessionalBuyAndSale = () => {
             })
             .then((res) => {
               if (res?.data?.status === "Success") {
+                setCookies('user_data', { ...cookies.user_data, category_selected: true })
                 navigate("/professionaldashboard");
               }
             });
@@ -314,12 +297,20 @@ const ProfessionalBuyAndSale = () => {
         dispatch({ type: "PREVIEW_DATA_MODAL", value: false });
       });
   };
+  useEffect(() => {
+    if (location?.state === null && cookies?.user_data?.category_selected) {
+      console.log('here')
+      if (cookies?.user_data?.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    }
+  }, [])
   // console.log(cookies?.user_data)
   if (cookies?.user_data) {
     if (cookies?.user_data?.role === "professional") {
-      // console.log("1",location?.state)
-      // console.log("2", cookies?.user_data)
-      if (location?.state || cookies?.user_data?.selected_catagories === false) {
+      if (location?.state || cookies?.user_data?.category_selected === false) {
         return (
           <>
             <div className="create-account">

@@ -111,9 +111,8 @@ const ClientCategoriesArchitectural = () => {
         }
       });
   };
-  
+
   if (cookies?.user_data) {
-    console.log(cookies)
     if (cookies?.user_data?.role === 'client') {
       if (cookies?.user_data?.category_selected) {
         navigate('/clientdashboard')

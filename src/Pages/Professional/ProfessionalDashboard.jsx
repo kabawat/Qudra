@@ -16,8 +16,8 @@ const Dashboard = () => {
   const contextData = useContext(Global);
   const [cookies] = useCookies()
   const navigate = useNavigate();
-  if (contextData?.userData !== undefined && contextData?.userData !== null) {
-    if (contextData?.profileData?.category_selected) {
+  if (cookies.user_data) {
+    if (cookies.user_data?.category_selected) {
       if (cookies.user_data.role === "professional") {
         return (
           <>

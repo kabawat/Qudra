@@ -36,45 +36,42 @@ const ProfessionalProfile = () => {
       user_token: contextData?.userData?.user_token,
       professional_id: params?.professional_id,
     }).then((respo) => {
-      setLikepro(respo.data.data.liked);
+      setLikepro(respo?.data?.data?.liked);
       if (respo?.data?.status === "Success") {
         if (contextData?.userData?.role === "client") {
-          axios
-            .post(
-              "http://13.52.16.160:8082/professional/professional_sub_cat",
-              {
-                client_id: contextData?.userData?.user_id,
-                professional_id: params?.professional_id,
-                role: contextData?.userData?.role,
-                user_token: contextData?.userData?.user_token,
-              }
-            )
-            .then((res) => {
-              if (res?.data?.status === "Success") {
-                contextData?.dispatch({
-                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                  value: {
-                    details: respo?.data?.data,
-                    selected_catagories: res?.data?.response,
+          axios.post("http://13.52.16.160:8082/professional/professional_sub_cat",
+            {
+              client_id: contextData?.userData?.user_id,
+              professional_id: params?.professional_id,
+              role: contextData?.userData?.role,
+              user_token: contextData?.userData?.user_token,
+            }
+          ).then((res) => {
+            if (res?.data?.status === "Success") {
+              contextData?.dispatch({
+                type: "PROFESSIONAL_USER_PROFILE_DATA",
+                value: {
+                  details: respo?.data?.data,
+                  selected_catagories: res?.data?.response,
+                },
+              });
+              setLoader(false);
+            } else {
+              contextData?.dispatch({
+                type: "PROFESSIONAL_USER_PROFILE_DATA",
+                value: {
+                  details: respo?.data?.data,
+                  selected_catagories: {
+                    1: [],
+                    2: [],
+                    3: [],
                   },
-                });
-                setLoader(false);
-              } else {
-                contextData?.dispatch({
-                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                  value: {
-                    details: respo?.data?.data,
-                    selected_catagories: {
-                      1: [],
-                      2: [],
-                      3: [],
-                    },
-                  },
-                });
-                navigate(-1);
-                setLoader(false);
-              }
-            });
+                },
+              });
+              navigate(-1);
+              setLoader(false);
+            }
+          });
         } else {
           axios.post(
             "http://13.52.16.160:8082/professional/professional_sub_cat",
@@ -97,7 +94,8 @@ const ProfessionalProfile = () => {
           });
         }
       } else {
-        // navigate("/clientdashboard");
+        console.log('here')
+        navigate('/clientdashboard');
       }
     });
   }, [contextData?.userData]);
@@ -872,7 +870,7 @@ const ProfessionalProfile = () => {
           <LoadingModal loader={loader} />
         );
       } else {
-        navigate('/clientdashboard')
+        navigate('/professionaldashboard')
       }
     } else {
       if (cookies.user_data.role === "professional") {
@@ -882,7 +880,7 @@ const ProfessionalProfile = () => {
       }
     }
   } else {
-    navigate('/')
+    navigate('/select-sign-in')
   }
 };
 

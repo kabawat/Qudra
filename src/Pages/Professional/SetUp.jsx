@@ -264,7 +264,7 @@ const SetUp = () => {
                                 value: res?.data?.data,
                               });
 
-                              setCookies("user_data", JSON.stringify(res?.data?.data));
+                              setCookies("user_data", { ...res?.data?.data, category_selected: false })
                               localStorage.setItem("user_data", JSON.stringify(res?.data?.data));
 
                               setLoading(false);
@@ -813,7 +813,7 @@ const SetUp = () => {
               pauseOnHover
               theme="colored"
             />
-          </div>
+          </div >
         )}
       </>
     )

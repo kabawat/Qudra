@@ -56,7 +56,7 @@ const SignIn = () => {
   const [optdisplay, setoptdisplay] = useState("none");
   let navigate = useNavigate();
   const [imgcode, setimgcode] = useState("");
-  const [cookies] = useCookies()
+  const [cookies, setCookies] = useCookies()
   const [emailExists, setEmailExists] = useState(false);
 
   const verifyRequestButton = () => {
@@ -149,7 +149,39 @@ const SignIn = () => {
       keyEvent.preventDefault();
     }
   }
-  if (contextData?.userData === undefined || contextData?.userData === null) {
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (!cookies?.user_data?.category_selected) {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/clientdashboard')
+        } else {
+          navigate('/professionaldashboard')
+        }
+      } else {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/client-architechture')
+        } else {
+          navigate('/categoryArchitecture')
+        }
+      }
+    }
+  }, [])
+
+  if (cookies?.user_data) {
+    if (cookies?.user_data?.category_selected) {
+      if (cookies.user_data.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    } else {
+      if (cookies.user_data.role === "professional") {
+        navigate('/categoryArchitecture')
+      } else {
+        navigate('/client-architechture')
+      }
+    }
+  } else {
     return (
       <>
         {isLoading ? (
@@ -203,15 +235,14 @@ const SignIn = () => {
                             )
                             .then((respo) => {
                               if (respo.data?.status === "Success") {
-                                axios
-                                  .post(
-                                    "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                    {
-                                      user_id: res?.data?.data?.user_id,
-                                      user_token: res?.data?.data?.user_token,
-                                      role: res?.data?.data?.role,
-                                    }
-                                  )
+                                axios.post(
+                                  "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                  {
+                                    user_id: res?.data?.data?.user_id,
+                                    user_token: res?.data?.data?.user_token,
+                                    role: res?.data?.data?.role,
+                                  }
+                                )
                                   .then((response) => {
                                     contextData?.dispatch({
                                       type: "FETCH_PROFILE_DATA",
@@ -236,10 +267,8 @@ const SignIn = () => {
                             type: "FETCH_USER_DATA",
                             value: res?.data?.data,
                           });
-                          localStorage.setItem(
-                            "user_data",
-                            JSON.stringify(res?.data?.data)
-                          );
+                          localStorage.setItem("user_data", JSON.stringify(res?.data?.data));
+                          setCookies("user_data", { ...res?.data?.data, category_selected: false });
                           setEmailExists(false);
                         }
                       });
@@ -431,31 +460,7 @@ const SignIn = () => {
                       </div>
                       <div className="row my-md-3 my-1">
                         <div className="col-md my-md-3 my-1">
-                          {/* <CountryDropdown
-                          preferredCountries={["in", "us"]}
-                          handleChange={(e) => {
-                            let c = e.target.value;
-                            let countryName = c.slice(
-                              0,
-                              c.indexOf("(") == -1
-                                ? c.length + 1
-                                : c.indexOf("(") - 1
-                            );
-                            setFieldValue("nation", countryName);
-                          }}
-                        ></CountryDropdown> */}
-                          {/* <img
-                          style={{
-                            top: "37%",
-                            position: "absolute",
-                            // top:'34px',
-                            left: "5%",
-                            width: "18px",
-                            zIndex: "4545",
-                          }}
-                          alt="United States"
-                          src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
-                        /> */}
+
                           <CountrySelect
                             value={value}
                             onChange={(val) => {
@@ -705,20 +710,6 @@ const SignIn = () => {
         )}
       </>
     )
-  } else {
-    if (contextData?.profileData?.category_selected) {
-      if (cookies.user_data.role === "professional") {
-        navigate('/professionaldashboard')
-      } else {
-        navigate('/clientdashboard')
-      }
-    } else {
-      if (cookies.user_data.role === "professional") {
-        navigate('/categoryArchitecture')
-      } else {
-        navigate('/client-architechture')
-      }
-    }
   }
 };
 

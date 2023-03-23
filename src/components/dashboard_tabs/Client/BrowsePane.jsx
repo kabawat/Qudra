@@ -17,12 +17,9 @@ const BrowsePane = () => {
   const [cookies,] = useCookies()
   const [showCatagory, setShowCatagory] = useState({});
   const [catagoriesDropdown, SetCatagoriesDropdown] = useState([]);
-  const [browserProfessionalSearchInput, setBrowserProfessionalSearchInput] =
-    useState("");
+  const [browserProfessionalSearchInput, setBrowserProfessionalSearchInput] = useState("");
   const [browseProfessionalData, setBrowserProfessionalData] = useState(null);
-  const [defaultProfessionalProfile, setDefaultProfessionalProfile] = useState(
-    []
-  );
+  const [defaultProfessionalProfile, setDefaultProfessionalProfile] = useState([]);
   const [filterProject, setFilterProject] = useState("sub_category");
   const [browseProfessinalPageId, setBrowseProfessionalPageId] = useState({
     page: 1,
@@ -77,15 +74,14 @@ const BrowsePane = () => {
   }
   useEffect(() => {
     if (browserProfessionalSearchInput) {
-      axios
-        .post("http://13.52.16.160:8082/client/search_professional", {
-          client_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          search_data: browserProfessionalSearchInput,
-          ...browseProfessinalSearchPageId,
-          filter_by: filterProject,
-        })
+      axios.post("http://13.52.16.160:8082/client/search_professional", {
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        search_data: browserProfessionalSearchInput,
+        ...browseProfessinalSearchPageId,
+        filter_by: filterProject,
+      })
         .then((res) => {
           if (res?.data?.status === "Success") {
             setBrowserProfessionalData(res?.data?.data);
@@ -113,6 +109,37 @@ const BrowsePane = () => {
         }
       });
   };
+
+  useEffect(() => {
+    if (!contextData?.static_architecture_design?.data?.length) {
+      axios
+        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
+        .then((res) => {
+          contextData?.dispatch({
+            type: "STATIC_ARCHITECTURE_DESIGN",
+            value: res?.data,
+          });
+        });
+    }
+
+    if (!contextData?.static_visualization_design?.data?.length) {
+      axios
+        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=2")
+        .then((res) => {
+          contextData?.dispatch({
+            type: "STATIC_VISUALIZATION_DESIGN",
+            value: res?.data,
+          });
+        });
+    }
+    axios.get(`http://13.52.16.160:8082/quadra/sub_categories?category_id=3`)
+      .then((res) => {
+        contextData?.dispatch({
+          type: "STATIC_BUY_SALE_DESIGN",
+          value: res?.data,
+        });
+      });
+  }, []);
 
   const languagesArchitecture = [
     contextData?.static_architecture_design?.data &&
@@ -302,8 +329,7 @@ const BrowsePane = () => {
                         ...showCatagory,
                         isShowCatagory: true,
                       });
-                    }}
-                  >
+                    }}>
                     Update Catagory
                   </button>
                 </div>
@@ -561,19 +587,14 @@ const BrowsePane = () => {
           </p>
         </div>
 
-        <Modal
-          show={uploadSubCatagoryModal}
-          size="lg"
+        <Modal size="lg" centered show={uploadSubCatagoryModal}
           aria-labelledby="contained-modal-title-vcenter"
-          centered
-          className="modalProfessionalDashboard"
-        >
+          className="modalProfessionalDashboard">
           <Modal.Header
             closeButton
             style={{ margin: "0 0 0 auto" }}
             onClick={() => setUploadSubCatagoryModal(false)}
-            className="border-0"
-          ></Modal.Header>
+            className="border-0"></Modal.Header>
           <Modal.Body>
             <h4>Add Catagories</h4>
             <div className="row">
@@ -636,28 +657,22 @@ const BrowsePane = () => {
                         new_sub_cat: "",
                       }}
                       onSubmit={(values, { setSubmitting }) => {
-                        axios
-                          .post(
-                            "http://13.52.16.160:8082/client/add_client_cat",
-                            {
-                              client_id: cookies?.user_data?.user_id,
-                              user_token: cookies?.user_data?.user_token,
-                              role: cookies?.user_data?.role,
-                              category_id: showCatagory?.catagory_id,
-                              new_sub_cat: values?.new_sub_cat,
-                            }
-                          )
-                          .then((res) => {
-                            if (res?.data?.status === "Success") {
-                              setUploadSubCatagoryModal(false);
-                              setShowCatagory({
-                                ...showCatagory,
-                                isShowCatagory: true,
-                              });
-                            }
-                          });
-                      }}
-                    >
+                        axios.post("http://13.52.16.160:8082/client/add_client_cat", {
+                          client_id: cookies?.user_data?.user_id,
+                          user_token: cookies?.user_data?.user_token,
+                          role: cookies?.user_data?.role,
+                          category_id: showCatagory?.catagory_id,
+                          new_sub_cat: values?.new_sub_cat,
+                        }).then((res) => {
+                          if (res?.data?.status === "Success") {
+                            setUploadSubCatagoryModal(false);
+                            setShowCatagory({
+                              ...showCatagory,
+                              isShowCatagory: true,
+                            });
+                          }
+                        });
+                      }}>
                       {({ isSubmitting, setFieldValue }) => (
                         <Form>
                           <div className="row">

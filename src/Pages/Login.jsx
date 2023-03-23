@@ -80,7 +80,16 @@ const Login = () => {
       }
     });
   };
-  console.log(cookie?.user_data)
+  useEffect(() => {
+    if (cookie?.user_data) {
+      if (cookie?.user_data?.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    }
+  }, [])
+  console.log("hello")
   if (cookie?.user_data) {
     if (cookie?.user_data.category_selected) {
       if (cookie?.user_data?.role === "professional") {

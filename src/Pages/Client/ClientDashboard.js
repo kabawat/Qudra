@@ -16,42 +16,56 @@ const ClientDashboard = () => {
   const navigate = useNavigate()
   const contextData = useContext(Global);
 
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (!cookies?.user_data?.category_selected) {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/client-architechture')
+        } else {
+          navigate('/categoryArchitecture')
+        }
+      }
+    }
+  }, [])
+  
   if (cookies?.user_data) {
-    if (cookies?.user_data?.role === "client") {
-      return (
-        <>
-          <div className="dashboard">
-            <div className="container-fluid h-100">
-              <div className="row h-100 dashboard-theme-color">
-                <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
-                  <ClientDashboardAside />
-                </div>
-                <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
-                  <HeaderDashboard />
-
-                  {contextData?.current_client_tab === "dashboard" && (
-                    <DashboardPane />
-                  )}
-                  {contextData?.current_client_tab === "browse" && <BrowsePane />}
-                  {contextData?.current_client_tab === "Ongoing" && <OngoingPane />}
-                  {contextData?.current_client_tab === "Completed" && (
-                    <CompletedPane />
-                  )}
-                  {contextData?.current_client_tab === "likes" && <Likes />}
-                  {contextData?.current_client_tab === "ratings" && <Rating />}
+    if (cookies?.user_data?.category_selected) {
+      if (cookies?.user_data?.role === "client") {
+        return (
+          <>
+            <div className="dashboard">
+              <div className="container-fluid h-100">
+                <div className="row h-100 dashboard-theme-color">
+                  <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+                    <ClientDashboardAside />
+                  </div>
+                  <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
+                    <HeaderDashboard />
+                    {contextData?.current_client_tab === "dashboard" && (<DashboardPane />)}
+                    {contextData?.current_client_tab === "browse" && <BrowsePane />}
+                    {contextData?.current_client_tab === "Ongoing" && <OngoingPane />}
+                    {contextData?.current_client_tab === "Completed" && (<CompletedPane />)}
+                    {contextData?.current_client_tab === "likes" && <Likes />}
+                    {contextData?.current_client_tab === "ratings" && <Rating />}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <Footer />
-        </>
-      );
+            <Footer />
+          </>
+        );
+      } else {
+        navigate('/professionaldashboard')
+      }
     } else {
-      navigate('/professionaldashboard')
+      if (cookies?.user_data?.role === "client") {
+        navigate('/client-architechture')
+      } else {
+        navigate('/categoryArchitecture')
+      }
     }
   } else {
     navigate('/select-sign-in')
   }
 };
-
 export default ClientDashboard;

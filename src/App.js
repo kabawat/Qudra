@@ -72,34 +72,35 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/Loader" element={<Loader />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/join" element={<Join />} />
           <Route path="/quadroterms" element={<QuadroTerms />} />
           <Route path="/setup" element={<SetUp />} />
           <Route path="/kickassform" element={<KickAssForm />} />
           <Route path="/taskform" element={<TaskForm />} />
 
-          <Route path="/client-sign-up" element={<SignIn />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/client-sign-up" element={<SignIn />} /> 
+            <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
+          
           <Route path="/select-sign-in" element={<SignInSelect />} />
           <Route path="/clientdashboard" element={<ClientDashboard />} />
           <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
-          <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/professional-buy-and-sale" element={<ProfessionalBuyAndSale />} />
           <Route path="/categoryArchitecture" element={<ProfessionalCategoryArchitecture />} />
           <Route path="/categoryvisualization" element={<ProfessionalCategoryVisualization />} />
+          <Route path="/professional-buy-and-sale" element={<ProfessionalBuyAndSale />} />
 
-          {/* Professional Routes */}
-
-          {/* Client Routes */}
           <Route path="/cart" element={<Cart />} />
-          <Route path="/clientCategory" element={<ClientCategory />} />
           <Route path="/client-architechture" element={<ClientCategoriesArchitectural />} />
           <Route path="/client-visualisation" element={<ClientCatagoryVisualization />} />
           <Route path="/client-buy-sell" element={<ClientBuySellDesign />} />
+          {/* Professional Routes */}
+
+          {/* Client Routes */}
           <Route path="/project-details" element={<ProjectDetails />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/terms-condition" element={<TermsAndCondition />} />
 
+          <Route path="/clientCategory" element={<ClientCategory />} />
           <Route path="/categoryresult" element={<CategoryResult />} />
           <Route path="/getverified" element={<GetVerified />} />
         </Routes>

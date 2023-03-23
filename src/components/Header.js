@@ -26,7 +26,7 @@ const Header2 = ({ link }) => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
-  const [cookies,,removeCookie] = useCookies()
+  const [cookies, , removeCookie] = useCookies()
   const logoutHandle = () => {
     setShow(false);
     localStorage.clear();
@@ -129,10 +129,8 @@ const Header2 = ({ link }) => {
 };
 
 const HeaderHome = () => {
-  const [cookies,,removeCookie] = useCookies()
-  const [userData, setUserData] = useState(
-    JSON.parse(localStorage.getItem("user_data"))
-  );
+  const [cookies, , removeCookie] = useCookies()
+  const [userData, setUserData] = useState({ ...cookies?.user_data });
 
   const textClick = () => {
     $(".mobile-menu").css("top", "0");
@@ -396,7 +394,7 @@ const Header3 = () => {
 
 const ChatHeader = () => {
   const navigate = useNavigate();
-  const [cookies,,removeCookie] = useCookies()
+  const [cookies, , removeCookie] = useCookies()
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");
@@ -781,7 +779,7 @@ const ChatHeader = () => {
 };
 
 const HeaderDashboard = () => {
-  const [cookies,,removeCookie] = useCookies()
+  const [cookies, , removeCookie] = useCookies()
   const navigate = useNavigate();
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();

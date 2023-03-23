@@ -25,7 +25,21 @@ const QuadroTerms = () => {
         setProfilePoints(res?.data?.data);
       });
   }, []);
-  if (contextData?.userData === undefined || contextData?.userData === null) {
+  if (cookies?.user_data) {
+    if (cookies?.user_data?.category_selected) {
+      if (cookies.user_data.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    } else {
+      if (cookies.user_data.role === "professional") {
+        navigate('/categoryArchitecture')
+      } else {
+        navigate('/client-architechture')
+      }
+    }
+  } else {
     return (
       profilePoints.length ?
         <div className="create-account" >
@@ -121,20 +135,6 @@ const QuadroTerms = () => {
           </main>
         </div> : <Loader />
     );
-  } else {
-    if (contextData?.profileData?.category_selected) {
-      if (cookies.user_data.role === "professional") {
-        navigate('/professionaldashboard')
-      } else {
-        navigate('/clientdashboard')
-      }
-    } else {
-      if (cookies.user_data.role === "professional") {
-        navigate('/categoryArchitecture')
-      } else {
-        navigate('/client-architechture')
-      }
-    }
   }
 
 };

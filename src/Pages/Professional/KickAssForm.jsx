@@ -21,7 +21,21 @@ const KickAssForm = () => {
         setKickassPoints(res?.data?.data);
       });
   }, []);
-  if (contextData?.userData === undefined || contextData?.userData === null) {
+  if (cookies?.user_data) {
+    if (cookies?.user_data?.category_selected) {
+      if (cookies.user_data.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    } else {
+      if (cookies.user_data.role === "professional") {
+        navigate('/categoryArchitecture')
+      } else {
+        navigate('/client-architechture')
+      }
+    }
+  } else {
     return (
       kickassPoints.length ?
         <div className="create-account">
@@ -73,20 +87,6 @@ const KickAssForm = () => {
           </main>
         </div> : <Loader />
     );
-  } else {
-    if (contextData?.profileData?.category_selected) {
-      if (cookies.user_data.role === "professional") {
-        navigate('/professionaldashboard')
-      } else {
-        navigate('/clientdashboard')
-      }
-    } else {
-      if (cookies.user_data.role === "professional") {
-        navigate('/categoryArchitecture')
-      } else {
-        navigate('/client-architechture')
-      }
-    }
   }
 };
 

@@ -6,7 +6,7 @@ import { Header3 } from "../components/Header";
 import { welcomeImg } from "../components/images";
 const Join = () => {
   const navigate = useNavigate();
-  const [cookie, setCookie] = useCookies()
+  const [cookie, ] = useCookies()
 
   useEffect(() => {
     axios.get("http://13.52.16.160:8082/quadra/categories").then((res) => {
@@ -15,7 +15,21 @@ const Join = () => {
   }, []);
 
   const [isBusines̥s, setIsBusiness] = useState(localStorage.getItem("Business"));
-  if (cookie?.user_data === undefined) {
+  if (cookie?.user_data) {
+    if (cookie?.user_data?.category_selected) {
+      if (cookie?.user_data?.role === "client") {
+        navigate('/clientdashboard')
+      } else {
+        navigate('/professionaldashboard')
+      }
+    } else {
+      if (cookie?.user_data?.role === "client") {
+        navigate('/client-architechture')
+      } else {
+        navigate('/categoryArchitecture')
+      }
+    }
+  } else {
     return (
       <>
         <div className="create-account let-get-started">
@@ -48,18 +62,6 @@ const Join = () => {
         </div>
       </>
     );
-  } else {
-    axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", { ...cookie?.user_data }).then((res) => {
-      if (res.data?.data?.category_selected) {
-        navigate("/");
-      } else {
-        if (res?.data?.data?.role === "client") {
-          navigate('/client-architechture')
-        } else {
-          navigate('/categoryArchitecture')
-        }
-      }
-    });
   }
 };
 
