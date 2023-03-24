@@ -1109,7 +1109,9 @@ header.dashboard-header h6 {
 .Residential-Architecture-page .card .card-img-overlay h4::first-line {
   font-weight: 300;
 }
-
+textarea {
+  resize: none !important;
+}
 .custom-border-radius-one {
   border-radius: 45px 0 0 0;
 }
@@ -3208,7 +3210,7 @@ button.closeModalPreviewData {
   top: 50%;
   border-radius: 4px 25px 25px 4px;
   font-size: 11px;
-  padding: 11px 15px;
+  padding: 11px 22px;
   background-color: #01a78a;
   color: white;
   border: 0;
@@ -3670,4 +3672,65 @@ button.seeAllNotificationButton {
 .react-resizable-handle {
   bottom: -10px;
   right: -10px;
+}
+
+#certificate {
+  display: none;
+}
+#custom-button {
+  padding: 10px;
+  color: white;
+  background-color: #009578;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: nones;
+  margin-top: 8px;
+  margin-left: 5px;
+}
+
+#custom-button:hover {
+  background-color: #00b28f;
+}
+
+#custom-text {
+  margin-left: 5px;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+
+  padding-top: 7%;
+  padding-left: 5%;
+  width: 95%;
+}
+
+.video-container video {
+  width: 100%;
+  height: 68% !important;
+}
+
+.image-list li {
+  display: flex;
+  justify-content: center;
+}
+
+.image-list img {
+  margin-left: auto;
+  margin-right: auto;
+  border: 3px solid #01a78a;
+  margin-top: 2%;
+  width: 90%;
+  height: 50%;
+}
+.image-list {
+  padding: initial;
+}
+
+.Cur_proFes :hover {
+  cursor: pointer;
+}
+.certificate-other {
+  display: flex;
 }

@@ -8,7 +8,7 @@ const InstructionModal = () => {
       size="lg"
       className="professionalDisclamerModal "
       centered
-      show={contextData?.showDisclamer}
+      // show={contextData?.showDisclamer}
       onHide={() => contextData?.setShowDisclamer(false)}
     >
       <Modal.Header closeButton>

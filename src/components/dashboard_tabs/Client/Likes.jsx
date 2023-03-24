@@ -59,7 +59,7 @@ const Likes = () => {
   for (let i = 0; i < likes?.total_data / searchPageId?.page_size; i++) {
     searchPaginationArray.push(i + 1);
   }
-
+  var searchAll = [];
   const handleSearch = (event) => {
     event.preventDefault();
     axios
@@ -74,10 +74,36 @@ const Likes = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           setLikes(res?.data?.data);
+          setSearchdata(likes);
+          searchAll = res?.data?.data;
+        } else {
+          setSearchdata("");
         }
       });
   };
 
+  const handleLikes = (val) => {
+    if (val == "") {
+      axios
+        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          ...searchPageId,
+          search_for: "like",
+          search_data: "",
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setLikes(res?.data?.data);
+            searchAll = res?.data?.data;
+            setSearchdata(searchAll);
+          }
+        });
+    }
+  };
+
+  const [searchData, setSearchdata] = useState(searchAll);
   useEffect(() => {
     axios
       .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
@@ -99,22 +125,34 @@ const Likes = () => {
     <div id="liked-save" className="container-fluid  myProjectTable">
       <h2 className="ps-5"> Likes </h2>
       <div className="m-md-5 mx-2 shadow">
-        <div className="row  align-items-center MyProjectDisplayRow">
-          <div className="searchActiveProject col-8 ms-auto">
-            <form onSubmit={handleSearch}>
-              <input
-                type="text"
-                placeholder="Search..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <button>
-                <BsSearch />
-              </button>
-            </form>
-          </div>
-        </div>
         {likes?.final_data?.length ? (
+          <div className="row  align-items-center MyProjectDisplayRow">
+            <div className="searchActiveProject col-8 ms-auto">
+              <form onSubmit={handleSearch}>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    handleLikes(e.target.value);
+                  }}
+                />
+                <button>
+                  <BsSearch />
+                </button>
+              </form>
+            </div>
+          </div>
+        ) : (
+          <div
+            style={{ minHeight: "600px" }}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <span className="h4">No Liked Data To Show</span>
+          </div>
+        )}
+        {searchData && likes?.final_data ? (
           likes?.final_data?.map((res, index) => (
             <div className="row MyProjectDisplayRow" key={index}>
               <div className="col-md-6  d-flex align-items-center ">

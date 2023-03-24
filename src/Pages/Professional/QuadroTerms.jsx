@@ -4,7 +4,6 @@ import { Header2 } from "../../components/Header";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
-import Global from "../../context/Global";
 import Loader from "../../components/Loader";
 import { useCookies } from "react-cookie";
 const LoginSchema = Yup.object().shape({
@@ -12,7 +11,6 @@ const LoginSchema = Yup.object().shape({
 });
 
 const QuadroTerms = () => {
-  const contextData = useContext(Global)
   const [cookies] = useCookies()
   const [profilePoints, setProfilePoints] = useState([]);
   let navigate = useNavigate();
@@ -25,20 +23,24 @@ const QuadroTerms = () => {
         setProfilePoints(res?.data?.data);
       });
   }, []);
-  if (cookies?.user_data) {
+
+  const isCookies = () => {
     if (cookies?.user_data?.category_selected) {
-      if (cookies.user_data.role === "professional") {
-        navigate('/professionaldashboard')
-      } else {
+      if (cookies?.user_data?.role === "client") {
         navigate('/clientdashboard')
+      } else {
+        navigate('/professionaldashboard')
       }
     } else {
-      if (cookies.user_data.role === "professional") {
-        navigate('/categoryArchitecture')
-      } else {
+      if (cookies?.user_data?.role === "client") {
         navigate('/client-architechture')
+      } else {
+        navigate('/categoryArchitecture')
       }
     }
+  }
+  if (cookies?.user_data) {
+    isCookies()
   } else {
     return (
       profilePoints.length ?

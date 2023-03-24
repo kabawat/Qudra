@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
+import { MdOutlineLiveHelp } from "react-icons/md";
 import Global from "../context/Global";
 
 const Dashboardside = () => {
   const contextData = useContext(Global);
-
   return (
     <>
       <aside>
@@ -229,6 +229,35 @@ const Dashboardside = () => {
                 className="liked-green-icon"
               />
               Ratings
+            </a>
+          </li>
+          <li
+            className="nav-item"
+            onClick={() => {
+              contextData?.dispatch({
+                type: "CURRENT_PROFESSIONAL_TAB",
+                value: "help",
+              });
+            }}
+          >
+            <a
+              className={`nav-link ${
+                contextData?.current_professional_tab === "help" ? "active" : ""
+              } liked-btn`}
+              data-bs-toggle="tab"
+              href="#liked-saved"
+            >
+              <MdOutlineLiveHelp
+                style={{
+                  color: `${
+                    contextData?.current_professional_tab === "help"
+                      ? "#00a78b"
+                      : "white"
+                  }`,
+                  fontSize: "27px",
+                }}
+              />
+              <span style={{ marginLeft: "5px" }}> Help</span>
             </a>
           </li>
         </ul>

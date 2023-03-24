@@ -10,7 +10,7 @@ import CountrySelect from "react-bootstrap-country-select";
 import { MultiSelect } from "react-multi-select-component";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-country-select/dist/react-bootstrap-country-select.css";
-import { lockIcon, skillIcon } from "../components/images";
+import { education, lockIcon, skillIcon } from "../components/images";
 import $ from "jquery";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -72,11 +72,10 @@ const languages = [
 
 const EditProfileProfessional = () => {
   const location = useLocation();
-  const [state, setState] = useState(false);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
-  const [cookies] = useCookies()
   const navigate = useNavigate();
+  const [cookies,] = useCookies()
   const [value, setValue] = useState({
     // alpha2: "us",
     // alpha3: "usa",
@@ -91,7 +90,6 @@ const EditProfileProfessional = () => {
     skills: false,
   });
 
-  const [imgcode, setimgcode] = useState(getCode(location?.state?.nation));
   const SetUpSchema = Yup.object().shape({
     mobile_no: Yup.string()
       .min(10, "Enter a valid phone number")
@@ -118,10 +116,10 @@ const EditProfileProfessional = () => {
     setFilePic(file);
     const signupuser = new FormData();
     signupuser.append("image", file);
-    signupuser.append("user_id", cookies?.user_data.user_id);
-    signupuser.append("user_token", cookies?.user_data.user_token);
+    signupuser.append("user_id", cookies?.user_data?.user_id);
+    signupuser.append("user_token", cookies?.user_data?.user_token);
 
-    signupuser.append("role", cookies?.user_data.role);
+    signupuser.append("role", cookies?.user_data?.role);
     signupuser &&
       axios.post(
         "http://13.52.16.160:8082/identity/professional_profile",
@@ -153,7 +151,6 @@ const EditProfileProfessional = () => {
   const arraySkills = [];
   const arrayLanguages = [];
   const [educationSelect, setEducationSelect] = useState("");
-  const [educationInput, setEducationInput] = useState("");
   const [language, setLanguage] = useState(arrayLanguages);
   const [skills, setSkill] = useState(arraySkills);
   location?.state?.languages.map((res) => {
@@ -166,12 +163,8 @@ const EditProfileProfessional = () => {
 
   const updateCancel = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", { ...cookies?.user_data })
+      .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", cookies?.user_data)
       .then((res) => {
-        localStorage.setItem(
-          "profileImageNameGmail",
-          JSON.stringify(res?.data?.data)
-        );
         contextData?.dispatch({
           type: "FETCH_PROFILE_DATA",
           value: res?.data?.data,
@@ -187,15 +180,16 @@ const EditProfileProfessional = () => {
         }
       });
   };
-  // useEffect(() => {
-  //   if (form_Data.language == true) {
-  //     console.log("data fill karlo");
-  //   }
 
-  //   if (form_Data.skills == true) {
-  //     alert("data fill karlo");
-  //   }
-  // });
+  const [otherEdu, setOtherEdu] = useState(
+    location.state.education !== "Bachelors" &&
+      location.state.education !== "Masters" &&
+      location.state.education !== "Student"
+      ? location.state.education
+      : ""
+  );
+
+  const [eduErr, setEduErr] = useState(false);
 
   return (
     <>
@@ -225,7 +219,6 @@ const EditProfileProfessional = () => {
                 onSubmit={(value) => {
                   let skill = true;
                   let lang = true;
-
                   const skills = value.skills.map((curItem) => {
                     if (curItem.value) {
                       return curItem.value;
@@ -240,58 +233,73 @@ const EditProfileProfessional = () => {
                       return curItem;
                     }
                   });
-                  if (value.nation.length < 1) {
-                    console.log("hey");
-                  }
+
                   lang = languages.length < 1 ? true : false;
                   skill = skills.length < 1 ? true : false;
-
-                  setFormData({ language: lang, skills: skill });
-                  console.log(form_Data);
+                  let education = "";
+                  if (value.education === "Other") {
+                    education = otherEdu;
+                  } else {
+                    education = value.education;
+                  }
+                  setFormData({
+                    language: lang,
+                    skills: skill,
+                    education: education,
+                  });
                   if (lang || skill) {
                     return false;
                   }
 
-                  const data = { ...value, languages, skills };
-                  axios
-                    .post("http://13.52.16.160:8082/identity/update_account", {
-                      user_id: cookies?.user_data.user_id,
-                      user_token: cookies?.user_data.user_token,
-                      role: "professional",
-                      ...data,
-                    })
-                    .then((res) => {
-                      if (res?.data?.status === "Success") {
-                        axios
-                          .post(
-                            "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                            {
-                              user_id: cookies?.user_data.user_id,
-                              user_token: cookies?.user_data.user_token,
-                              role: "professional",
-                            }
-                          )
-                          .then((res) => {
-                            localStorage.setItem(
-                              "profileImageNameGmail",
-                              JSON.stringify(res?.data?.data)
-                            );
-                            contextData?.dispatch({
-                              type: "FETCH_PROFILE_DATA",
-                              value: res?.data?.data,
+                  const data = {
+                    ...value,
+                    languages,
+                    skills,
+                    education,
+                  };
+                  if (education === "") {
+                    setEduErr(true);
+                    return false;
+                  } else {
+                    axios
+                      .post(
+                        "http://13.52.16.160:8082/identity/update_account",
+                        {
+                          user_id: cookies?.user_data?.user_id,
+                          user_token: cookies?.user_data?.user_token,
+                          role: "professional",
+                          ...data,
+                        }
+                      )
+                      .then((res) => {
+                        if (res?.data?.status === "Success") {
+                          axios
+                            .post(
+                              "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                              {
+                                user_id: cookies?.user_data?.user_id,
+                                user_token: cookies?.user_data?.user_token,
+                                role: "professional",
+                              }
+                            )
+                            .then((res) => {
+                              contextData?.dispatch({
+                                type: "FETCH_PROFILE_DATA",
+                                value: res?.data?.data,
+                              });
+                              if (res.data.data.category_selected) {
+                                navigate("/professionaldashboard", {
+                                  state: { role: "professional" },
+                                });
+                              } else {
+                                navigate("/categoryArchitecture", {
+                                  state: { role: "professional" },
+                                });
+                              }
                             });
-                            if (res.data.data.category_selected) {
-                              navigate("/professionaldashboard", {
-                                state: { role: "professional" },
-                              });
-                            } else {
-                              navigate("/categoryArchitecture", {
-                                state: { role: "professional" },
-                              });
-                            }
-                          });
-                      }
-                    });
+                        }
+                      });
+                  }
                 }}
               >
                 {({ values, handleSubmit, setFieldValue }) => (
@@ -363,12 +371,13 @@ const EditProfileProfessional = () => {
                           placeholder="Select An Country"
                           name="nation"
                         />
+                        <ErrorMessage
+                          name="nation"
+                          component="div"
+                          className="m-2 text-danger"
+                        />
                       </div>
-                      <ErrorMessage
-                        name="nation"
-                        component="div"
-                        className="m-2 text-danger"
-                      />
+
                       <div className="col-md my-md-3 my-1">
                         <div className="form-group">
                           <PhoneInput
@@ -493,6 +502,10 @@ const EditProfileProfessional = () => {
                                 "languages",
                                 language.map((val) => val?.value)
                               );
+                              setFormData({
+                                ...form_Data,
+                                language: false,
+                              });
                               setLanguage(language);
                             }}
                             labelledBy="Select"
@@ -504,91 +517,52 @@ const EditProfileProfessional = () => {
                           </p>
                         </div>
                       </div>
-                      {/* <div className="col-md my-md-3 my-1">
-                        <div className="create-account-input">
-                          <img src="/static/images/EducationIcon.png" alt="" />
-                          <Field
-                            id="educationSelect"
-                            as="select"
-                            value={
-                              educationSelect
-                                ? educationSelect
-                                : location?.state?.education
-                            }
-                            className="form-select form-education-select"
-                            onChange={(e) => {
-                              setEducationSelect(e.target.value);
-                              if (e.target.value !== "Other") {
-                                setFieldValue("education", e.target.value);
-                                setEducationInput("");
-                              }
-                            }}
-                          >
-                            <option value="" disabled>
-                              Education
-                            </option>
-                            <option value="Bachelors"> Bachelors</option>
-                            <option value="Masters"> Masters</option>
-                            <option value="Other">Other</option>
-                          </Field>
-
-                          <ErrorMessage
-                            name="education"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                      </div> */}
 
                       <div className="col-md my-md-3 my-1">
                         <div className="create-account-input">
                           <img src="/static/images/EducationIcon.png" alt="" />
-                          <Field
+                          <select
                             id="educationSelect"
                             as="select"
                             value={
-                              educationSelect
-                                ? educationSelect
-                                : location?.state?.education !== "Bachelors" ||
-                                  "Masters"
-                                  ? "Other"
-                                  : location?.state?.education
+                              otherEdu
+                                ? "Other"
+                                : educationSelect
+                                  ? educationSelect
+                                  : location.state.education
                             }
                             className="form-select form-education-select"
                             onChange={(e) => {
                               setEducationSelect(e.target.value);
-                              if (e.target.value !== "Other") {
-                                setFieldValue("education", e.target.value);
-                                setEducationInput("");
-                              }
+                              setFieldValue("education", e.target.value);
+                              setOtherEdu("");
                             }}
                           >
                             <option value="" disabled>
                               Education
                             </option>
+                            <option value="Student"> Student</option>
                             <option value="Bachelors"> Bachelors</option>
                             <option value="Masters"> Masters</option>
                             <option value="Other">Other</option>
-                          </Field>
-                          {educationSelect !== "Bachelors"
-                            ? educationSelect !== "Masters" && (
-                              <input
-                                type="text"
-                                className="mt-2"
-                                placeholder="Enter Here Your Other"
-                                value={
-                                  !state
-                                    ? location?.state?.education
-                                    : educationInput
-                                }
-                                onChange={(e) => {
-                                  setEducationInput(e.target.value);
-                                  setFieldValue("education", e.target.value);
-                                  setState(true);
-                                }}
-                              />
-                            )
-                            : ""}
+                          </select>
+                          {otherEdu || educationSelect === "Other" ? (
+                            <input
+                              type="text"
+                              className="mt-2"
+                              placeholder="Enter Here Your Other"
+                              value={otherEdu}
+                              onChange={(event) => {
+                                setOtherEdu(event.target.value);
+                                setEduErr(false);
+                              }}
+                            />
+                          ) : (
+                            ""
+                          )}
+                          <p className="text-danger">
+                            {eduErr ? "Education Required" : ""}
+                          </p>
                           <ErrorMessage
                             name="education"
                             component="div"
@@ -611,6 +585,10 @@ const EditProfileProfessional = () => {
                                 "skills",
                                 skills.map((val) => val?.value)
                               );
+                              setFormData({
+                                ...form_Data,
+                                skills: false,
+                              });
                               setSkill(skills);
                             }}
                             labelledBy="Select"

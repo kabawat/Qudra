@@ -21,7 +21,9 @@ const KickAssForm = () => {
         setKickassPoints(res?.data?.data);
       });
   }, []);
-  if (cookies?.user_data) {
+
+
+  const isCookies = () => {
     if (cookies?.user_data?.category_selected) {
       if (cookies.user_data.role === "professional") {
         navigate('/professionaldashboard')
@@ -35,6 +37,10 @@ const KickAssForm = () => {
         navigate('/client-architechture')
       }
     }
+  }
+
+  if (cookies?.user_data) {
+    isCookies()
   } else {
     return (
       kickassPoints.length ?

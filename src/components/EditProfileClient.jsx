@@ -46,11 +46,12 @@ const EditProfileClient = () => {
   const location = useLocation();
   const [isLoading, setLoading] = useState(false);
   const [cookies] = useCookies()
+
   const [value, setValue] = useState({
     // alpha2: "us",
     // alpha3: "usa",
     // flag: "🇺🇸",
-    id: getCode(location?.state?.nation),
+    id: getCode(location?.state?.nation).toLocaleLowerCase(),
     // .toLocaleLowerCase()
     // ioc: "usa",
     name: location?.state?.nation,
@@ -67,10 +68,10 @@ const EditProfileClient = () => {
     setFilePic(file);
     const signupuser = new FormData();
     signupuser.append("image", file);
-    signupuser.append("user_id", cookies?.user_data.user_id);
-    signupuser.append("user_token", cookies?.user_data.user_token);
+    signupuser.append("user_id", cookies?.user_data?.user_id);
+    signupuser.append("user_token", cookies?.user_data?.user_token);
 
-    signupuser.append("role", cookies?.user_data.role);
+    signupuser.append("role", cookies?.user_data?.role);
     signupuser &&
       axios.post(
         "http://13.52.16.160:8082/identity/client_profile",
@@ -93,10 +94,6 @@ const EditProfileClient = () => {
         role: "client",
       })
       .then((res) => {
-        localStorage.setItem(
-          "profileImageNameGmail",
-          JSON.stringify(res?.data?.data)
-        );
         contextData?.dispatch({
           type: "FETCH_PROFILE_DATA",
           value: res?.data?.data,
@@ -119,7 +116,11 @@ const EditProfileClient = () => {
     // handle form submission logic here
     actions.setSubmitting(false);
   }
-
+  function onKeyDown(keyEvent) {
+    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+      keyEvent.preventDefault();
+    }
+  }
   return (
     <>
       {isLoading ? (
@@ -136,6 +137,7 @@ const EditProfileClient = () => {
                   first_name: location?.state?.first_name,
                   last_name: location?.state?.last_name,
                   email_verify: true,
+                  agreedTerms: true,
                   nation: location?.state?.nation,
                   mobile_no: location?.state?.mobile_no,
                 }}
@@ -143,6 +145,7 @@ const EditProfileClient = () => {
               >
                 {({ values, handleSubmit, setFieldValue, isSubmitting }) => (
                   <Form
+                    onKeyDown={onKeyDown}
                     onSubmit={(e) => {
                       e.preventDefault();
                       if (values.mobile_no.length < 10) {
@@ -174,8 +177,8 @@ const EditProfileClient = () => {
                           .post(
                             "http://13.52.16.160:8082/identity/update_account",
                             {
-                              user_id: cookies?.user_data.user_id,
-                              user_token: cookies?.user_data.user_token,
+                              user_id: cookies?.user_data?.user_id,
+                              user_token: cookies?.user_data?.user_token,
                               role: "client",
                               ...values,
                             }
@@ -186,17 +189,13 @@ const EditProfileClient = () => {
                                 .post(
                                   "http://13.52.16.160:8082/identity/get_dashboard_profile/",
                                   {
-                                    user_id: cookies?.user_data.user_id,
+                                    user_id: cookies?.user_data?.user_id,
                                     user_token:
-                                      cookies?.user_data.user_token,
+                                      cookies?.user_data?.user_token,
                                     role: "client",
                                   }
                                 )
                                 .then((res) => {
-                                  localStorage.setItem(
-                                    "profileImageNameGmail",
-                                    JSON.stringify(res?.data?.data)
-                                  );
                                   contextData?.dispatch({
                                     type: "FETCH_PROFILE_DATA",
                                     value: res?.data?.data,
@@ -213,6 +212,14 @@ const EditProfileClient = () => {
                                 });
                             }
                           });
+                        // .then((res) => {
+                        //   if (res?.data?.status === "Success") {
+                        //     navigate("/clientdashboard", {
+                        //       state: { role: "client" },
+                        //     });
+                        //     contextData.dispatch({ type: "LOG_OUT" });
+                        //   }
+                        // });
                       }
                     }}
                   >
@@ -278,10 +285,10 @@ const EditProfileClient = () => {
                             setNationerr(false);
                             setValue(val);
                             setFieldValue("nation", val?.name);
-                            let id = val.id;
-                            setimgcode(id.toLocaleUpperCase());
+                            // let id = val.id;
+                            // setimgcode(id.toLocaleUpperCase());
                           }}
-                          flags={false}
+                          flags={true}
                           placeholder="Select An Country"
                           name="nation"
                         />
@@ -416,7 +423,7 @@ const EditProfileClient = () => {
                         style={{ pointerEvents: "all" }}
                       >
                         Edit Profile
-                        <i class="fa-solid  fa-arrow-right-long ms-3"></i>
+                        <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                       </button>
                     </div>
                   </Form>

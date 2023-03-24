@@ -34,6 +34,7 @@ const Likes = () => {
         }
       });
   };
+
   useEffect(() => {
     fetchLikeData();
   }, [projectPageId]);
@@ -58,6 +59,7 @@ const Likes = () => {
   for (let i = 0; i < likes?.total_data / searchPageId?.page_size; i++) {
     searchPaginationArray.push(i + 1);
   }
+  var searchAll = [];
 
   const handleSearch = () => {
     axios
@@ -72,10 +74,35 @@ const Likes = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           setLikes(res?.data?.data);
+          setSearchdata(likes);
+          searchAll = res?.data?.data;
+        } else {
+          setSearchdata("");
         }
       });
   };
 
+  const handleLikes = (val) => {
+    if (val == "") {
+      axios
+        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          ...searchPageId,
+          search_for: "like",
+          search_data: "",
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setLikes(res?.data?.data);
+            searchAll = res?.data?.data;
+            setSearchdata(searchAll);
+          }
+        });
+    }
+  };
+  const [searchData, setSearchdata] = useState(searchAll);
   useEffect(() => {
     axios
       .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
@@ -104,7 +131,10 @@ const Likes = () => {
                 type="text"
                 placeholder="Search..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  handleLikes(e.target.value);
+                }}
               />
               <button onClick={handleSearch}>
                 <BsSearch />
@@ -112,9 +142,14 @@ const Likes = () => {
             </div>
           </div>
         ) : (
-          ""
+          <div
+            style={{ minHeight: "600px" }}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <span className="h4">No Liked Data To Show</span>
+          </div>
         )}
-        {likes?.final_data?.length ? (
+        {searchData && likes?.final_data ? (
           likes?.final_data?.map((res, index) => (
             <div className="row MyProjectDisplayRow" key={index}>
               <div className="col-md-6  d-flex align-items-center ">
@@ -150,6 +185,7 @@ const Likes = () => {
           </div>
         )}
       </div>
+
       {!search && projectPageId?.page_size < likes?.total_data ? (
         <Pagination className="ps-5 paginationBoxProfessionalDashboard">
           <Pagination.First

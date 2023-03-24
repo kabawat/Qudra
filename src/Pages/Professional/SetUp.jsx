@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import Loader from "../../components/Loader";
 import { Header2 } from "../../components/Header";
@@ -75,7 +75,7 @@ const languages = [
 ];
 
 const SetUp = () => {
-  const [cookies, setCookies] = useCookies(["user_data"]);
+  const [cookies, setCookies] = useCookies(["user_info"]);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -88,7 +88,38 @@ const SetUp = () => {
     // name: "India",
   });
 
+  const isCookies = () => {
+    if (cookies?.user_data?.category_selected) {
+      if (cookies.user_data.role === "professional") {
+        navigate('/professionaldashboard')
+      } else {
+        navigate('/clientdashboard')
+      }
+    } else {
+      if (cookies.user_data.role === "professional") {
+        navigate('/categoryArchitecture')
+      } else {
+        navigate('/client-architechture')
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (cookies?.user_data) {
+      isCookies()
+    }
+  }, [])
+
+  const [certificate, setCertificate] = useState("");
+  const certificateChange = (e) => {
+    const file = e.target.files[0];
+    setCertificate(file);
+  };
+
+  const [disply, setdisply] = useState("none");
+
   const [otpdisplay, setotpdisplay] = useState("none");
+  const [imgcode, setimgcode] = useState("in");
   const [viewPassword, setViewPassword] = useState(false);
   const SetUpSchema = Yup.object().shape({
     password: Yup.string()
@@ -96,8 +127,9 @@ const SetUp = () => {
       .max(30, "Password is too long!")
       .required("Password required"),
     email: Yup.string().email(" Enter  valid email").required("Email required"),
-    mobile_no: Yup.string().required("Enter valid phone number"),
-    // .min(12, "Enter valid mobile number")
+    mobile_no: Yup.string()
+      .required("Phone number required")
+      .min(10, "Enter valid mobile number"),
     last_name: Yup.string()
       .min(3, "Minimum 3 character required")
       .required("Last name required"),
@@ -115,6 +147,7 @@ const SetUp = () => {
       .min(100, "Minimum 100 charecter required")
       .max(500)
       .required("About required"),
+    nation: Yup.string().required("Country name required"),
   });
   const [filePic, setFilePic] = useState("");
   const photoChange = (e) => {
@@ -125,6 +158,20 @@ const SetUp = () => {
       let reader = new FileReader();
       reader.onload = function (event) {
         $(" #imgPreview").attr("src", event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const [filePic2, setFilePic2] = useState("");
+  const photoChange2 = (e) => {
+    const file = e.target.files[0];
+    setFilePic2(file);
+
+    if (file) {
+      let reader = new FileReader();
+      reader.onload = function (event) {
+        $(" #imgPreview2").attr("src", event.target.result);
       };
       reader.readAsDataURL(file);
     }
@@ -141,6 +188,8 @@ const SetUp = () => {
     rows.push(i);
   }
 
+  const [backImgErr, setBackImgErr] = useState("none");
+
   const [profileerr, setprofileerr] = useState("none");
   const [educationSelect, setEducationSelect] = useState("");
   const [educationInput, setEducationInput] = useState("");
@@ -151,8 +200,7 @@ const SetUp = () => {
   const verifyRequestButton = () => {
     let email = $("#EmailInputSignUpForm").val();
     setLoadingActive(true);
-    axios
-      .post("http://13.52.16.160:8082/identity/verify-email", { email })
+    axios.post("http://13.52.16.160:8082/identity/verify-email", { email })
       .then((res) => {
         if (res?.data?.status === "Failed") {
           setResData(res.data);
@@ -175,14 +223,14 @@ const SetUp = () => {
   const [loadingActive, setLoadingActive] = useState(false);
 
   const [show, setShow] = useState(false);
+  const [OtpResponse, setOtpResponse] = useState(false);
 
   const handleClose = () => {
     setShow(false);
     setotpdisplay("block");
     handleOTP("");
-    OtpResponse(false);
+    setOtpResponse(false);
   };
-  const [OtpResponse, setOtpResponse] = useState(false);
 
   const handleEmailFocus = () => {
     setExistingEmail(true);
@@ -212,7 +260,9 @@ const SetUp = () => {
       });
   };
 
-  if (cookies?.user_data === undefined) {
+  if (cookies?.user_data) {
+    isCookies()
+  } else {
     return (
       <>
         {isLoading ? (
@@ -242,55 +292,93 @@ const SetUp = () => {
                   validationSchema={SetUpSchema}
                   onSubmit={(values, { setSubmitting }) => {
                     setLoading(true);
+
                     axios.post(
                       "http://13.52.16.160:8082/identity/signup_professional",
                       values
                     ).then((res) => {
-                      console.log(res.data)
                       if (res?.data?.status === "Success") {
                         const signupuser = new FormData();
                         signupuser.append("image", filePic);
+                        signupuser.append("background_image", filePic2);
                         signupuser.append("user_id", res?.data?.data.user_id);
                         signupuser.append(
                           "user_token",
                           res?.data?.data.user_token
                         );
                         signupuser.append("role", res?.data?.data.role);
-                        signupuser && axios.post("http://13.52.16.160:8082/identity/professional_profile", signupuser)
-                          .then((respo) => {
-                            if (respo?.data?.status === "Success") {
-                              contextData?.dispatch({
-                                type: "FETCH_USER_DATA",
-                                value: res?.data?.data,
-                              });
 
-                              setCookies("user_data", { ...res?.data?.data, category_selected: false })
-                              localStorage.setItem("user_data", JSON.stringify(res?.data?.data));
+                        signupuser &&
+                          axios
+                            .post(
+                              "http://13.52.16.160:8082/identity/professional_profile",
+                              signupuser
+                            )
+                            .then((respo) => {
+                              const getcookies = {
+                                user_id: res?.data?.data?.user_id,
+                                user_token: res?.data?.data?.user_token,
+                                role: res?.data?.data?.role,
+                              };
+                              setCookies(
+                                "user_info",
+                                JSON.stringify(getcookies)
+                              );
 
-                              setLoading(false);
-                              navigate("/categoryArchitecture", {
-                                replace: true,
-                              });
-                              contextData.setShowDisclamer(true);
-                              if (!contextData?.profileData) {
-                                axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-                                  user_id: res?.data?.data?.user_id,
-                                  user_token: res?.data?.data?.user_token,
-                                  role: res?.data?.data?.role,
-                                }
-                                ).then((response) => {
-                                  contextData?.dispatch({
-                                    type: "FETCH_PROFILE_DATA",
-                                    value: response?.data?.data,
-                                  });
-                                  localStorage.setItem(
-                                    "profileImageNameGmail",
-                                    JSON.stringify(response?.data?.data)
-                                  );
+                              const userCertificate = new FormData();
+                              userCertificate.append(
+                                "user_id",
+                                res?.data?.data.user_id
+                              );
+                              userCertificate.append(
+                                "user_token",
+                                res?.data?.data.user_token
+                              );
+                              userCertificate.append(
+                                "role",
+                                res?.data?.data.role
+                              );
+                              userCertificate.append(
+                                "certificate",
+                                certificate
+                              );
+
+                              axios.post("http://13.52.16.160:8082/identity/professional_certificate",
+                                userCertificate
+                              ).then((res) => console.log(res.data))
+                                .catch((err) => console.log(err));
+
+                              if (respo?.data?.status === "Success") {
+                                contextData?.dispatch({
+                                  type: "FETCH_USER_DATA",
+                                  value: res?.data?.data,
                                 });
+                                setCookies("user_data", { ...res?.data?.data, category_selected: false })
+
+                                setLoading(false);
+                                navigate("/categoryArchitecture", {
+                                  replace: true,
+                                });
+                                contextData.setShowDisclamer(true);
+                                if (!contextData?.profileData) {
+                                  axios
+                                    .post(
+                                      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                      {
+                                        user_id: res?.data?.data?.user_id,
+                                        user_token: res?.data?.data?.user_token,
+                                        role: res?.data?.data?.role,
+                                      }
+                                    )
+                                    .then((response) => {
+                                      contextData?.dispatch({
+                                        type: "FETCH_PROFILE_DATA",
+                                        value: response?.data?.data,
+                                      });
+                                    });
+                                }
                               }
-                            }
-                          });
+                            });
                       } else {
                         localStorage.clear();
 
@@ -307,8 +395,9 @@ const SetUp = () => {
                     validateField,
                     values,
                   }) => (
-                    <Form>
+                    <Form onKeyDown={onKeyDown}>
                       <h1>Lets Set Up like A Pro</h1>
+
                       <div className="row">
                         <div className="col-md my-md-3 my-1">
                           <div className="create-account-input">
@@ -512,10 +601,18 @@ const SetUp = () => {
                             onChange={(val) => {
                               setValue(val);
                               setFieldValue("nation", val?.name);
+                              // let id = val.id;
+                              // setimgcode(id.toLocaleUpperCase());
+                              setdisply("block");
                             }}
-                            flags={false}
+                            flags={true}
                             placeholder="Select An Country"
                             name="nation"
+                          />
+                          <ErrorMessage
+                            name="nation"
+                            component="div"
+                            className="m-2 text-danger"
                           />
                         </div>
 
@@ -577,6 +674,7 @@ const SetUp = () => {
                                 setprofileerr("none");
                               }}
                             />
+                            <span className="mt-1">Profile Picture</span>
                             <span
                               style={{ marginTop: "10px" }}
                               className={`${profileerr} text-danger `}
@@ -599,7 +697,7 @@ const SetUp = () => {
                             maxLength="500"
                             className="form-control h-100"
                             id="exampleFormControlTextarea1"
-                            rows="6"
+                            rows="9"
                             name="bio"
                             placeholder="About"
                           ></Field>
@@ -620,13 +718,56 @@ const SetUp = () => {
                         </div>
                       </div>
                       <div className="row">
-                        <div className="col my-md-3 my-1">
+                        <div className="col-md-3 col-xl-2 my-md-3 my-1">
+                          <div>
+                            <div
+                              className="form-image-input"
+                              onClick={() => {
+                                document.getElementById("photo2").click();
+                              }}
+                            >
+                              <img
+                                id="imgPreview2"
+                                src="/static/images/ImageInput.png"
+                                alt="pic"
+                                accept="images/*"
+                              />
+                              <div className="plus-image-overlay">
+                                <i className="fa fa-plus"></i>
+                              </div>
+                            </div>
+                            <input
+                              style={{ display: "none" }}
+                              type="file"
+                              accept="image/*"
+                              name="photograph_bg"
+                              id="photo2"
+                              onChange={(event) => {
+                                photoChange2(event);
+                                setBackImgErr("none");
+                              }}
+                            />
+                            <span>Background image</span>
+                            <span
+                              style={{ marginTop: "10px" }}
+                              className={`${backImgErr} text-danger `}
+                            >
+                              Background image required
+                            </span>
+                            <ErrorMessage
+                              name="photograph"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-9 col-xl-10  my-md-3 my-1">
                           <Field
                             as="textarea"
                             className="form-control"
                             name="job_description"
                             id="exampleFormControlTextarea1"
-                            rows="6"
+                            rows="9"
                             placeholder="Job Description"
                           ></Field>
 
@@ -672,7 +813,7 @@ const SetUp = () => {
                               className="form-select form-education-select"
                               onChange={(e) => {
                                 setEducationSelect(e.target.value);
-                                if (e.target.value !== "another") {
+                                if (e.target.value !== "Other") {
                                   setFieldValue("education", e.target.value);
                                   setEducationInput("");
                                 }
@@ -681,30 +822,68 @@ const SetUp = () => {
                               <option value="" disabled>
                                 Education
                               </option>
-
+                              <option value="Student"> Student</option>
                               <option value="Bachelors"> Bachelors</option>
                               <option value="Masters"> Masters</option>
                               <option value="Other">Other</option>
                             </Field>
-                            {educationSelect === "Other" ? (
-                              <input
-                                type="text"
-                                className="mt-2"
-                                placeholder="Enter Here Your Other"
-                                value={educationInput}
-                                onChange={(e) => {
-                                  setEducationInput(e.target.value);
-                                  setFieldValue("education", e.target.value);
-                                }}
-                              />
-                            ) : (
-                              ""
-                            )}
-                            <ErrorMessage
-                              name="education"
-                              component="div"
-                              className="m-2 text-danger"
-                            />
+                            <div className="certificate-other">
+                              <div className="other-education">
+                                {educationSelect === "Other" ? (
+                                  <input
+                                    type="text"
+                                    className="mt-2"
+                                    placeholder="Enter Here Your Other"
+                                    value={educationInput}
+                                    onChange={(e) => {
+                                      setEducationInput(e.target.value);
+                                      setFieldValue("education", e.target.value);
+                                    }}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                                <ErrorMessage
+                                  name="education"
+                                  component="div"
+                                  className="m-2 text-danger"
+                                />
+                              </div>
+
+                              {educationSelect ? (
+                                <div>
+                                  <div
+                                    onClick={() => {
+                                      document
+                                        .getElementById("certificate")
+                                        .click();
+                                    }}
+                                  >
+                                    <button type="button" id="custom-button">
+                                      Upload Certificate
+                                    </button>
+                                    <span id="custom-text">
+                                      {certificate
+                                        ? `${certificate.name.length > 15
+                                          ? certificate.name.slice(0, 15) +
+                                          "..."
+                                          : certificate.name
+                                        }`
+                                        : " No file chosen, yet."}
+                                    </span>
+                                  </div>
+                                  <input
+                                    type="file"
+                                    name="certificate"
+                                    id="certificate"
+                                    accept=".jpg, .jpeg, .png, .doc, .docx, .pdf"
+                                    onChange={(event) => {
+                                      certificateChange(event);
+                                    }}
+                                  />
+                                </div>
+                              ) : null}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -787,6 +966,9 @@ const SetUp = () => {
                               if (!filePic) {
                                 setprofileerr("block");
                               }
+                              if (!filePic2) {
+                                setBackImgErr("block");
+                              }
                             }}
                             type="submit"
                             className="create-account-btn"
@@ -813,24 +995,10 @@ const SetUp = () => {
               pauseOnHover
               theme="colored"
             />
-          </div >
+          </div>
         )}
       </>
     )
-  } else {
-    if (contextData?.profileData?.category_selected) {
-      if (cookies.user_data.role === "professional") {
-        navigate('/professionaldashboard')
-      } else {
-        navigate('/clientdashboard')
-      }
-    } else {
-      if (cookies.user_data.role === "professional") {
-        navigate('/categoryArchitecture')
-      } else {
-        navigate('/client-architechture')
-      }
-    }
   }
 };
 

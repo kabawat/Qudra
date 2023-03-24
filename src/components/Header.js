@@ -24,9 +24,9 @@ const buttonStyle = {
 };
 const Header2 = ({ link }) => {
   const navigate = useNavigate();
+  const [cookies, , removeCookie] = useCookies()
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
-  const [cookies, , removeCookie] = useCookies()
   const logoutHandle = () => {
     setShow(false);
     localStorage.clear();
@@ -62,38 +62,73 @@ const Header2 = ({ link }) => {
                     <Link to="/join">Sign up</Link>
                   )}
                   {window.location.pathname === "/categoryArchitecture" && (
-                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/categoryvisualization" && (
-                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
                       logout
                     </button>
                   )}
                   {window.location.pathname ===
                     "/professional-buy-and-sale" && (
-                      <button onClick={() => { setShow(true); }} style={buttonStyle}>
+                      <button
+                        onClick={() => {
+                          setShow(true);
+                        }}
+                        style={buttonStyle}
+                      >
                         logout
                       </button>
                     )}
                   {window.location.pathname === "/client-architechture" && (
-                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/client-visualisation" && (
-                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/client-buy-sell" && (
-                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/edit-profile" && (
-                    <button onClick={() => { setShow(true); }} style={buttonStyle}>
+                    <button
+                      onClick={() => {
+                        setShow(true);
+                      }}
+                      style={buttonStyle}
+                    >
                       logout
                     </button>
                   )}
@@ -130,7 +165,7 @@ const Header2 = ({ link }) => {
 
 const HeaderHome = () => {
   const [cookies, , removeCookie] = useCookies()
-  const [userData, setUserData] = useState({ ...cookies?.user_data });
+  const [userData, setUserData] = useState(cookies?.user_data);
 
   const textClick = () => {
     $(".mobile-menu").css("top", "0");
@@ -208,7 +243,12 @@ const HeaderHome = () => {
                     )}
                     {cookies?.user_data && (
                       <li>
-                        <Link to="/" onClick={() => setShow(true)}>Sign Out</Link>
+                        <Link
+                          to="/"
+                          onClick={() => setShow(true)}
+                        >
+                          Sign Out
+                        </Link>
                       </li>
                     )}
 
@@ -290,6 +330,11 @@ const HeaderHome = () => {
                       &times;
                     </Link>
                     <div className="mobile-menu-content">
+                      {/* <Link to="#">About</Link>
+                                    <Link to="#">Services</Link>
+                                    <Link to="#">Clients</Link>
+                                    <Link to="#">Contact</Link>  */}
+
                       <ul className="  align-items-center m-0 ps-0">
                         {cookies?.user_data && (
                           <>
@@ -308,7 +353,8 @@ const HeaderHome = () => {
                             <li>
                               <Link
                                 to="/"
-                                onClick={() => setShow(true)}>
+                                onClick={() => setShow(true)}
+                              >
                                 Sign Out
                               </Link>
                             </li>
@@ -326,12 +372,14 @@ const HeaderHome = () => {
                         )}
 
                         <li>
-                          <Link to="/join"
+                          <Link
+                            to="/join"
                             onClick={() =>
                               setBusinessClick(
                                 localStorage.setItem("Business", true)
                               )
-                            }>
+                            }
+                          >
                             Businewdwadawss
                           </Link>
                         </li>
@@ -346,6 +394,10 @@ const HeaderHome = () => {
                           <div id="google_translate_element"></div>
                         </li>
                       </ul>
+                      {/* <form className="headerSearchButton " action="action_page.php">
+                                        <input type="text" placeholder="Search..." name="search">
+                                        <button type="submit" className="theme-bg-color"><i className="fa fa-search"></i></button>
+                                    </form>  */}
                     </div>
                   </div>
                 </div>
@@ -383,6 +435,18 @@ const Header3 = () => {
                     </Link>
                   )}
                 </li>
+                {/* <li
+                  className="language-select text-black"
+                  onClick={languageClick}
+                >
+                  <div id="google_translate_element"></div>
+                </li> */}
+                {/* <div className="language-dropdown-slider">
+                  <li className="m-0 py-1 border-bottom ">Hindi</li>
+                  <li className="m-0 py-1 border-bottom ">French</li>
+                  <li className="m-0 py-1 border-bottom ">Italic</li>
+                  <li className="m-0 py-1 ">Dutch</li>
+                </div> */}
               </ul>
             </div>
           </div>
@@ -524,7 +588,7 @@ const ChatHeader = () => {
                 className="text-decoration-none text-dark m-0 h2"
               >
                 <i
-                  class="fa-solid fa-arrow-left-long pe-3"
+                  className="fa-solid fa-arrow-left-long pe-3"
                   style={{ color: "#01a78a" }}
                 ></i>{" "}
                 Dashboard
@@ -779,8 +843,8 @@ const ChatHeader = () => {
 };
 
 const HeaderDashboard = () => {
-  const [cookies, , removeCookie] = useCookies()
   const navigate = useNavigate();
+  const [cookies, , removeCookie] = useCookies()
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");

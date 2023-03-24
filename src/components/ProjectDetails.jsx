@@ -7,51 +7,54 @@ import ViewMilestones from "./project_process/ViewMilestones";
 import FromClientTabPane from "./project_process/FromClientTabPane";
 import FromProfessionalTabPane from "./project_process/FromProfessionalTabPane";
 import { useCookies } from "react-cookie";
-
+import { useEffect, useState } from "react";
+import Loader from '../components/Loader'
 const ProjectDetails = () => {
   const [cookies] = useCookies()
   const location = useLocation();
   const navigate = useNavigate()
-  if (cookies?.user_data) {
-    if (location?.state) {
-      return (
-        <>
-          {location?.state?.isFromDashboard && (
-            <ViewMilestones location={location} />
-          )}
 
-          {location?.state?.isFromProfessionalNotification && (
-            <ProfessionalProcess location={location} />
-          )}
-          {location?.state?.isFromClientNotification && (
-            <ClientProcess location={location} />
-          )}
-          {location?.state?.isFromClientTab && (
-            <FromClientTabPane location={location} />
-          )}
-          {location?.state?.isFromProfessionalTab && (
-            <FromProfessionalTabPane location={location} />
-          )}
-        </>
-      );
-    } else {
-      if (cookies?.user_data?.role === 'professional') {
-        if (cookies?.user_data?.category_selected) {
-          navigate('/professionaldashboard')
+  const [isRender, setIsRender] = useState(false)
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data?.role === 'professional' && location.state !== null) {
+          setIsRender(true)
         } else {
-          navigate('/categoryArchitecture')
+          navigate('/clientdashboard')
         }
       } else {
-        if (cookies?.user_data?.category_selected) {
-          navigate('/clientdashboard')
+        if (cookies?.user_data?.role === 'professional') {
+          navigate('/categoryArchitecture')
         } else {
           navigate('/client-architechture')
         }
       }
+    } else {
+      navigate('/select-sign-in')
     }
-  } else {
-    navigate('/select-sign-in')
-  }
+  }, [])
+
+  return (
+    isRender ? <>
+      {location?.state?.isFromDashboard && (
+        <ViewMilestones location={location} />
+      )}
+
+      {location?.state?.isFromProfessionalNotification && (
+        <ProfessionalProcess location={location} />
+      )}
+      {location?.state?.isFromClientNotification && (
+        <ClientProcess location={location} />
+      )}
+      {location?.state?.isFromClientTab && (
+        <FromClientTabPane location={location} />
+      )}
+      {location?.state?.isFromProfessionalTab && (
+        <FromProfessionalTabPane location={location} />
+      )}
+    </> : <Loader />
+  )
 };
 
 export default ProjectDetails;

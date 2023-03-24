@@ -16,6 +16,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
   const contextData = useContext(Global);
   const [showPurchaseDesignModal, setShowPurchaseDesignModal] = useState(false);
   const [cookies] = useCookies()
+
   const [purchaseDesignsPagination, setPurchaseDesignsPagination] = useState({
     page: 1,
     page_size: 8,

@@ -1,8 +1,9 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Global from "../context/Global";
 import HomeServiceCard from "../components/Card/HomeServiceCard";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from '../components/Loader'
 import {
   findIcon,
   findIcon2,
@@ -59,9 +60,9 @@ const options2 = {
 };
 
 const Home = () => {
-  const [cookies] = useCookies()
   const contextData = useContext(Global);
   const navigate = useNavigate();
+  const [cookies,] = useCookies()
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "/heroes.js";
@@ -70,16 +71,31 @@ const Home = () => {
       document.body.removeChild(script);
     };
   }, []);
+
+  // auth 
+  const [isRender, setIsRender] = useState(false)
   useEffect(() => {
-    const user_data = cookies.user_data
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        setIsRender(true)
+      } else {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/client-architechture')
+        } else {
+          navigate('/categoryArchitecture')
+        }
+      }
+    } else {
+      setIsRender(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    const user_data = cookies?.user_data
     if (user_data) {
       axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
         ...user_data
       }).then((res) => {
-        localStorage.setItem(
-          "profileImageNameGmail",
-          JSON.stringify(res?.data?.data)
-        );
         contextData?.dispatch({
           type: "FETCH_PROFILE_DATA",
           value: res?.data?.data,
@@ -89,11 +105,6 @@ const Home = () => {
           type: "FETCH_USER_DATA",
           value: user_data
         });
-
-        localStorage.setItem(
-          "user_data",
-          JSON.stringify(user_data)
-        );
 
         if (res?.data?.data?.category_selected === true) {
           navigate("/");
@@ -133,13 +144,13 @@ const Home = () => {
     }
   };
   const handleProjectsServices = () => {
-    if (contextData?.userData?.role === "client") {
+    if (cookies?.user?.role === "client") {
       contextData?.dispatch({
         type: "CURRENT_CLIENT_TAB",
         value: "Ongoing",
       });
       navigate("/clientdashboard");
-    } else if (contextData?.userData?.role === "professional") {
+    } else if (cookies?.user?.role === "professional") {
       contextData?.dispatch({
         type: "CURRENT_PROFESSIONAL_TAB",
         value: "activities",
@@ -150,13 +161,13 @@ const Home = () => {
     }
   };
   const handleProfessionalServices = () => {
-    if (contextData?.userData?.role === "client") {
+    if (cookies?.user?.role === "client") {
       contextData?.dispatch({
         type: "CURRENT_CLIENT_TAB",
         value: "browse",
       });
       navigate("/clientdashboard");
-    } else if (contextData?.userData?.role === "professional") {
+    } else if (cookies?.user?.role === "professional") {
       toast.warn("Fistly Register With Client Profile !", {
         position: "top-right",
         autoClose: 2000,
@@ -171,7 +182,8 @@ const Home = () => {
       navigate("/client-sign-up");
     }
   };
-  return (
+
+  return (isRender ?
     <>
       <HeaderHome />
       <HeroesSection />
@@ -911,7 +923,7 @@ const Home = () => {
       />
       {/* Same as */}
       <Footer />
-    </>
+    </> : <Loader />
   );
 };
 

@@ -16,12 +16,14 @@ import * as Yup from "yup";
 import { GiCancel } from "react-icons/gi";
 
 import { AiFillDelete } from "react-icons/ai";
+import { MicNone } from "@mui/icons-material";
 const PortfolioPane = () => {
   const [canUploadVideo, setCanUploadVideo] = useState("False");
   const contextData = useContext(Global);
   const [displaycls, setdisplaycls] = useState("none");
   const [loader, setLoader] = useState(false);
-  const [imgPreview, setimgPreview] = useState();
+  const [imddisplay, setimddisplay] = useState("none");
+  const [imgPreview, setimgPreview] = useState("");
   const [showUploadDesign, setUploadDesign] = useState({
     home: true,
     architecture: false,
@@ -255,10 +257,11 @@ const PortfolioPane = () => {
     setclsstyle("none");
     // setvidlbl("");
     setimgPreview("");
-
+    setimgPreviewList("");
     setvidstyle("none");
   };
 
+  const [imgPreviewList, setimgPreviewList] = useState("");
   return (
     <>
       <div
@@ -652,6 +655,8 @@ const PortfolioPane = () => {
                     setimglbl(null);
                     setvidlbl(null);
                     setErrimg("none");
+                    setimgPreviewList("");
+                    setimgdisplay("none");
                   }}
                   className="border-0"
                 ></Modal.Header>
@@ -674,7 +679,6 @@ const PortfolioPane = () => {
                       }}
                       validationSchema={SetUpSchema}
                       onSubmit={(values, { setSubmitting }) => {
-                        console.log("suraj");
                         const catagoryUpload = new FormData();
                         catagoryUpload.append(
                           "user_id",
@@ -719,7 +723,9 @@ const PortfolioPane = () => {
                                   });
                               setLoader(false);
                               setdisplaycls("none");
-                              setimgPreview();
+                              setimgPreview("");
+                              setimgPreviewList("");
+                              setimgdisplay("none");
                             });
                         }
                       }}
@@ -881,6 +887,16 @@ const PortfolioPane = () => {
                               });
                               setimgPreview("");
                               setdisplaycls("none");
+                              setErrimg("none");
+                              seterrimgdisplay("none");
+                              seterrpricedisplay("none");
+                              setimglbl(null);
+                              setvidlbl(null);
+                              setErrimg("none");
+                              setimgPreviewList("");
+                              setimgdisplay("none");
+                              setclsstyle("none");
+                              setvidstyle("none");
                             } else {
                               dispatch({
                                 type: "UPLOAD_DESIGNS_MODAL",
@@ -945,6 +961,10 @@ const PortfolioPane = () => {
                                           "image",
                                           e?.target?.files[0]
                                         );
+                                        setimgPreviewList(
+                                          URL.createObjectURL(e.target.files[0])
+                                        );
+
                                         let name = e.target.files[0].name;
                                         const maxLength = 20;
                                         const trimmedFileName =
@@ -953,16 +973,25 @@ const PortfolioPane = () => {
                                               "..." +
                                               name.slice(-4)
                                             : name;
-                                        // console.log(trimmedFileName);
                                         setimglbl(trimmedFileName);
                                         setclsstyle("block");
                                         setimgstyle("block");
                                         setimgclear(e);
                                         setErrimg("none");
-                                        setimgdisplay("none");
+                                        setimgdisplay("block");
                                       }}
                                     />
                                     <p>Upload a Featured Image</p>
+                                    <img
+                                      src={imgPreviewList}
+                                      className={imgdisplay}
+                                      alt="preview"
+                                      style={{
+                                        height: "45px",
+                                        width: "70px",
+                                        marginRight: "2%",
+                                      }}
+                                    />
                                   </div>
                                   <div
                                     className={clsstyle}
@@ -978,10 +1007,11 @@ const PortfolioPane = () => {
                                         size={25}
                                         color="grey"
                                         onClick={() => {
-                                          // setimgPreview("");
+                                          setimgPreviewList("");
                                           imgnull(imgclear);
                                           setclsstyle("none");
                                           setFieldValue("image", null);
+                                          setimgdisplay("none");
                                         }}
                                       />
                                     </span>
@@ -1014,7 +1044,6 @@ const PortfolioPane = () => {
                                               "..." +
                                               name.slice(-4)
                                             : name;
-                                        // console.log(trimmedFileName);
                                         setvidlbl(trimmedFileName);
                                         setvidstyle("block");
                                         setviddisplay("none");

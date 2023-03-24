@@ -84,12 +84,10 @@ const GlobalData = (props) => {
             value: res?.data?.data,
           });
         } else {
-          console.log(cookies)
           removeCookie('user_data')
         }
       }).catch(error => {
         removeCookie('user_data')
-        console.log(error)
       })
     }
   }, [contextData?.profileData, contextData?.showDisclamer]);

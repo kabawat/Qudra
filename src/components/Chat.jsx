@@ -14,27 +14,49 @@ import {
   ChatItem,
   MessageBox,
   Avatar,
+  Input,
   Button,
 } from "react-chat-elements";
 import "react-chat-elements/dist/main.css";
 
 import { message, noUserPic } from "./images";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-const ChatApp = () => {
-  const [cookies] = useCookies()
-  const navigate = useNavigate();
+import Loader from "./Loader";
+import { useNavigate } from "react-router-dom";
+
+const Chat = () => {
   const contextData = useContext(Global);
+  const [cookies,] = useCookies()
   const [chatsUserTitle, setChatsUserTitle] = useState({
     userPic: noUserPic,
     userSelected: "No chat selected",
   });
+  const navigate = useNavigate()
+  const [isRender, setIsRender] = useState(false)
+
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        setIsRender(true)
+      } else {
+        if (cookies?.user_data.role === "professional") {
+          navigate('/categoryArchitecture')
+        } else {
+          navigate('/client-architechture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
+
   const searchInput = () => {
     $(".search__submit").attr("type", "submit");
   };
 
   const [messageInput, setMessageInput] = useState("");
+
   const messageEndRef = useRef();
 
   useEffect(() => {
@@ -68,14 +90,16 @@ const ChatApp = () => {
   const allChatUserUpdate = () => {
     if (cookies?.user_data?.role === "professional") {
       cookies?.user_data &&
-        axios.post("http://13.52.16.160:8082/chat/all_chat_user/", {
-          professional_id: cookies?.user_data?.user_id,
-          role: cookies?.user_data?.role,
-          user_token: cookies?.user_data?.user_token,
-        }).then((res) => {
-          setAllChatUser(res?.data?.data?.clients_list);
-          setSearchState(false);
-        });
+        axios
+          .post("http://13.52.16.160:8082/chat/all_chat_user/", {
+            professional_id: cookies?.user_data?.user_id,
+            role: cookies?.user_data?.role,
+            user_token: cookies?.user_data?.user_token,
+          })
+          .then((res) => {
+            setAllChatUser(res?.data?.data?.clients_list);
+            setSearchState(false);
+          });
     } else {
       cookies?.user_data &&
         axios
@@ -185,35 +209,37 @@ const ChatApp = () => {
     if (chatsearchfullnamedata.first_name === "") {
       IsSearchUserFound(false);
     } else if (chatsearchfullnamedata.first_name) {
-      axios.post("http://13.52.16.160:8082/chat/search_profile_chat/", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        first_name: chatsearchfullnamedata.first_name,
-        last_name: chatsearchfullnamedata.last_name,
-      }).then((res) => {
-        if (res?.data?.status === "Success") {
-          setSearchState(true);
-          if (cookies?.user_data?.role === "professional") {
-            if (res.data.data.client_list != "No result Found") {
-              setAllChatUser(res?.data?.data?.client_list);
-              IsSearchUserFound(true);
+      axios
+        .post("http://13.52.16.160:8082/chat/search_profile_chat/", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          first_name: chatsearchfullnamedata.first_name,
+          last_name: chatsearchfullnamedata.last_name,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setSearchState(true);
+            if (cookies?.user_data?.role === "professional") {
+              if (res.data.data.client_list != "No result Found") {
+                setAllChatUser(res?.data?.data?.client_list);
+                IsSearchUserFound(true);
+              }
+              if (res.data.data.client_list == "No result Found") {
+                IsSearchUserFound(false);
+              }
             }
-            if (res.data.data.client_list == "No result Found") {
-              IsSearchUserFound(false);
+            if (cookies?.user_data?.role === "client") {
+              if (res.data.data.professional_list != "No result Found") {
+                setAllChatUser(res?.data?.data?.professional_list);
+                IsSearchUserFound(true);
+              }
+              if (res.data.data.professional_list == "No result Found") {
+                IsSearchUserFound(false);
+              }
             }
           }
-          if (cookies?.user_data?.role === "client") {
-            if (res.data.data.professional_list != "No result Found") {
-              setAllChatUser(res?.data?.data?.professional_list);
-              IsSearchUserFound(true);
-            }
-            if (res.data.data.professional_list == "No result Found") {
-              IsSearchUserFound(false);
-            }
-          }
-        }
-      });
+        });
     }
   };
   useEffect(() => {
@@ -221,299 +247,335 @@ const ChatApp = () => {
       allChatUserUpdate();
     }
   }, [searchPara]);
-  if (contextData?.profileData?.category_selected) {
-    return (<>
+
+  return (
+    isRender ? <>
       <ChatHeader />
       <section className="chatbox">
         <div className="container">
-          <div className="row chats-header theme-bg-color" style={{ maxHeight: "inherit" }}>
+          <div
+            className="row chats-header theme-bg-color"
+            style={{ maxHeight: "inherit" }}
+          >
             <div className="col-3 d-flex align-items-center justify-content-between border-end">
               <h5 className="m-0">Chats</h5>
-              <form onSubmit={(e) => e.preventDefault()} className="search d-flex align-items-center">
-                <input className="search__input" type="search"
+              <form
+                onSubmit={(e) => e.preventDefault()}
+                className="search d-flex align-items-center"
+              >
+                <input
+                  className="search__input"
+                  type="search"
                   placeholder="Search"
                   value={searchPara}
                   id="searchInput"
                   onChange={(e) => {
                     searchInput();
                     setSearchPara(e.target.value);
-                  }} />
-                <button className="search__submit d-flex justify-content-center align-items-center"
+                  }}
+                />
+                <button
+                  className="search__submit d-flex justify-content-center align-items-center"
                   type="button"
                   aria-label="Search"
-                  onClick={chatUserSearchSubmit}>
+                  onClick={chatUserSearchSubmit}
+                >
                   <i className="fa fa-search" aria-hidden="true"></i>
                 </button>
               </form>
             </div>
-            <div className="col-9 d-flex align-items-center p-2" style={{ minHeight: "61px" }}>
-              <Avatar src={chatsUserTitle.userPic}
+            <div
+              className="col-9 d-flex align-items-center p-2"
+              style={{ minHeight: "61px" }}
+            >
+              <Avatar
+                src={chatsUserTitle.userPic}
                 alt={"avatar"}
                 size="large"
-                type="rounded-circle" />
+                type="rounded-circle"
+              />
+
               <div className="ms-3">{chatsUserTitle.userSelected}</div>
             </div>
           </div>
-          <Tab.Container id="left-tabs-example"
-            activeKey={currentActiveChatPane}>
+          <Tab.Container
+            id="left-tabs-example"
+            activeKey={currentActiveChatPane}
+          >
             <Row className="chats-main" style={{ maxHeight: "100% " }}>
-              <Col sm={3} id="chatusersdisplaybox" className="px-0"
+              <Col
+                sm={3}
+                id="chatusersdisplaybox"
+                className="px-0"
                 style={{
                   height: `${parseInt($(".chatbox").height()) - 61}px`,
                   overflowY: "auto",
                   backgroundColor: " gainsboro",
-                }}>
+                }}
+              >
                 {!searchState ? (
                   <Nav variant="pills" className="flex-column">
-                    {allChatUser && allChatUser?.filter((data) =>
-                      data?.name?.toLowerCase()?.includes(searchPara.toLowerCase()))?.map((data, index) => (
-                        <>
-                          {data?.name ? (
-                            <ChatItem
-                              key={index}
-                              avatar={data?.avatar ? data?.avatar : noUserPic}
-                              alt={data?.alt}
-                              title={`${data?.name?.slice(0, 15)}${data?.name?.length <= 15 ? "" : "..."
-                                }`}
-                              subtitle={`${data?.last_msg?.slice(0, 15)}${data?.last_msg?.length <= 15 ? "" : "..."
-                                }`}
-                              unread={data?.last_msg}
-                              onClick={() => {
-                                setCurrentActiveChatPane("first");
-                                setChatsUserTitle({
-                                  userPic: data?.avatar
-                                    ? data?.avatar
-                                    : noUserPic,
-                                  userSelected: data?.name,
-                                });
-                                setOtherUserId(index);
-                              }}
-                            />
-                          ) : (
-                            <h1 style={{ color: "white" }}>Hello</h1>
-                          )}
-                        </>
-                      ))}
+                    {allChatUser &&
+                      allChatUser
+                        ?.filter((data) =>
+                          data?.name
+                            ?.toLowerCase()
+                            ?.includes(searchPara.toLowerCase())
+                        )
+                        ?.map((data, index) => (
+                          <>
+                            {data?.name ? (
+                              <ChatItem
+                                key={index}
+                                avatar={data?.avatar ? data?.avatar : noUserPic}
+                                alt={data?.alt}
+                                title={`${data?.name?.slice(0, 15)}${data?.name?.length <= 15 ? "" : "..."
+                                  }`}
+                                subtitle={`${data?.last_msg?.slice(0, 15)}${data?.last_msg?.length <= 15 ? "" : "..."
+                                  }`}
+                                unread={data?.last_msg}
+                                onClick={() => {
+                                  setCurrentActiveChatPane("first");
+                                  setChatsUserTitle({
+                                    userPic: data?.avatar
+                                      ? data?.avatar
+                                      : noUserPic,
+                                    userSelected: data?.name,
+                                  });
+                                  setOtherUserId(index);
+                                }}
+                              />
+                            ) : (
+                              <h1 style={{ color: "white" }}>Hello</h1>
+                            )}
+                          </>
+                        ))}
                   </Nav>
                 ) : (
                   <Nav variant="pills" className="flex-column">
-                    {allChatUser && allChatUser?.filter((data) =>
-                      data?.name?.toLowerCase()?.includes(searchPara.toLowerCase())
-                    ).map((data, index) => (
-                      <>
-                        {data?.name ? (
-                          <ChatItem
-                            key={index}
-                            avatar={data?.avatar ? data?.avatar : noUserPic}
-                            title={`${data?.name?.slice(0, 15)}${data?.name?.length <= 15 ? "" : "..."
-                              }`}
-                            // onClick={() => {
-                            //   setCurrentActiveChatPane("first");
-                            //   setChatsUserTitle({
-                            //     userPic: data?.avatar
-                            //       ? data?.avatar
-                            //       : noUserPic,
-                            //     userSelected: data?.name,
-                            //   });
-                            //   setOtherUserId(index);
-                            // }}
-                            onClick={() => {
-                              // setCurrentActiveChatPane("first");
-                              if (
-                                cookies?.user_data?.role === "client"
-                              ) {
-                                axios
-                                  .post(
-                                    "http://13.52.16.160:8082/chat/get_room_id/",
-                                    {
-                                      client_id:
-                                        cookies?.user_data.user_id,
-                                      user_token:
-                                        cookies?.user_data.user_token,
-                                      role: "professional",
-                                      professional_id:
-                                        data?.professional_id,
-                                    }
-                                  )
-                                  .then((res) => {
-                                    if (res.data.status === "Success") {
-                                      setSearchState(false);
-
-                                      setSearchPara("");
-                                    }
-                                  });
-                              } else {
-                                axios
-                                  .post(
-                                    "http://13.52.16.160:8082/chat/get_room_id/",
-                                    {
-                                      client_id: data?.client_id,
-                                      user_token:
-                                        cookies?.user_data.user_token,
-                                      role: "professional",
-                                      professional_id:
-                                        cookies?.user_data.user_id,
-                                    }
-                                  )
-                                  .then((res) => {
-                                    if (res.data.status === "Success") {
-                                      setSearchState(false);
-                                      setSearchPara("");
-                                    }
-                                  });
-                              }
-                            }}
-                          />
-                        ) : (
-                          <h1 style={{ color: "white" }}>Hello</h1>
-                        )}
-                      </>
-                    ))}
-                  </Nav>
-                )}
-                {/* {searchState ? (
-                    <Nav variant="pills" className="flex-column">
-                      {allChatUser &&
-                        allChatUser
-                          .filter((data) =>
-                            data?.name
-                              .toLowerCase()
-                              .includes(searchPara.toLowerCase())
-                          )
-                          .map((data, index) => (
-                            <>
-                              {data?.name ? (
-                                <ChatItem
-                                  key={index}
-                                  avatar={data.avatar ? data.avatar : noUserPic}
-                                  alt={data?.alt}
-                                  title={data?.name}
-                                  // subtitle={`${data?.last_msg.slice(0, 15)}${
-                                  //   data?.last_msg.length <= 15 ? "" : "..."
-                                  // }`}
-                                  unread={data?.last_msg}
-                                  onClick={() => {
-                                    setCurrentActiveChatPane("first");
-                                    setChatsUserTitle({
-                                      userPic: data?.avatar
-                                        ? data?.avatar
-                                        : noUserPic,
-                                      userSelected: data?.name,
-                                    });
-                                    setOtherUserId(index);
-                                  }}
-                                />
-                              ) : (
-                                <h1 style={{ color: "white" }}>Hello</h1>
-                              )}
-                            </>
-                          ))}
-                    </Nav>
-                  ) : isSearchUserFound === true ? (
-                    cookies?.user_data?.role ===
-                    "professional" ? (
-                      <Nav variant="pills" className="flex-column">
-                        {allChatUser &&
-                          allChatUser?.map((data, index) => (
-                            <>
-                              {data?.name ? (
-                                <ChatItem
-                                  key={index}
-                                  avatar={data.avatar ? data.avatar : noUserPic}
-                                  alt={data?.alt}
-                                  title={data?.name}
-                                  // date={data?.last_msg_time}
-                                  unread={data?.last_msg}
-                                  onClick={() => {
-                                    setCurrentActiveChatPane("first");
-                                    axios
-                                      .post(
-                                        "http://13.52.16.160:8082/chat/get_room_id/",
-                                        {
-                                          professional_id:
-                                            cookies?.user_data
-                                              .user_id,
-                                          user_token:
-                                            cookies?.user_data
-                                              .user_token,
-                                          role: "professional",
-                                          client_id: data?.client_id,
-                                        }
-                                      )
-                                      .then((res) => {
-                                        if (res.data.status === "Success") {
-                                          setSearchState(false);
-                                          contextData.setIsOnChatPage(
-                                            !contextData.isOnChatPage
-                                          );
-                                        }
-                                      });
-  
-                                    setSearchPara("");
-                                  }}
-                                />
-                              ) : (
-                                <h1 style={{ color: "white" }}>Hello</h1>
-                              )}
-                            </>
-                          ))}
-                      </Nav>
-                    ) : (
-                      <Nav variant="pills" className="flex-column">
-                        {allChatUser &&
-                          allChatUser?.map((data, index) => (
-                            <>
-                              {data?.name ? (
-                                <ChatItem
-                                  key={index}
-                                  avatar={data.avatar ? data.avatar : noUserPic}
-                                  alt={data?.alt}
-                                  title={data?.name}
-                                  // date={data?.last_msg_time}
-                                  unread={data?.last_msg}
-                                  onClick={() => {
-                                    setCurrentActiveChatPane("first");
+                    {allChatUser &&
+                      allChatUser
+                        ?.filter((data) =>
+                          data?.name
+                            ?.toLowerCase()
+                            ?.includes(searchPara.toLowerCase())
+                        )
+                        .map((data, index) => (
+                          <>
+                            {data?.name ? (
+                              <ChatItem
+                                key={index}
+                                avatar={data?.avatar ? data?.avatar : noUserPic}
+                                title={`${data?.name?.slice(0, 15)}${data?.name?.length <= 15 ? "" : "..."
+                                  }`}
+                                // onClick={() => {
+                                //   setCurrentActiveChatPane("first");
+                                //   setChatsUserTitle({
+                                //     userPic: data?.avatar
+                                //       ? data?.avatar
+                                //       : noUserPic,
+                                //     userSelected: data?.name,
+                                //   });
+                                //   setOtherUserId(index);
+                                // }}
+                                onClick={() => {
+                                  // setCurrentActiveChatPane("first");
+                                  if (
+                                    cookies?.user_data?.role === "client"
+                                  ) {
                                     axios
                                       .post(
                                         "http://13.52.16.160:8082/chat/get_room_id/",
                                         {
                                           client_id:
-                                            cookies?.user_data
-                                              ?.user_id,
+                                            cookies?.user_data.user_id,
                                           user_token:
-                                            cookies?.user_data
-                                              ?.user_token,
-                                          role: cookies?.user_data
-                                            ?.role,
-                                          professional_id: data?.professional_id,
+                                            cookies?.user_data.user_token,
+                                          role: "professional",
+                                          professional_id:
+                                            data?.professional_id,
                                         }
                                       )
                                       .then((res) => {
                                         if (res.data.status === "Success") {
                                           setSearchState(false);
-                                          contextData.setIsOnChatPage(
-                                            !contextData.isOnChatPage
-                                          );
+
+                                          setSearchPara("");
                                         }
                                       });
-  
-                                    setSearchPara("");
-                                  }}
-                                />
-                              ) : (
-                                // "dgawuidga"
-                                <h1 style={{ color: "white" }}>Hello</h1>
-                              )}
-                            </>
-                          ))}
-                      </Nav>
-                    )
+                                  } else {
+                                    axios
+                                      .post(
+                                        "http://13.52.16.160:8082/chat/get_room_id/",
+                                        {
+                                          client_id: data?.client_id,
+                                          user_token:
+                                            cookies?.user_data.user_token,
+                                          role: "professional",
+                                          professional_id:
+                                            cookies?.user_data.user_id,
+                                        }
+                                      )
+                                      .then((res) => {
+                                        if (res.data.status === "Success") {
+                                          setSearchState(false);
+                                          setSearchPara("");
+                                        }
+                                      });
+                                  }
+                                }}
+                              />
+                            ) : (
+                              <h1 style={{ color: "white" }}>Hello</h1>
+                            )}
+                          </>
+                        ))}
+                  </Nav>
+                )}
+                {/* {searchState ? (
+                  <Nav variant="pills" className="flex-column">
+                    {allChatUser &&
+                      allChatUser
+                        .filter((data) =>
+                          data?.name
+                            .toLowerCase()
+                            .includes(searchPara.toLowerCase())
+                        )
+                        .map((data, index) => (
+                          <>
+                            {data?.name ? (
+                              <ChatItem
+                                key={index}
+                                avatar={data.avatar ? data.avatar : noUserPic}
+                                alt={data?.alt}
+                                title={data?.name}
+                                // subtitle={`${data?.last_msg.slice(0, 15)}${
+                                //   data?.last_msg.length <= 15 ? "" : "..."
+                                // }`}
+                                unread={data?.last_msg}
+                                onClick={() => {
+                                  setCurrentActiveChatPane("first");
+                                  setChatsUserTitle({
+                                    userPic: data?.avatar
+                                      ? data?.avatar
+                                      : noUserPic,
+                                    userSelected: data?.name,
+                                  });
+                                  setOtherUserId(index);
+                                }}
+                              />
+                            ) : (
+                              <h1 style={{ color: "white" }}>Hello</h1>
+                            )}
+                          </>
+                        ))}
+                  </Nav>
+                ) : isSearchUserFound === true ? (
+                  cookies?.user_data?.role ===
+                  "professional" ? (
+                    <Nav variant="pills" className="flex-column">
+                      {allChatUser &&
+                        allChatUser?.map((data, index) => (
+                          <>
+                            {data?.name ? (
+                              <ChatItem
+                                key={index}
+                                avatar={data.avatar ? data.avatar : noUserPic}
+                                alt={data?.alt}
+                                title={data?.name}
+                                // date={data?.last_msg_time}
+                                unread={data?.last_msg}
+                                onClick={() => {
+                                  setCurrentActiveChatPane("first");
+                                  axios
+                                    .post(
+                                      "http://13.52.16.160:8082/chat/get_room_id/",
+                                      {
+                                        professional_id:
+                                          cookies?.user_data
+                                            .user_id,
+                                        user_token:
+                                          cookies?.user_data
+                                            .user_token,
+                                        role: "professional",
+                                        client_id: data?.client_id,
+                                      }
+                                    )
+                                    .then((res) => {
+                                      if (res.data.status === "Success") {
+                                        setSearchState(false);
+                                        contextData.setIsOnChatPage(
+                                          !contextData.isOnChatPage
+                                        );
+                                      }
+                                    });
+
+                                  setSearchPara("");
+                                }}
+                              />
+                            ) : (
+                              <h1 style={{ color: "white" }}>Hello</h1>
+                            )}
+                          </>
+                        ))}
+                    </Nav>
                   ) : (
-                    "no user found"
-                  )} */}
+                    <Nav variant="pills" className="flex-column">
+                      {allChatUser &&
+                        allChatUser?.map((data, index) => (
+                          <>
+                            {data?.name ? (
+                              <ChatItem
+                                key={index}
+                                avatar={data.avatar ? data.avatar : noUserPic}
+                                alt={data?.alt}
+                                title={data?.name}
+                                // date={data?.last_msg_time}
+                                unread={data?.last_msg}
+                                onClick={() => {
+                                  setCurrentActiveChatPane("first");
+                                  axios
+                                    .post(
+                                      "http://13.52.16.160:8082/chat/get_room_id/",
+                                      {
+                                        client_id:
+                                          cookies?.user_data
+                                            ?.user_id,
+                                        user_token:
+                                          cookies?.user_data
+                                            ?.user_token,
+                                        role: cookies?.user_data
+                                          ?.role,
+                                        professional_id: data?.professional_id,
+                                      }
+                                    )
+                                    .then((res) => {
+                                      if (res.data.status === "Success") {
+                                        setSearchState(false);
+                                        contextData.setIsOnChatPage(
+                                          !contextData.isOnChatPage
+                                        );
+                                      }
+                                    });
+
+                                  setSearchPara("");
+                                }}
+                              />
+                            ) : (
+                              // "dgawuidga"
+                              <h1 style={{ color: "white" }}>Hello</h1>
+                            )}
+                          </>
+                        ))}
+                    </Nav>
+                  )
+                ) : (
+                  "no user found"
+                )} */}
               </Col>
 
-              <Col sm={9}
+              <Col
+                sm={9}
                 className="px-0 "
                 id="chatsdisplaybox"
                 style={{
@@ -521,14 +583,17 @@ const ChatApp = () => {
                   overflowY: "auto",
                   backgroundColor: "#c7c7c7",
                   position: "relative",
-                }}>
+                }}
+              >
                 {currentActiveChatPane !== "first" ? (
                   ""
                 ) : (
                   <Tab.Content>
-                    <div id="chat-log"
+                    <div
+                      id="chat-log"
                       className={"tab-content d-flex flex-column w-100 pt-2"}
-                      style={{ position: " absolute", bottom: 0 }}>
+                      style={{ position: " absolute", bottom: 0 }}
+                    >
                       {chatListData &&
                         chatListData.map((message, index) =>
                           message?.type === "text" ? (
@@ -537,16 +602,22 @@ const ChatApp = () => {
                               title={message?.name}
                               type={message?.type}
                               text={message?.data}
-                              position={message?.status === "Send" ? "right" : "left"} />
+                              position={
+                                message?.status === "Send" ? "right" : "left"
+                              }
+                            />
                           ) : (
                             <a download target="_blank" href={message?.data}>
                               <MessageBox
-                                position={message?.status === "Send" ? "right" : "left"}
-                                type={message?.data.slice(-3) == "png" ||
-                                  "jpg" ||
-                                  "webm"
-                                  ? "photo"
-                                  : message?.type
+                                position={
+                                  message?.status === "Send" ? "right" : "left"
+                                }
+                                type={
+                                  message?.data.slice(-3) == "png" ||
+                                    "jpg" ||
+                                    "webm"
+                                    ? "photo"
+                                    : message?.type
                                 }
                                 title={message?.name}
                                 text={message?.data.slice(48)}
@@ -557,17 +628,20 @@ const ChatApp = () => {
                                     click: false,
                                     loading: 0,
                                   },
-                                }} />
+                                }}
+                              />
                             </a>
                           )
                         )}
                       <div className="row mx-0" ref={messageEndRef}>
                         <div className="col-10 d-flex">
-                          <input className="chatMessageInputText"
+                          <input
+                            className="chatMessageInputText"
                             placeholder="Type here..."
                             id="chat-message"
                             value={messageInput}
-                            onChange={(e) => setMessageInput(e.target.value)} />
+                            onChange={(e) => setMessageInput(e.target.value)}
+                          />
                           <Button
                             id="chat-submit"
                             text={"Send"}
@@ -580,16 +654,23 @@ const ChatApp = () => {
                                   type: "message",
                                 })
                               );
+
                               setMessageInput("");
                             }}
                           />
                         </div>
                         <div className="col-2">
-                          <Formik initialValues={{ file: "", }}
+                          <Formik
+                            initialValues={{
+                              file: "",
+                            }}
                             onSubmit={(values, { setSubmitting }) => {
                               const fileUpload = new FormData();
                               fileUpload.append("attachment", values.file);
-                              if (cookies?.user_data.role === "professional") {
+
+                              if (
+                                cookies?.user_data.role === "professional"
+                              ) {
                                 fileUpload.append(
                                   "professional_id",
                                   cookies?.user_data?.user_id
@@ -627,7 +708,8 @@ const ChatApp = () => {
                                 .post(
                                   "http://13.52.16.160:8082/chat/upload_file/",
                                   fileUpload
-                                ).then((res) => {
+                                )
+                                .then((res) => {
                                   if (res?.data?.status === "Success") {
                                     wskt.send(
                                       JSON.stringify({
@@ -675,27 +757,8 @@ const ChatApp = () => {
       </section>
       <ToastContainer />
       {/* <Footer /> */}
-    </>
-    );
-  } else {
-    if (cookies.user_data.role === "professional") {
-      navigate('/categoryArchitecture')
-    } else {
-      navigate('/client-architechture')
-    }
-  }
-
-
-}
-
-const Chat = () => {
-  const [cookies] = useCookies()
-  const navigate = useNavigate()
-  if (cookies?.user_data) {
-    return <ChatApp />
-  } else {
-    navigate('/select-sign-in')
-  }
+    </> : <Loader />
+  );
 };
 
 export default Chat;

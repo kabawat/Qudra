@@ -7,12 +7,9 @@ import { FaPaypal } from "react-icons/fa";
 import Select from "react-select";
 import Footer from "../../components/Footer";
 import $ from "jquery";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 const Cart = () => {
   const [currentTab, setCurrentTab] = useState("dashboard");
-  const [cookies] = useCookies()
-  const navigate = useNavigate()
+
   const months = [
     { value: "01", label: "01" },
     { value: "02", label: "02" },
@@ -46,89 +43,87 @@ const Cart = () => {
     $(".cardExpiry.monthInput input").attr("maxlength", "2");
     $(".cardExpiry.yearInput input").attr("maxlength", "4");
   });
-  if (cookies?.user_data) {
-    return (
-      <>
-        <div className="dashboard">
-          <div className="container-fluid h-100">
-            <div className="row h-100 dashboard-theme-color">
-              <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
-                <ClientDashboardAside onTabChange={setCurrentTab} />
-              </div>
-              <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
-                <HeaderDashboard />
-                <div className="cart_page_main mx-5 px-5 my-5 py-5">
-                  <div className="row m-0">
-                    <div className="col-7 shoppingCartMain">
-                      <h3>Shopping Cart</h3>
-                      <div className="row border-bottom m-0 pb-3 mt-5">
-                        <div className="col-7">
-                          <h6>Designs</h6>
+  return (
+    <>
+      <div className="dashboard">
+        <div className="container-fluid h-100">
+          <div className="row h-100 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+              <ClientDashboardAside onTabChange={setCurrentTab} />
+            </div>
+            <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
+              <HeaderDashboard />
+              <div className="cart_page_main mx-5 px-5 my-5 py-5">
+                <div className="row m-0">
+                  <div className="col-7 shoppingCartMain">
+                    <h3>Shopping Cart</h3>
+                    <div className="row border-bottom m-0 pb-3 mt-5">
+                      <div className="col-7">
+                        <h6>Designs</h6>
+                      </div>
+                      <div className="col-5">
+                        <div className="row">
+                          <div className="col">
+                            <h6>Unit</h6>
+                          </div>
+                          <div className="col">
+                            <h6>Total Price</h6>
+                          </div>
                         </div>
-                        <div className="col-5">
-                          <div className="row">
-                            <div className="col">
-                              <h6>Unit</h6>
-                            </div>
-                            <div className="col">
-                              <h6>Total Price</h6>
+                      </div>
+                    </div>
+                    <div className="row m-0 pt-4">
+                      <div className="col-7 leftShoppingCart">
+                        <div className="row">
+                          <div className="col">
+                            <div className="row">
+                              <div className="col-auto">
+                                <div className="ImgBox">
+                                  <img
+                                    src="/static/images/userWork.png"
+                                    alt=""
+                                    className="img-fluid"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col d-flex flex-column justify-content-center">
+                                <h5>Residental Architechture</h5>
+                                <p>Reference site about lipsum</p>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="row m-0 pt-4">
-                        <div className="col-7 leftShoppingCart">
-                          <div className="row">
-                            <div className="col">
-                              <div className="row">
-                                <div className="col-auto">
-                                  <div className="ImgBox">
-                                    <img
-                                      src="/static/images/userWork.png"
-                                      alt=""
-                                      className="img-fluid"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col d-flex flex-column justify-content-center">
-                                  <h5>Residental Architechture</h5>
-                                  <p>Reference site about lipsum</p>
-                                </div>
-                              </div>
-                            </div>
+                      <div className="col-5 rightShoppingCart">
+                        <div className="row">
+                          <div className="col">
+                            <h4>$600</h4>
                           </div>
-                        </div>
-                        <div className="col-5 rightShoppingCart">
-                          <div className="row">
-                            <div className="col">
-                              <h4>$600</h4>
-                            </div>
-                            <div className="col-8">
-                              <div className="row">
-                                <div className="col">
-                                  <h3>$600</h3>
-                                </div>
-                                <div className="col">
-                                  <BiX />
-                                </div>
+                          <div className="col-8">
+                            <div className="row">
+                              <div className="col">
+                                <h3>$600</h3>
                               </div>
-                              <div className="row mt-5 pt-5 totalProductAmount">
-                                <div className="col">
-                                  <div className="row border-bottom">
-                                    <div className="col-6">
-                                      <h5>Subtotal:</h5>
-                                    </div>
-                                    <div className="col-6">
-                                      <h4>$500</h4>
-                                    </div>
+                              <div className="col">
+                                <BiX />
+                              </div>
+                            </div>
+                            <div className="row mt-5 pt-5 totalProductAmount">
+                              <div className="col">
+                                <div className="row border-bottom">
+                                  <div className="col-6">
+                                    <h5>Subtotal:</h5>
                                   </div>
-                                  <div className="row pt-3">
-                                    <div className="col-6">
-                                      <h5>total:</h5>
-                                    </div>
-                                    <div className="col-6">
-                                      <h4>$500</h4>
-                                    </div>
+                                  <div className="col-6">
+                                    <h4>$500</h4>
+                                  </div>
+                                </div>
+                                <div className="row pt-3">
+                                  <div className="col-6">
+                                    <h5>total:</h5>
+                                  </div>
+                                  <div className="col-6">
+                                    <h4>$500</h4>
                                   </div>
                                 </div>
                               </div>
@@ -137,102 +132,100 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-5 bg-white payementFormMain">
-                      <form action="">
-                        <h4>Payment Info</h4>
-                        <p className="pt-3 mb-0">Payement Method:</p>
-                        <div className="row pt-3 m-0 pb-4 border-bottom">
-                          <div className="col ps-0">
-                            <button>
-                              <BiCreditCardAlt />
-                              Credit Card
-                            </button>
-                          </div>
-                          <div className="col pe-0">
-                            <button>
-                              <FaPaypal />
-                              PayPal
-                            </button>
-                          </div>
+                  </div>
+                  <div className="col-5 bg-white payementFormMain">
+                    <form action="">
+                      <h4>Payment Info</h4>
+                      <p className="pt-3 mb-0">Payement Method:</p>
+                      <div className="row pt-3 m-0 pb-4 border-bottom">
+                        <div className="col ps-0">
+                          <button>
+                            <BiCreditCardAlt />
+                            Credit Card
+                          </button>
                         </div>
-                        <div className="row m-0 pt-3 pb-4 border-bottom">
-                          <h6>Name on card</h6>
-                          <input type="text" />
+                        <div className="col pe-0">
+                          <button>
+                            <FaPaypal />
+                            PayPal
+                          </button>
                         </div>
-                        <div className="row m-0 pt-3 pb-4 border-bottom">
-                          <h6>Card Number</h6>
-                          <input
-                            id="ccn"
-                            type="tel"
-                            inputMode="numeric"
-                            pattern="[0-9\s]{13,19}"
-                            autoComplete="cc-number"
-                            maxLength="19"
-                            placeholder="xxxx xxxx xxxx xxxx"
-                          />
-                        </div>
-                        <div className="row  py-3">
-                          <div className="col-8">
-                            <div className="row">
-                              <h6>Expiration Date</h6>
-                              <div className="col cardExpiry monthInput">
-                                <div className="border-bottom">
-                                  <Select
-                                    options={months}
-                                    placeholder="MM"
-                                    style={{ border: "none" }}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col cardExpiry yearInput">
-                                <div className="border-bottom">
-                                  <Select
-                                    options={years}
-                                    placeholder="YYYY"
-                                    style={{ border: "none" }}
-                                  />
-                                </div>
+                      </div>
+                      <div className="row m-0 pt-3 pb-4 border-bottom">
+                        <h6>Name on card</h6>
+                        <input type="text" />
+                      </div>
+                      <div className="row m-0 pt-3 pb-4 border-bottom">
+                        <h6>Card Number</h6>
+                        <input
+                          id="ccn"
+                          type="tel"
+                          inputMode="numeric"
+                          pattern="[0-9\s]{13,19}"
+                          autoComplete="cc-number"
+                          maxLength="19"
+                          placeholder="xxxx xxxx xxxx xxxx"
+                        />
+                      </div>
+                      <div className="row  py-3">
+                        <div className="col-8">
+                          <div className="row">
+                            <h6>Expiration Date</h6>
+                            <div className="col cardExpiry monthInput">
+                              <div className="border-bottom">
+                                <Select
+                                  options={months}
+                                  placeholder="MM"
+                                  style={{ border: "none" }}
+                                />
                               </div>
                             </div>
-                          </div>
-                          <div className="col-4">
-                            <div className="row h-100">
-                              <div className="col d-flex flex-column justify-content-end">
-                                <label htmlFor="CVV">CVV:</label>
-                                <input
-                                  type="text"
-                                  id="CVV"
-                                  placeholder="xxx"
-                                  className="border-bottom"
-                                  maxLength={3}
-                                  minLength={3}
+                            <div className="col cardExpiry yearInput">
+                              <div className="border-bottom">
+                                <Select
+                                  options={years}
+                                  placeholder="YYYY"
+                                  style={{ border: "none" }}
                                 />
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div className="row">
-                          <button
-                            type="submit"
-                            className="PaymentCardSubmitButton"
-                          >
-                            Check out <BsArrowRight />
-                          </button>
+                        <div className="col-4">
+                          <div className="row h-100">
+                            <div className="col d-flex flex-column justify-content-end">
+                              <label htmlFor="CVV">CVV:</label>
+                              <input
+                                type="text"
+                                id="CVV"
+                                placeholder="xxx"
+                                className="border-bottom"
+                                maxLength={3}
+                                minLength={3}
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </form>
-                    </div>
+                      </div>
+                      <div className="row">
+                        <button
+                          type="submit"
+                          className="PaymentCardSubmitButton"
+                        >
+                          Check out <BsArrowRight />
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <Footer />
-      </>
-    );
-  } else {
-    navigate('/')
-  }
+      </div>
+      <Footer />
+    </>
+  );
 };
 
 export default Cart;

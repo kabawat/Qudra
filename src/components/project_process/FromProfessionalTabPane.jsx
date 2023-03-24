@@ -159,7 +159,7 @@ const FromProfessionalTabPane = ({ location }) => {
                     </div>
                   </Wrapper>
                 ))}
-                <BackButton customClass="mx-auto d-block mt-4" text="Back" />
+                <BackButton customclassName="mx-auto d-block mt-4" text="Back" />
               </section>
             </div>
           </div>

@@ -45,7 +45,7 @@ const Ratings = () => {
       setRating([]);
     }
   }, []);
-
+  var searchAll = [];
   const handleSearch = () => {
     axios
       .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
@@ -59,9 +59,39 @@ const Ratings = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           setRating(res?.data?.data);
+          setSearchdata(rating);
+
+          searchAll = res?.data?.data;
+        } else {
+          setSearchdata("");
         }
       });
   };
+
+  const handleRating = (val) => {
+    if (val == "") {
+      axios
+        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          ...searchPageId,
+          search_for: "rating",
+          search_data: "",
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setRating(res?.data?.data);
+
+            searchAll = res?.data?.data;
+            setSearchdata(searchAll);
+          }
+        });
+    }
+  };
+
+  const [searchData, setSearchdata] = useState(searchAll);
+
   const [searchPageId, setSearchPageId] = useState({
     page: 1,
     page_size: 5,
@@ -99,7 +129,10 @@ const Ratings = () => {
                 type="text"
                 placeholder="Search..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  handleRating(e.target.value);
+                }}
               />
               <button onClick={handleSearch}>
                 <BsSearch />
@@ -107,13 +140,18 @@ const Ratings = () => {
             </div>
           </div>
         ) : (
-          ""
+          <div
+            style={{ minHeight: "600px" }}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <span className="h4">No Rating Data To Show</span>
+          </div>
         )}
 
-        {rating?.final_data?.length ? (
+        {searchData && rating?.final_data ? (
           rating?.final_data?.map((res, index) => (
             <div className="row MyProjectDisplayRow" key={index}>
-              <div className="col-md-6  d-flex align-items-center ">
+              <div className="col-md-4  d-flex align-items-center ">
                 <img
                   src={res?.client_image}
                   className="img-fluid rounded-circle"
@@ -128,7 +166,10 @@ const Ratings = () => {
                   </h6>
                 </div>
               </div>
-              <div className="col-md-6  d-flex  align-items-center justify-content-end">
+              <div className="col-md-4  d-flex  align-items-center ">
+                <p>{res.review}</p>
+              </div>
+              <div className="col-md-4  d-flex  align-items-center justify-content-end">
                 <Rating
                   name="read-only"
                   value={parseInt(res?.rating)}

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Global from "../context/Global";
 import { CiHeart } from "react-icons/ci";
+import { MdOutlineLiveHelp } from "react-icons/md";
 const ClientDashboardAside = () => {
   const contextData = useContext(Global);
   return (
@@ -193,6 +194,35 @@ const ClientDashboardAside = () => {
               className="liked-green-icon"
             />
             Ratings
+          </a>
+        </li>
+        <li
+          className="nav-item"
+          onClick={() => {
+            contextData?.dispatch({
+              type: "CURRENT_CLIENT_TAB",
+              value: "help",
+            });
+          }}
+        >
+          <a
+            className={`nav-link ${
+              contextData?.current_client_tab === "help" ? "active" : ""
+            } liked-btn`}
+            data-bs-toggle="tab"
+            href="#liked-saved"
+          >
+            <MdOutlineLiveHelp
+              style={{
+                color: `${
+                  contextData?.current_client_tab === "help"
+                    ? "#00a78b"
+                    : "white"
+                }`,
+                fontSize: "27px",
+              }}
+            />
+            <span style={{ marginLeft: "5px" }}> Help</span>
           </a>
         </li>
       </ul>

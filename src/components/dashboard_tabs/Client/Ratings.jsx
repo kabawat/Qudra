@@ -48,6 +48,8 @@ const Ratings = () => {
     }
   }, []);
 
+  var searchAll = [];
+
   const handleSearch = () => {
     axios
       .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
@@ -61,9 +63,16 @@ const Ratings = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           setRating(res?.data?.data);
+          setSearchdata(rating);
+          searchAll = res?.data?.data;
+        } else {
+          setSearchdata("");
         }
       });
   };
+
+  const [searchData, setSearchdata] = useState(searchAll);
+
   const [searchPageId, setSearchPageId] = useState({
     page: 1,
     page_size: 5,
@@ -73,6 +82,27 @@ const Ratings = () => {
     searchPaginationArray.push(i + 1);
   }
 
+  const handleRating = (val) => {
+    if (val == "") {
+      axios
+        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          ...searchPageId,
+          search_for: "rating",
+          search_data: "",
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setRating(res?.data?.data);
+
+            searchAll = res?.data?.data;
+            setSearchdata(searchAll);
+          }
+        });
+    }
+  };
   useEffect(() => {
     axios
       .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
@@ -94,23 +124,35 @@ const Ratings = () => {
     <div id="liked-save" className="container-fluid  myProjectTable">
       <h2 className="ps-5"> Ratings </h2>
       <div className="m-md-5 mx-2 shadow">
-        <div className="row  align-items-center MyProjectDisplayRow">
-          <div className="searchActiveProject col-8 ms-auto">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button onClick={handleSearch}>
-              <BsSearch />
-            </button>
-          </div>
-        </div>
         {rating?.final_data?.length ? (
+          <div className="row  align-items-center MyProjectDisplayRow">
+            <div className="searchActiveProject col-8 ms-auto">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  handleRating(e.target.value);
+                }}
+              />
+              <button onClick={handleSearch}>
+                <BsSearch />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div
+            style={{ minHeight: "600px" }}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <span className="h4">No Rating Data To Show</span>
+          </div>
+        )}
+        {searchData && rating?.final_data ? (
           rating?.final_data?.map((res, index) => (
             <div className="row MyProjectDisplayRow" key={index}>
-              <div className="col-md-6  d-flex align-items-center ">
+              <div className="col-md-4  d-flex align-items-center ">
                 <img
                   onClick={() => {
                     navigate(`/professionalprofile/${res?.professional_id}`);
@@ -135,7 +177,10 @@ const Ratings = () => {
                   </h6>
                 </div>
               </div>
-              <div className="col-md-6  d-flex  align-items-center justify-content-end">
+              <div className="col-md-4 d-flex align-items-center">
+                {res.review}
+              </div>
+              <div className="col-md-4  d-flex  align-items-center justify-content-end">
                 <Rating
                   name="read-only"
                   value={parseInt(res?.rating)}
@@ -153,6 +198,7 @@ const Ratings = () => {
           </div>
         )}
       </div>
+
       {!search && projectPageId?.page_size < rating?.total_data ? (
         <Pagination className="ps-5 paginationBoxProfessionalDashboard">
           <Pagination.First
