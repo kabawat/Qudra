@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import $ from "jquery";
+import $, { event } from "jquery";
 import Button from "react-bootstrap/Button";
 import { MdLanguage } from "react-icons/md";
 import axios from "axios";
@@ -24,13 +24,13 @@ const buttonStyle = {
 };
 const Header2 = ({ link }) => {
   const navigate = useNavigate();
-  const [cookies, , removeCookie] = useCookies()
+  const [cookies, , removeCookie] = useCookies();
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
   const logoutHandle = () => {
     setShow(false);
     localStorage.clear();
-    removeCookie('user_data')
+    removeCookie("user_data");
     contextData?.dispatch({ type: "LOG_OUT" });
     navigate("/");
   };
@@ -164,7 +164,7 @@ const Header2 = ({ link }) => {
 };
 
 const HeaderHome = () => {
-  const [cookies, , removeCookie] = useCookies()
+  const [cookies, , removeCookie] = useCookies();
   const [userData, setUserData] = useState(cookies?.user_data);
 
   const textClick = () => {
@@ -243,10 +243,7 @@ const HeaderHome = () => {
                     )}
                     {cookies?.user_data && (
                       <li>
-                        <Link
-                          to="/"
-                          onClick={() => setShow(true)}
-                        >
+                        <Link to="/" onClick={() => setShow(true)}>
                           Sign Out
                         </Link>
                       </li>
@@ -268,10 +265,10 @@ const HeaderHome = () => {
                         <Button
                           className="theme-bg-color border-0"
                           onClick={() => {
+                            removeCookie("user_data");
                             closeBtnClick();
                             setShow(false);
                             localStorage.clear();
-                            removeCookie('user_data')
                             contextData?.dispatch({ type: "LOG_OUT" });
                           }}
                         >
@@ -282,9 +279,7 @@ const HeaderHome = () => {
                     {cookies?.user_data?.role === "client" && (
                       <li>
                         <Link
-                          to={
-                            !cookies?.user_data ? "/join" : "clientdashboard"
-                          }
+                          to={!cookies?.user_data ? "/join" : "clientdashboard"}
                         >
                           Business
                         </Link>
@@ -351,10 +346,7 @@ const HeaderHome = () => {
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                to="/"
-                                onClick={() => setShow(true)}
-                              >
+                              <Link to="/" onClick={() => setShow(true)}>
                                 Sign Out
                               </Link>
                             </li>
@@ -458,7 +450,7 @@ const Header3 = () => {
 
 const ChatHeader = () => {
   const navigate = useNavigate();
-  const [cookies, , removeCookie] = useCookies()
+  const [cookies, , removeCookie] = useCookies();
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");
@@ -829,7 +821,7 @@ const ChatHeader = () => {
             onClick={() => {
               setShow(false);
               localStorage.clear();
-              removeCookie('user_data')
+              removeCookie("user_data");
               contextData?.dispatch({ type: "LOG_OUT" });
               navigate("/");
             }}
@@ -844,7 +836,7 @@ const ChatHeader = () => {
 
 const HeaderDashboard = () => {
   const navigate = useNavigate();
-  const [cookies, , removeCookie] = useCookies()
+  const [cookies, , removeCookie] = useCookies();
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");
@@ -856,64 +848,57 @@ const HeaderDashboard = () => {
   const [clientDetails, setClientDetails] = useState();
 
   const handleNotification = (res) => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_details", {
-        professional_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        project_id: res?.detail?.project_id,
-      })
-      .then((respo) => {
-        if (respo?.data?.status === "Success") {
-          if (clientDetails) {
-            navigate("/project-details", {
-              state: {
-                projectData: respo?.data?.data,
-                clientDetails: clientDetails,
-                isFromProfessionalNotification: true,
-              },
-            });
-          }
+    axios.post("http://13.52.16.160:8082/client/particular_project_details", {
+      professional_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      project_id: res?.detail?.project_id,
+    }).then((respo) => {
+      if (respo?.data?.status === "Success") {
+        if (clientDetails) {
+          navigate("/project-details", {
+            state: {
+              projectData: respo?.data?.data,
+              clientDetails: clientDetails,
+              isFromProfessionalNotification: true,
+            },
+          });
         }
-      });
+      }
+    });
   };
   const handleClientAcceptation = (client_id, client_project_id) => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        client_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        professional_id: client_id,
-        project_id: client_project_id,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: client_project_id,
-              }
-            )
-            .then((respo) => {
-              if (respo?.data?.status === "Success") {
-                if (clientDetails !== undefined) {
-                  navigate("/project-details", {
-                    state: {
-                      projectDetails: { client_id, client_project_id },
-                      projectData: respo?.data?.data,
-                      milesStoneData: res?.data?.data,
-                      isFromClientNotification: true,
-                    },
-                  });
-                }
-              }
-            });
-        }
-      });
+    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      client_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      professional_id: client_id,
+      project_id: client_project_id,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        axios.post("http://13.52.16.160:8082/client/particular_project_details",
+          {
+            client_id: cookies?.user_data?.user_id,
+            user_token: cookies?.user_data?.user_token,
+            role: cookies?.user_data?.role,
+            project_id: client_project_id,
+          }
+        ).then((respo) => {
+          if (respo?.data?.status === "Success") {
+            if (clientDetails !== undefined) {
+              navigate("/project-details", {
+                state: {
+                  projectDetails: { client_id, client_project_id },
+                  projectData: respo?.data?.data,
+                  milesStoneData: res?.data?.data,
+                  isFromClientNotification: true,
+                },
+              });
+            }
+          }
+        });
+      }
+    });
   };
   const widowSize = useWindowSize();
   const [notificationPageId, setNotificationPageId] = useState({
@@ -921,50 +906,74 @@ const HeaderDashboard = () => {
     page_size: 10,
   });
   const [notificationArray, setNotificationArray] = useState();
-  const handleNotificationBox = () => {
+  // const handleNotificationBox = () => {
+  //   cookies?.user_data &&
+  //     axios.post("http://13.52.16.160:8082/identity/get-notifications", {
+  //       user_id: cookies?.user_data?.user_id,
+  //       user_token: cookies?.user_data?.user_token,
+  //       role: cookies?.user_data?.role,
+  //       ...notificationPageId,
+  //     }).then((res) => {
+  //       if (res?.data?.status === "Success") {
+  //         contextData?.setNotification(res?.data?.data);
+  //         setNotificationArray(res?.data?.data?.final_data?.reverse());
+  //         setShowNotificationBox(!showNotificationBox);
+  //       }
+  //     });
+  // };
+  useEffect(() => {
     cookies?.user_data &&
-      axios
-        .post("http://13.52.16.160:8082/identity/get-notifications", {
-          user_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          ...notificationPageId,
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            contextData?.setNotification(res?.data?.data);
-            setNotificationArray(res?.data?.data?.final_data?.reverse());
-            setShowNotificationBox(!showNotificationBox);
-          }
-        });
-  };
-  const handleEditProfileButton = () => {
-    axios
-      .put("http://13.52.16.160:8082/identity/update_account", {
+      axios.post("http://13.52.16.160:8082/identity/get-notifications", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-      })
-      .then((res) => {
+        ...notificationPageId,
+      }).then((res) => {
         if (res?.data?.status === "Success") {
-          navigate("/edit-profile", { state: res?.data?.data });
+          contextData?.setNotification(res?.data?.data);
+          setNotificationArray(res?.data?.data?.final_data?.reverse());
         }
       });
+
+    axios.post("http://13.52.16.160:8082/identity/unread_notification_count", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        contextData?.setUnreadNotification(res?.data?.data?.unread_count);
+      }
+    });
+  }, [showNotificationBox])
+
+  const handleEditProfileButton = () => {
+    axios.put("http://13.52.16.160:8082/identity/update_account", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        navigate("/edit-profile", { state: res?.data?.data });
+      }
+    });
   };
 
-  const bringnotificationCount = () => {
-    axios
-      .post("http://13.52.16.160:8082/identity/unread_notification_count", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          contextData?.setUnreadNotification(res?.data?.data?.unread_count);
-        }
-      });
-  };
+  // const bringnotificationCount = () => {
+  //   axios.post("http://13.52.16.160:8082/identity/unread_notification_count", {
+  //     user_id: cookies?.user_data?.user_id,
+  //     user_token: cookies?.user_data?.user_token,
+  //     role: cookies?.user_data?.role,
+  //   }).then((res) => {
+  //     if (res?.data?.status === "Success") {
+  //       contextData?.setUnreadNotification(res?.data?.data?.unread_count);
+  //     }
+  //   });
+  // };
+  window.addEventListener('click', event => {
+    if (event.target.id !== 'toggleNoti') {
+      setShowNotificationBox(false)
+    }
+  })
   return (
     <>
       <header className="dashboard-header bg-white custom-border-radius-one">
@@ -981,20 +990,15 @@ const HeaderDashboard = () => {
               >
                 Dashboard
               </Link>
-              <div
-                className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""
-                  }  py-4`}
-              >
-                <div
-                  className="dashboard-user-notification me-md-3 me-2"
-                  onClick={() => {
-                    showNotificationBox
-                      ? setShowNotificationBox(false)
+              <div className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""}  py-4`}>
+                <div className="dashboard-user-notification me-md-3 me-2">
+                  <i className="fa-solid fa-bell"></i>
+                  {/* <div id="toggleNoti" onClick={() => {
+                    showNotificationBox ? setShowNotificationBox(false)
                       : handleNotificationBox();
                     bringnotificationCount();
-                  }}
-                >
-                  <i className="fa-solid fa-bell"></i>
+                  }}></div> */}
+                  <div id="toggleNoti" onClick={() => { setShowNotificationBox(!showNotificationBox) }}></div>
                   {contextData?.unreadNotification === 0 ? (
                     ""
                   ) : (
@@ -1091,13 +1095,7 @@ const HeaderDashboard = () => {
             </div>
             <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap">
               {cookies?.user_data?.role === "professional" ? (
-                <div
-                  onClick={() => {
-                    navigate(
-                      `/professionalprofile/${cookies?.user_data?.user_id}`
-                    );
-                  }}
-                >
+                <div>
                   <img
                     src={
                       contextData?.profileData &&
@@ -1131,10 +1129,7 @@ const HeaderDashboard = () => {
                 </div>
               )}
               <div className="ps-3">
-                <button
-                  className="d-flex align-items-center profileEdit-button"
-                  onClick={profileDropdown}
-                >
+                <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
                   <h4>
                     {contextData?.profileData && contextData?.profileData?.name}
                   </h4>
@@ -1207,7 +1202,7 @@ const HeaderDashboard = () => {
             onClick={() => {
               setShow(false);
               localStorage.clear();
-              removeCookie('user_data')
+              removeCookie("user_data");
               contextData?.dispatch({ type: "LOG_OUT" });
               navigate("/");
             }}

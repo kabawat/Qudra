@@ -75,7 +75,7 @@ const EditProfileProfessional = () => {
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [cookies,] = useCookies()
+  const [cookies] = useCookies();
   const [value, setValue] = useState({
     // alpha2: "us",
     // alpha3: "usa",
@@ -134,6 +134,42 @@ const EditProfileProfessional = () => {
     }
   };
 
+  const [filePic2, setFilePic2] = useState(
+    location?.state?.professional_background_image
+  );
+  const photoChange2 = (e) => {
+    const fileReader = new FileReader();
+    const file = e.target.files[0];
+    setFilePic2(file);
+    const signupuser = new FormData();
+    signupuser.append("background_image", file);
+    signupuser.append("user_id", cookies?.user_data?.user_id);
+    signupuser.append("user_token", cookies?.user_data?.user_token);
+
+    signupuser.append("role", cookies?.user_data?.role);
+    signupuser &&
+      axios.post(
+        "http://13.52.16.160:8082/identity/professional_profile",
+        signupuser
+      );
+    if (file) {
+      let reader = new FileReader();
+      reader.onload = function (event) {
+        $(" #imgPreview2").attr("src", event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const [certificate, setCertificate] = useState(
+    location.state.professional_certificate.slice(59)
+  );
+  // console.log('certificate====',certificate);
+
+  const certificateChange = (e) => {
+    const file = e.target.files[0];
+    setCertificate(file);
+  };
+
   function onKeyDown(keyEvent) {
     if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
       keyEvent.preventDefault();
@@ -163,7 +199,10 @@ const EditProfileProfessional = () => {
 
   const updateCancel = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", cookies?.user_data)
+      .post(
+        "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+        cookies?.user_data
+      )
       .then((res) => {
         contextData?.dispatch({
           type: "FETCH_PROFILE_DATA",
@@ -283,6 +322,25 @@ const EditProfileProfessional = () => {
                               }
                             )
                             .then((res) => {
+                              const userCertificate = new FormData();
+                              userCertificate.append(
+                                "user_id",
+                                cookies?.user_data?.user_id
+                              );
+                              userCertificate.append(
+                                "user_token",
+                                cookies?.user_data?.user_token
+                              );
+                              userCertificate.append("role", "professional");
+                              userCertificate.append(
+                                "certificate",
+                                certificate
+                              );
+                              axios.post(
+                                "http://13.52.16.160:8082/identity/professional_certificate",
+                                userCertificate
+                              );
+
                               contextData?.dispatch({
                                 type: "FETCH_PROFILE_DATA",
                                 value: res?.data?.data,
@@ -528,14 +586,15 @@ const EditProfileProfessional = () => {
                               otherEdu
                                 ? "Other"
                                 : educationSelect
-                                  ? educationSelect
-                                  : location.state.education
+                                ? educationSelect
+                                : location.state.education
                             }
                             className="form-select form-education-select"
                             onChange={(e) => {
                               setEducationSelect(e.target.value);
                               setFieldValue("education", e.target.value);
                               setOtherEdu("");
+                              setEduErr(false);
                             }}
                           >
                             <option value="" disabled>
@@ -546,28 +605,79 @@ const EditProfileProfessional = () => {
                             <option value="Masters"> Masters</option>
                             <option value="Other">Other</option>
                           </select>
-                          {otherEdu || educationSelect === "Other" ? (
+
+                          <p className="text-danger">
+                            {eduErr ? "Education Required " : ""}
+                          </p>
+                          <div className="certificate-other">
+                            <div
+                              onClick={() => {
+                                document.getElementById("certificate").click();
+                              }}
+                            >
+                              <button
+                                type="button"
+                                id="custom-button"
+                                style={{
+                                  borderRadius: "30px",
+                                }}
+                              >
+                                Update Certificate
+                              </button>
+                              <span id="custom-text">
+                                {certificate?.name
+                                  ? certificate.name.length > 10
+                                    ? certificate.name.slice(0, 10) +
+                                      ".." +
+                                      certificate.name.slice(-4)
+                                    : certificate.name
+                                  : location.state.professional_certificate
+                                      .length > 10
+                                  ? location.state.professional_certificate.slice(
+                                      59,
+                                      69
+                                    ) +
+                                    ".." +
+                                    location.state.professional_certificate.slice(
+                                      -4
+                                    )
+                                  : location.state.professional_certificate.slice(
+                                      59
+                                    )}
+                              </span>
+                            </div>
                             <input
-                              type="text"
-                              className="mt-2"
-                              placeholder="Enter Here Your Other"
-                              value={otherEdu}
+                              type="file"
+                              name="certificate"
+                              id="certificate"
+                              accept=".jpg, .jpeg, .png, .doc, .docx, .pdf"
                               onChange={(event) => {
-                                setOtherEdu(event.target.value);
-                                setEduErr(false);
+                                certificateChange(event);
                               }}
                             />
-                          ) : (
-                            ""
-                          )}
-                          <p className="text-danger">
-                            {eduErr ? "Education Required" : ""}
-                          </p>
-                          <ErrorMessage
-                            name="education"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
+
+                            {otherEdu || educationSelect === "Other" ? (
+                              <input
+                                type="text"
+                                className="mt-2"
+                                placeholder="Enter Here Your Other"
+                                value={otherEdu}
+                                onChange={(event) => {
+                                  setOtherEdu(event.target.value);
+                                  setEduErr(false);
+                                  setOtherEdu("");
+                                }}
+                              />
+                            ) : (
+                              ""
+                            )}
+
+                            <ErrorMessage
+                              name="education"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>

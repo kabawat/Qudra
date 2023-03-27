@@ -15,7 +15,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
   const [purchaseDesigns, setPurchaseDesigns] = useState();
   const contextData = useContext(Global);
   const [showPurchaseDesignModal, setShowPurchaseDesignModal] = useState(false);
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
 
   const [purchaseDesignsPagination, setPurchaseDesignsPagination] = useState({
     page: 1,
@@ -46,7 +46,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
 
   const handleImageAndVideoClick = (images, url, type) => {
     setSpecificProductDataType(type);
-    images?.map((res) => {
+    images?.map((res, index) => {
       setSpecificProductData((prev) => [...prev, `${url}${res}`]);
     });
   };
@@ -85,102 +85,114 @@ const BuyDesign = ({ setBuyDesigns }) => {
         <div>
           <div className="row  pt-5 g-3">
             {purchaseDesigns?.final_data?.length &&
-              purchaseDesigns?.final_data?.map((res, key) => (
-                <div className="col-xl-3 col-md-6   my-3" key={key}>
-                  <div
-                    className="card border-0 flex-row bg-dark text-white"
-                    style={{
-                      height: "240px",
-                      borderRadius: "30px",
-                    }}
-                  >
-                    <img
-                      src={`${purchaseDesigns?.image_url}${res?.image[0]}`}
-                      className="card-img w-100"
-                      style={{
-                        borderRadius: "30px",
-                        objectFit: "cover",
-                        height: "100%",
-                      }}
-                      alt="..."
-                    />
-                    <div
-                      className="card-img-overlay"
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        flexDirection: "column",
-                        borderRadius: "30px",
-                        background:
-                          "linear-gradient(20deg, #000000a1, transparent)",
+              purchaseDesigns?.final_data?.map((res, index, key) => {
+                return (
+                  <>
+                    {res.image?.map((it, index) => {
+                      return (
+                        <div className="col-xl-3 col-md-6   my-3" key={key}>
+                          <div
+                            className="card border-0 flex-row bg-dark text-white visibleForEdit"
+                            style={{
+                              height: "240px",
+                              borderRadius: "30px",
+                            }}
+                          >
+                            <img
+                              src={`${purchaseDesigns?.image_url}${it}`}
+                              className="card-img w-100"
+                              style={{
+                                borderRadius: "30px",
+                                objectFit: "cover",
+                                height: "100%",
+                              }}
+                              alt="..."
+                            />
+                            <div
+                              className="card-img-overlay"
+                              style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                flexDirection: "column",
+                                borderRadius: "30px",
+                                background:
+                                  "linear-gradient(20deg, #000000a1, transparent)",
 
-                        padding: " 0 10px 20px 10px",
-                      }}
-                    >
-                      <h4 className="card-title fs-20">
-                        {res?.sub_category_name}
-                      </h4>
-                      <div className="row g-2">
-                        <div className="col-xxl-6 col-lg-12 col-6">
-                          <button
-                            type="button"
-                            className="btn btn-primary border-0"
-                            style={{
-                              width: "100%",
-                              fontSize: "14px",
-                              backgroundColor: "rgb(0, 167, 139)",
-                            }}
-                            onClick={() => {
-                              setShowPurchaseDesignModal(true);
-                              handleImageAndVideoClick(
-                                res?.image,
-                                purchaseDesigns?.image_url,
-                                "image"
-                              );
-                            }}
-                          >
-                            Preview Images
-                          </button>
+                                padding: " 0 10px 20px 10px",
+                              }}
+                            >
+                              <h4 className="card-title cardTitleVisible">
+                                ${res?.price[index]}/ sq.mtr
+                              </h4>
+
+                              <h4 className="card-title fs-20 visibleForEdit-cat">
+                                {res?.sub_category_name}
+                              </h4>
+                              <div className="row g-2">
+                                <div className="col-xxl-6 col-lg-12 col-6">
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary border-0"
+                                    style={{
+                                      width: "100%",
+                                      fontSize: "14px",
+                                      backgroundColor: "rgb(0, 167, 139)",
+                                    }}
+                                    onClick={() => {
+                                      setShowPurchaseDesignModal(true);
+                                      handleImageAndVideoClick(
+                                        [it],
+                                        purchaseDesigns?.image_url,
+                                        "image"
+                                      );
+                                    }}
+                                  >
+                                    Preview Images
+                                  </button>
+                                </div>
+                                <div className="col-xxl-6 col-lg-12 col-6">
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary border-0"
+                                    style={{
+                                      width: "100%",
+                                      fontSize: "14px",
+                                      backgroundColor: "rgb(0, 167, 139)",
+                                    }}
+                                    onClick={() => {
+                                      setShowPurchaseDesignModal(true);
+                                      handleImageAndVideoClick(
+                                        [res?.video[index]],
+                                        purchaseDesigns?.video_url,
+                                        "video"
+                                      );
+                                    }}
+                                  >
+                                    Preview Videos
+                                  </button>
+                                </div>
+                                <div className="col-xxl-6 col-lg-12 col-6">
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary border-0"
+                                    style={{
+                                      width: "100%",
+                                      fontSize: "14px",
+                                      backgroundColor: "rgb(0, 167, 139)",
+                                    }}
+                                  >
+                                    Buy Project
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="col-xxl-6 col-lg-12 col-6">
-                          <button
-                            type="button"
-                            className="btn btn-primary border-0"
-                            style={{
-                              width: "100%",
-                              fontSize: "14px",
-                              backgroundColor: "rgb(0, 167, 139)",
-                            }}
-                            onClick={() => {
-                              setShowPurchaseDesignModal(true);
-                              handleImageAndVideoClick(
-                                res?.video,
-                                purchaseDesigns?.video_url,
-                                "video"
-                              );
-                            }}
-                          >
-                            Preview Videos
-                          </button>
-                        </div>
-                        <div className="col-xxl-6 col-lg-12 col-6">
-                          <button
-                            type="button"
-                            className="btn btn-primary border-0"
-                            style={{
-                              width: "100%",
-                              fontSize: "14px",
-                              backgroundColor: "rgb(0, 167, 139)",
-                            }}
-                          >
-                            Buy Project
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                      );
+                    })}
+                  </>
+                );
+              })}
           </div>
           {purchaseDesignsArray?.length !== 0 ? (
             <Pagination className="ps-5 paginationBoxProfessionalDashboard">
@@ -223,7 +235,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                     ...prev,
                     page:
                       purchaseDesignsArray?.length !==
-                        purchaseDesignsPagination?.page
+                      purchaseDesignsPagination?.page
                         ? purchaseDesignsPagination?.page + 1
                         : purchaseDesignsPagination?.page,
                   }));

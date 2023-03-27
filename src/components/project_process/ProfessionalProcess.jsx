@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Header2 } from "../Header";
 import Global from "../../context/Global";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import DatePicker from "react-datepicker";
@@ -84,7 +84,23 @@ const ProfessionalProcess = ({ location }) => {
               <section className="ProjectDetailsPageProjectDetailsSection">
                 <div className="row">
                   <div className="col ">
-                    <h3 className="theme-text-color fs-24 mb-5">
+                    <h3 className="theme-text-color fs-24 mb-5 d-flex">
+                      <span>
+                        {" "}
+                        <Link
+                          to={
+                            contextData?.userData?.role === "client"
+                              ? "/clientdashboard"
+                              : "/professionaldashboard"
+                          }
+                          className="text-decoration-none text-dark m-0 h2"
+                        >
+                          <i
+                            class="fa-solid fa-arrow-left-long pe-3"
+                            style={{ color: "#01a78a" }}
+                          ></i>
+                        </Link>
+                      </span>
                       Project Details
                     </h3>
 

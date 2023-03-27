@@ -35,11 +35,25 @@ import ProjectDetails from "./components/ProjectDetails";
 import ScrollToTop from "./Hooks/ScrollToTop";
 import EditProfile from "./Pages/EditProfile";
 import TermsAndCondition from "./Pages/TermsAndCondition";
+
+import BrowsePane from "./components/dashboard_tabs/Client/BrowsePane";
+import OngoingPane from "./components/dashboard_tabs/Client/OngoingPane";
+import CompletedPane from "./components/dashboard_tabs/Client/CompletedPane";
+import Ratings from "./components/dashboard_tabs/Client/Ratings";
+import Likes from "./components/dashboard_tabs/Client/Likes";
+import ClientGuidlines from "./components/guidelines/ClientGuidlines";
+import PortfolioPane from "./components/dashboard_tabs/Professional/PortfolioPane";
+import ActivitiesPane from "./components/dashboard_tabs/Professional/ActivitiesPane";
+import LikesShow from "./components/dashboard_tabs/Professional/Likes"
+import Showratings from "./components/dashboard_tabs/Professional/Ratings"
+import ProfessionalGuidelines from "./components/guidelines/ProfessionalGuidelines";
 function App() {
   return (
-    <BrowserRouter basename={"/"}>
+    <BrowserRouter>
       <ScrollToTop />
-      <IconContext.Provider value={{ color: "black", className: "global-class-name" }} >
+      <IconContext.Provider
+        value={{ color: "black", className: "global-class-name" }}
+      >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Home />} />
@@ -57,6 +71,11 @@ function App() {
           <Route path="/categoryresult" element={<CategoryResult />} />
           {/* Professional Routes */}
           <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
+          <Route path="/Portfolio" element={<PortfolioPane />} />
+          <Route path="/myactivity" element={<ActivitiesPane />} />
+          <Route path="/like" element={<LikesShow />} />
+          <Route path="/ratings" element={<Showratings />} />
+          <Route path="/professional-guidelines" element={<ProfessionalGuidelines />} />
 
           <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
           <Route path="/categoryArchitecture" element={<ProfessionalCategoryArchitecture />} />
@@ -65,6 +84,14 @@ function App() {
 
           {/* Client Routes */}
           <Route path="/clientdashboard" element={<ClientDashboard />} />
+
+          <Route path="/browse-professionals" element={<BrowsePane />} />
+          <Route path="/ongoing-projects" element={<OngoingPane />} />
+          <Route path="/completed-projects" element={<CompletedPane />} />
+          <Route path="/client-liked" element={<Likes />} />
+          <Route path="/client-rating" element={<Ratings />} />
+          <Route path="/client-guidlines" element={<ClientGuidlines />} />
+
           <Route path="/client-architechture" element={<ClientCategoriesArchitectural />} />
           <Route path="/client-visualisation" element={<ClientCatagoryVisualization />} />
           <Route path="/client-buy-sell" element={<ClientBuySellDesign />} />

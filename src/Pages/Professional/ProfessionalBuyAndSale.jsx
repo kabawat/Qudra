@@ -27,6 +27,8 @@ import { useCookies } from "react-cookie";
 const ProfessionalBuyAndSale = () => {
   const contextData = useContext(Global);
   const ref = useRef();
+
+  const [catErr, setCatErr] = useState(false);
   const [clsstyle, setclsstyle] = useState("none");
   const [loader, setLoader] = useState(false);
   const [catagoriesDropdown, setCatagoriesDropdown] = useState([]);
@@ -64,28 +66,32 @@ const ProfessionalBuyAndSale = () => {
     e.target.value = null;
   };
 
-  const [cookies, setCookies] = useCookies()
-  const [isRender, setIsRender] = useState(false)
+  const [cookies, setCookies] = useCookies();
+  const [isRender, setIsRender] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.role === "professional") {
-        if (location?.state || cookies?.user_data?.category_selected === false) {
-          setIsRender(true)
+        if (
+          location?.state ||
+          cookies?.user_data?.category_selected === false
+        ) {
+          setIsRender(true);
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       } else {
-        navigate('/client-buy-sell')
+        navigate("/client-buy-sell");
       }
     } else {
-      console.log(cookies?.user_data)
-      navigate('/select-sign-in')
+      console.log(cookies?.user_data);
+      navigate("/select-sign-in");
     }
-  }, [])
+  }, []);
   useEffect(() => {
     if (!contextData?.static_buy_sale_design?.data?.length) {
-      axios.get(`http://13.52.16.160:8082/quadra/sub_categories?category_id=3`)
+      axios
+        .get(`http://13.52.16.160:8082/quadra/sub_categories?category_id=3`)
         .then((res) => {
           contextData?.dispatch({
             type: "STATIC_BUY_SALE_DESIGN",
@@ -173,17 +179,17 @@ const ProfessionalBuyAndSale = () => {
 
   const languagesArchitecture = [
     contextData?.static_buy_sale_design?.data?.length &&
-    contextData?.static_buy_sale_design?.data?.filter((ress) =>
-      ress !== "" ||
+      contextData?.static_buy_sale_design?.data?.filter((ress) =>
+        ress !== "" ||
         null ||
         (state?.selected_catagories &&
           state?.selected_catagories[3].includes(ress?.sub_category_id))
-        ? {
-          label: ress?.sub_category,
-          value: ress?.sub_category_id,
-        }
-        : ""
-    ),
+          ? {
+              label: ress?.sub_category,
+              value: ress?.sub_category_id,
+            }
+          : ""
+      ),
   ];
   const newCatagoriesArchitecture =
     languagesArchitecture[0] &&
@@ -227,7 +233,10 @@ const ProfessionalBuyAndSale = () => {
         })
         .then((res) => {
           if (res?.data?.status === "Success") {
-            setCookies("user_data", { ...cookies?.user_data, category_selected: true })
+            setCookies("user_data", {
+              ...cookies?.user_data,
+              category_selected: true,
+            });
             navigate("/professionaldashboard");
           }
         });
@@ -248,13 +257,14 @@ const ProfessionalBuyAndSale = () => {
   useEffect(() => {
     state?.sub_catagory_data?.CataId &&
       state?.sub_catagory_data?.SubCataId &&
-      axios.post("http://13.52.16.160:8082/professional/sub_cat_data", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        category_id: parseInt(state?.sub_catagory_data?.CataId),
-        sub_category_id: state?.sub_catagory_data?.SubCataId,
-      })
+      axios
+        .post("http://13.52.16.160:8082/professional/sub_cat_data", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          category_id: parseInt(state?.sub_catagory_data?.CataId),
+          sub_category_id: state?.sub_catagory_data?.SubCataId,
+        })
         .then((res) => {
           dispatch({ type: "SUB_CATAGORY_DESIGNS", value: res?.data });
         });
@@ -276,23 +286,28 @@ const ProfessionalBuyAndSale = () => {
           if (!val.length) {
             throw new Error("Please select at least one category");
           }
-          axios.post("http://13.52.16.160:8082/professional/sel_sub_category", {
-            user_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            category: {
-              cat_id: [...selectedCatagories?.cat_id, 3],
-            },
-            sel_sub_cat: {
-              ...selectedCatagories.sel_sub_cat,
-              3: [],
-            },
-          }).then((res) => {
-            if (res?.data?.status === "Success") {
-              setCookies("user_data", { ...cookies?.user_data, category_selected: true })
-              navigate("/professionaldashboard");
-            }
-          });
+          axios
+            .post("http://13.52.16.160:8082/professional/sel_sub_category", {
+              user_id: cookies?.user_data?.user_id,
+              user_token: cookies?.user_data?.user_token,
+              role: cookies?.user_data?.role,
+              category: {
+                cat_id: [...selectedCatagories?.cat_id, 3],
+              },
+              sel_sub_cat: {
+                ...selectedCatagories.sel_sub_cat,
+                3: [],
+              },
+            })
+            .then((res) => {
+              if (res?.data?.status === "Success") {
+                setCookies("user_data", {
+                  ...cookies?.user_data,
+                  category_selected: true,
+                });
+                navigate("/professionaldashboard");
+              }
+            });
         });
     } catch (error) {
       toast.error(error.message);
@@ -514,7 +529,7 @@ const ProfessionalBuyAndSale = () => {
                                             </button>
                                           </div>
                                           {cookies?.user_data.role ===
-                                            "client" ? (
+                                          "client" ? (
                                             <div
                                               className="col-xxl-6 col-md-12 col-6"
                                               style={{ padding: "6px" }}
@@ -770,12 +785,13 @@ const ProfessionalBuyAndSale = () => {
                 <Modal.Header
                   closeButton
                   style={{ margin: "0 0 0 auto" }}
-                  onClick={() =>
+                  onClick={() => {
                     dispatch({
                       type: "BUYSALE_DESIGN_UPLOAD_MODAL",
                       value: false,
-                    })
-                  }
+                    });
+                    setCatErr(false);
+                  }}
                   className="border-0"
                 ></Modal.Header>
                 <Modal.Body>
@@ -785,6 +801,10 @@ const ProfessionalBuyAndSale = () => {
                       new_sub_cat: "",
                     }}
                     onSubmit={(values, { setSubmitting }) => {
+                      if (catagoriesDropdown.length < 1) {
+                        setCatErr(true);
+                        return false;
+                      }
                       dispatch({
                         type: "BUYSALE_DESIGN_UPLOAD_MODAL",
                         value: false,
@@ -802,9 +822,9 @@ const ProfessionalBuyAndSale = () => {
                         .then((res) => {
                           return res?.data?.status === "Success"
                             ? (dispatch({
-                              type: "BUYSALE_DESIGN_UPLOAD_MODAL",
-                              value: false,
-                            }),
+                                type: "BUYSALE_DESIGN_UPLOAD_MODAL",
+                                value: false,
+                              }),
                               setCatagoriesDropdown([]))
                             : "";
                         });
@@ -818,6 +838,7 @@ const ProfessionalBuyAndSale = () => {
                               options={newArchitecureOptionsArray}
                               value={catagoriesDropdown}
                               onChange={(catagoriesDropdown) => {
+                                setCatErr(false);
                                 setFieldValue(
                                   "new_sub_cat",
                                   catagoriesDropdown.map((val) => val?.value)
@@ -829,7 +850,13 @@ const ProfessionalBuyAndSale = () => {
                             />
                           </div>
                         </div>
-
+                        {catErr ? (
+                          <span className="text-danger mt-2">
+                            Minimum one category select
+                          </span>
+                        ) : (
+                          ""
+                        )}
                         <div className="row">
                           <div className="col d-flex justify-content-center pt-5">
                             <button
@@ -892,10 +919,7 @@ const ProfessionalBuyAndSale = () => {
                           "user_token",
                           cookies?.user_data?.user_token
                         );
-                        catagoryUpload.append(
-                          "role",
-                          cookies?.user_data?.role
-                        );
+                        catagoryUpload.append("role", cookies?.user_data?.role);
                         catagoryUpload.append(
                           "sub_category_id",
                           modalSubCatagoryID
@@ -949,7 +973,7 @@ const ProfessionalBuyAndSale = () => {
                               <div className="selectprice">
                                 <BsCurrencyDollar />
                                 <Field
-                                  type="text"
+                                  type="number"
                                   placeholder="Enter Your Price Per Square Meter"
                                   className="priceInput"
                                   name="price"
@@ -1079,8 +1103,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                        "..." +
-                                        name.slice(-4)
+                                          "..." +
+                                          name.slice(-4)
                                         : name;
                                     // console.log(trimmedFileName);
                                     setvidlbl(trimmedFileName);
@@ -1116,8 +1140,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                        "..." +
-                                        name.slice(-4)
+                                          "..." +
+                                          name.slice(-4)
                                         : name;
                                     // console.log(trimmedFileName);
 
@@ -1231,7 +1255,7 @@ const ProfessionalBuyAndSale = () => {
                           ...cookies?.user_data,
                           price:
                             state?.preview_catagory_designs?.price[
-                            state?.preview_catagory_data?.index
+                              state?.preview_catagory_data?.index
                             ],
                           image: "",
                           video: "",
@@ -1322,12 +1346,12 @@ const ProfessionalBuyAndSale = () => {
                                           imgPreview
                                             ? imgPreview
                                             : state?.preview_catagory_designs
-                                              ?.image_url +
-                                            state?.preview_catagory_designs
-                                              ?.image[
-                                            state?.preview_catagory_data
-                                              ?.index
-                                            ]
+                                                ?.image_url +
+                                              state?.preview_catagory_designs
+                                                ?.image[
+                                                state?.preview_catagory_data
+                                                  ?.index
+                                              ]
                                         }
                                         alt="preview"
                                       />
@@ -1386,10 +1410,10 @@ const ProfessionalBuyAndSale = () => {
                                         {vidlbl
                                           ? vidlbl
                                           : state?.preview_catagory_designs
-                                            ?.video[
-                                          state?.preview_catagory_data
-                                            ?.index
-                                          ]}
+                                              ?.video[
+                                              state?.preview_catagory_data
+                                                ?.index
+                                            ]}
                                       </span>
                                       {/* <span
                                       style={{
@@ -1419,8 +1443,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                            "..." +
-                                            name.slice(-4)
+                                              "..." +
+                                              name.slice(-4)
                                             : name;
                                         setFieldValue(
                                           "video",
@@ -1458,8 +1482,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                            "..." +
-                                            name.slice(-4)
+                                              "..." +
+                                              name.slice(-4)
                                             : name;
                                         setzipstyle("block");
                                         setziplbl(trimmedFileName);
@@ -1470,10 +1494,10 @@ const ProfessionalBuyAndSale = () => {
                                         {ziplbl
                                           ? ziplbl
                                           : state?.preview_catagory_designs
-                                            ?.project[
-                                          state?.preview_catagory_data
-                                            ?.index
-                                          ]}
+                                              ?.project[
+                                              state?.preview_catagory_data
+                                                ?.index
+                                            ]}
                                       </span>
                                       {/* <span
                                       style={{

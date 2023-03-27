@@ -277,7 +277,12 @@ const CategoryResult = () => {
           <img
             src={state?.preview_data?.image}
             alt=""
-            style={{ maxHeight: "100%", objectFit: "contain" }}
+            style={{
+              maxHeight: "100%",
+              objectFit: "contain",
+              width: "50%",
+              margin: "auto",
+            }}
           />
         )}
 

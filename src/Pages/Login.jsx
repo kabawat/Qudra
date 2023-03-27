@@ -47,33 +47,32 @@ const Login = () => {
   const [resetPasswordInput, setResetPasswordInput] = useState("");
   const location = useLocation();
   const roleAPI = location?.state?.role;
-  const [isRender, setIsRender] = useState(false)
+  const [isRender, setIsRender] = useState(false);
   let navigate = useNavigate();
 
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data?.role === "client") {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         } else {
-          navigate('/professionaldashboard')
+          navigate("/professionaldashboard");
         }
       } else {
         if (cookies?.user_data?.role === "professional") {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       }
     } else {
       if (roleAPI) {
-        setIsRender(true)
+        setIsRender(true);
       } else {
         navigate("/select-sign-in");
       }
     }
-  }, [])
-
+  }, []);
 
   const [error, setError] = useState(false);
   const [submitAPI, setSubmitAPI] = useState(
@@ -87,43 +86,42 @@ const Login = () => {
 
   const [otp, handleOTP] = useState("");
 
-  const [otpEmp, setOtpEmp] = useState(false);
-
   const handleResetRequest = () => {
     if (resetPasswordInput == "") {
       setPasswordEpt(true);
       return false;
     }
-    if (otp == "") {
-      setOtpEmp(true);
-      return false;
-    }
+
     if (resetPasswordInput.length < 8) {
       setPasswordLen(true);
       return false;
     }
 
-    axios.post("http://13.52.16.160:8082/identity/forget-password", {
-      email: resetEmailInput,
-      role: roleAPI,
-      otp: otp,
-      password: resetPasswordInput,
-    }).then((res) => {
-      if (res?.data?.status === "Failed") {
-        setVerifyButtonText("Verify");
-      } else {
-        setVerifyButtonText("Verified");
-      }
-      toast(
-        <div
-          className={`text-center ${res?.data?.status === "Failed" ? "text-danger" : "text-success"
+    axios
+      .post("http://13.52.16.160:8082/identity/forget-password", {
+        email: resetEmailInput,
+        role: roleAPI,
+        otp: otp,
+        password: resetPasswordInput,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Failed") {
+          setVerifyButtonText("Verify");
+        } else {
+          setVerifyButtonText("Verified");
+          setModalShow(false);
+        }
+        toast(
+          <div
+            className={`text-center ${
+              res?.data?.status === "Failed" ? "text-danger" : "text-success"
             } fw-bold`}
-        >
-          {res?.data?.status === "Failed" ? res?.data?.message : ""}
-          {res?.data?.status === "Success" ? res?.data?.message : ""}
-        </div>
-      );
-    });
+          >
+            {res?.data?.status === "Failed" ? res?.data?.message : ""}
+            {res?.data?.status === "Success" ? res?.data?.message : ""}
+          </div>
+        );
+      });
   };
 
   const verifyRequestButton = () => {
@@ -148,352 +146,343 @@ const Login = () => {
         }
       });
   };
-  return (
-    isRender ?
-      <>
-        {roleAPI && (
-          <div className="create-account">
-            <Header2 />
-            <main className="create-account-main">
-              <div className="container mb-5">
-                <Formik
-                  initialValues={{
-                    user_name: "",
-                    password: "",
-                    role: roleAPI,
-                  }}
-                  validationSchema={LoginSchema}
-                  onSubmit={(values, { setSubmitting }) => {
-                    setError(false);
-                    axios
-                      .post(
-                        "http://13.52.16.160:8082/identity/account-login",
-                        values
-                      )
-                      .then((res) => {
-                        if (res?.data?.status === "Success") {
-                          setCookie("user_data", res?.data?.data);
-                          axios
-                            .post(
-                              "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                              {
-                                user_id: res?.data?.data?.user_id,
-                                user_token: res?.data?.data?.user_token,
-                                role: res?.data?.data?.role,
-                              }
-                            )
-                            .then((res) => {
-                              contextData?.dispatch({
-                                type: "FETCH_PROFILE_DATA",
-                                value: res?.data?.data,
-                              });
+  return isRender ? (
+    <>
+      {roleAPI && (
+        <div className="create-account">
+          <Header2 />
+          <main className="create-account-main">
+            <div className="container mb-5">
+              <Formik
+                initialValues={{
+                  user_name: "",
+                  password: "",
+                  role: roleAPI,
+                }}
+                validationSchema={LoginSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  setError(false);
+                  axios
+                    .post(
+                      "http://13.52.16.160:8082/identity/account-login",
+                      values
+                    )
+                    .then((res) => {
+                      if (res?.data?.status === "Success") {
+                        setCookie("user_data", res?.data?.data);
+                        axios
+                          .post(
+                            "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                            {
+                              user_id: res?.data?.data?.user_id,
+                              user_token: res?.data?.data?.user_token,
+                              role: res?.data?.data?.role,
+                            }
+                          )
+                          .then((res) => {
+                            contextData?.dispatch({
+                              type: "FETCH_PROFILE_DATA",
+                              value: res?.data?.data,
                             });
-                          if (res?.data?.data?.category_selected === false) {
-                            if (res?.data?.data?.role === "client") {
-                              navigate("/client-architechture");
-                            } else {
-                              navigate("/categoryArchitecture");
-                            }
-                          } else {
-                            if (res?.data?.data?.role === "client") {
-                              navigate("/clientdashboard", { replace: true });
-                              contextData.setShowDisclamer(true);
-                            } else {
-                              navigate("/professionaldashboard", {
-                                replace: true,
-                              });
-                              contextData.setShowDisclamer(true);
-                            }
-                          }
-                          setSubmitting(false);
-                          contextData?.dispatch({
-                            type: "FETCH_USER_DATA",
-                            value: res?.data?.data,
                           });
+                        if (res?.data?.data?.category_selected === false) {
+                          if (res?.data?.data?.role === "client") {
+                            navigate("/client-architechture");
+                          } else {
+                            navigate("/categoryArchitecture");
+                          }
                         } else {
-                          setError(true);
-                          setSubmitting(false);
+                          if (res?.data?.data?.role === "client") {
+                            navigate("/clientdashboard", { replace: true });
+                            contextData.setShowDisclamer(true);
+                          } else {
+                            navigate("/professionaldashboard", {
+                              replace: true,
+                            });
+                            contextData.setShowDisclamer(true);
+                          }
                         }
-                      });
-                  }}
-                >
-                  {({ isSubmitting }) => (
-                    <Form className="py-md-5">
-                      <h1 className="pt-5">Login</h1>
-                      <h3 className="pt-md-4">Login your account</h3>
-                      <div className="row pt-md-5">
-                        <div className="col-md my-md-3 my-1">
+                        setSubmitting(false);
+                        contextData?.dispatch({
+                          type: "FETCH_USER_DATA",
+                          value: res?.data?.data,
+                        });
+                      } else {
+                        setError(true);
+                        setSubmitting(false);
+                      }
+                    });
+                }}
+              >
+                {({ isSubmitting }) => (
+                  <Form className="py-md-5">
+                    <h1 className="pt-5">Login</h1>
+                    <h3 className="pt-md-4">Login your account</h3>
+                    <div className="row pt-md-5">
+                      <div className="col-md my-md-3 my-1">
+                        <div className="create-account-input">
+                          <Field
+                            type="email"
+                            className="form-control"
+                            id="email"
+                            placeholder="Enter your email"
+                            name="user_name"
+                          />
+                          <i className="fa-regular fa-envelope"></i>
+                          <ErrorMessage
+                            name="user_name"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md my-md-3 my-1">
+                        <div className="create-account-input">
+                          <Field
+                            type={viewPassword ? "text" : "password"}
+                            className="form-control"
+                            id="pwd"
+                            placeholder="Enter your password"
+                            name="password"
+                          />
+                          <img src="./static/images/LockIcon.png" alt="" />
+                          <div className="viewPasswordIcons">
+                            {viewPassword ? (
+                              <RiEyeCloseLine
+                                onClick={() => {
+                                  setViewPassword(false);
+                                }}
+                              />
+                            ) : (
+                              <RiEyeLine
+                                onClick={() => {
+                                  setViewPassword(true);
+                                }}
+                              />
+                            )}
+                          </div>
+                          <ErrorMessage
+                            name="password"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-secondary text-center">
+                      {isSubmitting
+                        ? "Processing your request , Please wait"
+                        : ""}
+                      {error && (
+                        <p className="text-danger text-center">
+                          Your password does not match !
+                        </p>
+                      )}
+                    </div>
+                    <div className="d-flex justify-content-end">
+                      <button
+                        className="forgerPasswordButton"
+                        type="button"
+                        onClick={() => setModalShow(true)}
+                      >
+                        Forgot your password? Reset password.
+                      </button>
+
+                      <Modal
+                        size="md"
+                        aria-labelledby="contained-modal-title-vcenter"
+                        centered
+                        className="resetPasswordModal"
+                        show={modalShow}
+                      >
+                        <Modal.Header
+                          closeButton
+                          onClick={() => {
+                            setOtpbox(false);
+                            setModalShow(false);
+                            setVerifyButtonText("Verify");
+                            setResetPasswordInput("");
+                            setResetEmailInput("");
+                            handleOTP("");
+                            setLoadingActive(false);
+                          }}
+                        >
+                          <Modal.Title id="contained-modal-title-vcenter">
+                            Reset your password
+                          </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
                           <div className="create-account-input">
-                            <Field
+                            <input
                               type="email"
                               className="form-control"
-                              id="email"
                               placeholder="Enter your email"
-                              name="user_name"
+                              value={resetEmailInput}
+                              onChange={(e) =>
+                                setResetEmailInput(e.target.value)
+                              }
                             />
                             <i className="fa-regular fa-envelope"></i>
-                            <ErrorMessage
-                              name="user_name"
-                              component="div"
-                              className="m-2 text-danger"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md my-md-3 my-1">
-                          <div className="create-account-input">
-                            <Field
-                              type={viewPassword ? "text" : "password"}
-                              className="form-control"
-                              id="pwd"
-                              placeholder="Enter your password"
-                              name="password"
-                            />
-                            <img src="./static/images/LockIcon.png" alt="" />
-                            <div className="viewPasswordIcons">
-                              {viewPassword ? (
-                                <RiEyeCloseLine
-                                  onClick={() => {
-                                    setViewPassword(false);
-                                  }}
-                                />
+                            <button
+                              onClick={verifyRequestButton}
+                              type="button"
+                              className={
+                                loadingActive
+                                  ? "emailVerifyBtnProfessional loadingOuter LoginPageemailVerifyBtn"
+                                  : "emailVerifyBtnProfessional LoginPageemailVerifyBtn "
+                              }
+                              style={
+                                ($("#EmailInputSignUpForm").val() === ""
+                                  ? { pointerEvents: "none" }
+                                  : { pointerEvents: "all" },
+                                verifyButtonText === "Sent"
+                                  ? { pointerEvents: "none" }
+                                  : { pointerEvents: "all" })
+                              }
+                            >
+                              {loadingActive ? (
+                                <ReactLotti />
                               ) : (
-                                <RiEyeLine
-                                  onClick={() => {
-                                    setViewPassword(true);
-                                  }}
-                                />
+                                verifyButtonText
                               )}
-                            </div>
-                            <ErrorMessage
-                              name="password"
-                              component="div"
-                              className="m-2 text-danger"
-                            />
+                            </button>
                           </div>
-                        </div>
-                      </div>
-                      <div className="text-secondary text-center">
-                        {isSubmitting
-                          ? "Processing your request , Please wait"
-                          : ""}
-                        {error && (
-                          <p className="text-danger text-center">
-                            Your password does not match !
-                          </p>
-                        )}
-                      </div>
-                      <div className="d-flex justify-content-end">
-                        <button
-                          className="forgerPasswordButton"
-                          type="button"
-                          onClick={() => setModalShow(true)}
-                        >
-                          Forgot your password? Reset password.
-                        </button>
-
-                        <Modal
-                          size="md"
-                          aria-labelledby="contained-modal-title-vcenter"
-                          centered
-                          className="resetPasswordModal"
-                          show={modalShow}
-                        >
-                          <Modal.Header
-                            closeButton
-                            onClick={() => {
-                              setOtpbox(false);
-                              setModalShow(false);
-                              setVerifyButtonText("Verify");
-                              setResetPasswordInput("");
-                              setResetEmailInput("");
-                              handleOTP("");
-                              setLoadingActive(false);
-                            }}
-                          >
-                            <Modal.Title id="contained-modal-title-vcenter">
-                              Reset your password
-                            </Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>
-                            <div className="create-account-input">
-                              <input
-                                type="email"
-                                className="form-control"
-                                placeholder="Enter your email"
-                                value={resetEmailInput}
-                                onChange={(e) =>
-                                  setResetEmailInput(e.target.value)
-                                }
-                              />
-                              <i className="fa-regular fa-envelope"></i>
-                              <button
-                                onClick={verifyRequestButton}
-                                type="button"
-                                className={
-                                  loadingActive
-                                    ? "emailVerifyBtnProfessional loadingOuter LoginPageemailVerifyBtn"
-                                    : "emailVerifyBtnProfessional LoginPageemailVerifyBtn "
-                                }
-                                style={
-                                  ($("#EmailInputSignUpForm").val() === ""
-                                    ? { pointerEvents: "none" }
-                                    : { pointerEvents: "all" },
-                                    verifyButtonText === "Sent"
-                                      ? { pointerEvents: "none" }
-                                      : { pointerEvents: "all" })
-                                }
-                              >
-                                {loadingActive ? (
-                                  <ReactLotti />
-                                ) : (
-                                  verifyButtonText
-                                )}
-                              </button>
-                            </div>
-                            {showOtpbox && (
-                              <div className="forgot-box">
-                                <div className="otp-box-Main">
-                                  <div className="col">
-                                    <OtpInput
-                                      value={otp}
-                                      onChange={() => {
-                                        handleOTP();
-                                        setOtpEmp(false);
-                                      }}
-                                      numInputs={6}
-                                      separator={<span>-</span>}
-                                      className="w-100 justify-content-around"
-                                    />
-                                  </div>
-                                  {otpEmp ? (
-                                    <span className="text-danger">
-                                      Otp required
-                                    </span>
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-
-                                <div className="create-account-input">
-                                  {verifyButtonText === "Verify" ? (
-                                    <input
-                                      type="password"
-                                      value={resetPasswordInput}
-                                      disabled
-                                      onChange={(e) =>
-                                        setResetPasswordInput(e.target.value)
-                                      }
-                                      className="form-control"
-                                      id="resetPasswordNewPasswordInput"
-                                      placeholder="Enter A New Password"
-                                    />
-                                  ) : (
-                                    <input
-                                      type="password"
-                                      value={resetPasswordInput}
-                                      onChange={(e) => {
-                                        setPasswordEpt(false);
-                                        setPasswordLen(false);
-                                        setResetPasswordInput(e.target.value);
-                                      }}
-                                      className="form-control"
-                                      id="resetPasswordNewPasswordInput"
-                                      placeholder="Enter A New Password"
-                                    />
-                                  )}
-                                  <img
-                                    src="./static/images/LockIcon.png"
-                                    alt=""
+                          {showOtpbox && (
+                            <div className="forgot-box">
+                              <div className="otp-box-Main">
+                                <div className="col">
+                                  <OtpInput
+                                    value={otp}
+                                    onChange={handleOTP}
+                                    numInputs={6}
+                                    separator={<span>-</span>}
+                                    className="w-100 justify-content-around"
                                   />
                                 </div>
-                                {passwordEpt ? (
-                                  <span className="text-danger">
-                                    New Password Required
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
-                                {passwordLen ? (
-                                  <span className="text-danger">
-                                    Minimum 8 character required
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
                               </div>
-                            )}
-                          </Modal.Body>
-                          <Modal.Footer>
-                            <Button
-                              onClick={handleResetRequest}
-                              style={{ background: "#01a78a", border: "none" }}
-                            >
-                              Submit
-                            </Button>
-                            <ToastContainer
-                              autoClose={false}
-                              hideProgressBar={true}
-                              closeOnClick={false}
-                            />
-                          </Modal.Footer>
-                        </Modal>
-                      </div>
-                      <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
-                        <button
-                          className="create-account-btn px-md-5"
-                          type="submit"
-                        >
-                          <span className="">Log in </span>
-                          <i className="fa-solid  fa-arrow-right-long ms-3 "></i>
-                        </button>
-                      </div>
-                      <div className="d-flex align-items-center my-3 justify-content-center py-md-5">
-                        <div className="horizontal-line"></div>
-                        <p className="m-0 mx-2">Open With</p>
-                        <div className="horizontal-line"></div>
-                      </div>
-                      <div className="d-flex justify-content-center mb-5">
-                        <FacebookProvider appId="123456789">
-                          <LoginButton
-                            className="facebook_login_button"
-                            scope="email"
+
+                              <div className="create-account-input">
+                                {verifyButtonText === "Verify" ? (
+                                  <input
+                                    type="password"
+                                    value={resetPasswordInput}
+                                    disabled
+                                    onChange={(e) =>
+                                      setResetPasswordInput(e.target.value)
+                                    }
+                                    className="form-control"
+                                    id="resetPasswordNewPasswordInput"
+                                    placeholder="Enter A New Password"
+                                  />
+                                ) : (
+                                  <input
+                                    type="password"
+                                    value={resetPasswordInput}
+                                    onChange={(e) => {
+                                      setPasswordEpt(false);
+                                      setPasswordLen(false);
+                                      setResetPasswordInput(e.target.value);
+                                    }}
+                                    className="form-control"
+                                    id="resetPasswordNewPasswordInput"
+                                    placeholder="Enter A New Password"
+                                  />
+                                )}
+                                <img
+                                  src="./static/images/LockIcon.png"
+                                  alt=""
+                                />
+                              </div>
+                              {passwordEpt ? (
+                                <span className="text-danger">
+                                  New Password Required
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                              {passwordLen ? (
+                                <span className="text-danger">
+                                  Minimum 8 character required
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          )}
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button
+                            onClick={handleResetRequest}
+                            style={{ background: "#01a78a", border: "none" }}
                           >
-                            <img src="./static/images/facebook.png" alt="" />
-                          </LoginButton>
-                        </FacebookProvider>
-                        <GoogleLogin
-                          clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-                          render={(renderProps) => (
-                            <img
-                              src="./static/images/google.png"
-                              style={{ cursor: "pointer" }}
-                              onClick={renderProps.onClick}
-                              className="mx-3"
-                              alt=""
-                            />
-                          )}
-                        />
-                        <AppleLogin
-                          clientId="com.react.apple.login"
-                          render={(r) => (
-                            <img
-                              src="./static/images/apple.png"
-                              style={{ cursor: "pointer" }}
-                              onClick={r.onClick}
-                              alt=""
-                            />
-                          )}
-                          redirectURI="https://redirectUrl.com"
-                        />
-                      </div>
-                    </Form>
-                  )}
-                </Formik>
-              </div>
-            </main>
-          </div >
-        )}
-      </> : <Loader />
+                            Submit
+                          </Button>
+                          <ToastContainer
+                            autoClose={false}
+                            hideProgressBar={true}
+                            closeOnClick={false}
+                          />
+                        </Modal.Footer>
+                      </Modal>
+                    </div>
+                    <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
+                      <button
+                        className="create-account-btn px-md-5"
+                        type="submit"
+                      >
+                        <span className="">Log in </span>
+                        <i className="fa-solid  fa-arrow-right-long ms-3 "></i>
+                      </button>
+                    </div>
+                    <div className="d-flex align-items-center my-3 justify-content-center py-md-5">
+                      <div className="horizontal-line"></div>
+                      <p className="m-0 mx-2">Open With</p>
+                      <div className="horizontal-line"></div>
+                    </div>
+                    <div className="d-flex justify-content-center mb-5">
+                      <FacebookProvider appId="123456789">
+                        <LoginButton
+                          className="facebook_login_button"
+                          scope="email"
+                        >
+                          <img src="./static/images/facebook.png" alt="" />
+                        </LoginButton>
+                      </FacebookProvider>
+                      <GoogleLogin
+                        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                        render={(renderProps) => (
+                          <img
+                            src="./static/images/google.png"
+                            style={{ cursor: "pointer" }}
+                            onClick={renderProps.onClick}
+                            className="mx-3"
+                            alt=""
+                          />
+                        )}
+                      />
+                      <AppleLogin
+                        clientId="com.react.apple.login"
+                        render={(r) => (
+                          <img
+                            src="./static/images/apple.png"
+                            style={{ cursor: "pointer" }}
+                            onClick={r.onClick}
+                            alt=""
+                          />
+                        )}
+                        redirectURI="https://redirectUrl.com"
+                      />
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </main>
+        </div>
+      )}
+    </>
+  ) : (
+    <Loader />
   );
 };
 

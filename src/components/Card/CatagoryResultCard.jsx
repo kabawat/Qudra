@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 const CatagoryResultCard = ({ res, key, catagoryId, subCatagoryId }) => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   const showCatagories = (catagoryId, subCatagoryId) => {
     if (cookies?.user_data?.role === "client") {
       contextData?.professional_user_profile_data?.details?.professional_id &&
@@ -70,12 +70,12 @@ const CatagoryResultCard = ({ res, key, catagoryId, subCatagoryId }) => {
     <Wrapper>
       <div
         key={key}
-        className="theme-bg-color d-block"
+        className="theme-bg-color d-block HoverCat"
         onClick={() => {
           showCatagories(catagoryId, subCatagoryId);
         }}
       >
-        <div className="card border-0 flex-row bg-transparent text-white">
+        <div className="card border-0 flex-row bg-transparent text-white ">
           <img
             src={res?.unactive_icon}
             className="card-img"

@@ -887,6 +887,13 @@ header.dashboard-header .dashboard-user-notification {
   cursor: pointer;
 }
 
+#toggleNoti{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  z-index: 9000;
+}
 header.dashboard-header
   .dashboard-user-notification
   .dashboard-user-notification-number {
@@ -1475,6 +1482,7 @@ textarea {
 
 .create-account main.create-account-main form .create-account-input input {
   padding: 15px 50px;
+  border: 1px solid #ced4da;
 }
 
 .create-account main.create-account-main form .create-account-input {
@@ -3278,7 +3286,10 @@ button.closeModalPreviewData {
   visibility: hidden;
   transition: 0s ease-in-out;
 }
-
+.visibleForEdit-cat {
+  visibility: hidden;
+  transition: 0s ease-in-out;
+}
 .visibleForEdit {
   position: relative;
 }
@@ -3290,7 +3301,7 @@ button.closeModalPreviewData {
 }
 
 .card-img-overlay:hover {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5) !important;
   transition: 0.2s ease-in-out;
 }
 
@@ -3298,7 +3309,10 @@ button.closeModalPreviewData {
   visibility: visible;
   /* transition: all 0s linear; */
 }
-
+.visibleForEdit:hover .visibleForEdit-cat {
+  visibility: visible;
+  /* transition: all 0s linear; */
+}
 .productDetailsUploadModalProfilePage select,
 .productDetailsUploadModalProfilePage select:focus,
 .productDetailsUploadModalProfilePage select:focus-visible {
@@ -3678,9 +3692,9 @@ button.seeAllNotificationButton {
   display: none;
 }
 #custom-button {
-  padding: 10px;
-  color: white;
-  background-color: #009578;
+  padding: 10px 20px;
+  color: #ffffff;
+  background-color: #01a78a;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -3733,4 +3747,34 @@ button.seeAllNotificationButton {
 }
 .certificate-other {
   display: flex;
+  justify-content: space-between;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="text"] :focus-visible {
+  outline: none;
+}
+
+input[type="number"]:focus-visible {
+  outline: none;
+}
+#photo2 {
+  display: none;
+}
+
+.HoverCat :hover {
+  cursor: pointer;
+}
+
+.nav-link.liked-btn.active svg{
+  color : #00a78b !important;
 }

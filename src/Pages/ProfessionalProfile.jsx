@@ -23,6 +23,7 @@ import { ShareSocial } from "react-share-social";
 
 import * as Yup from "yup";
 import { useCookies } from "react-cookie";
+import Loader from "../components/Loader";
 
 const ProfessionalProfile = () => {
   const validationSchema = Yup.object().shape({
@@ -48,28 +49,28 @@ const ProfessionalProfile = () => {
   });
   const [reviewHeading, setReviewHeading] = useState(false);
   const [showRatingReview, setShowRatingReview] = useState(false);
-  const [cookies] = useCookies()
-  const [isRender, setIsRender] = useState(false)
-  const [isRender1, setIsRender1] = useState(false)
+  const [cookies] = useCookies();
+  const [isRender, setIsRender] = useState(false);
+  const [isRender1, setIsRender1] = useState(false);
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies.user_data.role === "client") {
-          setIsRender(true)
+          setIsRender(true);
         } else {
-          navigate('/professionaldashboard')
+          navigate("/professionaldashboard");
         }
       } else {
         if (cookies.user_data.role === "professional") {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [])
+  }, []);
 
   const handleShowRatingReview = () => {
     setShowRatingReview(true);
@@ -80,99 +81,96 @@ const ProfessionalProfile = () => {
 
   useEffect(() => {
     setLoader(true);
-    axios
-      .post("http://13.52.16.160:8082/professional/professional_profile", {
-        client_id: contextData?.userData?.user_id,
-        role: contextData?.userData?.role,
-        user_token: contextData?.userData?.user_token,
-        professional_id: params?.professional_id,
-      })
-      .then((respo) => {
-        setLikepro(respo?.data?.data?.liked);
-        setRating({
-          ...ratingreview,
-          rating: !respo?.data?.data?.rating_given
-            ? 0
-            : respo?.data?.data?.rating_given,
-          review: respo?.data?.data?.review_given
-            ? respo?.data?.data?.review_given
-            : "",
-        });
-
-        if (respo?.data?.data?.rating_given === false) {
-          setReviewHeading(false);
-        } else {
-          setReviewHeading(true);
-        }
-        if (respo?.data?.status === "Success") {
-          if (contextData?.userData?.role === "client") {
-            axios
-              .post(
-                "http://13.52.16.160:8082/professional/professional_sub_cat",
-                {
-                  client_id: contextData?.userData?.user_id,
-                  professional_id: params?.professional_id,
-                  role: contextData?.userData?.role,
-                  user_token: contextData?.userData?.user_token,
-                }
-              )
-              .then((res) => {
-                if (res?.data?.status === "Success") {
-                  contextData?.dispatch({
-                    type: "PROFESSIONAL_USER_PROFILE_DATA",
-                    value: {
-                      details: respo?.data?.data,
-                      selected_catagories: res?.data?.response,
-                    },
-                  });
-
-                  setLoader(false);
-                } else {
-                  contextData?.dispatch({
-                    type: "PROFESSIONAL_USER_PROFILE_DATA",
-                    value: {
-                      details: respo?.data?.data,
-                      selected_catagories: {
-                        1: [],
-                        2: [],
-                        3: [],
-                      },
-                    },
-                  });
-                  navigate(-1);
-                  setLoader(false);
-                }
-              });
-          } else {
-            axios
-              .post(
-                "http://13.52.16.160:8082/professional/professional_sub_cat",
-                {
-                  user_id: contextData?.userData?.user_id,
-                  role: contextData?.userData?.role,
-                  user_token: contextData?.userData?.user_token,
-                }
-              )
-              .then((response) => {
-                if (response?.data?.status === "Success") {
-                  contextData?.dispatch({
-                    type: "PROFESSIONAL_USER_PROFILE_DATA",
-                    value: {
-                      details: respo?.data?.data,
-                      selected_catagories: response?.data?.response,
-                    },
-                  });
-                  setLoader(false);
-                } else {
-                  navigate(-1)
-                }
-              });
-          }
-        } else {
-          navigate("/clientdashboard");
-        }
+    axios.post("http://13.52.16.160:8082/professional/professional_profile", {
+      client_id: cookies?.user_data?.user_id,
+      role: cookies?.user_data?.role,
+      user_token: cookies?.user_data?.user_token,
+      professional_id: params?.professional_id,
+    }).then((respo) => {
+      setLikepro(respo?.data?.data?.liked);
+      setRating({
+        ...ratingreview,
+        rating: !respo?.data?.data?.rating_given
+          ? 0
+          : respo?.data?.data?.rating_given,
+        review: respo?.data?.data?.review_given
+          ? respo?.data?.data?.review_given
+          : "",
       });
-  }, [contextData?.userData]);
+      if (respo?.data?.data?.rating_given === false) {
+        setReviewHeading(false);
+      } else {
+        setReviewHeading(true);
+      }
+      if (respo?.data?.status === "Success") {
+        if (cookies?.user_data?.role === "client") {
+          axios
+            .post(
+              "http://13.52.16.160:8082/professional/professional_sub_cat",
+              {
+                client_id: cookies?.user_data?.user_id,
+                professional_id: params?.professional_id,
+                role: cookies?.user_data?.role,
+                user_token: cookies?.user_data?.user_token,
+              }
+            )
+            .then((res) => {
+              if (res?.data?.status === "Success") {
+                contextData?.dispatch({
+                  type: "PROFESSIONAL_USER_PROFILE_DATA",
+                  value: {
+                    details: respo?.data?.data,
+                    selected_catagories: res?.data?.response,
+                  },
+                });
+
+                setLoader(false);
+              } else {
+                contextData?.dispatch({
+                  type: "PROFESSIONAL_USER_PROFILE_DATA",
+                  value: {
+                    details: respo?.data?.data,
+                    selected_catagories: {
+                      1: [],
+                      2: [],
+                      3: [],
+                    },
+                  },
+                });
+                navigate(-1);
+                setLoader(false);
+              }
+            });
+        } else {
+          axios
+            .post(
+              "http://13.52.16.160:8082/professional/professional_sub_cat",
+              {
+                user_id: cookies?.user_data?.user_id,
+                role: cookies?.user_data?.role,
+                user_token: cookies?.user_data?.user_token,
+              }
+            )
+            .then((response) => {
+              if (response?.data?.status === "Success") {
+                contextData?.dispatch({
+                  type: "PROFESSIONAL_USER_PROFILE_DATA",
+                  value: {
+                    details: respo?.data?.data,
+                    selected_catagories: response?.data?.response,
+                  },
+                });
+                setLoader(false);
+              } else {
+                navigate(-1);
+              }
+            });
+        }
+      } else {
+        navigate("/clientdashboard");
+      }
+    });
+  }, [cookies?.user_data]);
 
   useEffect(() => {
     if (!contextData?.static_architecture_design?.length) {
@@ -231,11 +229,11 @@ const ProfessionalProfile = () => {
     setLikepro(!likepro);
     axios
       .post("http://13.52.16.160:8082/identity/like-save", {
-        client_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
         professional_id:
           contextData?.professional_user_profile_data?.details?.professional_id,
-        role: contextData?.userData?.role,
+        role: cookies?.user_data?.role,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
@@ -261,15 +259,16 @@ const ProfessionalProfile = () => {
   const onSetRating = (val) => {
     // setRating(val);
     // setReviewHeading(!reviewHeading);
-    axios.post("http://13.52.16.160:8082/client/client_rating", {
-      professional_id:
-        contextData?.professional_user_profile_data?.details?.professional_id,
-      client_id: contextData?.userData?.user_id,
-      rating: ratingreview.rating,
-      review: ratingreview.review,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
-    })
+    axios
+      .post("http://13.52.16.160:8082/client/client_rating", {
+        professional_id:
+          contextData?.professional_user_profile_data?.details?.professional_id,
+        client_id: cookies?.user_data?.user_id,
+        rating: ratingreview.rating,
+        review: ratingreview.review,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+      })
       .then((res) => {
         if (res?.data?.status === "Success") {
           // setShowRating(false);
@@ -336,7 +335,6 @@ const ProfessionalProfile = () => {
 
   const [verified, setVerified] = useState(false);
 
-
   return contextData?.professional_user_profile_data && isRender ? (
     <main className="profile-page">
       <section className="profile-page-sec-one">
@@ -351,7 +349,7 @@ const ProfessionalProfile = () => {
               width: "30px",
             }}
           >
-            {contextData?.userData?.role === "client" && (
+            {cookies?.user_data?.role === "client" && (
               <NavLink to="/clientdashboard" style={{ color: "white" }}>
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
@@ -360,7 +358,7 @@ const ProfessionalProfile = () => {
               </NavLink>
             )}
 
-            {contextData?.userData?.role === "professional" && (
+            {cookies?.user_data?.role === "professional" && (
               <NavLink to="/professionaldashboard" style={{ color: "white" }}>
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
@@ -500,7 +498,7 @@ const ProfessionalProfile = () => {
       <section className="profile-page-sec-three theme-bg-color">
         <div className="container">
           <div className="row">
-            {contextData?.userData?.role === "client" && (
+            {cookies?.user_data?.role === "client" && (
               <div className="col d-md-flex justify-content-between p-lg-5 p-4 border-radius bg-white text-center button-group-profile-page">
                 <div
                   onClick={() => {
@@ -518,9 +516,9 @@ const ProfessionalProfile = () => {
                   onClick={() => {
                     axios
                       .post("http://13.52.16.160:8082/chat/get_room_id/", {
-                        client_id: contextData?.userData.user_id,
-                        role: contextData?.userData.role,
-                        user_token: contextData?.userData.user_token,
+                        client_id: cookies?.user_data.user_id,
+                        role: cookies?.user_data.role,
+                        user_token: cookies?.user_data.user_token,
                         professional_id:
                           contextData?.professional_user_profile_data?.details
                             ?.professional_id,
@@ -556,14 +554,36 @@ const ProfessionalProfile = () => {
 
                 <Modal show={showRatingReview} onHide={handleCloseRating}>
                   <Modal.Header closeButton>
-                    <h4 className="m-auto">
-                      {sucessReview ? "Reviewed" : "Add review and rating"}
-                    </h4>
+                    <h4 className="m-auto">Add review and raating</h4>
                   </Modal.Header>
 
                   <Modal.Body>
                     {showRating && (
                       <div className="ratingBox">
+                        <div
+                          style={{
+                            position: "relative",
+                            padding: "7px 12px 0 0",
+                          }}
+                        >
+                          <div className="forRatingArrow">
+                            <h4 className="my-2"> Rating</h4>
+                            <StarRating
+                              className="ratingBoxProfessionalProfile"
+                              size={5}
+                              value={ratingreview.rating}
+                              style={{ color: "red" }}
+                              onChange={(val) => {
+                                setRating({
+                                  ...ratingreview,
+                                  rating: val,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <h4 className="my-2"> Review</h4>
+
                         <textarea
                           maxLength={100}
                           type="text"
@@ -579,35 +599,14 @@ const ProfessionalProfile = () => {
                           style={{ width: "90%", padding: "10px 20px" }}
                         />
                         <p>{ratingreview.review.length}/ 100</p>
-                        <div
-                          style={{
-                            position: "relative",
-                            padding: "7px 12px 0 12px",
-                          }}
-                        >
-                          <div className="forRatingArrow">
-                            <h4 className="mb-0">Add Rating</h4>
-                            <StarRating
-                              className="ratingBoxProfessionalProfile"
-                              size={5}
-                              value={ratingreview.rating}
-                              style={{ color: "red" }}
-                              onChange={(val) => {
-                                setRating({
-                                  ...ratingreview,
-                                  rating: val,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
+
                         <Button
-                          className="my-3"
+                          className="my-2"
                           style={{ background: "#01a78a", border: "0" }}
                           type="submit"
                           onClick={onSetRating}
                         >
-                          Review & Rating
+                          Submit
                         </Button>
                       </div>
                     )}
@@ -717,7 +716,7 @@ const ProfessionalProfile = () => {
           >
             <div className="container">
               <div className="Top_Earners_Ineer">
-                <h2>Architecture Designs Portfolio</h2>
+                <h2>Architecture Designs Portfolio </h2>
               </div>
               <OwlCarousel
                 className="owl-carousel portfolio-slider owl-theme"
@@ -856,12 +855,12 @@ const ProfessionalProfile = () => {
               } else {
                 axios
                   .post("http://13.52.16.160:8082/client/start_project", {
-                    client_id: contextData?.userData?.user_id,
-                    user_token: contextData?.userData?.user_token,
+                    client_id: cookies?.user_data?.user_id,
+                    user_token: cookies?.user_data?.user_token,
                     professional_id:
                       contextData?.professional_user_profile_data?.details
                         ?.professional_id,
-                    role: contextData?.userData?.role,
+                    role: cookies?.user_data?.role,
                     project_name: values?.name,
                     work_assigned: values?.work_assigned,
                     project_cost: values?.budget,
@@ -971,9 +970,7 @@ const ProfessionalProfile = () => {
         theme="light"
       />
     </main>
-  ) : (
-    <LoadingModal loader={loader} />
-  );
+  ) : <Loader />
 };
 
 export default ProfessionalProfile;

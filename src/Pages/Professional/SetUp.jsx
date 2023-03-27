@@ -75,7 +75,7 @@ const languages = [
 ];
 
 const SetUp = () => {
-  const [cookies, setCookies] = useCookies(["user_info"]);
+  const [cookies, setCookies] = useCookies();
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -91,24 +91,24 @@ const SetUp = () => {
   const isCookies = () => {
     if (cookies?.user_data?.category_selected) {
       if (cookies.user_data.role === "professional") {
-        navigate('/professionaldashboard')
+        navigate("/professionaldashboard");
       } else {
-        navigate('/clientdashboard')
+        navigate("/clientdashboard");
       }
     } else {
       if (cookies.user_data.role === "professional") {
-        navigate('/categoryArchitecture')
+        navigate("/categoryArchitecture");
       } else {
-        navigate('/client-architechture')
+        navigate("/client-architechture");
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (cookies?.user_data) {
-      isCookies()
+      isCookies();
     }
-  }, [])
+  }, []);
 
   const [certificate, setCertificate] = useState("");
   const certificateChange = (e) => {
@@ -187,7 +187,8 @@ const SetUp = () => {
   for (let i = 0; i < 45; i++) {
     rows.push(i);
   }
-
+  const [cerErr, setCerErr] = useState("none");
+  const [eduErr, setEduErr] = useState(false);
   const [backImgErr, setBackImgErr] = useState("none");
 
   const [profileerr, setprofileerr] = useState("none");
@@ -200,7 +201,8 @@ const SetUp = () => {
   const verifyRequestButton = () => {
     let email = $("#EmailInputSignUpForm").val();
     setLoadingActive(true);
-    axios.post("http://13.52.16.160:8082/identity/verify-email", { email })
+    axios
+      .post("http://13.52.16.160:8082/identity/verify-email", { email })
       .then((res) => {
         if (res?.data?.status === "Failed") {
           setResData(res.data);
@@ -261,7 +263,7 @@ const SetUp = () => {
   };
 
   if (cookies?.user_data) {
-    isCookies()
+    isCookies();
   } else {
     return (
       <>
@@ -293,99 +295,104 @@ const SetUp = () => {
                   onSubmit={(values, { setSubmitting }) => {
                     setLoading(true);
 
-                    axios.post(
-                      "http://13.52.16.160:8082/identity/signup_professional",
-                      values
-                    ).then((res) => {
-                      if (res?.data?.status === "Success") {
-                        const signupuser = new FormData();
-                        signupuser.append("image", filePic);
-                        signupuser.append("background_image", filePic2);
-                        signupuser.append("user_id", res?.data?.data.user_id);
-                        signupuser.append(
-                          "user_token",
-                          res?.data?.data.user_token
-                        );
-                        signupuser.append("role", res?.data?.data.role);
+                    axios
+                      .post(
+                        "http://13.52.16.160:8082/identity/signup_professional",
+                        values
+                      )
+                      .then((res) => {
+                        if (res?.data?.status === "Success") {
+                          const signupuser = new FormData();
+                          signupuser.append("image", filePic);
+                          signupuser.append("background_image", filePic2);
+                          signupuser.append("user_id", res?.data?.data.user_id);
+                          signupuser.append(
+                            "user_token",
+                            res?.data?.data.user_token
+                          );
+                          signupuser.append("role", res?.data?.data.role);
 
-                        signupuser &&
-                          axios
-                            .post(
-                              "http://13.52.16.160:8082/identity/professional_profile",
-                              signupuser
-                            )
-                            .then((respo) => {
-                              const getcookies = {
-                                user_id: res?.data?.data?.user_id,
-                                user_token: res?.data?.data?.user_token,
-                                role: res?.data?.data?.role,
-                              };
-                              setCookies(
-                                "user_info",
-                                JSON.stringify(getcookies)
-                              );
+                          signupuser &&
+                            axios
+                              .post(
+                                "http://13.52.16.160:8082/identity/professional_profile",
+                                signupuser
+                              )
+                              .then((respo) => {
+                                const getcookies = {
+                                  user_id: res?.data?.data?.user_id,
+                                  user_token: res?.data?.data?.user_token,
+                                  role: res?.data?.data?.role,
+                                };
 
-                              const userCertificate = new FormData();
-                              userCertificate.append(
-                                "user_id",
-                                res?.data?.data.user_id
-                              );
-                              userCertificate.append(
-                                "user_token",
-                                res?.data?.data.user_token
-                              );
-                              userCertificate.append(
-                                "role",
-                                res?.data?.data.role
-                              );
-                              userCertificate.append(
-                                "certificate",
-                                certificate
-                              );
+                                const userCertificate = new FormData();
+                                userCertificate.append(
+                                  "user_id",
+                                  res?.data?.data.user_id
+                                );
+                                userCertificate.append(
+                                  "user_token",
+                                  res?.data?.data.user_token
+                                );
+                                userCertificate.append(
+                                  "role",
+                                  res?.data?.data.role
+                                );
+                                userCertificate.append(
+                                  "certificate",
+                                  certificate
+                                );
 
-                              axios.post("http://13.52.16.160:8082/identity/professional_certificate",
-                                userCertificate
-                              ).then((res) => console.log(res.data))
-                                .catch((err) => console.log(err));
+                                axios
+                                  .post(
+                                    "http://13.52.16.160:8082/identity/professional_certificate",
+                                    userCertificate
+                                  )
+                                  .then((res) => console.log(res.data))
+                                  .catch((err) => console.log(err));
 
-                              if (respo?.data?.status === "Success") {
-                                contextData?.dispatch({
-                                  type: "FETCH_USER_DATA",
-                                  value: res?.data?.data,
-                                });
-                                setCookies("user_data", { ...res?.data?.data, category_selected: false })
+                                if (respo?.data?.status === "Success") {
+                                  contextData?.dispatch({
+                                    type: "FETCH_USER_DATA",
+                                    value: res?.data?.data,
+                                  });
+                                  setCookies("user_data", {
+                                    ...res?.data?.data,
+                                    category_selected: false,
+                                  });
 
-                                setLoading(false);
-                                navigate("/categoryArchitecture", {
-                                  replace: true,
-                                });
-                                contextData.setShowDisclamer(true);
-                                if (!contextData?.profileData) {
-                                  axios
-                                    .post(
-                                      "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                      {
-                                        user_id: res?.data?.data?.user_id,
-                                        user_token: res?.data?.data?.user_token,
-                                        role: res?.data?.data?.role,
-                                      }
-                                    )
-                                    .then((response) => {
-                                      contextData?.dispatch({
-                                        type: "FETCH_PROFILE_DATA",
-                                        value: response?.data?.data,
+                                  setLoading(false);
+                                  navigate("/categoryArchitecture", {
+                                    replace: true,
+                                  });
+                                  contextData.setShowDisclamer(true);
+                                  if (!contextData?.profileData) {
+                                    axios
+                                      .post(
+                                        "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                        {
+                                          user_id: res?.data?.data?.user_id,
+                                          user_token:
+                                            res?.data?.data?.user_token,
+                                          role: res?.data?.data?.role,
+                                        }
+                                      )
+                                      .then((response) => {
+                                        contextData?.dispatch({
+                                          type: "FETCH_PROFILE_DATA",
+                                          value: response?.data?.data,
+                                        });
                                       });
-                                    });
+                                  }
                                 }
-                              }
-                            });
-                      } else {
-                        localStorage.clear();
+                              });
+                        } else {
+                          localStorage.clear();
 
-                        navigate("/setup");
-                        setLoading(false);
-                      }
-                    });
+                          navigate("/setup");
+                          setLoading(false);
+                        }
+                      });
                   }}
                 >
                   {({
@@ -458,7 +465,11 @@ const SetUp = () => {
                                   : { pointerEvents: "none" }
                               }
                             >
-                              {loadingActive ? <ReactLotti /> : verifyButtonText}
+                              {loadingActive ? (
+                                <ReactLotti />
+                              ) : (
+                                verifyButtonText
+                              )}
                             </button>
 
                             <Modal
@@ -782,7 +793,10 @@ const SetUp = () => {
                       <div className="row">
                         <div className="col-md my-md-3 my-1">
                           <div className="create-account-input">
-                            <img src="/static/images/LanguagesIcon.png" alt="" />
+                            <img
+                              src="/static/images/LanguagesIcon.png"
+                              alt=""
+                            />
                             <MultiSelect
                               options={languages}
                               value={language}
@@ -805,7 +819,10 @@ const SetUp = () => {
                         </div>
                         <div className="col-md my-md-3 my-1">
                           <div className="create-account-input">
-                            <img src="/static/images/EducationIcon.png" alt="" />
+                            <img
+                              src="/static/images/EducationIcon.png"
+                              alt=""
+                            />
                             <Field
                               id="educationSelect"
                               as="select"
@@ -827,62 +844,84 @@ const SetUp = () => {
                               <option value="Masters"> Masters</option>
                               <option value="Other">Other</option>
                             </Field>
-                            <div className="certificate-other">
+
+                            <ErrorMessage
+                              name="education"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+
+                            <div className="d-flex justify-content-sm-between">
+                              <div className="certificate-other">
+                                {educationSelect ? (
+                                  <div>
+                                    <div
+                                      onClick={() => {
+                                        document
+                                          .getElementById("certificate")
+                                          .click();
+                                      }}
+                                    >
+                                      <button
+                                        type="button"
+                                        id="custom-button"
+                                        style={{ borderRadius: " 30px" }}
+                                      >
+                                        Upload Certificate
+                                      </button>
+                                      <span id="custom-text">
+                                        {certificate
+                                          ? `${
+                                              certificate.name.length > 15
+                                                ? certificate.name.slice(
+                                                    0,
+                                                    15
+                                                  ) + certificate.name.slice(-4)
+                                                : certificate.name
+                                            }`
+                                          : " No file chosen, yet."}
+                                      </span>
+                                    </div>
+                                    <input
+                                      type="file"
+                                      name="certificate"
+                                      id="certificate"
+                                      accept=".jpg, .jpeg, .png, .doc, .docx, .pdf"
+                                      onChange={(event) => {
+                                        certificateChange(event);
+                                        setCerErr("none");
+                                      }}
+                                    />
+                                    <span
+                                      style={{ marginTop: "10px" }}
+                                      className={`${cerErr} text-danger `}
+                                    >
+                                      Certificate required
+                                    </span>
+                                  </div>
+                                ) : null}
+                              </div>
                               <div className="other-education">
                                 {educationSelect === "Other" ? (
                                   <input
+                                    style={{ padding: "15px 30px" }}
                                     type="text"
                                     className="mt-2"
                                     placeholder="Enter Here Your Other"
                                     value={educationInput}
                                     onChange={(e) => {
                                       setEducationInput(e.target.value);
-                                      setFieldValue("education", e.target.value);
+                                      setFieldValue(
+                                        "education",
+                                        e.target.value
+                                      );
+                                      setEduErr(false);
                                     }}
                                   />
                                 ) : (
                                   ""
                                 )}
-                                <ErrorMessage
-                                  name="education"
-                                  component="div"
-                                  className="m-2 text-danger"
-                                />
                               </div>
-
-                              {educationSelect ? (
-                                <div>
-                                  <div
-                                    onClick={() => {
-                                      document
-                                        .getElementById("certificate")
-                                        .click();
-                                    }}
-                                  >
-                                    <button type="button" id="custom-button">
-                                      Upload Certificate
-                                    </button>
-                                    <span id="custom-text">
-                                      {certificate
-                                        ? `${certificate.name.length > 15
-                                          ? certificate.name.slice(0, 15) +
-                                          "..."
-                                          : certificate.name
-                                        }`
-                                        : " No file chosen, yet."}
-                                    </span>
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="certificate"
-                                    id="certificate"
-                                    accept=".jpg, .jpeg, .png, .doc, .docx, .pdf"
-                                    onChange={(event) => {
-                                      certificateChange(event);
-                                    }}
-                                  />
-                                </div>
-                              ) : null}
                             </div>
                           </div>
                         </div>
@@ -969,6 +1008,9 @@ const SetUp = () => {
                               if (!filePic2) {
                                 setBackImgErr("block");
                               }
+                              if (!certificate) {
+                                setCerErr("block");
+                              }
                             }}
                             type="submit"
                             className="create-account-btn"
@@ -998,7 +1040,7 @@ const SetUp = () => {
           </div>
         )}
       </>
-    )
+    );
   }
 };
 
