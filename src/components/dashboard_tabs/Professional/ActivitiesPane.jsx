@@ -112,7 +112,6 @@ const ActivitiesPane = () => {
       professional_id: contextData?.userData?.user_id,
       project_id: project_id,
     }).then((res) => {
-      console.log(res.data)
       if (res?.data?.status === "Success") {
         axios.post(
           "http://13.52.16.160:8082/client/particular_project_details",
@@ -123,21 +122,20 @@ const ActivitiesPane = () => {
             role: contextData?.userData?.role,
             project_id: project_id,
           }
-        )
-          .then((respo) => {
-            if (respo?.data?.status === "Success") {
-              if (id !== undefined) {
-                navigate("/project-details", {
-                  state: {
-                    projectDetails: { id, project_id },
-                    projectData: respo?.data?.data,
-                    milesStoneData: res?.data?.data,
-                    isFromProfessionalTab: true,
-                  },
-                });
-              }
+        ).then((respo) => {
+          if (respo?.data?.status === "Success") {
+            if (id !== undefined) {
+              navigate("/project-details", {
+                state: {
+                  projectDetails: { id, project_id },
+                  projectData: respo?.data?.data,
+                  milesStoneData: res?.data?.data,
+                  isFromProfessionalTab: true,
+                },
+              });
             }
-          });
+          }
+        });
       }
     });
   };

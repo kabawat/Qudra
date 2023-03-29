@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import { Header2 } from "../Header";
-import BackButton from "../Button/BackButton";
 import styled from "styled-components";
-import Global from "../../context/Global";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
-
+import { Button, Modal } from "react-bootstrap";
+import { GiCancel } from 'react-icons/gi'
+import { useCookies } from "react-cookie";
 const Wrapper = styled.div`
   .mileStoneDate {
     padding: 10px 10px;
@@ -14,7 +14,8 @@ const Wrapper = styled.div`
     background: white;
     border: 2px solid #01a78a;
   }
-  div.uploadMileStone {
+  .uploadMileStone {
+    cursor: pointer;
     position: relative;
     border-radius: 0 25px 25px 0;
     padding: 11px 30px 11px;
@@ -43,39 +44,87 @@ const Wrapper = styled.div`
     height: 100%;
   }
 `;
-const FromProfessionalTabPane = ({ location }) => {
-  const contextData = useContext(Global);
 
+const FromProfessionalTabPane = ({ location }) => {
+  const [locations, setLocation] = useState(location)
+  const [show, setShow] = useState(false)
+  const [cookies] = useCookies()
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
     padding: "100px 0",
   };
-  const handleMilestoneUpdate = async (e, milestone_id) => {
+
+  const [project, setProject] = useState()
+  const [file, setFile] = useState('')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
+  const handalshow = (res) => {
+    setProject(res)
+    setShow(true)
+  }
+  const handalchage = (event) => {
+    setError('')
+    setFile(event.target.files)
+  }
+
+  const handalClose = () => {
+    setFile('')
+    setError('')
+    setShow(false)
+    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      client_id: locations.state.projectDetails?.id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      professional_id: cookies?.user_data?.user_id,
+      project_id: project?.project_id,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        axios.post(
+          "http://13.52.16.160:8082/client/particular_project_details",
+          {
+            client_id: locations.state.projectDetails?.id,
+            professional_id: cookies?.user_data?.user_id,
+            user_token: cookies?.user_data?.user_token,
+            role: cookies?.user_data?.role,
+            project_id: project?.project_id,
+          }
+        ).then((respo) => {
+          if (respo?.data?.status === "Success") {
+            setLocation({
+              state: {
+                projectDetails: { ...locations?.state?.projectDetails },
+                projectData: respo?.data?.data,
+                milesStoneData: res?.data?.data,
+                isFromProfessionalTab: true,
+              },
+            })
+          }
+        });
+      }
+    });
+  }
+
+  const handleMilestoneUpdate = async (event) => {
+    event.preventDefault()
     const data = new FormData();
-    data.append("user_id", contextData?.userData?.user_id);
-    data.append("user_token", contextData?.userData?.user_token);
-    data.append("role", contextData?.userData?.role);
-    data.append("project_id", location?.state?.projectDetails?.project_id);
-    data.append("milestone_id", milestone_id);
-    data.append("milestone_file", e.target.files[0]);
-    await axios
-      .post("http://13.52.16.160:8082/client/milestone_file", data)
-      .then((res) => {
+    data.append("user_id", cookies?.user_data?.user_id);
+    data.append("user_token", cookies?.user_data?.user_token);
+    data.append("role", cookies?.user_data?.role);
+    data.append("project_id", project?.project_id);
+    data.append("milestone_id", project?.milestone_id);
+    data.append("milestone_file", file[0]);
+    if (file) {
+      await axios.post("http://13.52.16.160:8082/client/milestone_file", data).then((res) => {
         if (res?.data?.status === "Success") {
-          toast.success("Successfully uploaded file!", {
-            position: "top-right",
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          handalClose()
         }
       });
+    } else {
+      setError('file required')
+    }
   };
+
   return (
     <div className="create-account">
       <Header2 />
@@ -87,9 +136,9 @@ const FromProfessionalTabPane = ({ location }) => {
                 <div className="row">
                   <div className="col ">
                     <h3 className="theme-text-color fs-24 mb-5">
-                      <span><Link to={contextData?.userData?.role === "client" ? "/clientdashboard" : "/myactivity"}
+                      <span><Link to={cookies?.user_data?.role === "client" ? "/clientdashboard" : "/myactivity"}
                         className="text-decoration-none text-dark m-0 h2">
-                        <i class="fa-solid fa-arrow-left-long pe-3" style={{ color: "#01a78a" }}></i>
+                        <i className="fa-solid fa-arrow-left-long pe-3" style={{ color: "#01a78a" }}></i>
                       </Link>
                       </span>
                       Project Details
@@ -100,14 +149,14 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">1</div>
                         <h5>Project Name:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_name}
+                          {locations?.state?.projectData?.project_name}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">2</div>
                         <h5>Professional Name :</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.professional_name}
+                          {locations?.state?.projectData?.professional_name}
                         </p>
                       </div>
                     </div>
@@ -116,14 +165,14 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.area}
+                          {locations?.state?.projectData?.area}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">4</div>
                         <h5>Estimated Budget:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_cost}
+                          {locations?.state?.projectData?.project_cost}
                         </p>
                       </div>
                     </div>
@@ -132,14 +181,14 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">5</div>
                         <h5>Project Status:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_status}
+                          {locations?.state?.projectData?.project_status}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">6</div>
                         <h5>Estimated Deadline:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.estimated_time}
+                          {locations?.state?.projectData?.estimated_time}
                         </p>
                       </div>
                     </div>
@@ -148,29 +197,105 @@ const FromProfessionalTabPane = ({ location }) => {
               </section>
               <section className="projectMilestoneInfo">
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
-                {location?.state?.milesStoneData?.map((res, index) => (
+                {locations?.state?.milesStoneData?.map((res, index) => (
                   <Wrapper className="milestoneBox" key={index}>
                     <p>{res?.milestone_name}</p>
                     <div className="buttonAndDateMain">
                       <div className="mileStoneDate">{res?.milestone_date}</div>
-                      <div className="uploadMileStone">
-                        Upload
-                        <input
-                          type="file"
-                          onChange={(e) =>
-                            handleMilestoneUpdate(e, res?.milestone_id)
-                          }
-                        />
-                      </div>
+                      {
+                        res?.status === "pending" && (
+                          <div className="uploadMileStone"
+                            onClick={() => {
+                              handalshow(res)
+                            }}
+                          >Upload</div>
+                        )
+                      }
+                      {
+                        res?.status === "accepted" && (
+                          <div className="uploadMileStone" >
+                            Milestone complated
+                          </div>
+                        )
+                      }
+                      {
+                        res?.status === "decline" && (
+                          <label htmlFor={`id${index}`} className="uploadMileStone" >
+                            Update
+                            <input type="file" id={`id${index}`} accept="application/zip" style={{ display: 'none' }}
+                              onChange={(e) => handleMilestoneUpdate(e, res?.milestone_id)} />
+                          </label>
+                        )
+                      }
+                      {
+                        res?.status === "updated" && (
+                          <div className="uploadMileStone" >pending</div>
+                        )
+                      }
+                      {
+                        res?.status === "uploaded" && (
+                          <div className="uploadMileStone" >pending</div>
+                        )
+                      }
+                      {
+                        res?.status === "downloaded" && (
+                          <div className="uploadMileStone" >pending</div>
+                        )
+                      }
+
                     </div>
                   </Wrapper>
                 ))}
-                <BackButton customclassName="mx-auto d-block mt-4" text="Back" />
+                {/* <BackButton customclassName="mx-auto d-block mt-4" text="Back" /> */}
               </section>
             </div>
           </div>
         </div >
       </main >
+
+      <Modal
+        show={show}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        onHide={handalClose}
+        className="modalProfessionalDashboard"
+      >
+        <Modal.Header
+          closeButton
+          style={{ margin: "0 0 0 auto" }}
+          className="border-0"
+        ></Modal.Header>
+        <Modal.Body>
+          <p className="text-center" style={{ fontSize: '24px' }}>Upload Zip</p>
+          <form onSubmit={handleMilestoneUpdate}>
+            <div className="row">
+              <div className="">
+                <div className="col pe-0">
+                  <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
+                    <button className="w-100" type="button">
+                      <span className="ps-2">Upload Zip</span>
+                    </button>
+                    <p className="ps-4">
+                      {file[0]?.name}
+                    </p>
+                    <input type="file" accept=".zip,.rar,.7zip" name="project"
+                      onChange={handalchage} />
+                  </div>
+                </div>
+                <div style={{ color: 'red' }}> {error}</div>
+
+                <div className="text-center">
+                  <button type="submit" className="ModalCategorySubmit" >
+                    Upload
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
+
       <ToastContainer
         position="top-right"
         autoClose={500}

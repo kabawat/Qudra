@@ -22,10 +22,10 @@ const ClientProcess = ({ location }) => {
       project_approval_status: req,
       professional_id: location?.state?.professional_id
     }).then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/accept-project");
-        }
-      });
+      if (res?.data?.status === "Success") {
+        navigate("/accept-project");
+      }
+    });
   };
   return (
     <div className="create-account">
@@ -47,7 +47,7 @@ const ClientProcess = ({ location }) => {
                           className="text-decoration-none text-dark m-0 h2"
                         >
                           <i
-                            class="fa-solid fa-arrow-left-long pe-3"
+                            className="fa-solid fa-arrow-left-long pe-3"
                             style={{ color: "#01a78a" }}
                           ></i>
                         </Link>
@@ -148,7 +148,7 @@ const ClientProcess = ({ location }) => {
                         borderRadius: "50px",
                         display: "block",
                       }} className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"}`}>
-                      Accept
+                      Approve
                       <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                     </button>
                   </div>

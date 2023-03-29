@@ -41,9 +41,8 @@ const style = {
     textDecoration: "none",
 };
 
-const EditProfileClient = () => {
+const EditProfileClient = ({ location }) => {
     const contextData = useContext(Global);
-    const location = useLocation();
     const [isLoading, setLoading] = useState(false);
     const [cookies] = useCookies()
 

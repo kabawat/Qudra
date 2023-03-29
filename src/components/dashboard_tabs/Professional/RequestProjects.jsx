@@ -58,7 +58,6 @@ const RequestProject = () => {
       project_status: "pending",
       ...myProjectPageId,
     }).then((res) => {
-      console.log(res)
       if (res?.data?.status === "Success") {
         setMyProject(res?.data?.data);
       }

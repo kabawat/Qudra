@@ -52,7 +52,6 @@ import AcceptProject from "./components/dashboard_tabs/Client/acceptProject";
 import { useCookies } from "react-cookie";
 function App() {
   const [cookies] = useCookies()
-  console.log(cookies)
   return (
     <BrowserRouter>
       <ScrollToTop />

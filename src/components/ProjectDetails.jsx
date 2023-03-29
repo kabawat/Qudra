@@ -45,11 +45,11 @@ const ProjectDetails = () => {
         <ProfessionalProcess location={location} />
       )}
       {location?.state?.isFromClientNotification && (
-        // <ClientProcess location={location} />
-        <FromClientTabPane location={location} />
+        <ClientProcess location={location} />
       )}
       {location?.state?.isFromClientTab && (
-        <ClientProcess location={location} />
+        <FromClientTabPane location={location} />
+        // <ClientProcess location={location} />
       )}
       {location?.state?.isFromProfessionalTab && (
         <FromProfessionalTabPane location={location} />

@@ -80,16 +80,14 @@ const OngoingPane = () => {
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
-          axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: contextData?.userData?.user_id,
-                user_token: contextData?.userData?.user_token,
-                role: contextData?.userData?.role,
-                project_id: project_id,
-              }
-            )
+          axios.post("http://13.52.16.160:8082/client/particular_project_details",
+            {
+              client_id: contextData?.userData?.user_id,
+              user_token: contextData?.userData?.user_token,
+              role: contextData?.userData?.role,
+              project_id: project_id,
+            }
+          )
             .then((respo) => {
               if (respo?.data?.status === "Success") {
                 if (id !== undefined) {
@@ -98,7 +96,7 @@ const OngoingPane = () => {
                       projectDetails: { id, project_id },
                       projectData: respo?.data?.data,
                       milesStoneData: res?.data?.data,
-                      isFromClientNotification: true,
+                      isFromClientTab: true,
                       project_cost: project_cost
                     },
                   });

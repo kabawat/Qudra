@@ -93,7 +93,7 @@ const ProfessionalProcess = ({ location }) => {
                           className="text-decoration-none text-dark m-0 h2"
                         >
                           <i
-                            class="fa-solid fa-arrow-left-long pe-3"
+                            className="fa-solid fa-arrow-left-long pe-3"
                             style={{ color: "#01a78a" }}
                           ></i>
                         </Link>

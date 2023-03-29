@@ -92,7 +92,7 @@ const AcceptProject = () => {
                                     // projectDetails: { id, },
                                     projectData: respo?.data?.data,
                                     milesStoneData: res?.data?.data,
-                                    isFromClientTab: true,
+                                    isFromClientNotification: true,
                                     professional_id: id,
                                     project_id: project_id
                                 },

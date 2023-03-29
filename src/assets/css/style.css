@@ -713,21 +713,14 @@ footer .quadra-copyright p {
   padding: 0 20px 0 0;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  input {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton input {
   border-radius: 30px;
   width: auto;
   padding: 10px 20px;
   margin: 10px 0;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton {
   display: unset;
 }
 
@@ -736,11 +729,7 @@ header.home-page-header ul li {
   font-size: 20px;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  button[type="submit"] {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
   position: absolute;
   right: 5px;
   padding: 11px 16px;
@@ -755,11 +744,7 @@ header.home-page-header .mobile-menu .mobile-menu-content ul li {
   list-style: none;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  button[type="submit"] {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
   position: absolute;
   right: 2px;
   padding: 10px 14px;
@@ -887,16 +872,15 @@ header.dashboard-header .dashboard-user-notification {
   cursor: pointer;
 }
 
-#toggleNoti{
+#toggleNoti {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   z-index: 9000;
 }
-header.dashboard-header
-  .dashboard-user-notification
-  .dashboard-user-notification-number {
+
+header.dashboard-header .dashboard-user-notification .dashboard-user-notification-number {
   position: absolute;
   min-width: 20px;
   background-color: #01a78a;
@@ -916,13 +900,15 @@ header.dashboard-header button.profileEdit-button {
   background-color: transparent;
   position: relative;
 }
-#Edit_toggle{
+
+#Edit_toggle {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
 }
+
 header.dashboard-header button.profileEdit-button h4 {
   margin: 0 15px 0 0;
   font-size: 16px;
@@ -1122,9 +1108,11 @@ header.dashboard-header h6 {
 .Residential-Architecture-page .card .card-img-overlay h4::first-line {
   font-weight: 300;
 }
+
 textarea {
   resize: none !important;
 }
+
 .custom-border-radius-one {
   border-radius: 45px 0 0 0;
 }
@@ -1143,7 +1131,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.Residential-Architecture-page .card:hover > .card-img-overlay {
+.Residential-Architecture-page .card:hover>.card-img-overlay {
   opacity: 1;
   background: #000000ad;
 }
@@ -1151,6 +1139,7 @@ textarea {
 .uploadimageCat {
   max-height: 56px;
 }
+
 .dashboard main #dashboard-menu-bar .total-earning-row h4 {
   font-size: 20px;
   color: #3f4953;
@@ -1176,11 +1165,7 @@ textarea {
   padding: 15px 0;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional {
   background-image: url(../img/become-professional-earner-banner.png);
   padding: 60px 0 60px 60px;
   border-radius: 30px;
@@ -1188,12 +1173,7 @@ textarea {
   background-size: 100% 100%;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  h4 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h4 {
   font-size: 32px;
   line-height: 51px;
   color: #ffffff;
@@ -1201,12 +1181,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  h3 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h3 {
   font-size: 35px;
   line-height: 51px;
   color: #ffffff;
@@ -1214,12 +1189,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  p {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional p {
   font-size: 18px;
   line-height: 34px;
   color: #ffffff;
@@ -1228,12 +1198,7 @@ textarea {
   width: 70%;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  button {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional button {
   font-size: 20px;
   line-height: 32px;
   color: #01a78a;
@@ -1245,46 +1210,27 @@ textarea {
   border-radius: 50px;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box {
   box-shadow: 0px 2px 2px 2px #adadad38;
   border-radius: 25px;
   padding: 15px 0;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h3 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h3 {
   font-size: 22px;
   color: #3a3939;
   font-weight: 600;
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h6 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h6 {
   font-size: 16px;
   color: #3a3939;
   font-weight: 300;
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h2 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h2 {
   font-size: 32px;
   color: #01a78a;
   font-weight: 600;
@@ -1442,13 +1388,7 @@ textarea {
 }
 
 .create-account main.create-account-main form input:focus,
-.create-account
-  main.create-account-main
-  form
-  select:focus.create-account
-  main.create-account-main
-  form
-  textarea:focus {
+.create-account main.create-account-main form select:focus.create-account main.create-account-main form textarea:focus {
   outline: none;
   box-shadow: none;
 }
@@ -1458,11 +1398,7 @@ textarea {
   border-radius: 50px;
 }
 
-.create-account
-  main.create-account-main
-  form
-  .create-account-input
-  input::placeholder,
+.create-account main.create-account-main form .create-account-input input::placeholder,
 .create-account main.create-account-main form select::placeholder,
 .create-account main.create-account-main form textarea::placeholder,
 .create-account main.create-account-main form .create-account-input input,
@@ -1649,11 +1585,7 @@ textarea {
   display: none;
 }
 
-.create-account
-  main.create-account-main
-  form
-  .create-account-input
-  .policy-span {
+.create-account main.create-account-main form .create-account-input .policy-span {
   padding: 15px 20px;
   font-size: 14px;
   color: #000000;
@@ -1870,11 +1802,7 @@ section.chatbox .chats-main .chats-show {
   flex-direction: column;
 }
 
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input {
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input {
   background: #eeeeee;
   padding: 15px 30px;
   border: 0px;
@@ -1895,21 +1823,9 @@ section.chatbox .chats-main .chats-show .chatbox-text-input-box button {
   right: 20px;
 }
 
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input:focus,
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input::placeholder,
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input:focus-visible {
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus,
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input::placeholder,
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus-visible {
   border: 0;
   outline: 0;
   font-size: 18px;
@@ -2945,36 +2861,31 @@ canvas {
 }
 
 .LoadingMain .cuboid .side:nth-of-type(2) {
-  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin))
-    rotateY(180deg);
+  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin)) rotateY(180deg);
   background: hsl(var(--hue), var(--sat), 25%);
 }
 
 .LoadingMain .cuboid .side:nth-of-type(3) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(90deg)
-    translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 75%);
 }
 
 .LoadingMain .cuboid .side:nth-of-type(4) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(-90deg)
-    translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(-90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: #009379;
 }
 
 .LoadingMain .cuboid .side:nth-of-type(5) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(90deg)
-    translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: #008971;
 }
 
 .LoadingMain .cuboid .side:nth-of-type(6) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(-90deg)
-    translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(-90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 20%);
 }
 
@@ -3292,10 +3203,12 @@ button.closeModalPreviewData {
   visibility: hidden;
   transition: 0s ease-in-out;
 }
+
 .visibleForEdit-cat {
   visibility: hidden;
   transition: 0s ease-in-out;
 }
+
 .visibleForEdit {
   position: relative;
 }
@@ -3315,10 +3228,12 @@ button.closeModalPreviewData {
   visibility: visible;
   /* transition: all 0s linear; */
 }
+
 .visibleForEdit:hover .visibleForEdit-cat {
   visibility: visible;
   /* transition: all 0s linear; */
 }
+
 .productDetailsUploadModalProfilePage select,
 .productDetailsUploadModalProfilePage select:focus,
 .productDetailsUploadModalProfilePage select:focus-visible {
@@ -3571,16 +3486,27 @@ input[name="milestone_date_fifth"]::placeholder {
   margin: 0;
 }
 
-.projectMilestoneInfo .milestoneBox button {
+.projectMilestoneInfo .milestoneBox button.prewviewButton {
   border-radius: 0 50px 50px 0;
   position: absolute;
   padding: 11px 30px 11px;
-
   pointer-events: none;
   border: 1px solid #01a78a;
   background-color: #01a78a;
   color: white;
   right: 0;
+}
+
+.accept_btn_group button {
+  height: 100%;
+  padding: 0px 20px;
+  border: 2px solid #01a78a;
+  background: transparent;
+}
+
+.accept_btn_group button:first-child {
+  /* background: rgb(245, 81, 81);
+  color: #fff; */
 }
 
 .paginationBoxProfessionalDashboard .page-link {
@@ -3697,6 +3623,7 @@ button.seeAllNotificationButton {
 #certificate {
   display: none;
 }
+
 #custom-button {
   padding: 10px 20px;
   color: #ffffff;
@@ -3744,6 +3671,7 @@ button.seeAllNotificationButton {
   width: 90%;
   height: 50%;
 }
+
 .image-list {
   padding: initial;
 }
@@ -3751,6 +3679,7 @@ button.seeAllNotificationButton {
 .Cur_proFes :hover {
   cursor: pointer;
 }
+
 .certificate-other {
   display: flex;
   justify-content: space-between;
@@ -3766,6 +3695,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
 input[type="text"] :focus-visible {
   outline: none;
 }
@@ -3773,6 +3703,7 @@ input[type="text"] :focus-visible {
 input[type="number"]:focus-visible {
   outline: none;
 }
+
 #photo2 {
   display: none;
 }
@@ -3781,6 +3712,6 @@ input[type="number"]:focus-visible {
   cursor: pointer;
 }
 
-.nav-link.liked-btn.active svg{
-  color : #00a78b !important;
+.nav-link.liked-btn.active svg {
+  color: #00a78b !important;
 }
