@@ -62,73 +62,37 @@ const Header2 = ({ link }) => {
                     <Link to="/join">Sign up</Link>
                   )}
                   {window.location.pathname === "/categoryArchitecture" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/categoryvisualization" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
                       logout
                     </button>
                   )}
-                  {window.location.pathname ===
-                    "/professional-buy-and-sale" && (
-                      <button
-                        onClick={() => {
-                          setShow(true);
-                        }}
-                        style={buttonStyle}
-                      >
-                        logout
-                      </button>
-                    )}
+                  {window.location.pathname === "/professional-buy-and-sale" && (
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
+                      logout
+                    </button>
+                  )}
                   {window.location.pathname === "/client-architechture" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/client-visualisation" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/client-buy-sell" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
                       logout
                     </button>
                   )}
                   {window.location.pathname === "/edit-profile" && (
-                    <button
-                      onClick={() => {
-                        setShow(true);
-                      }}
-                      style={buttonStyle}
-                    >
+                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
                       logout
                     </button>
                   )}
@@ -427,18 +391,6 @@ const Header3 = () => {
                     </Link>
                   )}
                 </li>
-                {/* <li
-                  className="language-select text-black"
-                  onClick={languageClick}
-                >
-                  <div id="google_translate_element"></div>
-                </li> */}
-                {/* <div className="language-dropdown-slider">
-                  <li className="m-0 py-1 border-bottom ">Hindi</li>
-                  <li className="m-0 py-1 border-bottom ">French</li>
-                  <li className="m-0 py-1 border-bottom ">Italic</li>
-                  <li className="m-0 py-1 ">Dutch</li>
-                </div> */}
               </ul>
             </div>
           </div>
@@ -841,6 +793,11 @@ const HeaderDashboard = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");
   };
+  window.addEventListener('click', event => {
+    if (event.target.id !== 'Edit_toggle') {
+      $(".profile-edit-dropdown").hide();
+    }
+  })
   const contextData = useContext(Global);
   const [show, setShow] = useState(false);
   const [showNotificationBox, setShowNotificationBox] = useState(false);
@@ -980,14 +937,8 @@ const HeaderDashboard = () => {
         <div className="container-fluid px-lg-5 px-md-4 px-3">
           <div className="row py-4">
             <div className="col-xxl-9 col-xl-8 col-lg-7 d-block  d-flex align-items-center  justify-content-between ">
-              <Link
-                to={
-                  cookies?.user_data?.role === "client"
-                    ? "/clientdashboard"
-                    : "/professionaldashboard"
-                }
-                className="text-decoration-none text-dark m-0 h2"
-              >
+              <Link to={cookies?.user_data?.role === "client" ? "/clientdashboard" : "/professionaldashboard"}
+                className="text-decoration-none text-dark m-0 h2">
                 Dashboard
               </Link>
               <div className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""}  py-4`}>
@@ -1134,6 +1085,7 @@ const HeaderDashboard = () => {
                     {contextData?.profileData && contextData?.profileData?.name}
                   </h4>
                   <i className="fa-solid fa-caret-down"></i>
+                  <div id="Edit_toggle"></div>
                 </button>
                 <div className="profile-edit-dropdown">
                   <div className=" d-flex flex-column ">

@@ -16,17 +16,18 @@ import * as Yup from "yup";
 import { GiCancel } from "react-icons/gi";
 
 import { AiFillDelete } from "react-icons/ai";
-import { MicNone } from "@mui/icons-material";
 import Footer from "../../Footer";
 import InstructionModal from "../../Modals/InstructionModal";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
+import { useCookies } from "react-cookie";
+import Loader from "../../Loader";
+import { useNavigate } from "react-router-dom";
 const PortfolioPane = () => {
   const [canUploadVideo, setCanUploadVideo] = useState("False");
   const contextData = useContext(Global);
   const [displaycls, setdisplaycls] = useState("none");
   const [loader, setLoader] = useState(false);
-  const [imddisplay, setimddisplay] = useState("none");
   const [imgPreview, setimgPreview] = useState("");
   const [showUploadDesign, setUploadDesign] = useState({
     home: true,
@@ -45,6 +46,28 @@ const PortfolioPane = () => {
     selected_catagories: null,
     delete_project_modal: false,
   };
+  const navigate = useNavigate()
+  const [isRender, setIsRender] = useState(false)
+  const [cookies] = useCookies()
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data.role === "professional") {
+          setIsRender(true)
+        } else {
+          navigate('/clientdashboard')
+        }
+      } else {
+        if (cookies?.user_data.role === "professional") {
+          navigate('/categoryArchitecture')
+        } else {
+          navigate('/client-architechture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -74,21 +97,19 @@ const PortfolioPane = () => {
     e.target.value = null;
   };
   useEffect(() => {
-    axios
-      .post(
-        "http://13.52.16.160:8082/professional/professional_sub_cat",
-        contextData?.userData
-      )
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          dispatch({ type: "SELECTED_CATAGORIES", value: res?.data?.response });
-        } else {
-          dispatch({
-            type: "SELECTED_CATAGORIES",
-            value: { 1: [], 2: [], 3: [] },
-          });
-        }
-      });
+    axios.post(
+      "http://13.52.16.160:8082/professional/professional_sub_cat",
+      contextData?.userData
+    ).then((res) => {
+      if (res?.data?.status === "Success") {
+        dispatch({ type: "SELECTED_CATAGORIES", value: res?.data?.response });
+      } else {
+        dispatch({
+          type: "SELECTED_CATAGORIES",
+          value: { 1: [], 2: [], 3: [] },
+        });
+      }
+    });
   }, [
     PortfolioData?.architecture_design_upload_modal,
     PortfolioData?.visualization_design_upload_modal,
@@ -267,7 +288,7 @@ const PortfolioPane = () => {
 
   const [imgPreviewList, setimgPreviewList] = useState("");
   return (
-    <>
+    isRender ? <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -1513,7 +1534,7 @@ const PortfolioPane = () => {
       </div>
       <InstructionModal />
       <Footer />
-    </>
+    </> : <Loader />
   );
 };
 

@@ -7,42 +7,74 @@ import { FaPaypal } from "react-icons/fa";
 import Select from "react-select";
 import Footer from "../../components/Footer";
 import $ from "jquery";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 const Cart = () => {
   const [currentTab, setCurrentTab] = useState("dashboard");
-
+  const location = useLocation()
+  const [cookies] = useCookies()
   const months = [
-    { value: "01", label: "01" },
-    { value: "02", label: "02" },
-    { value: "03", label: "03" },
-    { value: "04", label: "04" },
-    { value: "05", label: "05" },
-    { value: "06", label: "06" },
-    { value: "07", label: "07" },
-    { value: "08", label: "08" },
-    { value: "09", label: "09" },
-    { value: "10", label: "10" },
-    { value: "11", label: "11" },
-    { value: "12", label: "12" },
+    { value: "01", label: "01", name: 'expiry_month' },
+    { value: "02", label: "02", name: 'expiry_month' },
+    { value: "03", label: "03", name: 'expiry_month' },
+    { value: "04", label: "04", name: 'expiry_month' },
+    { value: "05", label: "05", name: 'expiry_month' },
+    { value: "06", label: "06", name: 'expiry_month' },
+    { value: "07", label: "07", name: 'expiry_month' },
+    { value: "08", label: "08", name: 'expiry_month' },
+    { value: "09", label: "09", name: 'expiry_month' },
+    { value: "10", label: "10", name: 'expiry_month' },
+    { value: "11", label: "11", name: 'expiry_month' },
+    { value: "12", label: "12", name: 'expiry_month' },
   ];
   const years = [
-    { value: "2023", label: "2023" },
-    { value: "2024", label: "2024" },
-    { value: "2025", label: "2025" },
-    { value: "2026", label: "2026" },
-    { value: "2027", label: "2027" },
-    { value: "2028", label: "2028" },
-    { value: "2029", label: "2029" },
-    { value: "2030", label: "2030" },
-    { value: "2031", label: "2031" },
-    { value: "2032", label: "2032" },
-    { value: "2033", label: "2033" },
-    { value: "2034", label: "2034" },
+    { value: "2023", label: "2023", name: 'expiry_year' },
+    { value: "2024", label: "2024", name: 'expiry_year' },
+    { value: "2025", label: "2025", name: 'expiry_year' },
+    { value: "2026", label: "2026", name: 'expiry_year' },
+    { value: "2027", label: "2027", name: 'expiry_year' },
+    { value: "2028", label: "2028", name: 'expiry_year' },
+    { value: "2029", label: "2029", name: 'expiry_year' },
+    { value: "2030", label: "2030", name: 'expiry_year' },
+    { value: "2031", label: "2031", name: 'expiry_year' },
+    { value: "2032", label: "2032", name: 'expiry_year' },
+    { value: "2033", label: "2033", name: 'expiry_year' },
+    { value: "2034", label: "2034", name: 'expiry_year' },
   ];
 
   $(document).ready(function () {
     $(".cardExpiry.monthInput input").attr("maxlength", "2");
     $(".cardExpiry.yearInput input").attr("maxlength", "4");
   });
+  const [cartInfo, setCartInfo] = useState({
+    card_name: '',
+    card_number: '',
+    expiry_month: '',
+    expiry_year: '',
+    cvc: ''
+  })
+  const handalChange = (name, value) => {
+    setCartInfo({
+      ...cartInfo,
+      [name]: value
+    })
+  }
+  const handalSubmit = (event) => {
+    event.preventDefault()
+    console.log({
+      ...cookies?.user_data
+    })
+    axios.post('http://13.52.16.160:8082/stripe/client/card/', {
+      ...cartInfo,
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token
+    }).then((responce) => {
+      console.log(responce)
+    }).catch((error) => {
+      console.log(error.responce)
+    })
+  }
   return (
     <>
       <div className="dashboard">
@@ -87,7 +119,7 @@ const Cart = () => {
                                 </div>
                               </div>
                               <div className="col d-flex flex-column justify-content-center">
-                                <h5>Residental Architechture</h5>
+                                <h5>{location?.state?.projectData?.project_name}</h5>
                                 <p>Reference site about lipsum</p>
                               </div>
                             </div>
@@ -97,12 +129,12 @@ const Cart = () => {
                       <div className="col-5 rightShoppingCart">
                         <div className="row">
                           <div className="col">
-                            <h4>$600</h4>
+                            <h4>${location?.state?.project_cost}</h4>
                           </div>
                           <div className="col-8">
                             <div className="row">
                               <div className="col">
-                                <h3>$600</h3>
+                                <h3>${location?.state?.project_cost}</h3>
                               </div>
                               <div className="col">
                                 <BiX />
@@ -115,7 +147,7 @@ const Cart = () => {
                                     <h5>Subtotal:</h5>
                                   </div>
                                   <div className="col-6">
-                                    <h4>$500</h4>
+                                    <h4>${location?.state?.project_cost}</h4>
                                   </div>
                                 </div>
                                 <div className="row pt-3">
@@ -123,7 +155,7 @@ const Cart = () => {
                                     <h5>total:</h5>
                                   </div>
                                   <div className="col-6">
-                                    <h4>$500</h4>
+                                    <h4>${location?.state?.project_cost}</h4>
                                   </div>
                                 </div>
                               </div>
@@ -134,18 +166,18 @@ const Cart = () => {
                     </div>
                   </div>
                   <div className="col-5 bg-white payementFormMain">
-                    <form action="">
+                    <form onSubmit={handalSubmit}>
                       <h4>Payment Info</h4>
                       <p className="pt-3 mb-0">Payement Method:</p>
                       <div className="row pt-3 m-0 pb-4 border-bottom">
                         <div className="col ps-0">
-                          <button>
+                          <button type="button">
                             <BiCreditCardAlt />
                             Credit Card
                           </button>
                         </div>
                         <div className="col pe-0">
-                          <button>
+                          <button type="button">
                             <FaPaypal />
                             PayPal
                           </button>
@@ -153,18 +185,29 @@ const Cart = () => {
                       </div>
                       <div className="row m-0 pt-3 pb-4 border-bottom">
                         <h6>Name on card</h6>
-                        <input type="text" />
+                        <input type="text"
+                          name="card_name"
+                          value={cartInfo?.card_name}
+                          onChange={(event) => {
+                            handalChange(event?.target?.name, event?.target?.value)
+                          }}
+                        />
                       </div>
                       <div className="row m-0 pt-3 pb-4 border-bottom">
                         <h6>Card Number</h6>
                         <input
                           id="ccn"
-                          type="tel"
+                          type="number"
                           inputMode="numeric"
                           pattern="[0-9\s]{13,19}"
                           autoComplete="cc-number"
                           maxLength="19"
                           placeholder="xxxx xxxx xxxx xxxx"
+                          name="card_number"
+                          value={cartInfo?.card_number}
+                          onChange={(event) => {
+                            handalChange(event?.target?.name, event?.target?.value)
+                          }}
                         />
                       </div>
                       <div className="row  py-3">
@@ -177,6 +220,9 @@ const Cart = () => {
                                   options={months}
                                   placeholder="MM"
                                   style={{ border: "none" }}
+                                  name='expiry_month'
+                                  defaultValue={cartInfo.expiry_month}
+                                  onChange={(event) => handalChange(event.name, event.value)}
                                 />
                               </div>
                             </div>
@@ -184,8 +230,12 @@ const Cart = () => {
                               <div className="border-bottom">
                                 <Select
                                   options={years}
+                                  defaultValue={cartInfo.expiry_year}
                                   placeholder="YYYY"
                                   style={{ border: "none" }}
+                                  onChange={(event) => {
+                                    handalChange(event?.name, event?.value)
+                                  }}
                                 />
                               </div>
                             </div>
@@ -202,16 +252,18 @@ const Cart = () => {
                                 className="border-bottom"
                                 maxLength={3}
                                 minLength={3}
+                                name='cvc'
+                                value={cartInfo?.cvc}
+                                onChange={(event) => {
+                                  handalChange(event?.target?.name, event?.target?.value)
+                                }}
                               />
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="row">
-                        <button
-                          type="submit"
-                          className="PaymentCardSubmitButton"
-                        >
+                        <button type="submit" className="PaymentCardSubmitButton">
                           Check out <BsArrowRight />
                         </button>
                       </div>

@@ -8,6 +8,9 @@ import axios from "axios";
 import Footer from "../../Footer";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import Loader from "../../Loader";
 const Ratings = () => {
   const contextData = useContext(Global);
   const [projectPageId, setProjectPageId] = useState({
@@ -16,6 +19,28 @@ const Ratings = () => {
   });
   const [rating, setRating] = useState();
   const [search, setSearch] = useState("");
+  const navigate = useNavigate()
+  const [isRender, setIsRender] = useState(false)
+  const [cookies] = useCookies()
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data.role === "professional") {
+          setIsRender(true)
+        } else {
+          navigate('/clientdashboard')
+        }
+      } else {
+        if (cookies?.user_data.role === "professional") {
+          navigate('/categoryArchitecture')
+        } else {
+          navigate('/client-architechture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
 
   const fetchRatingData = () => {
     axios
@@ -122,7 +147,7 @@ const Ratings = () => {
   }, [searchPageId]);
 
   return (
-    <>
+    isRender ? <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -322,7 +347,7 @@ const Ratings = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </> : <Loader />
 
   );
 };

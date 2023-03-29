@@ -18,7 +18,7 @@ const ProjectDetails = () => {
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
-        if (cookies?.user_data?.role === 'professional' && location.state !== null) {
+        if (location.state !== null) {
           setIsRender(true)
         } else {
           navigate('/clientdashboard')
@@ -45,10 +45,11 @@ const ProjectDetails = () => {
         <ProfessionalProcess location={location} />
       )}
       {location?.state?.isFromClientNotification && (
-        <ClientProcess location={location} />
+        // <ClientProcess location={location} />
+        <FromClientTabPane location={location} />
       )}
       {location?.state?.isFromClientTab && (
-        <FromClientTabPane location={location} />
+        <ClientProcess location={location} />
       )}
       {location?.state?.isFromProfessionalTab && (
         <FromProfessionalTabPane location={location} />

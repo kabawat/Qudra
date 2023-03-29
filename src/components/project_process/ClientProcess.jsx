@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import axios from "axios";
 import { Header2 } from "../Header";
 import Global from "../../context/Global";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useWindowSize from "../../Hooks/useWindowSize";
 const ClientProcess = ({ location }) => {
   const navigate = useNavigate();
@@ -14,18 +14,16 @@ const ClientProcess = ({ location }) => {
     padding: "100px 0",
   };
   const handleClientDecesion = (req) => {
-    axios
-      .post("http://13.52.16.160:8082/client/approve_projects", {
-        client_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        professional_id: location?.state?.projectDetails?.client_id,
-        role: "client",
-        project_id: location?.state?.projectDetails?.client_project_id,
-        project_approval_status: req,
-      })
-      .then((res) => {
+    axios.post("http://13.52.16.160:8082/client/approve_projects", {
+      client_id: contextData?.userData?.user_id,
+      user_token: contextData?.userData?.user_token,
+      role: "client",
+      project_id: location?.state?.project_id,
+      project_approval_status: req,
+      professional_id: location?.state?.professional_id
+    }).then((res) => {
         if (res?.data?.status === "Success") {
-          navigate("/clientdashboard");
+          navigate("/accept-project");
         }
       });
   };
@@ -40,6 +38,20 @@ const ClientProcess = ({ location }) => {
                 <div className="row">
                   <div className="col ">
                     <h3 className="theme-text-color fs-24 mb-5">
+                      <span>
+                        <Link to={
+                          contextData?.userData?.role === "client"
+                            ? "/accept-project"
+                            : "/request-projects"
+                        }
+                          className="text-decoration-none text-dark m-0 h2"
+                        >
+                          <i
+                            class="fa-solid fa-arrow-left-long pe-3"
+                            style={{ color: "#01a78a" }}
+                          ></i>
+                        </Link>
+                      </span>
                       Project Details
                     </h3>
 
@@ -116,9 +128,8 @@ const ClientProcess = ({ location }) => {
                         display: "block",
                       }}
                       type="button"
-                      className={`theme-text-color bg-white   ${
-                        windowSize?.width > 576 ? "ms-auto" : "mx-auto"
-                      }`}
+                      className={`theme-text-color bg-white   ${windowSize?.width > 576 ? "ms-auto" : "mx-auto"
+                        }`}
                     >
                       <i className="fa-solid  fa-arrow-left-long me-3"></i>
                       Decline
@@ -136,11 +147,7 @@ const ClientProcess = ({ location }) => {
                         border: "2px solid",
                         borderRadius: "50px",
                         display: "block",
-                      }}
-                      className={`theme-bg-color text-white   ${
-                        windowSize?.width > 576 ? "me-auto" : "mx-auto"
-                      }`}
-                    >
+                      }} className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"}`}>
                       Accept
                       <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                     </button>

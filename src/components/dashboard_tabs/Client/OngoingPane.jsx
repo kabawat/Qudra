@@ -9,15 +9,40 @@ import "react-toastify/dist/ReactToastify.css";
 import Footer from "../../Footer";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
+import Loader from "../../Loader";
+import { useCookies } from "react-cookie";
 
 const OngoingPane = () => {
   const navigate = useNavigate();
+  const [cookies] = useCookies()
   const contextData = useContext(Global);
   const [onGoingProject, setOnGoingProject] = useState([]);
   const [onGoingProjectPageId, setOnGoingProjectPageId] = useState({
     page: 1,
     page_size: 5,
   });
+
+  const [isRender, setIsReander] = useState(false)
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data?.role === "client") {
+          setIsReander(true)
+        } else {
+          navigate('/professionaldashboard')
+        }
+      } else {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/client-architechture')
+        } else {
+          navigate('/categoryArchitecture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
+
   useEffect(() => {
     contextData?.userData &&
       axios
@@ -44,7 +69,7 @@ const OngoingPane = () => {
     onGoingProjectArray.push(i + 1);
   }
 
-  const handleClientAcceptation = (id, project_id) => {
+  const handleClientAcceptation = (id, project_id, project_cost) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
         client_id: contextData?.userData?.user_id,
@@ -73,7 +98,8 @@ const OngoingPane = () => {
                       projectDetails: { id, project_id },
                       projectData: respo?.data?.data,
                       milesStoneData: res?.data?.data,
-                      isFromClientTab: true,
+                      isFromClientNotification: true,
+                      project_cost: project_cost
                     },
                   });
                 }
@@ -84,7 +110,7 @@ const OngoingPane = () => {
   };
 
   return (
-    <>
+    isRender ? <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -112,14 +138,7 @@ const OngoingPane = () => {
                               }}
                             />
                             <div className="ps-3">
-                              <h4
-                                className="underline_hover"
-                                onClick={() => {
-                                  navigate(
-                                    `/professionalprofile/${res?.professional_id}`
-                                  );
-                                }}
-                              >
+                              <h4 className="underline_hover" onClick={() => { navigate(`/professionalprofile/${res?.professional_id}`) }}>
                                 {res?.professional_name}
                               </h4>
                               <h6>
@@ -132,11 +151,13 @@ const OngoingPane = () => {
                             <div>
                               <h5>Project Name</h5>
                               <h4
+                                style={{ textTransform: 'capitalize' }}
                                 className="underline_hover"
                                 onClick={() => {
                                   handleClientAcceptation(
                                     res?.professional_id,
-                                    res?.project_id
+                                    res?.project_id,
+                                    res?.project_cost
                                   );
                                 }}
                               >
@@ -149,7 +170,7 @@ const OngoingPane = () => {
                               <div className="col-md d-flex flex-column align-items-center justify-content-center">
                                 <div>
                                   <h5>Status</h5>
-                                  <h4>{res?.project_status}</h4>
+                                  <h4 style={{ textTransform: 'capitalize' }}>{res?.project_status}</h4>
                                 </div>
                               </div>
                               <div className="col-md d-flex flex-column align-items-center justify-content-center">
@@ -255,7 +276,7 @@ const OngoingPane = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </> : <Loader />
 
   );
 };

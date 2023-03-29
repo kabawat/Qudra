@@ -12,10 +12,37 @@ import profGuidelineImg2 from '../../assets/img/profGuideImg9.jpg'
 import Dashboardside from '../ProfessionalDashboardside'
 import { HeaderDashboard } from '../Header'
 import Footer from '../Footer'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useCookies } from 'react-cookie'
+import Loader from '../Loader'
+import { useEffect } from 'react'
 
 const ProfessionalGuidelines = () => {
+    const navigate = useNavigate()
+    const [isRender, setIsRender] = useState(false)
+    const [cookies] = useCookies()
+    useEffect(() => {
+        if (cookies?.user_data) {
+            if (cookies?.user_data?.category_selected) {
+                if (cookies?.user_data.role === "professional") {
+                    setIsRender(true)
+                } else {
+                    navigate('/clientdashboard')
+                }
+            } else {
+                if (cookies?.user_data.role === "professional") {
+                    navigate('/categoryArchitecture')
+                } else {
+                    navigate('/client-architechture')
+                }
+            }
+        } else {
+            navigate('/select-sign-in')
+        }
+    }, [])
     return (
-        <>
+        isRender ? <>
             <div className="dashboard">
                 <div className="container-fluid h-100">
                     <div className="row h-100 dashboard-theme-color">
@@ -53,7 +80,7 @@ const ProfessionalGuidelines = () => {
                 </div>
             </div>
             <Footer />
-        </>
+        </> : <Loader />
 
     )
 }

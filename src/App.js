@@ -47,13 +47,16 @@ import ActivitiesPane from "./components/dashboard_tabs/Professional/ActivitiesP
 import LikesShow from "./components/dashboard_tabs/Professional/Likes"
 import Showratings from "./components/dashboard_tabs/Professional/Ratings"
 import ProfessionalGuidelines from "./components/guidelines/ProfessionalGuidelines";
+import RequestProjects from "./components/dashboard_tabs/Professional/RequestProjects";
+import AcceptProject from "./components/dashboard_tabs/Client/acceptProject";
+import { useCookies } from "react-cookie";
 function App() {
+  const [cookies] = useCookies()
+  console.log(cookies)
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <IconContext.Provider
-        value={{ color: "black", className: "global-class-name" }}
-      >
+      <IconContext.Provider value={{ color: "black", className: "global-class-name" }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Home />} />
@@ -71,10 +74,12 @@ function App() {
           <Route path="/categoryresult" element={<CategoryResult />} />
           {/* Professional Routes */}
           <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
+
           <Route path="/Portfolio" element={<PortfolioPane />} />
           <Route path="/myactivity" element={<ActivitiesPane />} />
           <Route path="/like" element={<LikesShow />} />
           <Route path="/ratings" element={<Showratings />} />
+          <Route path="/request-projects" element={<RequestProjects />} />
           <Route path="/professional-guidelines" element={<ProfessionalGuidelines />} />
 
           <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
@@ -87,6 +92,7 @@ function App() {
 
           <Route path="/browse-professionals" element={<BrowsePane />} />
           <Route path="/ongoing-projects" element={<OngoingPane />} />
+          <Route path="/accept-project" element={<AcceptProject />} />
           <Route path="/completed-projects" element={<CompletedPane />} />
           <Route path="/client-liked" element={<Likes />} />
           <Route path="/client-rating" element={<Ratings />} />

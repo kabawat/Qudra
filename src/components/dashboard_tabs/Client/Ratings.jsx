@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
 import Footer from "../../Footer";
+import Loader from "../../Loader";
+import { useCookies } from "react-cookie";
 const Ratings = () => {
   const contextData = useContext(Global);
   const [projectPageId, setProjectPageId] = useState({
@@ -18,6 +20,27 @@ const Ratings = () => {
   const navigate = useNavigate();
   const [rating, setRating] = useState();
   const [search, setSearch] = useState("");
+  const [cookies] = useCookies()
+  const [isRender, setIsReander] = useState(false)
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data?.role === "client") {
+          setIsReander(true)
+        } else {
+          navigate('/professionaldashboard')
+        }
+      } else {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/client-architechture')
+        } else {
+          navigate('/categoryArchitecture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
 
   const fetchRatingData = () => {
     axios
@@ -124,7 +147,7 @@ const Ratings = () => {
   }, [searchPageId]);
 
   return (
-    <>
+    isRender ? <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -332,7 +355,7 @@ const Ratings = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </> : <Loader />
 
   );
 };

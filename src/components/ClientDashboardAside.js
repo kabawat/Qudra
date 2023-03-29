@@ -30,6 +30,14 @@ const ClientDashboardAside = () => {
         </li>
 
         <li className="nav-item">
+          <NavLink className={`nav-link activity-btn`} to="/accept-project">
+            <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
+            <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+            Accepted Projects
+          </NavLink>
+        </li>
+
+        <li className="nav-item">
           <NavLink className={`nav-link activity-btn`} to="/ongoing-projects">
             <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
             <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Global from "../../context/Global";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.div`
   .mileStoneDate {
@@ -64,7 +65,7 @@ const FromProfessionalTabPane = ({ location }) => {
         if (res?.data?.status === "Success") {
           toast.success("Successfully uploaded file!", {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -86,6 +87,11 @@ const FromProfessionalTabPane = ({ location }) => {
                 <div className="row">
                   <div className="col ">
                     <h3 className="theme-text-color fs-24 mb-5">
+                      <span><Link to={contextData?.userData?.role === "client" ? "/clientdashboard" : "/myactivity"}
+                        className="text-decoration-none text-dark m-0 h2">
+                        <i class="fa-solid fa-arrow-left-long pe-3" style={{ color: "#01a78a" }}></i>
+                      </Link>
+                      </span>
                       Project Details
                     </h3>
 
@@ -163,11 +169,11 @@ const FromProfessionalTabPane = ({ location }) => {
               </section>
             </div>
           </div>
-        </div>
-      </main>
+        </div >
+      </main >
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -178,7 +184,7 @@ const FromProfessionalTabPane = ({ location }) => {
         theme="light"
       />
       <ToastContainer />
-    </div>
+    </div >
   );
 };
 

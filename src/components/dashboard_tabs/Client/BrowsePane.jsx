@@ -14,6 +14,7 @@ import { useCookies } from "react-cookie";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
 import Footer from "../../Footer";
+import Loader from "../../Loader";
 const BrowsePane = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
@@ -34,6 +35,27 @@ const BrowsePane = () => {
   const [uploadSubCatagoryModal, setUploadSubCatagoryModal] = useState(false);
 
   const [catErr, setCatErr] = useState(false);
+
+  const [isRender, setIsReander] = useState(false)
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data?.role === "client") {
+          setIsReander(true)
+        } else {
+          navigate('/professionaldashboard')
+        }
+      } else {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/client-architechture')
+        } else {
+          navigate('/categoryArchitecture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
 
   useEffect(() => {
     if (cookies?.user_data && cookies?.user_data.role === "client") {
@@ -259,7 +281,7 @@ const BrowsePane = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              <main className="dashboard-main">
+              {isRender ? <main className="dashboard-main">
                 <div id="dashboard-menu-bar" className="container-fluid  px-md-4 px-3">
                   <div className="find-visualizer">
                     <form
@@ -794,6 +816,7 @@ const BrowsePane = () => {
                                         type="button"
                                         className="ModalCategorySubmit mx-0"
                                         onClick={() => {
+                                          setCatErr(false);
                                           setShowCatagory({
                                             ...showCatagory,
                                             isShowCatagory: true,
@@ -821,7 +844,7 @@ const BrowsePane = () => {
                     </div>
                   </Modal.Body>
                 </Modal>
-              </main>
+              </main> : <Loader />}
             </div>
           </div>
         </div>

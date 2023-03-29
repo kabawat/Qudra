@@ -7,9 +7,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import DatePicker from "react-datepicker";
 import useWindowSize from "../../Hooks/useWindowSize";
+import { useCookies } from "react-cookie";
 const ProfessionalProcess = ({ location }) => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
+  const [cookies] = useCookies()
   const windowSize = useWindowSize();
   const [dateOne, setDateOne] = useState(null);
   const [dateTwo, setDateTwo] = useState(null);
@@ -18,27 +20,23 @@ const ProfessionalProcess = ({ location }) => {
   const [dateFive, setDateFive] = useState(null);
   const [professionalEstimatedDate, setProfessionalEstimatedDate] =
     useState(null);
-  const handleProfessionalDecesion = (
-    req,
-    professional_budget,
-    estimated_date
-  ) => {
-    axios
-      .post("http://13.52.16.160:8082/professional/project_requests", {
-        client_id: location?.state?.clientDetails?.client_id,
-        user_token: contextData?.userData?.user_token,
-        professional_id: contextData?.userData?.user_id,
-        role: "professional",
-        client_project_id: location?.state?.clientDetails?.client_project_id,
-        project_approval_status: req,
-        project_cost: professional_budget,
-        estimate_date: estimated_date,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/professionaldashboard");
-        }
-      });
+  const handleProfessionalDecesion = (req, professional_budget, estimated_date) => {
+    console.log(req, professional_budget, estimated_date)
+    axios.post("http://13.52.16.160:8082/professional/project_requests", {
+      client_id: location?.state?.client_id,
+      user_token: cookies?.user_data?.user_token,
+      professional_id: cookies?.user_data?.user_id,
+      role: "professional",
+      client_project_id: location?.state?.client_project_id,
+      project_approval_status: req,
+      project_cost: professional_budget,
+      estimate_date: estimated_date,
+    }).then((res) => {
+      console.log(res)
+      if (res?.data?.status === "Success") {
+        navigate("/request-projects");
+      }
+    });
   };
   const initialValues = {
     milestone_name_one: "",
@@ -73,7 +71,6 @@ const ProfessionalProcess = ({ location }) => {
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
     padding: "100px 0",
   };
-
   return (
     <div className="create-account">
       <Header2 />
@@ -91,7 +88,7 @@ const ProfessionalProcess = ({ location }) => {
                           to={
                             contextData?.userData?.role === "client"
                               ? "/clientdashboard"
-                              : "/professionaldashboard"
+                              : "/request-projects"
                           }
                           className="text-decoration-none text-dark m-0 h2"
                         >
@@ -159,26 +156,25 @@ const ProfessionalProcess = ({ location }) => {
                 initialValues={initialValues}
                 validationSchema={SignUpSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  axios
-                    .post(
-                      "http://13.52.16.160:8082/professional/project_details",
-                      {
-                        ...location?.state?.clientDetails,
-                        user_token: contextData?.userData?.user_token,
-                        professional_id: contextData?.userData?.user_id,
-                        role: "professional",
-                        ...values,
-                      }
-                    )
-                    .then((res) => {
-                      if (res?.data?.status === "Success") {
-                        handleProfessionalDecesion(
-                          "accepted",
-                          values?.professional_budget,
-                          values?.estimated_date
-                        );
-                      }
-                    });
+                  axios.post("http://13.52.16.160:8082/professional/project_details",
+                    {
+                      ...location?.state?.clientDetails,
+                      user_token: cookies?.user_data?.user_token,
+                      professional_id: cookies?.user_data?.user_id,
+                      role: "professional",
+                      client_id: location?.state?.client_id,
+                      client_project_id: location?.state?.client_project_id,
+                      ...values,
+                    }
+                  ).then((res) => {
+                    if (res?.data?.status === "Success") {
+                      handleProfessionalDecesion(
+                        "accepted",
+                        values?.professional_budget,
+                        values?.estimated_date
+                      );
+                    }
+                  });
                 }}
               >
                 {({ isSubmitting, setFieldValue }) => (
@@ -455,21 +451,15 @@ const ProfessionalProcess = ({ location }) => {
                               display: "block",
                             }}
                             type="button"
-                            className={`theme-text-color bg-white   ${
-                              windowSize?.width > 576 ? "ms-auto" : "mx-auto"
-                            }`}
+                            className={`theme-text-color bg-white   ${windowSize?.width > 576 ? "ms-auto" : "mx-auto"
+                              }`}
                           >
                             Decline
                             <i className="fa-solid  fa-arrow-right-long me-3"></i>
                           </button>
                         </div>
                         <div className="col-sm">
-                          <button
-                            type="submit"
-                            className={`theme-bg-color text-white   ${
-                              windowSize?.width > 576 ? "me-auto" : "mx-auto"
-                            }`}
-                          >
+                          <button type="submit" className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"}`}>
                             Accept
                             <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                           </button>

@@ -9,8 +9,11 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../../Footer";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
+import Loader from "../../Loader";
+import { useCookies } from "react-cookie";
 const Likes = () => {
   const contextData = useContext(Global);
+  const [cookies] = useCookies()
   const [likes, setLikes] = useState([]);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
@@ -22,6 +25,26 @@ const Likes = () => {
   for (let i = 0; i < likes?.total_data / projectPageId?.page_size; i++) {
     projectPaginationArray.push(i + 1);
   }
+  const [isRender, setIsReander] = useState(false)
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data?.role === "client") {
+          setIsReander(true)
+        } else {
+          navigate('/professionaldashboard')
+        }
+      } else {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/client-architechture')
+        } else {
+          navigate('/categoryArchitecture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
 
   const fetchLikeData = () => {
     axios
@@ -125,7 +148,7 @@ const Likes = () => {
   }, [searchPageId]);
 
   return (
-    <>
+    isRender ? <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -334,7 +357,7 @@ const Likes = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </> : <Loader />
 
   );
 };

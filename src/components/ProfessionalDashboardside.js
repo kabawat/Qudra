@@ -64,6 +64,14 @@ const Dashboardside = () => {
           </li>
 
           <li className="nav-item">
+            <NavLink className={`nav-link activity-btn`} to="/request-projects">
+              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
+              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+              Request Projects
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
             <NavLink className={`nav-link liked-btn`} to="/like">
               <CiHeart style={{ color: `${contextData?.current_professional_tab === "likes" ? "#00a78b" : "white"}`, fontSize: "27px", }} />
               Likes

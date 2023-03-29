@@ -8,15 +8,41 @@ import axios from "axios";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { HeaderDashboard } from "../../Header";
 import Footer from "../../Footer";
+import Loader from "../../Loader";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 const LikesShow = () => {
   const contextData = useContext(Global);
   const [likes, setLikes] = useState([]);
   const [search, setSearch] = useState("");
-
+  const navigate = useNavigate()
   const [projectPageId, setProjectPageId] = useState({
     page: 1,
     page_size: 5,
   });
+
+  const [isRender, setIsRender] = useState(false)
+  const [cookies] = useCookies()
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data.role === "professional") {
+          setIsRender(true)
+        } else {
+          navigate('/clientdashboard')
+        }
+      } else {
+        if (cookies?.user_data.role === "professional") {
+          navigate('/categoryArchitecture')
+        } else {
+          navigate('/client-architechture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
+
   const projectPaginationArray = [];
   for (let i = 0; i < likes?.total_data / projectPageId?.page_size; i++) {
     projectPaginationArray.push(i + 1);
@@ -124,7 +150,7 @@ const LikesShow = () => {
   }, [searchPageId]);
 
   return (
-    <>
+    isRender ? <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -324,7 +350,7 @@ const LikesShow = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </> : <Loader />
   );
 };
 

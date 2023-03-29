@@ -11,10 +11,37 @@ import clientGuidelineImg8 from "../../assets/img/clientGuideImg8.jpg";
 import ClientDashboardAside from "../ClientDashboardAside";
 import { HeaderDashboard } from "../Header";
 import Footer from "../Footer";
+import { useCookies } from "react-cookie";
+import Loader from "../Loader";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const ClientGuidlines = () => {
+  const [cookies] = useCookies()
+  const [isRender, setIsReander] = useState(false)
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies?.user_data?.role === "client") {
+          setIsReander(true)
+        } else {
+          navigate('/professionaldashboard')
+        }
+      } else {
+        if (cookies?.user_data?.role === "client") {
+          navigate('/client-architechture')
+        } else {
+          navigate('/categoryArchitecture')
+        }
+      }
+    } else {
+      navigate('/select-sign-in')
+    }
+  }, [])
   return (
-    <>
+    isRender ? <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -68,7 +95,7 @@ const ClientGuidlines = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </> : <Loader />
   );
 };
 

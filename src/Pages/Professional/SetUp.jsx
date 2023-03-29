@@ -343,12 +343,10 @@ const SetUp = () => {
                                   certificate
                                 );
 
-                                axios
-                                  .post(
-                                    "http://13.52.16.160:8082/identity/professional_certificate",
-                                    userCertificate
-                                  )
-                                  .then((res) => console.log(res.data))
+                                axios.post(
+                                  "http://13.52.16.160:8082/identity/professional_certificate",
+                                  userCertificate
+                                ).then((res) => console.log(res.data))
                                   .catch((err) => console.log(err));
 
                                 if (respo?.data?.status === "Success") {
@@ -871,14 +869,13 @@ const SetUp = () => {
                                       </button>
                                       <span id="custom-text">
                                         {certificate
-                                          ? `${
-                                              certificate.name.length > 15
-                                                ? certificate.name.slice(
-                                                    0,
-                                                    15
-                                                  ) + certificate.name.slice(-4)
-                                                : certificate.name
-                                            }`
+                                          ? `${certificate.name.length > 15
+                                            ? certificate.name.slice(
+                                              0,
+                                              15
+                                            ) + certificate.name.slice(-4)
+                                            : certificate.name
+                                          }`
                                           : " No file chosen, yet."}
                                       </span>
                                     </div>
