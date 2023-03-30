@@ -23,7 +23,6 @@ const DashboardPane = () => {
         project_status: "approved",
         ...onGoingProjectPageId,
       }).then((res) => {
-        console.log(res.data)
         if (res?.data?.status === "Success") {
           setOnGoingProject(res?.data?.data);
         }
@@ -118,129 +117,7 @@ const DashboardPane = () => {
         </div>
         <div className="row  mb-xxl-5 mb-4 client-project-main-row">
           <div className="col-xl-4 col-md-12 my-3">
-            {/* <div className="bg-white p-md-4 border p-3">
-              <div className="d-flex align-items-center justify-content-between">
-                <h3>Total Projects</h3>
-                <h2 className="number-of-professional-h2">150+</h2>
-              </div>
-              <div className="d-flex align-items-center justify-content-between pt-2 pb-4">
-                <h4>
-                  <span className="theme-text-color">20 </span>
-                  projects in this month
-                </h4>
-                <select name="" id="" defaultValue={"Month"}>
-                  <option value="Month" disabled>
-                    Month
-                  </option>
-                  <option value="January">January</option>
-                  <option value="February">February</option>
-                  <option value="March">March</option>
-                  <option value="April">April</option>
-                  <option value="May">May</option>
-                  <option value="June">June</option>
-                  <option value="July">July</option>
-                  <option value="August">August</option>
-                  <option value="September">September</option>
-                  <option value="October">October</option>
-                  <option value="November">November</option>
-                  <option value="December">December</option>
-                </select>
-              </div>
-              <div className="client-projects-graph d-flex">
-                <div className="d-flex flex-column justify-content-between h-100 w-100 graph-value-number">
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span>100</span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span></span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span>80</span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span></span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span>60</span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span></span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span>40</span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span></span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span>20</span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span></span>
-                    <span></span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span>0</span>
-                    <span></span>
-                  </div>
-                </div>
-                <div className="client-project-progress-bar">
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      style={{ width: "80%" }}
-                    ></div>
-                  </div>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      style={{ width: "80%" }}
-                    ></div>
-                  </div>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      style={{ width: "80%" }}
-                    ></div>
-                  </div>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      style={{ width: "80%" }}
-                    ></div>
-                  </div>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      style={{ width: "80%" }}
-                    ></div>
-                  </div>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      style={{ width: "80%" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div className="graph-month-display d-flex justify-content-end ">
-                <span>Jan</span>
-                <span>Feb</span>
-                <span>Mar</span>
-                <span>Apr</span>
-                <span>May</span>
-                <span>Jun</span>
-              </div>
-            </div> */}
+           
             {/* <ResizableBox> */}
             <Chart data={data} series={series} axes={axes} tooltip />
             {/* </ResizableBox> */}
@@ -425,23 +302,23 @@ const DashboardPane = () => {
                   key={index}
                 >
                   <div className="col-md px-0">
-                    <p className="m-0 theme-text-color">{res?.project_name}</p>
+                    <p className="m-0 theme-text-color text-capitalize">{res?.project_name}</p>
                   </div>
                   <div className="col-md px-0">
-                    <p className="m-0">Design</p>
+                    <p className="m-0 text-capitalize">Design</p>
                   </div>
                   <div className="col-md px-0">
-                    <p className="m-0">{res?.professional_name}</p>
+                    <p className="m-0 text-capitalize">{res?.professional_name}</p>
                   </div>
                   <div className="col-md px-0">
                     <p className="m-0">${res?.project_cost}</p>
                   </div>
                   <div className="col-md px-0">
-                    <p className="m-0">{res?.project_status}</p>
+                    <p className="m-0 text-capitalize">{res?.project_status}</p>
                   </div>
                   <div className="col-md px-0">
-                    <p className="m-0">
-                      <i className="fa fa-dot-circle"></i> Pending
+                    <p className="m-0 text-capitalize">
+                      {res?.payment_status}
                     </p>
                   </div>
                 </div>

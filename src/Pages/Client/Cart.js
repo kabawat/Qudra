@@ -62,15 +62,11 @@ const Cart = () => {
   }
   const handalSubmit = (event) => {
     event.preventDefault()
-    console.log({
-      ...cookies?.user_data
-    })
     axios.post('http://13.52.16.160:8082/stripe/client/card/', {
       ...cartInfo,
       client_id: cookies?.user_data?.user_id,
       client_token: cookies?.user_data?.user_token
     }).then((responce) => {
-      console.log(responce)
     }).catch((error) => {
       console.log(error.responce)
     })

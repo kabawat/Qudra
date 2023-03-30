@@ -111,7 +111,7 @@ const ClientProcess = ({ location }) => {
                 {location?.state?.milesStoneData?.map((res) => (
                   <div className="milestoneBox">
                     <p>{res?.milestone_name}</p>
-                    <button>{res?.milestone_date}</button>
+                    <button className="prewviewButton">{res?.milestone_date}</button>
                   </div>
                 ))}
                 <div className="row mt-sm-5 mt-3 g-sm-3 g-3">

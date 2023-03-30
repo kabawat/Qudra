@@ -51,7 +51,7 @@ const EditProfileClient = () => {
     // alpha2: "us",
     // alpha3: "usa",
     // flag: "🇺🇸",
-    id: getCode(location?.state?.nation).toLocaleLowerCase(),
+    id: getCode(location?.state?.nation)?.toLocaleLowerCase(),
     // .toLocaleLowerCase()
     // ioc: "usa",
     name: location?.state?.nation,

@@ -129,7 +129,6 @@ const ProfessionalCategoryArchitecture = () => {
     });
   };
 
-  console.log(isRender)
   return (
     isRender ? <>
       <div className="create-account">

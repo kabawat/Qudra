@@ -12,7 +12,7 @@ import { HeaderDashboard } from "../../Header";
 import Loader from "../../Loader";
 import { useCookies } from "react-cookie";
 
-const AcceptProject = () => {
+const PendingProject = () => {
     const navigate = useNavigate();
     const [cookies] = useCookies()
     const contextData = useContext(Global);
@@ -50,7 +50,7 @@ const AcceptProject = () => {
                     user_id: contextData?.userData?.user_id,
                     user_token: contextData?.userData?.user_token,
                     role: contextData?.userData?.role,
-                    project_status: "accepted",
+                    project_status: "pending",
                     ...onGoingProjectPageId,
                 })
                 .then((res) => {
@@ -116,7 +116,7 @@ const AcceptProject = () => {
                             <HeaderDashboard />
                             <main className="dashboard-main">
                                 <div id="myactivity" className="container-fluid  myProjectTable">
-                                    <h2 className="ps-5">Projects Accepted By Professionals </h2>
+                                    <h2 className="ps-5">Pending Project Request</h2>
 
                                     <div className="m-5 shadow">
                                         {onGoingProject?.final_data?.length ? (
@@ -152,17 +152,7 @@ const AcceptProject = () => {
                                                     <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
                                                         <div>
                                                             <h5>Project Name</h5>
-                                                            <h4
-                                                                className="underline_hover"
-                                                                onClick={() => {
-                                                                    handleClientAcceptation(
-                                                                        res?.professional_id,
-                                                                        res?.project_id
-                                                                    );
-                                                                }}
-                                                            >
-                                                                {res?.project_name}
-                                                            </h4>
+                                                            <h4>{res?.project_name}</h4>
                                                         </div>
                                                     </div>
                                                     <div className="col-lg-3 col-md-6 ">
@@ -281,4 +271,4 @@ const AcceptProject = () => {
     );
 };
 
-export default React.memo(AcceptProject);
+export default React.memo(PendingProject);

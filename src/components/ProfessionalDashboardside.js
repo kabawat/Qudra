@@ -55,19 +55,37 @@ const Dashboardside = () => {
             </NavLink>
           </li>
 
-          <li className="nav-item">
-            <NavLink className={`nav-link activity-btn`} to="/myactivity">
-              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
-              My projects
-            </NavLink>
-          </li>
+
 
           <li className="nav-item">
             <NavLink className={`nav-link activity-btn`} to="/request-projects">
               <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
               <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
               Request Projects
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
+            <NavLink className={`nav-link activity-btn`} to="/myactivity">
+              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
+              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+              Projects Running
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
+            <NavLink className={`nav-link activity-btn`} to="/completed-activity">
+              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
+              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+              Completed Projects
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
+            <NavLink className={`nav-link activity-btn`} to="/declined-activity">
+              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
+              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+              Declined Projects
             </NavLink>
           </li>
 

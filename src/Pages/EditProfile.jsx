@@ -41,7 +41,7 @@ const EditProfile = () => {
 
   return (
     isRender ? cookies?.user_data?.role === "professional" ? (
-      <EditProfileProfessional />
+      <EditProfileProfessional location={{ state: state }} />
     ) : (
       <EditProfileClient location={{ state: state }} />
     ) : <Loader />

@@ -13,7 +13,7 @@ import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
 import Loader from "../../Loader";
 
-const RequestProject = () => {
+const CompletedProject = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
   const [myProject, setMyProject] = useState([]);
@@ -55,7 +55,7 @@ const RequestProject = () => {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
-      project_status: "pending",
+      project_status: "completed",
       ...myProjectPageId,
     }).then((res) => {
       if (res?.data?.status === "Success") {
@@ -280,7 +280,7 @@ const RequestProject = () => {
                             <h4
                               className="underline_hover"
                               onClick={() => {
-                                if (res?.project_status === "approved") {
+                                if (res?.project_status === "approved" || res?.project_status === "completed") {
                                   handleClientAcceptation(
                                     res?.client_id,
                                     res?.project_id
@@ -470,4 +470,4 @@ const RequestProject = () => {
   );
 };
 
-export default React.memo(RequestProject);
+export default React.memo(CompletedProject);

@@ -3,14 +3,13 @@ import { Header2 } from "../Header";
 import styled from "styled-components";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import { GiCancel } from 'react-icons/gi'
 import { useCookies } from "react-cookie";
 const Wrapper = styled.div`
   .mileStoneDate {
     padding: 10px 10px;
-    width: 110px;
     background: white;
     border: 2px solid #01a78a;
   }
@@ -49,6 +48,7 @@ const FromProfessionalTabPane = ({ location }) => {
   const [locations, setLocation] = useState(location)
   const [show, setShow] = useState(false)
   const [cookies] = useCookies()
+  const navigate = useNavigate()
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
@@ -68,6 +68,8 @@ const FromProfessionalTabPane = ({ location }) => {
     setFile(event.target.files)
   }
 
+  const [isReason, setIsReason] = useState(false)
+  const [reason, setReason] = useState()
   const handalClose = () => {
     setFile('')
     setError('')
@@ -125,6 +127,30 @@ const FromProfessionalTabPane = ({ location }) => {
     }
   };
 
+  const handalViewReason = (res) => {
+    setIsReason(true)
+    setReason(res?.decline_reason)
+  }
+
+  const handalBack = () => {
+    navigate(-1)
+  }
+  const handalDownload = (paylaod) => {
+    axios.post('http://13.52.16.160:8082/professional/milestone/download/', {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: "professional",
+      project_id: paylaod?.project_id,
+      milestone_id: paylaod?.milestone_id
+    }).then((result) => {
+      const url = result.data?.data?.file
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', url.split('/')[5]); // you can set the filename here
+      document.body.appendChild(link);
+      link.click();
+    })
+  }
   return (
     <div className="create-account">
       <Header2 />
@@ -135,13 +161,11 @@ const FromProfessionalTabPane = ({ location }) => {
               <section className="ProjectDetailsPageProjectDetailsSection">
                 <div className="row">
                   <div className="col ">
-                    <h3 className="theme-text-color fs-24 mb-5">
-                      <span><Link to={cookies?.user_data?.role === "client" ? "/clientdashboard" : "/myactivity"}
-                        className="text-decoration-none text-dark m-0 h2">
+                    <h3 className="theme-text-color d-flex fs-24 mb-5">
+                      <button className="text-decoration-none text-dark m-0 backbuttonActive" onClick={handalBack}>
                         <i className="fa-solid fa-arrow-left-long pe-3" style={{ color: "#01a78a" }}></i>
-                      </Link>
-                      </span>
-                      Project Details
+                      </button>
+                      <span>Project Details</span>
                     </h3>
 
                     <div className="row">
@@ -204,42 +228,33 @@ const FromProfessionalTabPane = ({ location }) => {
                       <div className="mileStoneDate">{res?.milestone_date}</div>
                       {
                         res?.status === "pending" && (
-                          <div className="uploadMileStone"
-                            onClick={() => {
-                              handalshow(res)
-                            }}
-                          >Upload</div>
+                          <div className="uploadMileStone" onClick={() => { handalshow(res) }}>Upload</div>
                         )
                       }
                       {
-                        res?.status === "accepted" && (
-                          <div className="uploadMileStone" >
-                            Milestone complated
-                          </div>
-                        )
-                      }
-                      {
-                        res?.status === "decline" && (
-                          <label htmlFor={`id${index}`} className="uploadMileStone" >
-                            Update
-                            <input type="file" id={`id${index}`} accept="application/zip" style={{ display: 'none' }}
-                              onChange={(e) => handleMilestoneUpdate(e, res?.milestone_id)} />
-                          </label>
-                        )
-                      }
-                      {
-                        res?.status === "updated" && (
+                        (res?.status === "updated" || res?.status === "downloaded" || res?.status === "uploaded") && (
                           <div className="uploadMileStone" >pending</div>
                         )
                       }
+
                       {
-                        res?.status === "uploaded" && (
-                          <div className="uploadMileStone" >pending</div>
+                        (res?.status === "accepted" || res?.status === "completed") && (
+                          <div className="uploadMileStone" >Milestone completed</div>
+                        )
+                      }
+
+                      {
+                        res?.status === "decline" && (<>
+                          <button className="mileStoneDate" onClick={() => handalViewReason(res)}>
+                            Decline Reason
+                          </button>
+                          <div className="uploadMileStone" onClick={() => handalshow(res)}>Update</div>
+                        </>
                         )
                       }
                       {
-                        res?.status === "downloaded" && (
-                          <div className="uploadMileStone" >pending</div>
+                        res?.status !== "pending" && (
+                          <div className="uploadMileStone" onClick={() => { handalDownload(res) }}>Download</div>
                         )
                       }
 
@@ -279,7 +294,7 @@ const FromProfessionalTabPane = ({ location }) => {
                     <p className="ps-4">
                       {file[0]?.name}
                     </p>
-                    <input type="file" accept=".zip,.rar,.7zip" name="project"
+                    <input type="file" style={{ cursor: 'pointer' }} accept=".zip,.rar,.7zip" name="project"
                       onChange={handalchage} />
                   </div>
                 </div>
@@ -294,6 +309,25 @@ const FromProfessionalTabPane = ({ location }) => {
             </div>
           </form>
         </Modal.Body>
+      </Modal>
+
+
+      {/* reason  */}
+      <Modal centered show={isReason} onHide={() => {
+        setIsReason(false)
+        setReason('')
+      }}>
+        <Modal.Header>
+          <Modal.Title><p>{reason}</p></Modal.Title>
+        </Modal.Header>
+        <Modal.Footer>
+          <div className="text-center">
+            <Button className="theme-bg-color border-0" onClick={() => {
+              setIsReason(false)
+              setReason('')
+            }}>ok</Button>
+          </div>
+        </Modal.Footer>
       </Modal>
 
       <ToastContainer

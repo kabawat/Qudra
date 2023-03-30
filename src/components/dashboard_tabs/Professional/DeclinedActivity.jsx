@@ -13,7 +13,7 @@ import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
 import Loader from "../../Loader";
 
-const RequestProject = () => {
+const DeclinedActivity = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
   const [myProject, setMyProject] = useState([]);
@@ -55,7 +55,7 @@ const RequestProject = () => {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
-      project_status: "pending",
+      project_status: "declined",
       ...myProjectPageId,
     }).then((res) => {
       if (res?.data?.status === "Success") {
@@ -94,62 +94,7 @@ const RequestProject = () => {
   useEffect(() => {
     searchActiveProject && setSearchProject();
   }, [searchActiveProject]);
-  const handleClientAcceptation = (id, project_id) => {
-    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-      client_id: id,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
-      professional_id: contextData?.userData?.user_id,
-      project_id: project_id,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        axios.post("http://13.52.16.160:8082/client/particular_project_details",
-          {
-            client_id: id,
-            professional_id: contextData?.userData?.user_id,
-            user_token: contextData?.userData?.user_token,
-            role: contextData?.userData?.role,
-            project_id: project_id,
-          }
-        ).then((respo) => {
-          if (respo?.data?.status === "Success") {
-            if (id !== undefined) {
-              navigate("/project-details", {
-                state: {
-                  projectDetails: { id, project_id },
-                  projectData: respo?.data?.data,
-                  milesStoneData: res?.data?.data,
-                  isFromProfessionalTab: true,
-                  client_id: id,
-                },
-              });
-            }
-          }
-        });
-      }
-    });
-  };
 
-  const handlePendingRequest = (client_id, project_id) => {
-    axios.post("http://13.52.16.160:8082/client/particular_project_details", {
-      professional_id: contextData?.userData?.user_id,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
-      client_id: client_id,
-      project_id: project_id,
-    }).then((respo) => {
-      if (respo?.data?.status === "Success") {
-        navigate("/project-details", {
-          state: {
-            projectData: respo?.data?.data,
-            client_id: client_id,
-            client_project_id: project_id,
-            isFromProfessionalNotification: true,
-          },
-        });
-      }
-    });
-  };
   return (
     isRender ? <>
       <div className="dashboard">
@@ -206,30 +151,7 @@ const RequestProject = () => {
                         <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
                           <div>
                             <h5>Project Name</h5>
-                            <h4
-                              className="underline_hover"
-                              onClick={() => {
-                                if (res?.project_status === "approved") {
-                                  handleClientAcceptation(
-                                    res?.client_id,
-                                    res?.project_id
-                                  );
-                                } else if (res?.project_status === "accepted") {
-                                  toast("Client approval is still Pending ❕", {
-                                    position: "top-right",
-                                    autoClose: 5000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "colored",
-                                  });
-                                } else {
-                                  handlePendingRequest(res?.client_id, res?.project_id);
-                                }
-                              }}
-                            >
+                            <h4 className="underline_hover">
                               {res?.project_name}
                             </h4>
                           </div>
@@ -277,32 +199,7 @@ const RequestProject = () => {
                         <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
                           <div>
                             <h5>Project Name</h5>
-                            <h4
-                              className="underline_hover"
-                              onClick={() => {
-                                if (res?.project_status === "approved") {
-                                  handleClientAcceptation(
-                                    res?.client_id,
-                                    res?.project_id
-                                  );
-                                } else if (res?.project_status === "accepted") {
-                                  toast("Client approval is still Pending ❕", {
-                                    position: "top-right",
-                                    autoClose: 5000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "colored",
-                                  });
-                                } else {
-                                  handlePendingRequest(res?.client_id, res?.project_id);
-                                }
-                              }}
-                            >
-                              {res?.project_name}
-                            </h4>
+                            <h4> {res?.project_name}</h4>
                           </div>
                         </div>
                         <div className="col-lg-3 col-md-6 ">
@@ -470,4 +367,4 @@ const RequestProject = () => {
   );
 };
 
-export default React.memo(RequestProject);
+export default React.memo(DeclinedActivity);

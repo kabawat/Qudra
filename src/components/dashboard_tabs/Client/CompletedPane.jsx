@@ -44,19 +44,17 @@ const CompletedPane = () => {
   }, [])
 
   useEffect(() => {
-    axios
-      .post("http://13.52.16.160:8082/identity/filter_projects", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        project_status: "completed",
-        ...completedProjectPageId,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setCompletedProject(res?.data?.data);
-        }
-      });
+    axios.post("http://13.52.16.160:8082/identity/filter_projects", {
+      user_id: contextData?.userData?.user_id,
+      user_token: contextData?.userData?.user_token,
+      role: contextData?.userData?.role,
+      project_status: "completed",
+      ...completedProjectPageId,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        setCompletedProject(res?.data?.data);
+      }
+    });
   }, [completedProjectPageId]);
 
   const completedProjectArray = [];
@@ -68,21 +66,20 @@ const CompletedPane = () => {
     completedProjectArray.push(i + 1);
   }
   const handleProjectNameClick = (client_id, project_id) => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        client_id: contextData?.userData?.user_id,
-        project_id: project_id,
-      })
+    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      user_token: contextData?.userData?.user_token,
+      role: contextData?.userData?.role,
+      client_id: contextData?.userData?.user_id,
+      project_id: project_id,
+    })
       .then((res) => {
         if (res?.data?.status === "Success") {
           navigate("/project-details", {
-            state: { isFromDashboard: true, milesStoneData: res?.data?.data },
+            state: { isFromClientTab: true, milesStoneData: res?.data?.data },
           });
         }
       });
-  };
+  };  
 
   return (
     <>
@@ -137,7 +134,7 @@ const CompletedPane = () => {
                                   <h4
                                     className="underline_hover"
                                     onClick={() => {
-                                      if (res?.project_status === "accepted") {
+                                      if (res?.project_status === "accepted" || res?.project_status === "completed") {
                                         handleProjectNameClick(
                                           res?.professional_id,
                                           res?.project_id

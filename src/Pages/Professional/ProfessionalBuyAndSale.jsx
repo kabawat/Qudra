@@ -84,7 +84,6 @@ const ProfessionalBuyAndSale = () => {
         navigate("/client-buy-sell");
       }
     } else {
-      console.log(cookies?.user_data);
       navigate("/select-sign-in");
     }
   }, []);

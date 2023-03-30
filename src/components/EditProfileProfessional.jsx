@@ -18,6 +18,7 @@ import axios from "axios";
 import Global from "../context/Global";
 import { getCode } from "country-list";
 import { useCookies } from "react-cookie";
+import { Button, Modal } from "react-bootstrap";
 
 const languages = [
   { label: "Albanian", value: "Albanian" },
@@ -70,8 +71,7 @@ const languages = [
   { label: "Ukrainian", value: "Ukrainian" },
 ];
 
-const EditProfileProfessional = () => {
-  const location = useLocation();
+const EditProfileProfessional = ({ location }) => {
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const EditProfileProfessional = () => {
     // alpha2: "us",
     // alpha3: "usa",
     // flag: "🇺🇸",
-    id: getCode(location?.state?.nation).toLocaleLowerCase(),
+    id: getCode(location?.state?.nation)?.toLocaleLowerCase(),
     // ioc: "usa",
     name: location?.state?.nation,
   });
@@ -93,21 +93,25 @@ const EditProfileProfessional = () => {
   const SetUpSchema = Yup.object().shape({
     mobile_no: Yup.string()
       .min(10, "Enter a valid phone number")
+      .trim()
       .required("Enter  phone number"),
     last_name: Yup.string()
       .min(3, "Minimum 3 character required")
+      .trim()
       .required(" Last name required"),
     first_name: Yup.string()
       .min(3, "Minimum 3 character required ")
+      .trim()
       .required("First name required"),
     // languages: Yup.array().required('suraj '),
     education: Yup.string().required("Education  required"),
     // skills: Yup.array().required("Skills required"),
-    job_description: Yup.string()
+    job_description: Yup.string().trim()
       .min(100, "Minimum 100 character required")
       .required("Job description  required"),
+
     nation: Yup.string().required("Country name required"),
-    bio: Yup.string().min(100).max(500).required("About required"),
+    bio: Yup.string().min(100).max(500).trim().required("About required"),
   });
   const [filePic, setFilePic] = useState(location?.state?.professional_image);
   const photoChange = (e) => {
@@ -229,7 +233,14 @@ const EditProfileProfessional = () => {
   );
 
   const [eduErr, setEduErr] = useState(false);
-
+  const [show, setShow] = useState(false)
+  const profileUpdated = () => {
+    if (cookies?.user_data?.category_selected) {
+      navigate("/professionaldashboard");
+    } else {
+      navigate("/categoryArchitecture");
+    }
+  };
   return (
     <>
       {isLoading ? (
@@ -345,15 +356,7 @@ const EditProfileProfessional = () => {
                                 type: "FETCH_PROFILE_DATA",
                                 value: res?.data?.data,
                               });
-                              if (res.data.data.category_selected) {
-                                navigate("/professionaldashboard", {
-                                  state: { role: "professional" },
-                                });
-                              } else {
-                                navigate("/categoryArchitecture", {
-                                  state: { role: "professional" },
-                                });
-                              }
+                              setShow(true)
                             });
                         }
                       });
@@ -458,6 +461,7 @@ const EditProfileProfessional = () => {
                             }}
                           />
                         </div>
+
                         <ErrorMessage
                           name="mobile_no"
                           component="div"
@@ -492,7 +496,7 @@ const EditProfileProfessional = () => {
                               photoChange(event);
                             }}
                           />
-
+                          <p style={{ marginTop: "10px" }}>Profile Picture</p>
                           <ErrorMessage
                             name="photograph"
                             component="div"
@@ -508,7 +512,7 @@ const EditProfileProfessional = () => {
                           as="textarea"
                           className="form-control h-100"
                           id="exampleFormControlTextarea1"
-                          rows="6"
+                          rows="9"
                           name="bio"
                           maxLength="500"
                           placeholder="About"
@@ -530,14 +534,42 @@ const EditProfileProfessional = () => {
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col my-md-3 my-1">
+                      <div className="col-md-3 col-xl-2 my-md-3 my-1">
+                        <div>
+                          <div
+                            className="form-image-input"
+                            onClick={() => {
+                              document.getElementById("photo2").click();
+                            }}
+                          >
+                            <img id="imgPreview2" src={filePic2} alt="pic" />
+                            <div className="plus-image-overlay">
+                              <i className="fa fa-plus"></i>
+                            </div>
+                          </div>
+                          <input
+                            type="file"
+                            name="photograph2"
+                            id="photo2"
+                            onChange={(event) => {
+                              photoChange2(event);
+                            }}
+                          />
+                          <p style={{ marginTop: "10px" }}> Background Image</p>
+                          <ErrorMessage
+                            name="photograph2"
+                            component="div"
+                            className="m-2 text-danger"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-9 col-xl-10  my-md-3 my-1">
                         <Field
                           as="textarea"
                           className="form-control"
                           name="job_description"
                           id="exampleFormControlTextarea1"
-                          rows="6
-                            "
+                          rows="9"
                           placeholder="Job Description"
                         ></Field>
                         <ErrorMessage
@@ -586,8 +618,8 @@ const EditProfileProfessional = () => {
                               otherEdu
                                 ? "Other"
                                 : educationSelect
-                                ? educationSelect
-                                : location.state.education
+                                  ? educationSelect
+                                  : location.state.education
                             }
                             className="form-select form-education-select"
                             onChange={(e) => {
@@ -628,12 +660,12 @@ const EditProfileProfessional = () => {
                                 {certificate?.name
                                   ? certificate.name.length > 10
                                     ? certificate.name.slice(0, 10) +
-                                      ".." +
-                                      certificate.name.slice(-4)
+                                    ".." +
+                                    certificate.name.slice(-4)
                                     : certificate.name
                                   : location.state.professional_certificate
-                                      .length > 10
-                                  ? location.state.professional_certificate.slice(
+                                    .length > 10
+                                    ? location.state.professional_certificate.slice(
                                       59,
                                       69
                                     ) +
@@ -641,7 +673,7 @@ const EditProfileProfessional = () => {
                                     location.state.professional_certificate.slice(
                                       -4
                                     )
-                                  : location.state.professional_certificate.slice(
+                                    : location.state.professional_certificate.slice(
                                       59
                                     )}
                               </span>
@@ -665,18 +697,14 @@ const EditProfileProfessional = () => {
                                 onChange={(event) => {
                                   setOtherEdu(event.target.value);
                                   setEduErr(false);
-                                  setOtherEdu("");
                                 }}
                               />
                             ) : (
                               ""
                             )}
-
-                            <ErrorMessage
-                              name="education"
-                              component="div"
-                              className="m-2 text-danger"
-                            />
+                            {/* <p className="text-danger">
+                              {eduErr ? "Education Required" : ""}
+                            </p> */}
                           </div>
                         </div>
                       </div>
@@ -752,6 +780,27 @@ const EditProfileProfessional = () => {
                   </Form>
                 )}
               </Formik>
+
+              <Modal
+                centered
+                show={show}
+                onHide={() => setShow(false)}
+                style={{ zIndex: 1000000 }}
+              >
+                <Modal.Header>
+                  <Modal.Title>
+                    Your profile has been successfully updated!
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                  <Button
+                    className="theme-bg-color border-0"
+                    onClick={profileUpdated}
+                  >
+                    Ok
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>
           </main>
           <ToastContainer

@@ -3715,3 +3715,12 @@ input[type="number"]:focus-visible {
 .nav-link.liked-btn.active svg {
   color: #00a78b !important;
 }
+
+.backbuttonActive {
+  font-size: 24px;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  outline: none;
+  border: none
+}

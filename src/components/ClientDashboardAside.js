@@ -30,6 +30,14 @@ const ClientDashboardAside = () => {
         </li>
 
         <li className="nav-item">
+          <NavLink className={`nav-link activity-btn`} to="/pending-project">
+            <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
+            <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+            Pending Projects
+          </NavLink>
+        </li>
+       
+        <li className="nav-item">
           <NavLink className={`nav-link activity-btn`} to="/accept-project">
             <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
             <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
@@ -50,6 +58,13 @@ const ClientDashboardAside = () => {
             <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
             <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
             Completed Projects
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink className={`nav-link activity-btn `} to="/declined-projects" >
+            <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
+            <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+            Declined Projects
           </NavLink>
         </li>
 

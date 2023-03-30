@@ -50,6 +50,11 @@ import ProfessionalGuidelines from "./components/guidelines/ProfessionalGuidelin
 import RequestProjects from "./components/dashboard_tabs/Professional/RequestProjects";
 import AcceptProject from "./components/dashboard_tabs/Client/acceptProject";
 import { useCookies } from "react-cookie";
+import DeclineProject from "./components/dashboard_tabs/Client/DeclineProject";
+import PendingProject from "./components/dashboard_tabs/Client/PendingProject";
+import DeclinedActivity from "./components/dashboard_tabs/Professional/DeclinedActivity";
+import CompletedProject from "./components/dashboard_tabs/Professional/CompletedProject";
+import Reject from "./components/project_process/Reject";
 function App() {
   const [cookies] = useCookies()
   return (
@@ -75,10 +80,13 @@ function App() {
           <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
 
           <Route path="/Portfolio" element={<PortfolioPane />} />
-          <Route path="/myactivity" element={<ActivitiesPane />} />
           <Route path="/like" element={<LikesShow />} />
           <Route path="/ratings" element={<Showratings />} />
           <Route path="/request-projects" element={<RequestProjects />} />
+          <Route path="/myactivity" element={<ActivitiesPane />} />
+          <Route path="/completed-activity" element={<CompletedProject />} />
+          <Route path="/declined-activity" element={<DeclinedActivity />} />
+          <Route path="/professional-Reject" element={<Reject />} />
           <Route path="/professional-guidelines" element={<ProfessionalGuidelines />} />
 
           <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
@@ -91,8 +99,10 @@ function App() {
 
           <Route path="/browse-professionals" element={<BrowsePane />} />
           <Route path="/ongoing-projects" element={<OngoingPane />} />
+          <Route path="/pending-project" element={<PendingProject />} />
           <Route path="/accept-project" element={<AcceptProject />} />
           <Route path="/completed-projects" element={<CompletedPane />} />
+          <Route path="/declined-projects" element={<DeclineProject />} />
           <Route path="/client-liked" element={<Likes />} />
           <Route path="/client-rating" element={<Ratings />} />
           <Route path="/client-guidlines" element={<ClientGuidlines />} />

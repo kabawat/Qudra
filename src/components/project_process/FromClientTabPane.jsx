@@ -181,7 +181,7 @@ const FromClientTabPane = ({ location }) => {
         status: 'decline',
         reason: reason
       }).then((result) => {
-        if (result?.data?.data?.status === "Success") {
+        if (result?.data?.status === "Success") {
           SetCurProject({})
           setDeclineShow(false)
           SetReasonError('')
@@ -207,7 +207,7 @@ const FromClientTabPane = ({ location }) => {
                     <h3 className="theme-text-color fs-24 mb-5">
                       <span>
                         <Link to={
-                          contextData?.userData?.role === "client" ? "/ongoing-projects" : "/request-projects"
+                          contextData?.userData?.role === "client" ? "/ongoing-projects" : "/myactivity"
                         }
                           className="text-decoration-none text-dark m-0 h2"
                         >
@@ -278,22 +278,11 @@ const FromClientTabPane = ({ location }) => {
                     <p>{res?.milestone_name}</p>
                     <div className="preview">
                       <div className="date"> {res?.milestone_date}</div>
-
-
-
                       {
-                        res?.status === "pending" && <button className="prewviewButton" type="button">pending</button>
-                      }
-
-                      {
-                        res?.status === "updated" && <button className="prewviewButton" onClick={() => {
-                          SetCurProject({ ...res })
-                          setShow(true)
-                        }
-                        } type="button">Download</button>
+                        (res?.status === "pending" || res?.status === "decline") && <button className="prewviewButton" type="button">pending</button>
                       }
                       {
-                        res?.status === "downloaded" && <>
+                        (res?.status === "downloaded" || res?.status === "updated" || res?.status === "uploaded") && <>
                           <div className="accept_btn_group">
                             <button onClick={() => {
                               setAcceptShow(true)
@@ -313,7 +302,7 @@ const FromClientTabPane = ({ location }) => {
                       {
                         res?.status === "accepted" && <>
                           <div className="accept_btn_group">
-                            <button>Milestone Complated</button>
+                            <button>Milestone Completed</button>
                           </div>
                           <button className="prewviewButton" onClick={() => {
                             SetCurProject({ ...res })
@@ -321,13 +310,16 @@ const FromClientTabPane = ({ location }) => {
                           }} type="button">Download</button>
                         </>
                       }
-
                       {
-                        res?.status === "uploaded" && <button className="prewviewButton" onClick={() => {
-                          SetCurProject({ ...res })
-                          setShow(true)
-                        }
-                        } type="button">Download</button>
+                        res?.status === "completed" && <>
+                          <div className="accept_btn_group">
+                            <button>Milestone Completed</button>
+                          </div>
+                          <button className="prewviewButton" onClick={() => {
+                            SetCurProject({ ...res })
+                            setShow(true)
+                          }} type="button">Download</button>
+                        </>
                       }
                     </div>
 
