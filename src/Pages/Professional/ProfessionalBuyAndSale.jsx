@@ -178,17 +178,17 @@ const ProfessionalBuyAndSale = () => {
 
   const languagesArchitecture = [
     contextData?.static_buy_sale_design?.data?.length &&
-      contextData?.static_buy_sale_design?.data?.filter((ress) =>
-        ress !== "" ||
+    contextData?.static_buy_sale_design?.data?.filter((ress) =>
+      ress !== "" ||
         null ||
         (state?.selected_catagories &&
           state?.selected_catagories[3].includes(ress?.sub_category_id))
-          ? {
-              label: ress?.sub_category,
-              value: ress?.sub_category_id,
-            }
-          : ""
-      ),
+        ? {
+          label: ress?.sub_category,
+          value: ress?.sub_category_id,
+        }
+        : ""
+    ),
   ];
   const newCatagoriesArchitecture =
     languagesArchitecture[0] &&
@@ -236,6 +236,7 @@ const ProfessionalBuyAndSale = () => {
               ...cookies?.user_data,
               category_selected: true,
             });
+            localStorage.removeItem('SelectedCatagories')
             navigate("/professionaldashboard");
           }
         });
@@ -528,7 +529,7 @@ const ProfessionalBuyAndSale = () => {
                                             </button>
                                           </div>
                                           {cookies?.user_data.role ===
-                                          "client" ? (
+                                            "client" ? (
                                             <div
                                               className="col-xxl-6 col-md-12 col-6"
                                               style={{ padding: "6px" }}
@@ -821,9 +822,9 @@ const ProfessionalBuyAndSale = () => {
                         .then((res) => {
                           return res?.data?.status === "Success"
                             ? (dispatch({
-                                type: "BUYSALE_DESIGN_UPLOAD_MODAL",
-                                value: false,
-                              }),
+                              type: "BUYSALE_DESIGN_UPLOAD_MODAL",
+                              value: false,
+                            }),
                               setCatagoriesDropdown([]))
                             : "";
                         });
@@ -1102,8 +1103,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                          "..." +
-                                          name.slice(-4)
+                                        "..." +
+                                        name.slice(-4)
                                         : name;
                                     // console.log(trimmedFileName);
                                     setvidlbl(trimmedFileName);
@@ -1139,8 +1140,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                          "..." +
-                                          name.slice(-4)
+                                        "..." +
+                                        name.slice(-4)
                                         : name;
                                     // console.log(trimmedFileName);
 
@@ -1254,7 +1255,7 @@ const ProfessionalBuyAndSale = () => {
                           ...cookies?.user_data,
                           price:
                             state?.preview_catagory_designs?.price[
-                              state?.preview_catagory_data?.index
+                            state?.preview_catagory_data?.index
                             ],
                           image: "",
                           video: "",
@@ -1345,12 +1346,12 @@ const ProfessionalBuyAndSale = () => {
                                           imgPreview
                                             ? imgPreview
                                             : state?.preview_catagory_designs
-                                                ?.image_url +
-                                              state?.preview_catagory_designs
-                                                ?.image[
-                                                state?.preview_catagory_data
-                                                  ?.index
-                                              ]
+                                              ?.image_url +
+                                            state?.preview_catagory_designs
+                                              ?.image[
+                                            state?.preview_catagory_data
+                                              ?.index
+                                            ]
                                         }
                                         alt="preview"
                                       />
@@ -1409,10 +1410,10 @@ const ProfessionalBuyAndSale = () => {
                                         {vidlbl
                                           ? vidlbl
                                           : state?.preview_catagory_designs
-                                              ?.video[
-                                              state?.preview_catagory_data
-                                                ?.index
-                                            ]}
+                                            ?.video[
+                                          state?.preview_catagory_data
+                                            ?.index
+                                          ]}
                                       </span>
                                       {/* <span
                                       style={{
@@ -1442,8 +1443,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                              "..." +
-                                              name.slice(-4)
+                                            "..." +
+                                            name.slice(-4)
                                             : name;
                                         setFieldValue(
                                           "video",
@@ -1481,8 +1482,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                              "..." +
-                                              name.slice(-4)
+                                            "..." +
+                                            name.slice(-4)
                                             : name;
                                         setzipstyle("block");
                                         setziplbl(trimmedFileName);
@@ -1493,10 +1494,10 @@ const ProfessionalBuyAndSale = () => {
                                         {ziplbl
                                           ? ziplbl
                                           : state?.preview_catagory_designs
-                                              ?.project[
-                                              state?.preview_catagory_data
-                                                ?.index
-                                            ]}
+                                            ?.project[
+                                          state?.preview_catagory_data
+                                            ?.index
+                                          ]}
                                       </span>
                                       {/* <span
                                       style={{

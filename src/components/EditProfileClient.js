@@ -300,6 +300,7 @@ const EditProfileClient = ({location}) => {
                             // let id = val.id;
                             // setimgcode(id.toLocaleUpperCase());
                           }}
+                          disabled
                           flags={true}
                           placeholder="Select An Country"
                           name="nation"
@@ -322,6 +323,7 @@ const EditProfileClient = ({location}) => {
                                 `+${country.dialCode}${pho}`
                               )
                             }
+                            disabled
                             inputStyle={{
                               padding: "26px",
                               width: "100%",

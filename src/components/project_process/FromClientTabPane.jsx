@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Header2 } from "../Header";
 import BackButton from "../Button/BackButton";
 import styled from "styled-components";
@@ -9,12 +9,51 @@ import FileViewer from "react-file-viewer";
 import { Link, NavLink } from "react-router-dom";
 import $ from "jquery";
 import { useLocation } from "react-router-dom";
-import { BiCreditCardAlt } from 'react-icons/bi'
+import { BiCreditCardAlt } from "react-icons/bi";
 import { FaPaypal } from "react-icons/fa";
 import { useCookies } from "react-cookie";
 import { BsArrowRight } from "react-icons/bs";
 import Select from "react-select";
 const FromClientTabPane = ({ location }) => {
+  const [locations, setLoctions] = useState(location)
+  useEffect(() => {
+    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      client_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      professional_id: locations?.state?.projectDetails?.id,
+      project_id: locations?.state?.projectDetails?.project_id,
+    }).then((res) => {
+      console.log("here 1 : ", res)
+      if (res?.data?.status === "Success") {
+        axios.post("http://13.52.16.160:8082/client/particular_project_details",
+          {
+            client_id: cookies?.user_data?.user_id,
+            user_token: cookies?.user_data?.user_token,
+            role: cookies?.user_data?.role,
+            project_id: locations?.state?.projectDetails?.project_id,
+          }
+        )
+          .then((respo) => {
+            console.log("here 2 : ", respo)
+            if (respo?.data?.status === "Success") {
+              if (locations?.state?.projectDetails?.id !== undefined) {
+                const state = {
+                  projectDetails: locations?.state?.projectDetails,
+                  projectData: respo?.data?.data,
+                  milesStoneData: res?.data?.data,
+                  project_cost: locations?.state?.project_cost
+                }
+                setLoctions({
+                  ...locations,
+                  state: state,
+                })
+              }
+            }
+          });
+      }
+    });
+  }, [])
   const contextData = useContext(Global);
   const customStyleOne = {
     borderRadius: "30px",
@@ -29,60 +68,72 @@ const FromClientTabPane = ({ location }) => {
       position: absolute;
       .date {
         position: static !important;
-        border: 2px solid #01a78a;
+        border-left: 1px solid #01a78a;
         padding: 10px;
+        width: 115px;
+        text-align: center;
       }
       .prewviewButton {
         position: static !important;
         pointer-events: all !important;
       }
     }
+    .Milestone {
+      position: static !important;
+      border: none;
+      border-left: 1px solid #01a78a;
+      padding: 12px;
+      width: 170px;
+      text-align: center;
+    }
   `;
   const handlePreviewData = (milestone, id, type) => {
-    axios.put("http://13.52.16.160:8082/client/update_status_view_file", {
-      user_id: contextData?.userData?.user_id,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
-      project_id: id,
-      milestone_id: milestone,
-      purpuse: type,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setShow(true);
-      }
-    });
+    axios
+      .put("http://13.52.16.160:8082/client/update_status_view_file", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+        project_id: id,
+        milestone_id: milestone,
+        purpuse: type,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setShow(true);
+        }
+      });
   };
 
-  // cart 
+  // cart
   const [show, setShow] = useState(false);
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   const months = [
-    { value: "01", label: "01", name: 'expiry_month' },
-    { value: "02", label: "02", name: 'expiry_month' },
-    { value: "03", label: "03", name: 'expiry_month' },
-    { value: "04", label: "04", name: 'expiry_month' },
-    { value: "05", label: "05", name: 'expiry_month' },
-    { value: "06", label: "06", name: 'expiry_month' },
-    { value: "07", label: "07", name: 'expiry_month' },
-    { value: "08", label: "08", name: 'expiry_month' },
-    { value: "09", label: "09", name: 'expiry_month' },
-    { value: "10", label: "10", name: 'expiry_month' },
-    { value: "11", label: "11", name: 'expiry_month' },
-    { value: "12", label: "12", name: 'expiry_month' },
+    { value: "01", label: "01", name: "expiry_month" },
+    { value: "02", label: "02", name: "expiry_month" },
+    { value: "03", label: "03", name: "expiry_month" },
+    { value: "04", label: "04", name: "expiry_month" },
+    { value: "05", label: "05", name: "expiry_month" },
+    { value: "06", label: "06", name: "expiry_month" },
+    { value: "07", label: "07", name: "expiry_month" },
+    { value: "08", label: "08", name: "expiry_month" },
+    { value: "09", label: "09", name: "expiry_month" },
+    { value: "10", label: "10", name: "expiry_month" },
+    { value: "11", label: "11", name: "expiry_month" },
+    { value: "12", label: "12", name: "expiry_month" },
   ];
   const years = [
-    { value: "2023", label: "2023", name: 'expiry_year' },
-    { value: "2024", label: "2024", name: 'expiry_year' },
-    { value: "2025", label: "2025", name: 'expiry_year' },
-    { value: "2026", label: "2026", name: 'expiry_year' },
-    { value: "2027", label: "2027", name: 'expiry_year' },
-    { value: "2028", label: "2028", name: 'expiry_year' },
-    { value: "2029", label: "2029", name: 'expiry_year' },
-    { value: "2030", label: "2030", name: 'expiry_year' },
-    { value: "2031", label: "2031", name: 'expiry_year' },
-    { value: "2032", label: "2032", name: 'expiry_year' },
-    { value: "2033", label: "2033", name: 'expiry_year' },
-    { value: "2034", label: "2034", name: 'expiry_year' },
+    { value: "2023", label: "2023", name: "expiry_year" },
+    { value: "2024", label: "2024", name: "expiry_year" },
+    { value: "2025", label: "2025", name: "expiry_year" },
+    { value: "2026", label: "2026", name: "expiry_year" },
+    { value: "2027", label: "2027", name: "expiry_year" },
+    { value: "2028", label: "2028", name: "expiry_year" },
+    { value: "2029", label: "2029", name: "expiry_year" },
+    { value: "2030", label: "2030", name: "expiry_year" },
+    { value: "2031", label: "2031", name: "expiry_year" },
+    { value: "2032", label: "2032", name: "expiry_year" },
+    { value: "2033", label: "2033", name: "expiry_year" },
+    { value: "2034", label: "2034", name: "expiry_year" },
   ];
 
   $(document).ready(function () {
@@ -90,110 +141,192 @@ const FromClientTabPane = ({ location }) => {
     $(".cardExpiry.yearInput input").attr("maxlength", "4");
   });
   const [cartInfo, setCartInfo] = useState({
-    card_number: '',
-    expiry_month: '',
-    expiry_year: '',
-    cvc: ''
-  })
+    card_number: "",
+    expiry_month: "",
+    expiry_year: "",
+    cvc: "",
+  });
   const handalChange = (name, value) => {
     setCartInfo({
       ...cartInfo,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
-  const [curProject, SetCurProject] = useState({})
-  const [isPayment, setIsPayment] = useState(false)
-  const [paymentError, setPaymentError] = useState('')
+  const [curProject, SetCurProject] = useState({});
+  const [isPayment, setIsPayment] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
 
   const handalSubmit = (event) => {
-    event.preventDefault()
-    axios.post('http://13.52.16.160:8082/stripe/client/card/', {
-      ...cartInfo,
-      client_id: cookies?.user_data?.user_id,
-      client_token: cookies?.user_data?.user_token
-    }).then((response) => {
-      if (response?.data?.status === "Failed") {
-        const error = response?.data?.message
-        setPaymentError(error.split(':')[1])
-      } else {
-        setShow(false)
-        SetCurProject({})
-        setIsPayment(false)
-        setPaymentError('')
-      }
-    }).catch((error) => {
-      // console.log(error.response)
-    })
-  }
+    event.preventDefault();
+    axios
+      .post("http://13.52.16.160:8082/stripe/client/card/", {
+        ...cartInfo,
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+      })
+      .then((response) => {
+        if (response?.data?.status === "Failed") {
+          const error = response?.data?.message;
+          setPaymentError(error.split(":")[1]);
+        } else {
+          setShow(false);
+          SetCurProject({});
+          setIsPayment(false);
+          setPaymentError("");
+        }
+      })
+      .catch((error) => {
+        // console.log(error.response)
+      });
+  };
   const handalDownload = () => {
-    axios.put('http://13.52.16.160:8082/client/update_status_view_file', {
+    axios.put("http://13.52.16.160:8082/client/update_status_view_file", {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
-      role: 'client',
+      role: "client",
       project_id: curProject?.project_id,
-      milestone_id: curProject?.milestone_id
+      milestone_id: curProject?.milestone_id,
     }).then((response) => {
       setShow(false);
-      if (response?.data?.error_code === 109 && response?.data?.status === "Failed") {
+      if (
+        response?.data?.error_code === 109 &&
+        response?.data?.status === "Failed"
+      ) {
         setIsPayment(true);
       } else {
-        const url = response.data?.data?.file
-        const link = document.createElement('a');
+        const url = response.data?.data?.file;
+        const link = document.createElement("a");
         link.href = url;
-        link.setAttribute('download', url.split('/')[5]); // you can set the filename here
+        link.setAttribute("download", url.split("/")[5]); // you can set the filename here
         document.body.appendChild(link);
         link.click();
       }
     });
+
   };
 
-  const [acceptShow, setAcceptShow] = useState(false)
+  const [acceptShow, setAcceptShow] = useState(false);
   const AcceptHandal = () => {
-    axios.post('http://13.52.16.160:8082/client/update_status_view_file', {
+    axios.post("http://13.52.16.160:8082/client/update_status_view_file", {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
-      role: 'client',
+      role: "client",
       project_id: curProject?.project_id,
       milestone_id: curProject?.milestone_id,
-      status: 'accepted',
+      status: "accepted",
     }).then((result) => {
-      if (result?.data?.data?.status === "Success") {
-        SetCurProject({})
-        setAcceptShow(false)
+      console.log(result)
+      if (result?.data?.status === "Success") {
+        axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+          client_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          professional_id: locations?.state?.projectDetails?.id,
+          project_id: locations?.state?.projectDetails?.project_id,
+        }).then((res) => {
+          console.log("here 1 : ", res)
+          if (res?.data?.status === "Success") {
+            axios.post("http://13.52.16.160:8082/client/particular_project_details",
+              {
+                client_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                project_id: locations?.state?.projectDetails?.project_id,
+              }
+            ).then((respo) => {
+              console.log("here 2 : ", respo)
+              if (respo?.data?.status === "Success") {
+                if (locations?.state?.projectDetails?.id !== undefined) {
+                  const state = {
+                    projectDetails: locations?.state?.projectDetails,
+                    projectData: respo?.data?.data,
+                    milesStoneData: res?.data?.data,
+                    project_cost: locations?.state?.project_cost
+                  }
+                  setLoctions({
+                    ...locations,
+                    state: state,
+                  })
+                }
+              }
+            });
+          }
+        });
+        SetCurProject({});
+        setAcceptShow(false);
       }
-      SetCurProject({})
-      setAcceptShow(false)
-    })
-  }
+      SetCurProject({});
+      setAcceptShow(false);
+    });
 
-  const [reason, setReason] = useState('')
-  const [reasonError, SetReasonError] = useState('')
-  const [DeclineShow, setDeclineShow] = useState(false)
+
+  };
+
+  const [reason, setReason] = useState("");
+  const [reasonError, SetReasonError] = useState("");
+  const [DeclineShow, setDeclineShow] = useState(false);
   const declineHandal = () => {
     if (reason) {
-      axios.post('http://13.52.16.160:8082/client/update_status_view_file', {
+      axios.post("http://13.52.16.160:8082/client/update_status_view_file", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
-        role: 'client',
+        role: "client",
         project_id: curProject?.project_id,
         milestone_id: curProject?.milestone_id,
-        status: 'decline',
-        reason: reason
+        status: "decline",
+        reason: reason,
       }).then((result) => {
         if (result?.data?.status === "Success") {
-          SetCurProject({})
-          setDeclineShow(false)
-          SetReasonError('')
-          setReason('')
+          SetCurProject({});
+          setDeclineShow(false);
+          SetReasonError("");
+          setReason("");
+          axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+            client_id: cookies?.user_data?.user_id,
+            user_token: cookies?.user_data?.user_token,
+            role: cookies?.user_data?.role,
+            professional_id: locations?.state?.projectDetails?.id,
+            project_id: locations?.state?.projectDetails?.project_id,
+          }).then((res) => {
+            console.log("here 1 : ", res)
+            if (res?.data?.status === "Success") {
+              axios.post("http://13.52.16.160:8082/client/particular_project_details",
+                {
+                  client_id: cookies?.user_data?.user_id,
+                  user_token: cookies?.user_data?.user_token,
+                  role: cookies?.user_data?.role,
+                  project_id: locations?.state?.projectDetails?.project_id,
+                }
+              ).then((respo) => {
+                console.log("here 2 : ", respo)
+                if (respo?.data?.status === "Success") {
+                  if (locations?.state?.projectDetails?.id !== undefined) {
+                    const state = {
+                      projectDetails: locations?.state?.projectDetails,
+                      projectData: respo?.data?.data,
+                      milesStoneData: res?.data?.data,
+                      project_cost: locations?.state?.project_cost
+                    }
+                    setLoctions({
+                      ...locations,
+                      state: state,
+                    })
+                  }
+                }
+              });
+            }
+          });
         } else {
-          SetReasonError('Failed due to some reason')
+          SetReasonError("Failed due to some reason");
         }
-      })
+      });
     } else {
-      SetReasonError('Reason Required')
+      SetReasonError("Reason Required");
     }
-  }
+
+
+  };
   return (
     <div className="create-account">
       <Header2 />
@@ -206,9 +339,12 @@ const FromClientTabPane = ({ location }) => {
                   <div className="col ">
                     <h3 className="theme-text-color fs-24 mb-5">
                       <span>
-                        <Link to={
-                          contextData?.userData?.role === "client" ? "/ongoing-projects" : "/myactivity"
-                        }
+                        <Link
+                          to={
+                            contextData?.userData?.role === "client"
+                              ? "/ongoing-projects"
+                              : "/myactivity"
+                          }
                           className="text-decoration-none text-dark m-0 h2"
                         >
                           <i
@@ -225,30 +361,30 @@ const FromClientTabPane = ({ location }) => {
                         <div className="project-details">1</div>
                         <h5>Project Name:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_name}
+                          {locations?.state?.projectData?.project_name}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">2</div>
                         <h5>Professional Name :</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.professional_name}
+                          {locations?.state?.projectData?.professional_name}
                         </p>
                       </div>
                     </div>
-                    <div className="row my-xxl-5">
+                    <div className="row ">
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.area}
+                          {locations?.state?.projectData?.area}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">4</div>
                         <h5>Estimated Budget:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_cost}
+                          {locations?.state?.projectData?.project_cost}
                         </p>
                       </div>
                     </div>
@@ -257,14 +393,14 @@ const FromClientTabPane = ({ location }) => {
                         <div className="project-details">5</div>
                         <h5>Project Status:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_status}
+                          {locations?.state?.projectData?.project_status}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">6</div>
                         <h5>Estimated Deadline:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.estimated_time}
+                          {locations?.state?.projectData?.estimated_time}
                         </p>
                       </div>
                     </div>
@@ -273,74 +409,118 @@ const FromClientTabPane = ({ location }) => {
               </section>
               <section className="projectMilestoneInfo">
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
-                {location?.state?.milesStoneData?.map((res, index) => (
+                {locations?.state?.milesStoneData?.map((res, index) => (
                   <Wrapper className="milestoneBox">
                     <p>{res?.milestone_name}</p>
                     <div className="preview">
                       <div className="date"> {res?.milestone_date}</div>
-                      {
-                        (res?.status === "pending" || res?.status === "decline") && <button className="prewviewButton" type="button">pending</button>
-                      }
-                      {
-                        (res?.status === "downloaded" || res?.status === "updated" || res?.status === "uploaded") && <>
+                      {(res?.status === "pending" ||
+                        res?.status === "decline") && (
+                          <button
+                            className="prewviewButton default-cursor"
+                            type="button"
+                          >
+                            pending
+                          </button>
+                        )}
+                      {(res?.status === "downloaded" ||
+                        res?.status === "updated" ||
+                        res?.status === "uploaded") && (
+                          <>
+                            <div className="accept_btn_group">
+                              <button
+                                onClick={() => {
+                                  setAcceptShow(true);
+                                  SetCurProject({ ...res });
+                                }}
+                              >
+                                Accept
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setDeclineShow(true);
+                                  SetCurProject({ ...res });
+                                }}
+                              >
+                                Decline
+                              </button>
+                            </div>
+                            <button
+                              className="prewviewButton"
+                              onClick={() => {
+                                SetCurProject({ ...res });
+                                setShow(true);
+                              }}
+                              type="button"
+                            >
+                              Download
+                            </button>
+                          </>
+                        )}
+                      {res?.status === "accepted" && (
+                        <>
                           <div className="accept_btn_group">
-                            <button onClick={() => {
-                              setAcceptShow(true)
-                              SetCurProject({ ...res })
-                            }}>Accept</button>
-                            <button onClick={() => {
-                              setDeclineShow(true)
-                              SetCurProject({ ...res })
-                            }}>Decline</button>
+                            <div className="Milestone">Milestone Completed</div>
                           </div>
-                          <button className="prewviewButton" onClick={() => {
-                            SetCurProject({ ...res })
-                            setShow(true)
-                          }} type="button">Download</button>
+                          <button
+                            className="prewviewButton"
+                            onClick={() => {
+                              SetCurProject({ ...res });
+                              setShow(true);
+                            }}
+                            type="button"
+                          >
+                            Download
+                          </button>
                         </>
-                      }
-                      {
-                        res?.status === "accepted" && <>
+                      )}
+                      {res?.status === "completed" && (
+                        <>
                           <div className="accept_btn_group">
                             <button>Milestone Completed</button>
                           </div>
-                          <button className="prewviewButton" onClick={() => {
-                            SetCurProject({ ...res })
-                            setShow(true)
-                          }} type="button">Download</button>
+                          <button
+                            className="prewviewButton"
+                            onClick={() => {
+                              SetCurProject({ ...res });
+                              setShow(true);
+                            }}
+                            type="button"
+                          >
+                            Download
+                          </button>
                         </>
-                      }
-                      {
-                        res?.status === "completed" && <>
-                          <div className="accept_btn_group">
-                            <button>Milestone Completed</button>
-                          </div>
-                          <button className="prewviewButton" onClick={() => {
-                            SetCurProject({ ...res })
-                            setShow(true)
-                          }} type="button">Download</button>
-                        </>
-                      }
+                      )}
                     </div>
-
                   </Wrapper>
                 ))}
-                <BackButton customclassName="mx-auto d-block mt-4" text="Back" />
+                <BackButton
+                  customclassName="mx-auto d-block mt-4"
+                  text="Back"
+                />
               </section>
             </div>
           </div>
         </div>
-      </main >
+      </main>
       <Modal centered show={show} onHide={() => setShow(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Are you sure want to pay the milestone amount and download the file? If already paid no amount will deducted.</Modal.Title>
-        </Modal.Header>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => {
-            setPaymentError('')
-            setShow(false)
-            SetCurProject({})
-          }}>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>
+          <Modal.Title>
+            Are you sure want to pay the milestone amount and download the file?
+            If already paid no amount will deducted.
+          </Modal.Title>
+        </Modal.Body>
+
+        <Modal.Footer className="d-flex justify-content-start">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setPaymentError("");
+              setShow(false);
+              SetCurProject({});
+            }}
+          >
             cancel
           </Button>
           <Button className="theme-bg-color border-0" onClick={handalDownload}>
@@ -349,20 +529,22 @@ const FromClientTabPane = ({ location }) => {
         </Modal.Footer>
       </Modal>
 
-      <Modal centered show={isPayment} onHide={() => {
-        setIsPayment(false)
-        setPaymentError('')
-        SetCurProject({})
-      }}>
+      <Modal
+        centered
+        show={isPayment}
+        onHide={() => {
+          setIsPayment(false);
+          setPaymentError("");
+          SetCurProject({});
+        }}
+      >
         <Modal.Header closeButton>
-          <Modal.Title>
-
-          </Modal.Title>
+          <Modal.Title></Modal.Title>
+          <h4>Add Your Card details for Payment in future </h4>
         </Modal.Header>
         <Modal.Footer>
-          <div className="bg-white payementFormMain">
+          <div className="bg-white payementFormMain card-popup">
             <form onSubmit={handalSubmit}>
-              <h4>Add Your Card details for Payment in future </h4>
               <div className="row m-0 pt-3 pb-4 border-bottom">
                 <h6>Card Number</h6>
                 <input
@@ -376,7 +558,7 @@ const FromClientTabPane = ({ location }) => {
                   name="card_number"
                   value={cartInfo?.card_number}
                   onChange={(event) => {
-                    handalChange(event?.target?.name, event?.target?.value)
+                    handalChange(event?.target?.name, event?.target?.value);
                   }}
                 />
               </div>
@@ -390,9 +572,11 @@ const FromClientTabPane = ({ location }) => {
                           options={months}
                           placeholder="MM"
                           style={{ border: "none" }}
-                          name='expiry_month'
+                          name="expiry_month"
                           defaultValue={cartInfo.expiry_month}
-                          onChange={(event) => handalChange(event.name, event.value)}
+                          onChange={(event) =>
+                            handalChange(event.name, event.value)
+                          }
                         />
                       </div>
                     </div>
@@ -404,7 +588,7 @@ const FromClientTabPane = ({ location }) => {
                           placeholder="YYYY"
                           style={{ border: "none" }}
                           onChange={(event) => {
-                            handalChange(event?.name, event?.value)
+                            handalChange(event?.name, event?.value);
                           }}
                         />
                       </div>
@@ -422,17 +606,20 @@ const FromClientTabPane = ({ location }) => {
                         className="border-bottom"
                         maxLength={3}
                         minLength={3}
-                        name='cvc'
+                        name="cvc"
                         value={cartInfo?.cvc}
                         onChange={(event) => {
-                          handalChange(event?.target?.name, event?.target?.value)
+                          handalChange(
+                            event?.target?.name,
+                            event?.target?.value
+                          );
                         }}
                       />
                     </div>
                   </div>
                 </div>
               </div>
-              <div style={{ color: 'red' }}>{paymentError}</div>
+              <div style={{ color: "red" }}>{paymentError}</div>
               <div className="row">
                 <button type="submit" className="PaymentCardSubmitButton">
                   Save
@@ -444,18 +631,25 @@ const FromClientTabPane = ({ location }) => {
       </Modal>
 
       {/* accept  */}
-      <Modal centered show={acceptShow} onHide={() => {
-        setAcceptShow(false)
-        SetCurProject({})
-      }}>
+      <Modal
+        centered
+        show={acceptShow}
+        onHide={() => {
+          setAcceptShow(false);
+          SetCurProject({});
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Are you sure want to Accept.</Modal.Title>
         </Modal.Header>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => {
-            setAcceptShow(false)
-            SetCurProject({})
-          }}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setAcceptShow(false);
+              SetCurProject({});
+            }}
+          >
             cancel
           </Button>
           <Button className="theme-bg-color border-0" onClick={AcceptHandal}>
@@ -465,20 +659,33 @@ const FromClientTabPane = ({ location }) => {
       </Modal>
 
       {/*  decline  */}
-      <Modal centered show={DeclineShow} onHide={() => {
-        SetCurProject({})
-        setDeclineShow(false)
-      }}>
+      <Modal
+        centered
+        show={DeclineShow}
+        onHide={() => {
+          SetCurProject({});
+          setDeclineShow(false);
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Add a Reason to decline</Modal.Title>
         </Modal.Header>
         <Modal.Footer>
-          <input type="text" placeholder="Reason" onChange={event => setReason(event.target.value)} value={reason} className="form-control" />
+          <input
+            type="text"
+            placeholder="Reason"
+            onChange={(event) => setReason(event.target.value)}
+            value={reason}
+            className="form-control"
+          />
           <p>{reasonError}</p>
-          <Button variant="secondary" onClick={() => {
-            SetCurProject({})
-            setDeclineShow(false)
-          }}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              SetCurProject({});
+              setDeclineShow(false);
+            }}
+          >
             cancel
           </Button>
           <Button className="theme-bg-color border-0" onClick={declineHandal}>
@@ -486,7 +693,7 @@ const FromClientTabPane = ({ location }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div >
+    </div>
   );
 };
 

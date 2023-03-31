@@ -12,7 +12,7 @@ import { Button, Modal } from "react-bootstrap";
 const ProfessionalProcess = ({ location }) => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   const windowSize = useWindowSize();
   const [dateOne, setDateOne] = useState(null);
   const [dateTwo, setDateTwo] = useState(null);
@@ -21,21 +21,27 @@ const ProfessionalProcess = ({ location }) => {
   const [dateFive, setDateFive] = useState(null);
   const [professionalEstimatedDate, setProfessionalEstimatedDate] =
     useState(null);
-  const handleProfessionalDecesion = (req, professional_budget, estimated_date) => {
-    axios.post("http://13.52.16.160:8082/professional/project_requests", {
-      client_id: location?.state?.client_id,
-      user_token: cookies?.user_data?.user_token,
-      professional_id: cookies?.user_data?.user_id,
-      role: "professional",
-      client_project_id: location?.state?.client_project_id,
-      project_approval_status: req,
-      project_cost: professional_budget,
-      estimate_date: estimated_date,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        navigate("/request-projects");
-      }
-    });
+  const handleProfessionalDecesion = (
+    req,
+    professional_budget,
+    estimated_date
+  ) => {
+    axios
+      .post("http://13.52.16.160:8082/professional/project_requests", {
+        client_id: location?.state?.client_id,
+        user_token: cookies?.user_data?.user_token,
+        professional_id: cookies?.user_data?.user_id,
+        role: "professional",
+        client_project_id: location?.state?.client_project_id,
+        project_approval_status: req,
+        project_cost: professional_budget,
+        estimate_date: estimated_date,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          navigate("/request-projects");
+        }
+      });
   };
   const initialValues = {
     milestone_name_one: "",
@@ -71,10 +77,10 @@ const ProfessionalProcess = ({ location }) => {
     padding: "100px 0",
   };
 
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
   const handalVerifyAccount = () => {
-        navigate('/professionaldashboard')
-  }
+    navigate("/professionaldashboard");
+  };
   return (
     <div className="create-account">
       <Header2 />
@@ -121,7 +127,7 @@ const ProfessionalProcess = ({ location }) => {
                         </p>
                       </div>
                     </div>
-                    <div className="row my-xxl-5">
+                    <div className="row ">
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
@@ -160,35 +166,43 @@ const ProfessionalProcess = ({ location }) => {
                 initialValues={initialValues}
                 validationSchema={SignUpSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  axios.put('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
-                    professioanl_id: cookies?.user_data?.user_id,
-                    professioanl_token: cookies?.user_data?.user_token
-                  }).then((result) => {
-                    if (result?.data?.status === "Failed") {
-                      setShow(true)
-                    } else {
-                      axios.post("http://13.52.16.160:8082/professional/project_details",
-                        {
-                          ...location?.state?.clientDetails,
-                          user_token: cookies?.user_data?.user_token,
-                          professional_id: cookies?.user_data?.user_id,
-                          role: "professional",
-                          client_id: location?.state?.client_id,
-                          client_project_id: location?.state?.client_project_id,
-                          ...values,
-                        }
-                      ).then((res) => {
-                        if (res?.data?.status === "Success") {
-                          handleProfessionalDecesion(
-                            "accepted",
-                            values?.professional_budget,
-                            values?.estimated_date
-                          );
-                        }
-                      });
-                    }
-                  })
-
+                  axios
+                    .put(
+                      "http://13.52.16.160:8082/stripe/professionl/verify-account/",
+                      {
+                        professioanl_id: cookies?.user_data?.user_id,
+                        professioanl_token: cookies?.user_data?.user_token,
+                      }
+                    )
+                    .then((result) => {
+                      if (result?.data?.status === "Failed") {
+                        setShow(true);
+                      } else {
+                        axios
+                          .post(
+                            "http://13.52.16.160:8082/professional/project_details",
+                            {
+                              ...location?.state?.clientDetails,
+                              user_token: cookies?.user_data?.user_token,
+                              professional_id: cookies?.user_data?.user_id,
+                              role: "professional",
+                              client_id: location?.state?.client_id,
+                              client_project_id:
+                                location?.state?.client_project_id,
+                              ...values,
+                            }
+                          )
+                          .then((res) => {
+                            if (res?.data?.status === "Success") {
+                              handleProfessionalDecesion(
+                                "accepted",
+                                values?.professional_budget,
+                                values?.estimated_date
+                              );
+                            }
+                          });
+                      }
+                    });
                 }}
               >
                 {({ isSubmitting, setFieldValue }) => (
@@ -465,15 +479,21 @@ const ProfessionalProcess = ({ location }) => {
                               display: "block",
                             }}
                             type="button"
-                            className={`theme-text-color bg-white   ${windowSize?.width > 576 ? "ms-auto" : "mx-auto"
-                              }`}
+                            className={`theme-text-color bg-white   ${
+                              windowSize?.width > 576 ? "ms-auto" : "mx-auto"
+                            }`}
                           >
                             Decline
                             <i className="fa-solid  fa-arrow-right-long me-3"></i>
                           </button>
                         </div>
                         <div className="col-sm">
-                          <button type="submit" className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"}`}>
+                          <button
+                            type="submit"
+                            className={`theme-bg-color text-white   ${
+                              windowSize?.width > 576 ? "me-auto" : "mx-auto"
+                            }`}
+                          >
                             Accept
                             <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                           </button>
@@ -485,23 +505,27 @@ const ProfessionalProcess = ({ location }) => {
               </Formik>
               <Modal centered show={show} onHide={() => setShow(false)}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Please Verify your Account Details. </Modal.Title>
+                  <Modal.Title>
+                    Please Verify your Account Details.{" "}
+                  </Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={() => {
-                    setShow(false)
-                    handalVerifyAccount()
-                  }}>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      setShow(false);
+                      handalVerifyAccount();
+                    }}
+                  >
                     Ok
                   </Button>
                 </Modal.Footer>
               </Modal>
-
             </div>
           </div>
         </div>
-      </main >
-    </div >
+      </main>
+    </div>
   );
 };
 

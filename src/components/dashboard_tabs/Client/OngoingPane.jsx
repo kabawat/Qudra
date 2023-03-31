@@ -70,8 +70,7 @@ const OngoingPane = () => {
   }
 
   const handleClientAcceptation = (id, project_id, project_cost) => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
         client_id: contextData?.userData?.user_id,
         user_token: contextData?.userData?.user_token,
         role: contextData?.userData?.role,

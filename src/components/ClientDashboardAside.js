@@ -29,56 +29,72 @@ const ClientDashboardAside = () => {
           </NavLink>
         </li>
 
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <NavLink className={`nav-link activity-btn`} to="/pending-project">
             <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
             <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
             Pending Projects
           </NavLink>
+        </li> */}
+
+        <li className="nav-item">
+          <NavLink className={`nav-link activity-btn`} to="/pending-project">
+            <img src="/static/icon/pending_project2.png" alt="" className="Activities-white-icon" />
+            <img src="/static/icon/pending_project1.png" alt="" className="Activities-green-icon" />
+            Pending Projects
+          </NavLink>
         </li>
-       
+
         <li className="nav-item">
           <NavLink className={`nav-link activity-btn`} to="/accept-project">
-            <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-            <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+            <img src="/static/icon/Accepted_projects2.png" alt="" className="Activities-white-icon" />
+            <img src="/static/icon/Accepted_projects1.png" alt="" className="Activities-green-icon" />
             Accepted Projects
           </NavLink>
         </li>
 
         <li className="nav-item">
           <NavLink className={`nav-link activity-btn`} to="/ongoing-projects">
-            <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-            <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+            <img src="/static/icon/ongoing_projects2.png" alt="" className="Activities-white-icon" />
+            <img src="/static/icon/ongoing_projects1.png" alt="" className="Activities-green-icon" />
             Ongoing Projects
           </NavLink>
         </li>
 
+
         <li className="nav-item">
           <NavLink className={`nav-link activity-btn `} to="/completed-projects" >
-            <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-            <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+            <img src="/static/icon/complete_project2.png" alt="" className="Activities-white-icon" />
+            <img src="/static/icon/complete_project1.png" alt="" className="Activities-green-icon" />
             Completed Projects
           </NavLink>
         </li>
         <li className="nav-item">
           <NavLink className={`nav-link activity-btn `} to="/declined-projects" >
-            <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-            <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+            <img src="/static/icon/decline_project2.png" alt="" className="Activities-white-icon" />
+            <img src="/static/icon/decline_project1.png" alt="" className="Activities-green-icon" />
             Declined Projects
           </NavLink>
         </li>
 
         <li className="nav-item">
+          <NavLink className={`nav-link activity-btn`} to="/client-liked" >
+            <img src="/static/icon/likes2.png" alt="" className="Activities-white-icon" />
+            <img src="/static/icon/likes1.png" alt="" className="Activities-green-icon" />
+            Likes
+          </NavLink>
+        </li>
+        {/* <li className="nav-item">
           <NavLink className={`nav-link ${contextData?.current_client_tab === "likes" ? "active" : ""} liked-btn`} to="/client-liked" >
             <CiHeart style={{ color: `${contextData?.current_client_tab === "likes" ? "#00a78b" : "white"}`, fontSize: "27px", }} />
             Likes
           </NavLink>
-        </li>
+        </li> */}
 
         <li className="nav-item">
-          <NavLink className={`nav-link liked-btn ${contextData?.current_client_tab === "ratings" ? "active" : ""}`} to="/client-rating" >
-            <img src="/static/images/likethumb-menu.png" alt="" className="liked-white-icon" />
-            <img src="/static/images/greenThumb.png" alt="" className="liked-green-icon" />
+          <NavLink className={`nav-link activity-btn`} to="/client-rating" >
+            <img src="/static/icon/Rating2.png" alt="" className="Activities-white-icon" />
+            <img src="/static/icon/Rating1.png" alt="" className="Activities-green-icon" />
             Ratings
           </NavLink>
         </li>

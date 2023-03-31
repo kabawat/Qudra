@@ -422,6 +422,7 @@ const EditProfileProfessional = ({ location }) => {
                         /> */}
                         <CountrySelect
                           value={value}
+                          disabled
                           onChange={(val) => {
                             setValue(val);
                             setFieldValue("nation", val?.name);
@@ -446,6 +447,7 @@ const EditProfileProfessional = ({ location }) => {
                             placeholder="Enter phone number"
                             country={value?.alpha2}
                             enableAreaCodes
+                            disabled
                             name="mobile_no"
                             onChange={(pho, country) =>
                               setFieldValue(

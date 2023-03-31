@@ -5,13 +5,26 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
-import { GiCancel } from 'react-icons/gi'
+import { GiCancel } from "react-icons/gi";
 import { useCookies } from "react-cookie";
+import { AiOutlineInfoCircle } from 'react-icons/ai'
+import { useEffect } from "react";
 const Wrapper = styled.div`
   .mileStoneDate {
     padding: 10px 10px;
     background: white;
-    border: 2px solid #01a78a;
+    border-left: 1px solid #01a78a;
+    text-align: center;
+    width: 115px;
+  }
+  .update {
+    padding: 10px 10px;
+    background: transparent!important;
+    border: none;
+    border-left: 1px solid #01a78a;
+    text-align: center;
+    width: 115px;
+    color: #01a78a;
   }
   .uploadMileStone {
     cursor: pointer;
@@ -42,44 +55,57 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100%;
   }
+
+  .pendingMileStone {
+    cursor: pointer;
+    position: relative;
+    border-radius: 0;
+    padding: 11px 30px 11px;
+    text-transform: capitalize;
+    border: 0;
+    background-color: transparent;
+    color: #01a78a;
+    border-left: 1px solid #01a78a;
+  }
+  .Milestone {
+      position: static !important;
+      border: none;
+      border-left: 1px solid #01a78a;
+      padding: 12px;
+      width: 170px;
+      text-align: center;
+    }
+
+    .decline {
+    position: static !important;
+    border: none;
+    border-left: 1px solid #01a78a;
+    padding: 12px;
+    width: 60px;
+    text-align: center;
+    background: #abb3aa33
+}
 `;
 
 const FromProfessionalTabPane = ({ location }) => {
-  const [locations, setLocation] = useState(location)
-  const [show, setShow] = useState(false)
-  const [cookies] = useCookies()
-  const navigate = useNavigate()
+  const [locations, setLocation] = useState(location);
+  const [show, setShow] = useState(false);
+  const [cookies] = useCookies();
+  const navigate = useNavigate();
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
     padding: "100px 0",
   };
 
-  const [project, setProject] = useState()
-  const [file, setFile] = useState('')
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
-  const handalshow = (res) => {
-    setProject(res)
-    setShow(true)
-  }
-  const handalchage = (event) => {
-    setError('')
-    setFile(event.target.files)
-  }
-
-  const [isReason, setIsReason] = useState(false)
-  const [reason, setReason] = useState()
-  const handalClose = () => {
-    setFile('')
-    setError('')
-    setShow(false)
+  useEffect(() => {
+    console.log()
     axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
       client_id: locations.state.projectDetails?.id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
       professional_id: cookies?.user_data?.user_id,
-      project_id: project?.project_id,
+      project_id: locations.state?.projectDetails?.project_id,
     }).then((res) => {
       if (res?.data?.status === "Success") {
         axios.post(
@@ -100,15 +126,66 @@ const FromProfessionalTabPane = ({ location }) => {
                 milesStoneData: res?.data?.data,
                 isFromProfessionalTab: true,
               },
-            })
+            });
           }
         });
       }
     });
-  }
+  }, [])
+  const [project, setProject] = useState();
+  const [file, setFile] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const handalshow = (res) => {
+    setProject(res);
+    setShow(true);
+  };
+  const handalchage = (event) => {
+    setError("");
+    setFile(event.target.files);
+  };
+
+  const [isReason, setIsReason] = useState(false);
+  const [reason, setReason] = useState();
+  const handalClose = () => {
+    setFile("");
+    setError("");
+    setShow(false);
+    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      client_id: locations.state.projectDetails?.id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      professional_id: cookies?.user_data?.user_id,
+      project_id: locations.state?.projectDetails?.project_id,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        axios.post(
+          "http://13.52.16.160:8082/client/particular_project_details",
+          {
+            client_id: locations.state.projectDetails?.id,
+            professional_id: cookies?.user_data?.user_id,
+            user_token: cookies?.user_data?.user_token,
+            role: cookies?.user_data?.role,
+            project_id: project?.project_id,
+          }
+        ).then((respo) => {
+          if (respo?.data?.status === "Success") {
+            setLocation({
+              state: {
+                projectDetails: { ...locations?.state?.projectDetails },
+                projectData: respo?.data?.data,
+                milesStoneData: res?.data?.data,
+                isFromProfessionalTab: true,
+              },
+            });
+          }
+        });
+      }
+    });
+  };
 
   const handleMilestoneUpdate = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const data = new FormData();
     data.append("user_id", cookies?.user_data?.user_id);
     data.append("user_token", cookies?.user_data?.user_token);
@@ -117,40 +194,44 @@ const FromProfessionalTabPane = ({ location }) => {
     data.append("milestone_id", project?.milestone_id);
     data.append("milestone_file", file[0]);
     if (file) {
-      await axios.post("http://13.52.16.160:8082/client/milestone_file", data).then((res) => {
-        if (res?.data?.status === "Success") {
-          handalClose()
-        }
-      });
+      await axios
+        .post("http://13.52.16.160:8082/client/milestone_file", data)
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            handalClose();
+          }
+        });
     } else {
-      setError('file required')
+      setError("file required");
     }
   };
 
   const handalViewReason = (res) => {
-    setIsReason(true)
-    setReason(res?.decline_reason)
-  }
+    setIsReason(true);
+    setReason(res?.decline_reason);
+  };
 
   const handalBack = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
   const handalDownload = (paylaod) => {
-    axios.post('http://13.52.16.160:8082/professional/milestone/download/', {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: "professional",
-      project_id: paylaod?.project_id,
-      milestone_id: paylaod?.milestone_id
-    }).then((result) => {
-      const url = result.data?.data?.file
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', url.split('/')[5]); // you can set the filename here
-      document.body.appendChild(link);
-      link.click();
-    })
-  }
+    axios
+      .post("http://13.52.16.160:8082/professional/milestone/download/", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: "professional",
+        project_id: paylaod?.project_id,
+        milestone_id: paylaod?.milestone_id,
+      })
+      .then((result) => {
+        const url = result.data?.data?.file;
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", url.split("/")[5]); // you can set the filename here
+        document.body.appendChild(link);
+        link.click();
+      });
+  };
   return (
     <div className="create-account">
       <Header2 />
@@ -162,8 +243,14 @@ const FromProfessionalTabPane = ({ location }) => {
                 <div className="row">
                   <div className="col ">
                     <h3 className="theme-text-color d-flex fs-24 mb-5">
-                      <button className="text-decoration-none text-dark m-0 backbuttonActive" onClick={handalBack}>
-                        <i className="fa-solid fa-arrow-left-long pe-3" style={{ color: "#01a78a" }}></i>
+                      <button
+                        className="text-decoration-none text-dark m-0 backbuttonActive"
+                        onClick={handalBack}
+                      >
+                        <i
+                          className="fa-solid fa-arrow-left-long pe-3"
+                          style={{ color: "#01a78a" }}
+                        ></i>
                       </button>
                       <span>Project Details</span>
                     </h3>
@@ -184,7 +271,7 @@ const FromProfessionalTabPane = ({ location }) => {
                         </p>
                       </div>
                     </div>
-                    <div className="row my-xxl-5">
+                    <div className="row">
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
@@ -226,38 +313,56 @@ const FromProfessionalTabPane = ({ location }) => {
                     <p>{res?.milestone_name}</p>
                     <div className="buttonAndDateMain">
                       <div className="mileStoneDate">{res?.milestone_date}</div>
-                      {
-                        res?.status === "pending" && (
-                          <div className="uploadMileStone" onClick={() => { handalshow(res) }}>Upload</div>
-                        )
-                      }
-                      {
-                        (res?.status === "updated" || res?.status === "downloaded" || res?.status === "uploaded") && (
-                          <div className="uploadMileStone" >pending</div>
-                        )
-                      }
+                      {res?.status === "pending" && (
+                        <div
+                          className="uploadMileStone"
+                          onClick={() => {
+                            handalshow(res);
+                          }}
+                        >
+                          Upload
+                        </div>
+                      )}
+                      {(res?.status === "updated" ||
+                        res?.status === "downloaded" ||
+                        res?.status === "uploaded") && (
+                          <div className="pendingMileStone">pending</div>
+                        )}
 
-                      {
-                        (res?.status === "accepted" || res?.status === "completed") && (
-                          <div className="uploadMileStone" >Milestone completed</div>
-                        )
-                      }
+                      {(res?.status === "accepted" ||
+                        res?.status === "completed") && (
+                          <div className="Milestone">
+                            Milestone completed
+                          </div>
+                        )}
 
-                      {
-                        res?.status === "decline" && (<>
-                          <button className="mileStoneDate" onClick={() => handalViewReason(res)}>
-                            Decline Reason
+                      {res?.status === "decline" && (
+                        <>
+                          <button title="Decline Reason"
+                            className="mileStoneDate decline"
+                            onClick={() => handalViewReason(res)}
+                          >
+                            <AiOutlineInfoCircle />
                           </button>
-                          <div className="uploadMileStone" onClick={() => handalshow(res)}>Update</div>
+                          <div
+                            className="update"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handalshow(res)}
+                          >
+                            Update
+                          </div>
                         </>
-                        )
-                      }
-                      {
-                        res?.status !== "pending" && (
-                          <div className="uploadMileStone" onClick={() => { handalDownload(res) }}>Download</div>
-                        )
-                      }
-
+                      )}
+                      {res?.status !== "pending" && (
+                        <div
+                          className="uploadMileStone"
+                          onClick={() => {
+                            handalDownload(res);
+                          }}
+                        >
+                          Download
+                        </div>
+                      )}
                     </div>
                   </Wrapper>
                 ))}
@@ -265,8 +370,8 @@ const FromProfessionalTabPane = ({ location }) => {
               </section>
             </div>
           </div>
-        </div >
-      </main >
+        </div>
+      </main>
 
       <Modal
         show={show}
@@ -282,7 +387,9 @@ const FromProfessionalTabPane = ({ location }) => {
           className="border-0"
         ></Modal.Header>
         <Modal.Body>
-          <p className="text-center" style={{ fontSize: '24px' }}>Upload Zip</p>
+          <p className="text-center" style={{ fontSize: "24px" }}>
+            Upload Zip
+          </p>
           <form onSubmit={handleMilestoneUpdate}>
             <div className="row">
               <div className="">
@@ -291,17 +398,20 @@ const FromProfessionalTabPane = ({ location }) => {
                     <button className="w-100" type="button">
                       <span className="ps-2">Upload Zip</span>
                     </button>
-                    <p className="ps-4">
-                      {file[0]?.name}
-                    </p>
-                    <input type="file" style={{ cursor: 'pointer' }} accept=".zip,.rar,.7zip" name="project"
-                      onChange={handalchage} />
+                    <p className="ps-4">{file[0]?.name}</p>
+                    <input
+                      type="file"
+                      style={{ cursor: "pointer" }}
+                      accept=".zip,.rar,.7zip"
+                      name="project"
+                      onChange={handalchage}
+                    />
                   </div>
                 </div>
-                <div style={{ color: 'red' }}> {error}</div>
+                <div style={{ color: "red" }}> {error}</div>
 
                 <div className="text-center">
-                  <button type="submit" className="ModalCategorySubmit" >
+                  <button type="submit" className="ModalCategorySubmit">
                     Upload
                   </button>
                 </div>
@@ -311,21 +421,25 @@ const FromProfessionalTabPane = ({ location }) => {
         </Modal.Body>
       </Modal>
 
-
       {/* reason  */}
-      <Modal centered show={isReason} onHide={() => {
-        setIsReason(false)
-        setReason('')
-      }}>
+      <Modal
+        centered
+        show={isReason}
+        onHide={() => {
+          setIsReason(false);
+          setReason("");
+        }}
+      >
         <Modal.Header>
-          <Modal.Title><p>{reason}</p></Modal.Title>
+          <Modal.Title>
+            <p>{reason}</p>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Footer>
           <div className="text-center">
-            <Button className="theme-bg-color border-0" onClick={() => {
-              setIsReason(false)
-              setReason('')
-            }}>ok</Button>
+            <Button className="theme-bg-color border-0" onClick={() => { setIsReason(false); setReason(""); }} >
+              ok
+            </Button>
           </div>
         </Modal.Footer>
       </Modal>
@@ -343,7 +457,7 @@ const FromProfessionalTabPane = ({ location }) => {
         theme="light"
       />
       <ToastContainer />
-    </div >
+    </div>
   );
 };
 

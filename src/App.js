@@ -55,6 +55,7 @@ import PendingProject from "./components/dashboard_tabs/Client/PendingProject";
 import DeclinedActivity from "./components/dashboard_tabs/Professional/DeclinedActivity";
 import CompletedProject from "./components/dashboard_tabs/Professional/CompletedProject";
 import Reject from "./components/project_process/Reject";
+import PendingActivity from "./components/dashboard_tabs/Professional/PendingActivity";
 function App() {
   const [cookies] = useCookies()
   return (
@@ -82,9 +83,11 @@ function App() {
           <Route path="/Portfolio" element={<PortfolioPane />} />
           <Route path="/like" element={<LikesShow />} />
           <Route path="/ratings" element={<Showratings />} />
+          
           <Route path="/request-projects" element={<RequestProjects />} />
           <Route path="/myactivity" element={<ActivitiesPane />} />
           <Route path="/completed-activity" element={<CompletedProject />} />
+          <Route path="/pending-activity" element={<PendingActivity />} />
           <Route path="/declined-activity" element={<DeclinedActivity />} />
           <Route path="/professional-Reject" element={<Reject />} />
           <Route path="/professional-guidelines" element={<ProfessionalGuidelines />} />

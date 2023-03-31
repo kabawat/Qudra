@@ -59,50 +59,72 @@ const Dashboardside = () => {
 
           <li className="nav-item">
             <NavLink className={`nav-link activity-btn`} to="/request-projects">
-              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+              <img src="/static/icon/request_project2.png" alt="" className="Activities-white-icon" />
+              <img src="/static/icon/request_project1.png" alt="" className="Activities-green-icon" />
               Request Projects
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className={`nav-link activity-btn`} to="/pending-activity">
+              <img src="/static/icon/pending_project2.png" alt="" className="Activities-white-icon" />
+              <img src="/static/icon/pending_project1.png" alt="" className="Activities-green-icon" />
+              Pending Projects
             </NavLink>
           </li>
 
           <li className="nav-item">
             <NavLink className={`nav-link activity-btn`} to="/myactivity">
-              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+              <img src="/static/icon/running_project2.png" alt="" className="Activities-white-icon" />
+              <img src="/static/icon/running_project1.png" alt="" className="Activities-green-icon" />
               Projects Running
             </NavLink>
           </li>
 
           <li className="nav-item">
             <NavLink className={`nav-link activity-btn`} to="/completed-activity">
-              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+              <img src="/static/icon/complete_project2.png" alt="" className="Activities-white-icon" />
+              <img src="/static/icon/complete_project1.png" alt="" className="Activities-green-icon" />
               Completed Projects
             </NavLink>
           </li>
 
           <li className="nav-item">
             <NavLink className={`nav-link activity-btn`} to="/declined-activity">
-              <img src="/static/images/activity-menu.png" alt="" className="Activities-white-icon" />
-              <img src="/static/images/green-activity-menu.png" alt="" className="Activities-green-icon" />
+              <img src="/static/icon/decline_project2.png" alt="" className="Activities-white-icon" />
+              <img src="/static/icon/decline_project1.png" alt="" className="Activities-green-icon" />
               Declined Projects
             </NavLink>
           </li>
 
           <li className="nav-item">
+            <NavLink className={`nav-link activity-btn`} to="/like">
+              <img src="/static/icon/Likes2.png" alt="" className="Activities-white-icon" />
+              <img src="/static/icon/Likes1.png" alt="" className="Activities-green-icon" />
+              Likes
+            </NavLink>
+          </li>
+          {/* <li className="nav-item">
             <NavLink className={`nav-link liked-btn`} to="/like">
               <CiHeart style={{ color: `${contextData?.current_professional_tab === "likes" ? "#00a78b" : "white"}`, fontSize: "27px", }} />
               Likes
             </NavLink>
-          </li>
+          </li> */}
 
           <li className="nav-item">
+            <NavLink className={`nav-link activity-btn`} to="/ratings">
+              <img src="/static/icon/Rating2.png" alt="" className="Activities-white-icon" />
+              <img src="/static/icon/Rating1.png" alt="" className="Activities-green-icon" />
+              Ratings
+            </NavLink>
+          </li>
+
+          {/* <li className="nav-item">
             <NavLink className={`nav-link liked-btn`} to="/ratings">
               <img src="/static/images/likethumb-menu.png" alt="" className="liked-white-icon" />
               <img src="/static/images/greenThumb.png" alt="" className="liked-green-icon" />
               Ratings
             </NavLink>
-          </li>
+          </li> */}
 
           <li className="nav-item">
             <NavLink className={`nav-link liked-btn`} to="/professional-guidelines">

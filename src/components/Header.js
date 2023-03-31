@@ -8,7 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import Global from "../context/Global";
 import useWindowSize from "../Hooks/useWindowSize";
 import { useCookies } from "react-cookie";
-
+import { GoUnverified, GoVerified } from 'react-icons/go'
 const style = {
   color: "white",
   textDecoration: "none",
@@ -34,6 +34,24 @@ const Header2 = ({ link }) => {
     contextData?.dispatch({ type: "LOG_OUT" });
     navigate("/");
   };
+  // Dropdown button Function
+  const profileDropdown = () => {
+    $(".profile-edit-dropdown").slideToggle();
+    $(".profileEdit-button i").toggleClass("i-rotate");
+  };
+  //Edit-Profile button function
+  const handleEditProfileButton = () => {
+    axios.put("http://13.52.16.160:8082/identity/update_account", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        navigate("/edit-profile", { state: res?.data?.data });
+      }
+    });
+  };
+
   return (
     <>
       <header className="create-account-header">
@@ -62,39 +80,586 @@ const Header2 = ({ link }) => {
                     <Link to="/join">Sign up</Link>
                   )}
                   {window.location.pathname === "/categoryArchitecture" && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
-                      logout
-                    </button>
+                    <div className="d-flex align-items-center flex-wrap profileinfo">
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                          <h4 className="userName" >
+                            {contextData?.profileData && contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button onClick={handleEditProfileButton}>
+                                Edit Profile
+                              </button>
+                            </Link>
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData && contextData?.profileData?.email}
+                        </h6>
+                      </div>
+                    </div>
                   )}
                   {window.location.pathname === "/categoryvisualization" && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
-                      logout
-                    </button>
+                    <div className=" d-flex align-items-center flex-wrap profileinfo">
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                          <h4 className="userName" >
+                            {contextData?.profileData && contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button onClick={handleEditProfileButton}>
+                                Edit Profile
+                              </button>
+                            </Link>
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData && contextData?.profileData?.email}
+                        </h6>
+                      </div>
+                    </div>
                   )}
                   {window.location.pathname === "/professional-buy-and-sale" && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
-                      logout
-                    </button>
+                    <div className="d-flex align-items-center flex-wrap profileinfo">
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                          <h4 className="userName" >
+                            {contextData?.profileData && contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button onClick={handleEditProfileButton}>
+                                Edit Profile
+                              </button>
+                            </Link>
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData && contextData?.profileData?.email}
+                        </h6>
+                      </div>
+                    </div>
                   )}
                   {window.location.pathname === "/client-architechture" && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
-                      logout
-                    </button>
+                    <div className="d-flex align-items-center flex-wrap profileinfo">
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                          <h4 className="userName" >
+                            {contextData?.profileData && contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button onClick={handleEditProfileButton}>
+                                Edit Profile
+                              </button>
+                            </Link>
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData && contextData?.profileData?.email}
+                        </h6>
+                      </div>
+                    </div>
                   )}
                   {window.location.pathname === "/client-visualisation" && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
-                      logout
-                    </button>
+                    <div className=" d-flex align-items-center flex-wrap profileinfo">
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                          <h4 className="userName" >
+                            {contextData?.profileData && contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button onClick={handleEditProfileButton}>
+                                Edit Profile
+                              </button>
+                            </Link>
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData && contextData?.profileData?.email}
+                        </h6>
+                      </div>
+                    </div>
                   )}
                   {window.location.pathname === "/client-buy-sell" && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
-                      logout
-                    </button>
+                    <div className="d-flex align-items-center flex-wrap profileinfo">
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                          <h4 className="userName" >
+                            {contextData?.profileData && contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button onClick={handleEditProfileButton}>
+                                Edit Profile
+                              </button>
+                            </Link>
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData && contextData?.profileData?.email}
+                        </h6>
+                      </div>
+                    </div>
                   )}
                   {window.location.pathname === "/edit-profile" && (
-                    <button onClick={() => { setShow(true) }} style={buttonStyle}>
-                      logout
-                    </button>
+                    <div className=" d-flex align-items-center flex-wrap profileinfo">
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                          <h4 className="userName" >
+                            {contextData?.profileData && contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+
+                            <Link
+                              to={cookies?.user_data?.role === "client" ? "/clientdashboard" : "/professionaldashboard"}
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button>
+                                Dashboard
+                              </button>
+                            </Link>
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData && contextData?.profileData?.email}
+                        </h6>
+                      </div>
+                    </div>
+                  )}
+                  {window.location.pathname === "/project-details" && (
+                    <div className=" d-flex align-items-center flex-wrap profileinfo">
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                          <h4 className="userName" >
+                            {contextData?.profileData && contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button onClick={handleEditProfileButton}>
+                                Edit Profile
+                              </button>
+                            </Link>
+                            <Link to="" className="d-flex justify-content-center rounded-bottom" >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData && contextData?.profileData?.email}
+                        </h6>
+                      </div>
+                    </div>
                   )}
                 </li>
               </ul>
@@ -102,7 +667,7 @@ const Header2 = ({ link }) => {
                 centered
                 show={show}
                 onHide={() => setShow(false)}
-                style={{ zIndex: 1000000 }}
+                style={{ zIndex: 10000000 }}
               >
                 <Modal.Header closeButton>
                   <Modal.Title>Are you sure you want to Log out?</Modal.Title>
@@ -298,12 +863,11 @@ const HeaderHome = () => {
                         {cookies?.user_data && (
                           <>
                             <li>
-                              <Link
-                                to={
-                                  userData?.role === "client"
-                                    ? "/clientdashboard"
-                                    : "/professionaldashboard"
-                                }
+                              <Link to={
+                                userData?.role === "client"
+                                  ? "/clientdashboard"
+                                  : "/professionaldashboard"
+                              }
                                 state={{ fromHomePage: true }}
                               >
                                 Dashboard
@@ -716,10 +1280,7 @@ const ChatHeader = () => {
                       </button>
                     </Link>
 
-                    <Link
-                      to=""
-                      className="d-flex justify-content-center rounded-bottom"
-                    >
+                    <Link to="" className="d-flex justify-content-center rounded-bottom">
                       <button
                         onClick={() => {
                           setShow(true);
@@ -931,6 +1492,39 @@ const HeaderDashboard = () => {
       setShowNotificationBox(false)
     }
   })
+
+  const [isVerify, setIsVerify] = useState(false)
+  useEffect(() => {
+    axios.put('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
+      professioanl_id: cookies?.user_data?.user_id,
+      professioanl_token: cookies?.user_data?.user_token
+    }).then((result) => {
+      if (result?.data?.status === "Failed") {
+        setIsVerify(false)
+      } else {
+        setIsVerify(true)
+      }
+    })
+  }, [])
+  const handalVerify = () => {
+    axios.post('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
+      professioanl_id: cookies?.user_data?.user_id,
+      professioanl_token: cookies?.user_data?.user_token
+    }).then((result) => {
+      console.log()
+      const url = result?.data?.data?.link
+      const link = document.createElement('a');
+      link.href = url;
+      // link.setAttribute('target', '_blank'); // you can set the filename here
+      document.body.appendChild(link);
+      link.click();
+      if (result?.data?.status === "Failed") {
+        setIsVerify(false)
+      } else {
+        setIsVerify(true)
+      }
+    })
+  }
   return (
     <>
       <header className="dashboard-header bg-white custom-border-radius-one">
@@ -942,13 +1536,18 @@ const HeaderDashboard = () => {
                 Dashboard
               </Link>
               <div className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""}  py-4`}>
+                {
+                  cookies?.user_data?.role !== 'client' ? <>
+                    {isVerify ? <button className="btn dashboard-user-notification me-md-3 me-2" title="verifed">
+                      <GoVerified />
+                    </button> :
+                      <button className="btn dashboard-user-notification me-md-3 me-2" title="verify Account" onClick={handalVerify}>
+                        <GoUnverified />
+                      </button>}
+                  </> : ''
+                }
                 <div className="dashboard-user-notification me-md-3 me-2">
                   <i className="fa-solid fa-bell"></i>
-                  {/* <div id="toggleNoti" onClick={() => {
-                    showNotificationBox ? setShowNotificationBox(false)
-                      : handleNotificationBox();
-                    bringnotificationCount();
-                  }}></div> */}
                   <div id="toggleNoti" onClick={() => { setShowNotificationBox(!showNotificationBox) }}></div>
                   {contextData?.unreadNotification === 0 ? (
                     ""
@@ -1044,7 +1643,8 @@ const HeaderDashboard = () => {
                 </Link>
               </div>
             </div>
-            <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap">
+            <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end   justify-content-center flex-wrap">
+
               {cookies?.user_data?.role === "professional" ? (
                 <div>
                   <img
@@ -1057,7 +1657,6 @@ const HeaderDashboard = () => {
                       width: "50px",
                       height: "50px",
                       cursor: "pointer",
-
                       borderRadius: "50%",
                     }}
                   />

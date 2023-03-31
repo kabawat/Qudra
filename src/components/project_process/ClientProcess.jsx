@@ -71,7 +71,7 @@ const ClientProcess = ({ location }) => {
                         </p>
                       </div>
                     </div>
-                    <div className="row my-xxl-5">
+                    <div className="row">
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
