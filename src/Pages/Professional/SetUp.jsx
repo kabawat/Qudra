@@ -73,6 +73,294 @@ const languages = [
   { label: "Swedis", value: "Swedis" },
   { label: "Ukrainian", value: "Ukrainian" },
 ];
+const countries = [
+  {
+    id: 1,
+    name: "Australia",
+    flag: "🇦🇺",
+    alpha2: "AU",
+    alpha3: "AUS",
+    ioc: "AUS",
+  },
+  {
+    id: 2,
+    name: "Austria",
+    flag: "🇦🇹",
+    alpha2: "AT",
+    alpha3: "AUT",
+    ioc: "AUT",
+  },
+  {
+    id: 3,
+    name: "Belgium",
+    flag: "🇧🇪",
+    alpha2: "BE",
+    alpha3: "BEL",
+    ioc: "BEL",
+  },
+  {
+    id: 4,
+    name: "Bulgaria",
+    flag: "🇧🇬",
+    alpha2: "BG",
+    alpha3: "BGR",
+    ioc: "BUL",
+  },
+  {
+    id: 5,
+    name: "Canada",
+    flag: "🇨🇦",
+    alpha2: "CA",
+    alpha3: "CAN",
+    ioc: "CAN",
+  },
+  {
+    id: 6,
+    name: "Cyprus",
+    flag: "🇨🇾",
+    alpha2: "CY",
+    alpha3: "CYP",
+    ioc: "CYP",
+  },
+  {
+    id: 7,
+    name: "Czech Republic",
+    flag: "🇨🇿",
+    alpha2: "CZ",
+    alpha3: "CZE",
+    ioc: "CZE",
+  },
+  {
+    id: 8,
+    name: "Denmark",
+    flag: "🇩🇰",
+    alpha2: "DK",
+    alpha3: "DNK",
+    ioc: "DEN",
+  },
+  {
+    id: 9,
+    name: "Estonia",
+    flag: "🇪🇪",
+    alpha2: "EE",
+    alpha3: "EST",
+    ioc: "EST",
+  },
+  {
+    id: 10,
+    name: "Finland",
+    flag: "🇫🇮",
+    alpha2: "FI",
+    alpha3: "FIN",
+    ioc: "FIN",
+  },
+  {
+    id: 11,
+    name: "France",
+    flag: "🇫🇷",
+    alpha2: "FR",
+    alpha3: "FRA",
+    ioc: "FRA",
+  },
+  {
+    id: 12,
+    name: "Germany",
+    flag: "🇩🇪",
+    alpha2: "DE",
+    alpha3: "DEU",
+    ioc: "GER",
+  },
+  {
+    id: 13,
+    name: "Greece",
+    flag: "🇬🇷",
+    alpha2: "GR",
+    alpha3: "GRC",
+    ioc: "GRE",
+  },
+  {
+    id: 14,
+    name: "Hong Kong",
+    flag: "🇭🇰",
+    alpha2: "HK",
+  },
+  {
+    id: 15,
+    name: "Hungary",
+    flag: "🇭🇺",
+    alpha2: "HU",
+    alpha3: "HUN",
+    ioc: "HUN",
+  },
+  {
+    id: 16,
+    name: "Ireland",
+    flag: "🇮🇪",
+    alpha2: "IE",
+    alpha3: "IRL",
+    ioc: "IRL",
+  },
+  {
+    id: 17,
+    name: "Italy",
+    flag: "🇮🇹",
+    alpha2: "IT",
+    alpha3: "ITA",
+    ioc: "ITA",
+  },
+  {
+    id: 18,
+    name: "Japan",
+    flag: "🇯🇵",
+    alpha2: "JP",
+    alpha3: "JPN",
+    ioc: "JPN",
+  },
+  {
+    id: 19,
+    name: "Latvia",
+    flag: "🇱🇻",
+    alpha2: "LV",
+    alpha3: "LVA",
+    ioc: "LAT",
+  },
+  {
+    id: 20,
+    name: "Lithuania",
+    flag: "🇱🇹",
+    alpha2: "LT",
+    alpha3: "LTU",
+    ioc: "LTU",
+  },
+  {
+    id: 21,
+    name: "Luxembourg",
+    flag: "🇱🇺",
+    alpha2: "LU",
+    alpha3: "LUX",
+    ioc: "LUX",
+  },
+  {
+    id: 22,
+    name: "Malta",
+    flag: "🇲🇹",
+    alpha2: "MT",
+    alpha3: "MLT",
+    ioc: "MLT",
+  },
+  {
+    id: 23,
+    name: "Netherlands",
+    flag: "🇳🇱",
+    alpha2: "NL",
+    alpha3: "NLD",
+    ioc: "NED",
+  },
+  {
+    id: 24,
+    name: "New Zealand",
+    flag: "🇳🇿",
+    alpha2: "NZ",
+    alpha3: "NZL",
+    ioc: "NZL",
+  },
+  {
+    id: 25,
+    name: "Norway",
+    flag: "🇳🇴",
+    alpha2: "NO",
+    alpha3: "NOR",
+    ioc: "NOR",
+  },
+  {
+    id: 26,
+    name: "Poland",
+    flag: "🇵🇱",
+    alpha2: "PL",
+    alpha3: "POL",
+    ioc: "POL",
+  },
+  {
+    id: 27,
+    name: "Portugal",
+    flag: "🇵🇹",
+    alpha2: "PT",
+    alpha3: "PRT",
+    ioc: "POR",
+  },
+  {
+    id: 28,
+    name: "Romania",
+    flag: "🇷🇴",
+    alpha2: "RO",
+    alpha3: "ROU",
+    ioc: "ROU",
+  },
+  {
+    id: 29,
+    name: "Singapore",
+    flag: "🇸🇬",
+    alpha2: "SG",
+    alpha3: "SGP",
+    ioc: "SGP",
+  },
+  {
+    id: 30,
+    name: "Slovakia",
+    flag: "🇸🇰",
+    alpha2: "SK",
+    alpha3: "SVK",
+    ioc: "SVK",
+  },
+  {
+    id: 31,
+    name: "Slovenia",
+    flag: "🇸🇮",
+    alpha2: "SI",
+    alpha3: "SVN",
+    ioc: "SLO",
+  },
+  {
+    id: 32,
+    name: "Spain",
+    flag: "🇪🇸",
+    alpha2: "ES",
+    alpha3: "ESP",
+    ioc: "ESP",
+  },
+  {
+    id: 33,
+    name: "Sweden",
+    flag: "🇸🇪",
+    alpha2: "SE",
+    alpha3: "SWE",
+    ioc: "SWE",
+  },
+  {
+    id: 34,
+    name: "Switzerland",
+    flag: "🇨🇭",
+    alpha2: "ch",
+    alpha3: "CHE",
+    ioc: "SUI",
+  },
+  {
+    id: 35,
+    name: "United Kingdom of Great Britain and Northern Ireland",
+    flag: "🇬🇧",
+    alpha2: "gb",
+    alpha3: "GBR",
+    ioc: "GBR",
+  },
+  {
+    id: 36,
+    name: "United States of America",
+    flag: "🇺🇸",
+    alpha2: "us",
+    alpha3: "USA",
+    ioc: "USA",
+  },
+];
 
 const SetUp = () => {
   const [cookies, setCookies] = useCookies();
@@ -80,14 +368,10 @@ const SetUp = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [value, setValue] = useState({
-    // alpha2: "in",
-    // alpha3: "ind",
-    // flag: "IN",
-    // id: "in",
-    // ioc: "ind",
-    // name: "India",
+    alpha2: "",
+    name: ''
   });
-
+  console.log(value)
   const isCookies = () => {
     if (cookies?.user_data?.category_selected) {
       if (cookies.user_data.role === "professional") {
@@ -343,10 +627,12 @@ const SetUp = () => {
                                   certificate
                                 );
 
-                                axios.post(
-                                  "http://13.52.16.160:8082/identity/professional_certificate",
-                                  userCertificate
-                                ).then((res) => console.log(res.data))
+                                axios
+                                  .post(
+                                    "http://13.52.16.160:8082/identity/professional_certificate",
+                                    userCertificate
+                                  )
+                                  .then((res) => console.log(res.data))
                                   .catch((err) => console.log(err));
 
                                 if (respo?.data?.status === "Success") {
@@ -606,16 +892,19 @@ const SetUp = () => {
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
                         /> */}
                           <CountrySelect
-                            value={value}
+                            countries={countries}
+                            value={value.name}
                             onChange={(val) => {
-                              setValue(val);
-                              setFieldValue("nation", val?.name);
+                              setValue({ name: val?.name, alpha2: val?.alpha2 });
+                              // console.log(val?.name);
                               // let id = val.id;
-                              // setimgcode(id.toLocaleUpperCase());
+                              // setimgcode( id.toLocaleUpperCase() );
+                              setFieldValue("nation", val?.name);
+
                               setdisply("block");
                             }}
                             flags={true}
-                            placeholder="Select An Country"
+                            placeholder={value.name ? value.name : "select country"}
                             name="nation"
                           />
                           <ErrorMessage
@@ -628,8 +917,9 @@ const SetUp = () => {
                         <div className="col-md my-md-3 my-1">
                           <div className="form-group">
                             <PhoneInput
+                              disableDropdown
                               placeholder="Enter phone number"
-                              country={value?.alpha2}
+                              country={value?.alpha2.toLocaleLowerCase()}
                               enableAreaCodes
                               name="mobile_no"
                               onChange={(pho, country) =>

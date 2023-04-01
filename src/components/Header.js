@@ -1538,12 +1538,20 @@ const HeaderDashboard = () => {
               <div className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""}  py-4`}>
                 {
                   cookies?.user_data?.role !== 'client' ? <>
-                    {isVerify ? <button className="btn dashboard-user-notification me-md-3 me-2" title="verifed">
-                      <GoVerified />
-                    </button> :
-                      <button className="btn dashboard-user-notification me-md-3 me-2" title="verify Account" onClick={handalVerify}>
-                        <GoUnverified />
-                      </button>}
+                    {
+                      cookies?.user_data?.role !== 'client' ? <>
+                        {
+                          isVerify ? <button className="verified-btn" title="verifed">
+                            <GoVerified />
+                            Account Verified
+                          </button> :
+                            <button className="verify-btn" title="verify Account" onClick={handalVerify}>
+                              <GoUnverified />
+                              Account Verify
+                            </button>
+                        }
+                      </> : ''
+                    }
                   </> : ''
                 }
                 <div className="dashboard-user-notification me-md-3 me-2">

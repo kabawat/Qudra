@@ -171,8 +171,9 @@ const Chat = () => {
                   client_id: cookies?.user_data?.user_id,
                   role: cookies?.user_data?.role,
                   user_token: cookies?.user_data?.user_token,
-                  professional_id:
-                    res?.data?.data?.professional_list[otherUserId]
+
+               professional_id:
+                    contextData?.professional_user_profile_data?.details
                       ?.professional_id,
                 })
                 .then((respo) => {
@@ -180,6 +181,13 @@ const Chat = () => {
                     `ws://13.52.16.160:8082/ws/chat_consumer/${respo?.data?.data?.room_uuid}/`
                   );
                   setWskt(ws && ws);
+                  setChatsUserTitle( {
+                    ...chatsUserTitle, userSelected: contextData?.professional_user_profile_data?.details
+                      ?.name,
+                      userPic:contextData?.professional_user_profile_data?.details
+                      ?.user_image
+                  } )
+                  setCurrentActiveChatPane( "first" );
                 });
               axios
                 .post("http://13.52.16.160:8082/chat/all_chats/", {

@@ -87,6 +87,7 @@ const ProfessionalProfile = () => {
       user_token: cookies?.user_data?.user_token,
       professional_id: params?.professional_id,
     }).then((respo) => {
+      console.log('respons',respo);
       setLikepro(respo?.data?.data?.liked);
       setRating({
         ...ratingreview,

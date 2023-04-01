@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import Pagination from "react-bootstrap/Pagination";
 import axios from "axios";
+import { useCookies } from "react-cookie";
+import { Button, Modal } from "react-bootstrap";
 const initialState = {
   projects: null,
 };
@@ -46,11 +48,24 @@ const DashboardPane = () => {
   ) {
     projectPaginationArray.push(i + 1);
   }
+  const [cookies] = useCookies()
+  const [show, setShow] = useState(false)
+  const sellDesignHandal = () => {
+    axios.put("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+      professioanl_id: cookies?.user_data?.user_id,
+      professioanl_token: cookies?.user_data?.user_token,
+    }).then((result) => {
+      if (result?.data?.status === "Failed") {
+        setShow(true);
+      } else {
+        navigate("/professional-buy-and-sale", {
+          state: true,
+        })
+      }
+    })
+  }
   return (
-    <div
-      id="dashboard-menu-bar"
-      className="container-fluid px-lg-5 px-md-4 px-3"
-    >
+    <div id="dashboard-menu-bar" className="container-fluid px-lg-5 px-md-4 px-3">
       <div className="row total-earning-row pt-xxl-5 pt-4 pb-xxl-5 pb-4">
         <div className="col-xl-9 col-lg-8 col-md-7">
           <h3 className="">
@@ -65,16 +80,7 @@ const DashboardPane = () => {
             <div className="col-lg-8 text-center text-lg-start col-12  fs-21 ps-3">
               You Can Sell Designs Here
             </div>
-            <div
-              className="col-lg-4 col-12 puchase_box"
-              onClick={() =>
-                navigate("/professional-buy-and-sale", {
-                  state: true,
-                })
-              }
-            >
-              Sell Designs <BsArrowRight />
-            </div>
+            <div className="col-lg-4 col-12 puchase_box" onClick={sellDesignHandal}>Sell Designs <BsArrowRight /></div>
           </div>
         </div>
         <div className="col-xl-3 col-lg-4 col-md-5">
@@ -260,6 +266,24 @@ const DashboardPane = () => {
       ) : (
         ""
       )}
+
+      <Modal centered show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Please Verify your Account Details.{" "}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShow(false);
+            }}
+          >
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
