@@ -51,8 +51,9 @@ const Cart = () => {
   };
   const [isPayment, setIsPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
+  const [show, setShow] = useState(false)
+
   const handalSubmit = () => {
-    console.log(cookies?.user_data?.client_id)
     axios.post('http://13.52.16.160:8082/client/purchase/buy-sell-design/', {
       client_id: cookies?.user_data?.user_id,
       client_token: cookies?.user_data?.user_token,
@@ -67,11 +68,39 @@ const Cart = () => {
         result?.data?.status === "Failed"
       ) {
         setIsPayment(true);
+      } else {
+        const url = result?.data?.data?.project_url
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", url.split("/")[5]); // you can set the filename here
+        document.body.appendChild(link);
+        link.click();
+        setShow(false)
       }
     })
 
   }
 
+  const handalPurchase = (event) => {
+    event.preventDefault();
+    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
+      ...cartInfo,
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+    }).then((response) => {
+      if (response?.data?.status === "Failed") {
+        const error = response?.data?.message;
+        setPaymentError(error.split(":")[1]);
+      } else {
+        setIsPayment(false);
+        setPaymentError("");
+      }
+    }).catch((error) => {
+      // console.log(error.response)
+    });
+  }
+
+  // handalSubmit
   return (
     <>
       <div className="dashboard">
@@ -82,17 +111,9 @@ const Cart = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              <div className="cart_page_main mx-5 px-5 my-5 py-5">
+              <div className="cart_page_main mx-5 px-5 my-5 py-5 ">
                 <div className="shoppingCartMain">
-                  <h3>Shopping Cart</h3>
-                  <div className="row justify-content-between border-bottom m-0 pb-3 mt-5">
-                    <div className="col-7">
-                      <h6>Designs</h6>
-                    </div>
-                    <div className="col-4">
-                      <h6>Total Price</h6>
-                    </div>
-                  </div>
+                  <h3 className="border-bottom pb-4">Shopping Cart</h3>
                   <div className="row justify-content-between m-0 pt-4">
                     <div className="col-7 leftShoppingCart">
                       <h2 className="pb-4">{location?.state?.sub_category_name}</h2>
@@ -141,8 +162,8 @@ const Cart = () => {
                                   <h4>${location?.state?.project_cost}</h4>
                                 </div>
                               </div>
-                              <button type="button" onClick={handalSubmit} className="PaymentCardSubmitButton">
-                                Check out <BsArrowRight />
+                              <button type="button" onClick={() => setShow(true)} className="PaymentCardSubmitButton">
+                                Purchase <BsArrowRight />
                               </button>
                             </div>
                           </div>
@@ -155,6 +176,32 @@ const Cart = () => {
             </div>
           </div>
         </div>
+
+
+        <Modal centered show={show} onHide={() => setShow(false)}>
+          <Modal.Header closeButton></Modal.Header>
+          <Modal.Body>
+            <Modal.Title>
+              Are you sure want to purchase this design
+            </Modal.Title>
+          </Modal.Body>
+
+          <Modal.Footer className="d-flex justify-content-start">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setPaymentError("");
+                setShow(false);
+              }}
+            >
+              cancel
+            </Button>
+            <Button className="theme-bg-color border-0" onClick={handalSubmit}>
+              sure
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
         <Modal
           centered
           show={isPayment}
@@ -169,7 +216,7 @@ const Cart = () => {
           </Modal.Header>
           <Modal.Footer>
             <div className="bg-white payementFormMain card-popup">
-              <form onSubmit={handalSubmit}>
+              <form onSubmit={handalPurchase}>
                 <div className="row m-0 pt-3 pb-4 border-bottom">
                   <h6>Card Number</h6>
                   <input

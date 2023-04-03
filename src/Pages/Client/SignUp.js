@@ -460,8 +460,7 @@ const SignIn = () => {
     }
   };
   const [value, setValue] = useState({
-    alpha2: "",
-    name: ''
+
   });
 
 
@@ -765,10 +764,10 @@ const SignIn = () => {
                         /> */}
                         <CountrySelect
                           countries={countries}
-                          value={value.name}
+                          value={value}
                           onChange={(val) => {
-                            setValue({ name: val?.name, alpha2: val?.alpha2 });
-                            // console.log(val?.name);
+                            setValue(val);
+                            // console.log(val);
                             // let id = val.id;
                             // setimgcode( id.toLocaleUpperCase() );
                             setFieldValue("nation", val?.name);
@@ -776,7 +775,7 @@ const SignIn = () => {
 
                           }}
                           flags={true}
-                          placeholder={value.name ? value.name : "select country"}
+                          placeholder='select a country'
                           name="nation"
                         />
                         <ErrorMessage
@@ -790,7 +789,7 @@ const SignIn = () => {
                           disableDropdown
                           placeholder="Enter phone number"
                           enableAreaCodes
-                          country={value?.alpha2.toLocaleLowerCase()}
+                          country={value?.alpha2?.toLocaleLowerCase()}
                           name="mobile_no"
                           onChange={(pho, country) =>
                             setFieldValue(

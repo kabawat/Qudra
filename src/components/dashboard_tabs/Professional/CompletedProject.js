@@ -17,6 +17,7 @@ const CompletedProject = () => {
   const contextData = useContext( Global );
   const navigate = useNavigate();
   const [ myProject, setMyProject ] = useState( [] );
+  const [ noResult, setNoResult ] = useState( false );
   const [ searchProject, setSearchProject ] = useState();
   const [ searchActiveProject, setSearchActiveProject ] = useState();
   const [ myProjectPageId, setMyProjectPageId ] = useState( {
@@ -62,18 +63,21 @@ const CompletedProject = () => {
         setMyProject( res?.data?.data );
       }
     } );
-  }, [ myProjectPageId, searchActiveProject, searchProjectPageId ] );
+  }, [] );
 
-  const handleFilterProject = () => {
+  const handleFilterProject = ( e ) => {
+    e.preventDefault()
     axios.post( "http://13.52.16.160:8082/identity/search_projects", {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
       search_status: "completed",
       search: searchActiveProject || "",
-      ...searchProjectPageId
+      ...searchProjectPageId,
     } ).then( ( res ) => {
-      if ( res?.data?.status === "Success" ) {
+      if ( res?.data?.status === "Failed" ) {
+        setNoResult( true )
+      } else {
         setSearchProject( res?.data?.data );
       }
     } );
@@ -168,15 +172,20 @@ const CompletedProject = () => {
                     { searchProject?.final_data.length || myProject?.final_data?.length ? (
                       <div className="row align-items-center MyProjectDisplayRow">
                         <div className="searchActiveProject col-8 ms-auto">
-                          <input
-                            type="text"
-                            value={ searchActiveProject }
-                            onChange={ ( e ) => setSearchActiveProject( e?.target?.value ) }
-                            placeholder="Search..."
-                          />
-                          <button onClick={ handleFilterProject }>
-                            <BsSearch />
-                          </button>
+                          <form onSubmit={ handleFilterProject } >
+                            <input
+                              type="text"
+                              value={ searchActiveProject }
+                              onChange={ ( e ) => {
+                                setSearchActiveProject( e?.target?.value )
+                                setNoResult( false )
+                              } }
+                              placeholder="Search..."
+                            />
+                            <button type="submit">
+                              <BsSearch />
+                            </button>
+                          </form>
                         </div>
                       </div>
                     ) : (
@@ -187,7 +196,14 @@ const CompletedProject = () => {
                         <span className="h4">No Project Data To Show</span>
                       </div>
                     ) }
-                    { searchActiveProject ? searchProject?.final_data && searchProject?.final_data?.map( ( res, index ) => (
+                    { noResult ? (
+                      <div
+                        style={ { minHeight: "600px" } }
+                        className="d-flex justify-content-center "
+                      >
+                        <span className="h4">No Result Found</span>
+                      </div>
+                    ) : ( searchProject?.final_data ? searchProject?.final_data?.map( ( res, index ) => (
                       <div className="row MyProjectDisplayRow" key={ index }>
                         <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
                           <img
@@ -329,7 +345,7 @@ const CompletedProject = () => {
                           </div>
                         </div>
                       </div>
-                    ) ) }
+                    ) ) ) }
                   </div>
 
                   { searchActiveProject ? searchProject && searchProject?.total_data > searchProjectPageId?.page_size && (

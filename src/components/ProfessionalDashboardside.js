@@ -117,6 +117,13 @@ const Dashboardside = () => {
               Ratings
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink className={`nav-link activity-btn`} to="/subscription-plans">
+              <img src="/static/icon/Rating2.png" alt="" className="Activities-white-icon" />
+              <img src="/static/icon/Rating1.png" alt="" className="Activities-green-icon" />
+              Subscription Plans
+            </NavLink>
+          </li>
 
           {/* <li className="nav-item">
             <NavLink className={`nav-link liked-btn`} to="/ratings">

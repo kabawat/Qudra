@@ -99,7 +99,6 @@ const FromProfessionalTabPane = ({ location }) => {
   };
 
   useEffect(() => {
-    console.log()
     axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
       client_id: locations.state.projectDetails?.id,
       user_token: cookies?.user_data?.user_token,

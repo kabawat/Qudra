@@ -24,7 +24,6 @@ const FromClientTabPane = ({ location }) => {
       professional_id: locations?.state?.projectDetails?.id,
       project_id: locations?.state?.projectDetails?.project_id,
     }).then((res) => {
-      console.log("here 1 : ", res)
       if (res?.data?.status === "Success") {
         axios.post("http://13.52.16.160:8082/client/particular_project_details",
           {
@@ -35,7 +34,6 @@ const FromClientTabPane = ({ location }) => {
           }
         )
           .then((respo) => {
-            console.log("here 2 : ", respo)
             if (respo?.data?.status === "Success") {
               if (locations?.state?.projectDetails?.id !== undefined) {
                 const state = {
@@ -205,7 +203,6 @@ const FromClientTabPane = ({ location }) => {
       milestone_id: curProject?.milestone_id,
       status: "accepted",
     }).then((result) => {
-      console.log(result)
       if (result?.data?.status === "Success") {
         axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
           client_id: cookies?.user_data?.user_id,
@@ -214,7 +211,6 @@ const FromClientTabPane = ({ location }) => {
           professional_id: locations?.state?.projectDetails?.id,
           project_id: locations?.state?.projectDetails?.project_id,
         }).then((res) => {
-          console.log("here 1 : ", res)
           if (res?.data?.status === "Success") {
             axios.post("http://13.52.16.160:8082/client/particular_project_details",
               {
@@ -224,7 +220,6 @@ const FromClientTabPane = ({ location }) => {
                 project_id: locations?.state?.projectDetails?.project_id,
               }
             ).then((respo) => {
-              console.log("here 2 : ", respo)
               if (respo?.data?.status === "Success") {
                 if (locations?.state?.projectDetails?.id !== undefined) {
                   const state = {
@@ -278,7 +273,6 @@ const FromClientTabPane = ({ location }) => {
             professional_id: locations?.state?.projectDetails?.id,
             project_id: locations?.state?.projectDetails?.project_id,
           }).then((res) => {
-            console.log("here 1 : ", res)
             if (res?.data?.status === "Success") {
               axios.post("http://13.52.16.160:8082/client/particular_project_details",
                 {
@@ -288,7 +282,6 @@ const FromClientTabPane = ({ location }) => {
                   project_id: locations?.state?.projectDetails?.project_id,
                 }
               ).then((respo) => {
-                console.log("here 2 : ", respo)
                 if (respo?.data?.status === "Success") {
                   if (locations?.state?.projectDetails?.id !== undefined) {
                     const state = {

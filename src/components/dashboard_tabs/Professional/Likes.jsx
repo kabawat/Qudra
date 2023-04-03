@@ -12,142 +12,143 @@ import Loader from "../../Loader";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 const LikesShow = () => {
-  const contextData = useContext(Global);
-  const [likes, setLikes] = useState([]);
-  const [search, setSearch] = useState("");
+  const contextData = useContext( Global );
+  const [ likes, setLikes ] = useState( [] );
+  const [ search, setSearch ] = useState( "" );
   const navigate = useNavigate()
-  const [projectPageId, setProjectPageId] = useState({
+  const [ projectPageId, setProjectPageId ] = useState( {
     page: 1,
     page_size: 5,
-  });
+  } );
 
-  const [isRender, setIsRender] = useState(false)
-  const [cookies] = useCookies()
-  useEffect(() => {
-    if (cookies?.user_data) {
-      if (cookies?.user_data?.category_selected) {
-        if (cookies?.user_data.role === "professional") {
-          setIsRender(true)
+  const [ isRender, setIsRender ] = useState( false )
+  const [ cookies ] = useCookies()
+  useEffect( () => {
+    if ( cookies?.user_data ) {
+      if ( cookies?.user_data?.category_selected ) {
+        if ( cookies?.user_data.role === "professional" ) {
+          setIsRender( true )
         } else {
-          navigate('/clientdashboard')
+          navigate( '/clientdashboard' )
         }
       } else {
-        if (cookies?.user_data.role === "professional") {
-          navigate('/categoryArchitecture')
+        if ( cookies?.user_data.role === "professional" ) {
+          navigate( '/categoryArchitecture' )
         } else {
-          navigate('/client-architechture')
+          navigate( '/client-architechture' )
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate( '/select-sign-in' )
     }
-  }, [])
+  }, [] )
 
   const projectPaginationArray = [];
-  for (let i = 0; i < likes?.total_data / projectPageId?.page_size; i++) {
-    projectPaginationArray.push(i + 1);
+  for ( let i = 0; i < likes?.total_data / projectPageId?.page_size; i++ ) {
+    projectPaginationArray.push( i + 1 );
   }
 
   const fetchLikeData = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/get-like-save", {
+      .post( "http://13.52.16.160:8082/identity/get-like-save", {
         user_id: contextData?.userData?.user_id,
         user_token: contextData?.userData?.user_token,
         role: contextData?.userData?.role,
         ...projectPageId,
         search_for: "like",
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setLikes(res?.data?.data);
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          setLikes( res?.data?.data );
         }
-      });
+      } );
   };
 
-  useEffect(() => {
+  useEffect( () => {
     fetchLikeData();
-  }, [projectPageId]);
+  }, [ projectPageId ] );
 
-  useEffect(() => {
-    if (!search) {
-      setProjectPageId({
+  useEffect( () => {
+    if ( !search ) {
+      setProjectPageId( {
         page: 1,
         page_size: 5,
-      });
+      } );
       fetchLikeData();
     } else {
-      setLikes([]);
+      setLikes( [] );
     }
-  }, []);
+  }, [] );
 
-  const [searchPageId, setSearchPageId] = useState({
+  const [ searchPageId, setSearchPageId ] = useState( {
     page: 1,
     page_size: 5,
-  });
+  } );
   const searchPaginationArray = [];
-  for (let i = 0; i < likes?.total_data / searchPageId?.page_size; i++) {
-    searchPaginationArray.push(i + 1);
+  for ( let i = 0; i < likes?.total_data / searchPageId?.page_size; i++ ) {
+    searchPaginationArray.push( i + 1 );
   }
   var searchAll = [];
 
-  const handleSearch = () => {
+  const handleSearch = ( e ) => {
+    e.preventDefault()
     axios
-      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      .post( "http://13.52.16.160:8082/identity/search_like_rate_user", {
         user_id: contextData?.userData?.user_id,
         user_token: contextData?.userData?.user_token,
         role: contextData?.userData?.role,
         ...searchPageId,
         search_for: "like",
         search_data: search,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setLikes(res?.data?.data);
-          setSearchdata(likes);
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          setLikes( res?.data?.data );
+          setSearchdata( likes );
           searchAll = res?.data?.data;
         } else {
-          setSearchdata("");
+          setSearchdata( "" );
         }
-      });
+      } );
   };
 
-  const handleLikes = (val) => {
-    if (val == "") {
+  const handleLikes = ( val ) => {
+    if ( val == "" ) {
       axios
-        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+        .post( "http://13.52.16.160:8082/identity/search_like_rate_user", {
           user_id: contextData?.userData?.user_id,
           user_token: contextData?.userData?.user_token,
           role: contextData?.userData?.role,
           ...searchPageId,
           search_for: "like",
           search_data: "",
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            setLikes(res?.data?.data);
+        } )
+        .then( ( res ) => {
+          if ( res?.data?.status === "Success" ) {
+            setLikes( res?.data?.data );
             searchAll = res?.data?.data;
-            setSearchdata(searchAll);
+            setSearchdata( searchAll );
           }
-        });
+        } );
     }
   };
-  const [searchData, setSearchdata] = useState(searchAll);
-  useEffect(() => {
+  const [ searchData, setSearchdata ] = useState( searchAll );
+  useEffect( () => {
     axios
-      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      .post( "http://13.52.16.160:8082/identity/search_like_rate_user", {
         user_id: contextData?.userData?.user_id,
         user_token: contextData?.userData?.user_token,
         role: contextData?.userData?.role,
         ...searchPageId,
         search_for: "like",
         search_data: search,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setLikes(res?.data?.data);
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          setLikes( res?.data?.data );
         }
-      });
-  }, [searchPageId]);
+      } );
+  }, [ searchPageId ] );
 
   return (
     isRender ? <>
@@ -163,186 +164,188 @@ const LikesShow = () => {
                 <div id="liked-save" className="container-fluid  myProjectTable">
                   <h2 className="ps-5"> LikesShow </h2>
                   <div className="m-md-5 mx-2 shadow">
-                    {likes?.final_data?.length ? (
+                    { likes?.final_data?.length ? (
                       <div className="row  align-items-center MyProjectDisplayRow">
                         <div className="searchActiveProject col-8 ms-auto">
-                          <input
-                            type="text"
-                            placeholder="Search..."
-                            value={search}
-                            onChange={(e) => {
-                              setSearch(e.target.value);
-                              handleLikes(e.target.value);
-                            }}
-                          />
-                          <button onClick={handleSearch}>
-                            <BsSearch />
-                          </button>
+                          <form onSubmit={ handleSearch }>
+                            <input
+                              type="text"
+                              placeholder="Search..."
+                              value={ search }
+                              onChange={ ( e ) => {
+                                setSearch( e.target.value );
+                                handleLikes( e.target.value );
+                              } }
+                            />
+                            <button type="submit">
+                              <BsSearch />
+                            </button>
+                          </form>
                         </div>
                       </div>
                     ) : (
                       <div
-                        style={{ minHeight: "600px" }}
+                        style={ { minHeight: "600px" } }
                         className="d-flex justify-content-center align-items-center"
                       >
                         <span className="h4">No Liked Data To Show</span>
                       </div>
-                    )}
-                    {searchData && likes?.final_data ? (
-                      likes?.final_data?.map((res, index) => (
-                        <div className="row MyProjectDisplayRow" key={index}>
+                    ) }
+                    { searchData && likes?.final_data ? (
+                      likes?.final_data?.map( ( res, index ) => (
+                        <div className="row MyProjectDisplayRow" key={ index }>
                           <div className="col-md-6  d-flex align-items-center ">
                             <img
-                              src={res?.client_image}
+                              src={ res?.client_image }
                               className="img-fluid rounded-circle"
-                              style={{ width: "70px", height: "70px" }}
+                              style={ { width: "70px", height: "70px" } }
                               alt=""
                             />
                             <div className="ps-3">
-                              <h4>{res?.client_name}</h4>
+                              <h4>{ res?.client_name }</h4>
                               <h6>
                                 <CiLocationOn />
-                                {res?.location}
+                                { res?.location }
                               </h6>
                             </div>
                           </div>
                           <div className="col-md-6  d-flex  align-items-center justify-content-end">
                             <button className="LikeButton">
                               <BsFillSuitHeartFill
-                                color={res?.liked ? "crimson" : "#dbdbdb"}
+                                color={ res?.liked ? "crimson" : "#dbdbdb" }
                               />
                             </button>
                           </div>
                         </div>
-                      ))
+                      ) )
                     ) : (
                       <div
-                        style={{ minHeight: "600px" }}
+                        style={ { minHeight: "600px" } }
                         className="d-flex justify-content-center align-items-center"
                       >
                         <span className="h4">No Liked Data To Show</span>
                       </div>
-                    )}
+                    ) }
                   </div>
 
-                  {!search && projectPageId?.page_size < likes?.total_data ? (
+                  { !search && projectPageId?.page_size < likes?.total_data ? (
                     <Pagination className="ps-5 paginationBoxProfessionalDashboard">
                       <Pagination.First
-                        onClick={() => {
-                          setProjectPageId({
+                        onClick={ () => {
+                          setProjectPageId( {
                             page: 1,
                             page_size: 5,
-                          });
-                        }}
+                          } );
+                        } }
                       />
                       <Pagination.Prev
-                        onClick={() => {
-                          setProjectPageId((prev) => ({
+                        onClick={ () => {
+                          setProjectPageId( ( prev ) => ( {
                             ...prev,
                             page: projectPageId?.page !== 1 ? projectPageId?.page - 1 : 1,
-                          }));
-                        }}
+                          } ) );
+                        } }
                       />
-                      {projectPaginationArray?.map((res, key) => (
+                      { projectPaginationArray?.map( ( res, key ) => (
                         <Pagination.Item
-                          key={key}
-                          active={projectPageId?.page === res}
-                          onClick={() => {
-                            setProjectPageId((prev) => ({
+                          key={ key }
+                          active={ projectPageId?.page === res }
+                          onClick={ () => {
+                            setProjectPageId( ( prev ) => ( {
                               ...prev,
                               page: res,
-                            }));
-                          }}
+                            } ) );
+                          } }
                         >
-                          {res}
+                          { res }
                         </Pagination.Item>
-                      ))}
+                      ) ) }
                       <Pagination.Next
-                        onClick={() => {
-                          setProjectPageId((prev) => ({
+                        onClick={ () => {
+                          setProjectPageId( ( prev ) => ( {
                             ...prev,
                             page:
                               projectPaginationArray?.length !== projectPageId?.page
                                 ? projectPageId?.page + 1
                                 : projectPageId?.page,
-                          }));
-                        }}
+                          } ) );
+                        } }
                       />
                       <Pagination.Last
-                        onClick={() => {
-                          setProjectPageId((prev) => ({
+                        onClick={ () => {
+                          setProjectPageId( ( prev ) => ( {
                             ...prev,
                             page: projectPaginationArray?.length,
-                          }));
-                        }}
+                          } ) );
+                        } }
                       />
                     </Pagination>
                   ) : (
                     ""
-                  )}
+                  ) }
 
-                  {/* search pagintaion */}
+                  {/* search pagintaion */ }
 
-                  {search && searchPageId?.page_size < likes?.total_data ? (
+                  { search && searchPageId?.page_size < likes?.total_data ? (
                     <Pagination className="ps-5 paginationBoxProfessionalDashboard">
                       <Pagination.First
-                        onClick={() => {
-                          setSearchPageId({
+                        onClick={ () => {
+                          setSearchPageId( {
                             page: 1,
                             page_size: 5,
-                          });
+                          } );
                           handleSearch();
-                        }}
+                        } }
                       />
                       <Pagination.Prev
-                        onClick={() => {
-                          setSearchPageId((prev) => ({
+                        onClick={ () => {
+                          setSearchPageId( ( prev ) => ( {
                             ...prev,
                             page: searchPageId?.page !== 1 ? searchPageId?.page - 1 : 1,
-                          }));
+                          } ) );
                           handleSearch();
-                        }}
+                        } }
                       />
-                      {searchPaginationArray?.map((res, key) => (
+                      { searchPaginationArray?.map( ( res, key ) => (
                         <Pagination.Item
-                          key={key}
-                          active={searchPageId?.page === res}
-                          onClick={() => {
-                            setSearchPageId((prev) => ({
+                          key={ key }
+                          active={ searchPageId?.page === res }
+                          onClick={ () => {
+                            setSearchPageId( ( prev ) => ( {
                               ...prev,
                               page: res,
-                            }));
+                            } ) );
                             handleSearch();
-                          }}
+                          } }
                         >
-                          {res}
+                          { res }
                         </Pagination.Item>
-                      ))}
+                      ) ) }
                       <Pagination.Next
-                        onClick={() => {
-                          setSearchPageId((prev) => ({
+                        onClick={ () => {
+                          setSearchPageId( ( prev ) => ( {
                             ...prev,
                             page:
                               searchPaginationArray?.length !== searchPageId?.page
                                 ? searchPageId?.page + 1
                                 : searchPageId?.page,
-                          }));
+                          } ) );
                           handleSearch();
-                        }}
+                        } }
                       />
                       <Pagination.Last
-                        onClick={() => {
-                          setSearchPageId((prev) => ({
+                        onClick={ () => {
+                          setSearchPageId( ( prev ) => ( {
                             ...prev,
                             page: searchPaginationArray?.length,
-                          }));
+                          } ) );
                           handleSearch();
-                        }}
+                        } }
                       />
                     </Pagination>
                   ) : (
                     ""
-                  )}
+                  ) }
                 </div>
               </main>
             </div>
@@ -354,4 +357,4 @@ const LikesShow = () => {
   );
 };
 
-export default React.memo(LikesShow);
+export default React.memo( LikesShow );

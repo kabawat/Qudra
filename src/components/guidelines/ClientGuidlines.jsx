@@ -18,30 +18,30 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const ClientGuidlines = () => {
-  const [cookies] = useCookies()
-  const [isRender, setIsReander] = useState(false)
-  const navigate = useNavigate()
+  const [cookies] = useCookies();
+  const [isRender, setIsReander] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data?.role === "client") {
-          setIsReander(true)
+          setIsReander(true);
         } else {
-          navigate('/professionaldashboard')
+          navigate("/professionaldashboard");
         }
       } else {
         if (cookies?.user_data?.role === "client") {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         } else {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [])
-  return (
-    isRender ? <>
+  }, []);
+  return isRender ? (
+    <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -95,7 +95,9 @@ const ClientGuidlines = () => {
         </div>
       </div>
       <Footer />
-    </> : <Loader />
+    </>
+  ) : (
+    <Loader />
   );
 };
 

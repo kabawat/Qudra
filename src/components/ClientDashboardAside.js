@@ -76,6 +76,13 @@ const ClientDashboardAside = () => {
             Declined Projects
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink className={`nav-link activity-btn `} to="/purchase-design" >
+            <img src="/static/icon/decline_project2.png" alt="" className="Activities-white-icon" />
+            <img src="/static/icon/decline_project1.png" alt="" className="Activities-green-icon" />
+            Purchase Design
+          </NavLink>
+        </li>
 
         <li className="nav-item">
           <NavLink className={`nav-link activity-btn`} to="/client-liked" >

@@ -17,6 +17,7 @@ const PendingActivity = () => {
   const contextData = useContext( Global );
   const navigate = useNavigate();
   const [ myProject, setMyProject ] = useState( [] );
+  const [ noResult, setNoResult ] = useState( false );
   const [ searchProject, setSearchProject ] = useState();
   const [ searchActiveProject, setSearchActiveProject ] = useState();
   const [ myProjectPageId, setMyProjectPageId ] = useState( {
@@ -62,9 +63,10 @@ const PendingActivity = () => {
         setMyProject( res?.data?.data );
       }
     } );
-  }, [ myProjectPageId, searchActiveProject, searchProjectPageId ] );
+  }, [] );
 
-  const handleFilterProject = () => {
+  const handleFilterProject = ( e ) => {
+    e.preventDefault()
     axios.post( "http://13.52.16.160:8082/identity/search_projects", {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
@@ -73,7 +75,9 @@ const PendingActivity = () => {
       search: searchActiveProject || "",
       ...searchProjectPageId,
     } ).then( ( res ) => {
-      if ( res?.data?.status === "Success" ) {
+      if ( res?.data?.status === "Failed" ) {
+        setNoResult( true )
+      } else {
         setSearchProject( res?.data?.data );
       }
     } );
@@ -98,18 +102,18 @@ const PendingActivity = () => {
   const handleClientAcceptation = ( id, project_id ) => {
     axios.post( "http://13.52.16.160:8082/client/particular_project_milestones", {
       client_id: id,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
-      professional_id: contextData?.userData?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      professional_id: cookies?.user_data?.user_id,
       project_id: project_id,
     } ).then( ( res ) => {
       if ( res?.data?.status === "Success" ) {
         axios.post( "http://13.52.16.160:8082/client/particular_project_details",
           {
             client_id: id,
-            professional_id: contextData?.userData?.user_id,
-            user_token: contextData?.userData?.user_token,
-            role: contextData?.userData?.role,
+            professional_id: cookies?.user_data?.user_id,
+            user_token: cookies?.user_data?.user_token,
+            role: cookies?.user_data?.role,
             project_id: project_id,
           }
         ).then( ( respo ) => {
@@ -133,9 +137,9 @@ const PendingActivity = () => {
 
   const handlePendingRequest = ( client_id, project_id ) => {
     axios.post( "http://13.52.16.160:8082/client/particular_project_details", {
-      professional_id: contextData?.userData?.user_id,
-      user_token: contextData?.userData?.user_token,
-      role: contextData?.userData?.role,
+      professional_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
       client_id: client_id,
       project_id: project_id,
     } ).then( ( respo ) => {
@@ -168,15 +172,20 @@ const PendingActivity = () => {
                     { searchProject?.final_data.length || myProject?.final_data?.length ? (
                       <div className="row align-items-center MyProjectDisplayRow">
                         <div className="searchActiveProject col-8 ms-auto">
-                          <input
-                            type="text"
-                            value={ searchActiveProject }
-                            onChange={ ( e ) => setSearchActiveProject( e?.target?.value ) }
-                            placeholder="Search..."
-                          />
-                          <button onClick={ handleFilterProject }>
-                            <BsSearch />
-                          </button>
+                          <form onSubmit={ handleFilterProject } >
+                            <input
+                              type="text"
+                              value={ searchActiveProject }
+                              onChange={ ( e ) => {
+                                setSearchActiveProject( e?.target?.value )
+                                setNoResult( false )
+                              } }
+                              placeholder="Search..."
+                            />
+                            <button type="submit">
+                              <BsSearch />
+                            </button>
+                          </form>
                         </div>
                       </div>
                     ) : (
@@ -187,7 +196,14 @@ const PendingActivity = () => {
                         <span className="h4">No Project Data To Show</span>
                       </div>
                     ) }
-                    { searchActiveProject ? searchProject?.final_data && searchProject?.final_data?.map( ( res, index ) => (
+                    { noResult ? (
+                      <div
+                        style={ { minHeight: "600px" } }
+                        className="d-flex justify-content-center "
+                      >
+                        <span className="h4">No Result Found</span>
+                      </div>
+                    ) : ( searchProject?.final_data ? searchProject?.final_data?.map( ( res, index ) => (
                       <div className="row MyProjectDisplayRow" key={ index }>
                         <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
                           <img
@@ -329,7 +345,7 @@ const PendingActivity = () => {
                           </div>
                         </div>
                       </div>
-                    ) ) }
+                    ) ) ) }
                   </div>
 
                   { searchActiveProject ? searchProject && searchProject?.total_data > searchProjectPageId?.page_size && (

@@ -156,7 +156,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                               <div className="col-xxl-6 col-lg-12 col-6">
                                 <NavLink to="/cart"
                                   state={{
-                                    buysell_id: res?.buysell_id,
+                                    buysell_id: index,
                                     category_id: res?.category_id,
                                     professional_id: res?.professional_id,
                                     sub_category_id: res?.sub_category_id,
@@ -276,7 +276,6 @@ const BuyDesign = ({ setBuyDesigns }) => {
             {specificProductData &&
               specificProductData.map((res) => (
                 <SwiperSlide>
-                  {console.log(res)}
                   {specificProductDataType === "image" ? (
                     <img src={res} alt={res} />
                   ) : (

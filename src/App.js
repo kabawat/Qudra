@@ -56,10 +56,13 @@ import DeclinedActivity from "./components/dashboard_tabs/Professional/DeclinedA
 import CompletedProject from "./components/dashboard_tabs/Professional/CompletedProject";
 import Reject from "./components/project_process/Reject";
 import PendingActivity from "./components/dashboard_tabs/Professional/PendingActivity";
+import SubscriptionPlans from "./components/dashboard_tabs/Professional/subscription-plans";
+import PurchaseDesign from "./components/dashboard_tabs/Client/purchase-design";
+
 function App() {
   const [cookies] = useCookies()
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <ScrollToTop />
       <IconContext.Provider value={{ color: "black", className: "global-class-name" }}>
         <Routes>
@@ -83,13 +86,14 @@ function App() {
           <Route path="/Portfolio" element={<PortfolioPane />} />
           <Route path="/like" element={<LikesShow />} />
           <Route path="/ratings" element={<Showratings />} />
-          
+
           <Route path="/request-projects" element={<RequestProjects />} />
           <Route path="/myactivity" element={<ActivitiesPane />} />
           <Route path="/completed-activity" element={<CompletedProject />} />
           <Route path="/pending-activity" element={<PendingActivity />} />
           <Route path="/declined-activity" element={<DeclinedActivity />} />
           <Route path="/professional-Reject" element={<Reject />} />
+          <Route path="/subscription-plans" element={<SubscriptionPlans />} />
           <Route path="/professional-guidelines" element={<ProfessionalGuidelines />} />
 
           <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
@@ -105,6 +109,7 @@ function App() {
           <Route path="/pending-project" element={<PendingProject />} />
           <Route path="/accept-project" element={<AcceptProject />} />
           <Route path="/completed-projects" element={<CompletedPane />} />
+          <Route path="/purchase-design" element={<PurchaseDesign />} />
           <Route path="/declined-projects" element={<DeclineProject />} />
           <Route path="/client-liked" element={<Likes />} />
           <Route path="/client-rating" element={<Ratings />} />

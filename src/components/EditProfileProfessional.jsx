@@ -167,7 +167,6 @@ const EditProfileProfessional = ({ location }) => {
   const [certificate, setCertificate] = useState(
     location.state.professional_certificate.slice(59)
   );
-  // console.log('certificate====',certificate);
 
   const certificateChange = (e) => {
     const file = e.target.files[0];

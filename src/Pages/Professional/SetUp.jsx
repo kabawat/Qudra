@@ -73,294 +73,1339 @@ const languages = [
   { label: "Swedis", value: "Swedis" },
   { label: "Ukrainian", value: "Ukrainian" },
 ];
+// const countries = [
+//   {
+//     id: 1,
+//     name: "Australia",
+//     flag: "🇦🇺",
+//     alpha2: "AU",
+//     alpha3: "AUS",
+//     ioc: "AUS",
+//   },
+//   {
+//     id: 2,
+//     name: "Austria",
+//     flag: "🇦🇹",
+//     alpha2: "AT",
+//     alpha3: "AUT",
+//     ioc: "AUT",
+//   },
+//   {
+//     id: 3,
+//     name: "Belgium",
+//     flag: "🇧🇪",
+//     alpha2: "BE",
+//     alpha3: "BEL",
+//     ioc: "BEL",
+//   },
+//   {
+//     id: 4,
+//     name: "Bulgaria",
+//     flag: "🇧🇬",
+//     alpha2: "BG",
+//     alpha3: "BGR",
+//     ioc: "BUL",
+//   },
+//   {
+//     id: 5,
+//     name: "Canada",
+//     flag: "🇨🇦",
+//     alpha2: "CA",
+//     alpha3: "CAN",
+//     ioc: "CAN",
+//   },
+//   {
+//     id: 6,
+//     name: "Cyprus",
+//     flag: "🇨🇾",
+//     alpha2: "CY",
+//     alpha3: "CYP",
+//     ioc: "CYP",
+//   },
+//   {
+//     id: 7,
+//     name: "Czech Republic",
+//     flag: "🇨🇿",
+//     alpha2: "CZ",
+//     alpha3: "CZE",
+//     ioc: "CZE",
+//   },
+//   {
+//     id: 8,
+//     name: "Denmark",
+//     flag: "🇩🇰",
+//     alpha2: "DK",
+//     alpha3: "DNK",
+//     ioc: "DEN",
+//   },
+//   {
+//     id: 9,
+//     name: "Estonia",
+//     flag: "🇪🇪",
+//     alpha2: "EE",
+//     alpha3: "EST",
+//     ioc: "EST",
+//   },
+//   {
+//     id: 10,
+//     name: "Finland",
+//     flag: "🇫🇮",
+//     alpha2: "FI",
+//     alpha3: "FIN",
+//     ioc: "FIN",
+//   },
+//   {
+//     id: 11,
+//     name: "France",
+//     flag: "🇫🇷",
+//     alpha2: "FR",
+//     alpha3: "FRA",
+//     ioc: "FRA",
+//   },
+//   {
+//     id: 12,
+//     name: "Germany",
+//     flag: "🇩🇪",
+//     alpha2: "DE",
+//     alpha3: "DEU",
+//     ioc: "GER",
+//   },
+//   {
+//     id: 13,
+//     name: "Greece",
+//     flag: "🇬🇷",
+//     alpha2: "GR",
+//     alpha3: "GRC",
+//     ioc: "GRE",
+//   },
+//   {
+//     id: 14,
+//     name: "Hong Kong",
+//     flag: "🇭🇰",
+//     alpha2: "HK",
+//   },
+//   {
+//     id: 15,
+//     name: "Hungary",
+//     flag: "🇭🇺",
+//     alpha2: "HU",
+//     alpha3: "HUN",
+//     ioc: "HUN",
+//   },
+//   {
+//     id: 16,
+//     name: "Ireland",
+//     flag: "🇮🇪",
+//     alpha2: "IE",
+//     alpha3: "IRL",
+//     ioc: "IRL",
+//   },
+//   {
+//     id: 17,
+//     name: "Italy",
+//     flag: "🇮🇹",
+//     alpha2: "IT",
+//     alpha3: "ITA",
+//     ioc: "ITA",
+//   },
+//   {
+//     id: 18,
+//     name: "Japan",
+//     flag: "🇯🇵",
+//     alpha2: "JP",
+//     alpha3: "JPN",
+//     ioc: "JPN",
+//   },
+//   {
+//     id: 19,
+//     name: "Latvia",
+//     flag: "🇱🇻",
+//     alpha2: "LV",
+//     alpha3: "LVA",
+//     ioc: "LAT",
+//   },
+//   {
+//     id: 20,
+//     name: "Lithuania",
+//     flag: "🇱🇹",
+//     alpha2: "LT",
+//     alpha3: "LTU",
+//     ioc: "LTU",
+//   },
+//   {
+//     id: 21,
+//     name: "Luxembourg",
+//     flag: "🇱🇺",
+//     alpha2: "LU",
+//     alpha3: "LUX",
+//     ioc: "LUX",
+//   },
+//   {
+//     id: 22,
+//     name: "Malta",
+//     flag: "🇲🇹",
+//     alpha2: "MT",
+//     alpha3: "MLT",
+//     ioc: "MLT",
+//   },
+//   {
+//     id: 23,
+//     name: "Netherlands",
+//     flag: "🇳🇱",
+//     alpha2: "NL",
+//     alpha3: "NLD",
+//     ioc: "NED",
+//   },
+//   {
+//     id: 24,
+//     name: "New Zealand",
+//     flag: "🇳🇿",
+//     alpha2: "NZ",
+//     alpha3: "NZL",
+//     ioc: "NZL",
+//   },
+//   {
+//     id: 25,
+//     name: "Norway",
+//     flag: "🇳🇴",
+//     alpha2: "NO",
+//     alpha3: "NOR",
+//     ioc: "NOR",
+//   },
+//   {
+//     id: 26,
+//     name: "Poland",
+//     flag: "🇵🇱",
+//     alpha2: "PL",
+//     alpha3: "POL",
+//     ioc: "POL",
+//   },
+//   {
+//     id: 27,
+//     name: "Portugal",
+//     flag: "🇵🇹",
+//     alpha2: "PT",
+//     alpha3: "PRT",
+//     ioc: "POR",
+//   },
+//   {
+//     id: 28,
+//     name: "Romania",
+//     flag: "🇷🇴",
+//     alpha2: "RO",
+//     alpha3: "ROU",
+//     ioc: "ROU",
+//   },
+//   {
+//     id: 29,
+//     name: "Singapore",
+//     flag: "🇸🇬",
+//     alpha2: "SG",
+//     alpha3: "SGP",
+//     ioc: "SGP",
+//   },
+//   {
+//     id: 30,
+//     name: "Slovakia",
+//     flag: "🇸🇰",
+//     alpha2: "SK",
+//     alpha3: "SVK",
+//     ioc: "SVK",
+//   },
+//   {
+//     id: 31,
+//     name: "Slovenia",
+//     flag: "🇸🇮",
+//     alpha2: "SI",
+//     alpha3: "SVN",
+//     ioc: "SLO",
+//   },
+//   {
+//     id: 32,
+//     name: "Spain",
+//     flag: "🇪🇸",
+//     alpha2: "ES",
+//     alpha3: "ESP",
+//     ioc: "ESP",
+//   },
+//   {
+//     id: 33,
+//     name: "Sweden",
+//     flag: "🇸🇪",
+//     alpha2: "SE",
+//     alpha3: "SWE",
+//     ioc: "SWE",
+//   },
+//   {
+//     id: 34,
+//     name: "Switzerland",
+//     flag: "🇨🇭",
+//     alpha2: "ch",
+//     alpha3: "CHE",
+//     ioc: "SUI",
+//   },
+//   {
+//     id: 35,
+//     name: "United Kingdom of Great Britain and Northern Ireland",
+//     flag: "🇬🇧",
+//     alpha2: "gb",
+//     alpha3: "GBR",
+//     ioc: "GBR",
+//   },
+//   {
+//     id: 36,
+//     name: "United States of America",
+//     flag: "🇺🇸",
+//     alpha2: "us",
+//     alpha3: "USA",
+//     ioc: "USA",
+//   },
+// ];
+
 const countries = [
   {
     id: 1,
-    name: "Australia",
-    flag: "🇦🇺",
-    alpha2: "AU",
-    alpha3: "AUS",
-    ioc: "AUS",
+    name: 'Albania',
+    flag: '🇦🇱',
+    alpha2: 'AL',
+    alpha3: 'ALB',
+    ioc: 'ALB'
   },
+
   {
     id: 2,
-    name: "Austria",
-    flag: "🇦🇹",
-    alpha2: "AT",
-    alpha3: "AUT",
-    ioc: "AUT",
+    name: 'Algeria',
+    flag: '🇩🇿',
+    alpha2: 'DZ',
+    alpha3: 'DZA',
+    ioc: 'DZA'
   },
+
   {
     id: 3,
-    name: "Belgium",
-    flag: "🇧🇪",
-    alpha2: "BE",
-    alpha3: "BEL",
-    ioc: "BEL",
+    name: 'Angola',
+    flag: '🇦🇴',
+    alpha2: 'AO',
+    alpha3: 'AGO',
+    ioc: 'AGO'
   },
+
   {
     id: 4,
-    name: "Bulgaria",
-    flag: "🇧🇬",
-    alpha2: "BG",
-    alpha3: "BGR",
-    ioc: "BUL",
+    name: 'Antigua & Barbuda',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
   },
+
   {
     id: 5,
-    name: "Canada",
-    flag: "🇨🇦",
-    alpha2: "CA",
-    alpha3: "CAN",
-    ioc: "CAN",
+    name: 'Argentina',
+    flag: '🇦🇷',
+    alpha2: 'AR',
+    alpha3: 'ARG',
+    ioc: 'ARG'
   },
+
   {
     id: 6,
-    name: "Cyprus",
-    flag: "🇨🇾",
-    alpha2: "CY",
-    alpha3: "CYP",
-    ioc: "CYP",
+    name: 'Armenia',
+    flag: '🇦🇲',
+    alpha2: 'AM',
+    alpha3: 'ARM',
+    ioc: 'ARM'
   },
+
   {
     id: 7,
-    name: "Czech Republic",
-    flag: "🇨🇿",
-    alpha2: "CZ",
-    alpha3: "CZE",
-    ioc: "CZE",
+    name: 'Australia',
+    flag: '🇦🇺',
+    alpha2: 'AU',
+    alpha3: 'AUS',
+    ioc: 'AUS'
   },
+
   {
     id: 8,
-    name: "Denmark",
-    flag: "🇩🇰",
-    alpha2: "DK",
-    alpha3: "DNK",
-    ioc: "DEN",
+    name: 'Austria',
+    flag: '🇦🇹',
+    alpha2: 'AT',
+    alpha3: 'AUT',
+    ioc: 'AUT'
   },
+
   {
     id: 9,
-    name: "Estonia",
-    flag: "🇪🇪",
-    alpha2: "EE",
-    alpha3: "EST",
-    ioc: "EST",
+    name: 'Azerbaijan',
+    flag: '🇦🇿',
+    alpha2: 'AZ',
+    alpha3: 'AZE',
+    ioc: 'AZE'
   },
+
   {
     id: 10,
-    name: "Finland",
-    flag: "🇫🇮",
-    alpha2: "FI",
-    alpha3: "FIN",
-    ioc: "FIN",
+    name: 'Bahamas',
+    flag: '🇧🇸',
+    alpha2: 'BS',
+    alpha3: 'BHS',
+    ioc: 'BHS'
   },
+
   {
     id: 11,
-    name: "France",
-    flag: "🇫🇷",
-    alpha2: "FR",
-    alpha3: "FRA",
-    ioc: "FRA",
+    name: 'Bahrain',
+    flag: '🇧🇭',
+    alpha2: 'BH',
+    alpha3: 'BHR',
+    ioc: 'BHR'
   },
+
   {
     id: 12,
-    name: "Germany",
-    flag: "🇩🇪",
-    alpha2: "DE",
-    alpha3: "DEU",
-    ioc: "GER",
+    name: 'Bangladesh',
+    flag: '🇧🇩',
+    alpha2: 'BD',
+    alpha3: 'BGD',
+    ioc: 'BGD'
   },
+
   {
     id: 13,
-    name: "Greece",
-    flag: "🇬🇷",
-    alpha2: "GR",
-    alpha3: "GRC",
-    ioc: "GRE",
+    name: 'Belgium',
+    flag: '🇧🇪',
+    alpha2: 'BE',
+    alpha3: 'BEL',
+    ioc: 'BEL'
   },
+
   {
     id: 14,
-    name: "Hong Kong",
-    flag: "🇭🇰",
-    alpha2: "HK",
+    name: 'Benin',
+    flag: '🇧🇯',
+    alpha2: 'BJ',
+    alpha3: 'BEN',
+    ioc: 'BEN'
   },
+
   {
     id: 15,
-    name: "Hungary",
-    flag: "🇭🇺",
-    alpha2: "HU",
-    alpha3: "HUN",
-    ioc: "HUN",
+    name: 'Bhutan',
+    flag: '🇧🇹',
+    alpha2: 'BT',
+    alpha3: 'B  TN',
+    ioc: 'BTN'
   },
+
   {
     id: 16,
-    name: "Ireland",
-    flag: "🇮🇪",
-    alpha2: "IE",
-    alpha3: "IRL",
-    ioc: "IRL",
+    name: 'Bolivia',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
   },
+
   {
     id: 17,
-    name: "Italy",
-    flag: "🇮🇹",
-    alpha2: "IT",
-    alpha3: "ITA",
-    ioc: "ITA",
+    name: 'Bosnia & Herzegovina',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
   },
+
   {
     id: 18,
-    name: "Japan",
-    flag: "🇯🇵",
-    alpha2: "JP",
-    alpha3: "JPN",
-    ioc: "JPN",
+    name: 'Botswana',
+    flag: '🇧🇼',
+    alpha2: 'BW',
+    alpha3: 'BWA',
+    ioc: 'BWA'
   },
+
   {
     id: 19,
-    name: "Latvia",
-    flag: "🇱🇻",
-    alpha2: "LV",
-    alpha3: "LVA",
-    ioc: "LAT",
+    name: 'Brunei',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
   },
+
   {
     id: 20,
-    name: "Lithuania",
-    flag: "🇱🇹",
-    alpha2: "LT",
-    alpha3: "LTU",
-    ioc: "LTU",
+    name: 'Bulgaria',
+    flag: '🇧🇬',
+    alpha2: 'BG',
+    alpha3: 'BGR',
+    ioc: 'BGR'
   },
+
   {
     id: 21,
-    name: "Luxembourg",
-    flag: "🇱🇺",
-    alpha2: "LU",
-    alpha3: "LUX",
-    ioc: "LUX",
+    name: 'Cambodia',
+    flag: '🇰🇭',
+    alpha2: 'KH',
+    alpha3: 'KHM',
+    ioc: 'KHM'
   },
+
   {
     id: 22,
-    name: "Malta",
-    flag: "🇲🇹",
-    alpha2: "MT",
-    alpha3: "MLT",
-    ioc: "MLT",
+    name: 'Canada',
+    flag: '🇨🇦',
+    alpha2: 'CA',
+    alpha3: 'CAN',
+    ioc: 'CAN'
   },
+
   {
     id: 23,
-    name: "Netherlands",
-    flag: "🇳🇱",
-    alpha2: "NL",
-    alpha3: "NLD",
-    ioc: "NED",
+    name: 'Chile',
+    flag: '🇨🇱',
+    alpha2: 'CL',
+    alpha3: 'CHL',
+    ioc: 'CHL'
   },
+
   {
     id: 24,
-    name: "New Zealand",
-    flag: "🇳🇿",
-    alpha2: "NZ",
-    alpha3: "NZL",
-    ioc: "NZL",
+    name: 'Colombia',
+    flag: '',
+    alpha2: 'CO',
+    alpha3: 'COL',
+    ioc: 'COL'
   },
+
   {
     id: 25,
-    name: "Norway",
-    flag: "🇳🇴",
-    alpha2: "NO",
-    alpha3: "NOR",
-    ioc: "NOR",
+    name: 'Costa Rica',
+    flag: '🇨🇷',
+    alpha2: 'CR',
+    alpha3: 'CRI',
+    ioc: 'CRI'
   },
+
   {
     id: 26,
-    name: "Poland",
-    flag: "🇵🇱",
-    alpha2: "PL",
-    alpha3: "POL",
-    ioc: "POL",
+    name: 'Côte d’Ivoire',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
   },
+
   {
     id: 27,
-    name: "Portugal",
-    flag: "🇵🇹",
-    alpha2: "PT",
-    alpha3: "PRT",
-    ioc: "POR",
+    name: 'Croatia ',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
   },
+
   {
     id: 28,
-    name: "Romania",
-    flag: "🇷🇴",
-    alpha2: "RO",
-    alpha3: "ROU",
-    ioc: "ROU",
+    name: 'Cyprus',
+    flag: '🇨🇾',
+    alpha2: 'CY',
+    alpha3: 'CYP',
+    ioc: 'CYP'
   },
+
   {
     id: 29,
-    name: "Singapore",
-    flag: "🇸🇬",
-    alpha2: "SG",
-    alpha3: "SGP",
-    ioc: "SGP",
+    name: 'Czech Republic ',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
   },
+
   {
     id: 30,
-    name: "Slovakia",
-    flag: "🇸🇰",
-    alpha2: "SK",
-    alpha3: "SVK",
-    ioc: "SVK",
+    name: 'Denmark',
+    flag: '🇩🇰',
+    alpha2: 'DK',
+    alpha3: 'DNK',
+    ioc: 'DNK'
   },
+
   {
     id: 31,
-    name: "Slovenia",
-    flag: "🇸🇮",
-    alpha2: "SI",
-    alpha3: "SVN",
-    ioc: "SLO",
+    name: 'Dominican Republic',
+    flag: '🇩🇴',
+    alpha2: 'DO',
+    alpha3: 'DOM',
+    ioc: 'DOM'
   },
+
   {
     id: 32,
-    name: "Spain",
-    flag: "🇪🇸",
-    alpha2: "ES",
-    alpha3: "ESP",
-    ioc: "ESP",
+    name: 'Ecuador',
+    flag: '🇪🇨',
+    alpha2: 'EC',
+    alpha3: 'ECU',
+    ioc: 'ECU'
   },
+
   {
     id: 33,
-    name: "Sweden",
-    flag: "🇸🇪",
-    alpha2: "SE",
-    alpha3: "SWE",
-    ioc: "SWE",
+    name: 'Egypt',
+    flag: '🇪🇬',
+    alpha2: 'EG',
+    alpha3: 'EGY',
+    ioc: 'EGY'
   },
+
   {
     id: 34,
-    name: "Switzerland",
-    flag: "🇨🇭",
-    alpha2: "ch",
-    alpha3: "CHE",
-    ioc: "SUI",
+    name: 'El Salvador',
+    flag: '🇸🇻',
+    alpha2: 'SV',
+    alpha3: 'SLV',
+    ioc: 'SLV'
   },
+
   {
     id: 35,
-    name: "United Kingdom of Great Britain and Northern Ireland",
-    flag: "🇬🇧",
-    alpha2: "gb",
-    alpha3: "GBR",
-    ioc: "GBR",
+    name: 'Estonia',
+    flag: '🇪🇪',
+    alpha2: 'EE',
+    alpha3: 'EST',
+    ioc: 'EST'
   },
+
   {
     id: 36,
-    name: "United States of America",
-    flag: "🇺🇸",
-    alpha2: "us",
-    alpha3: "USA",
-    ioc: "USA",
+    name: 'Ethiopia',
+    flag: '  🇪🇹',
+    alpha2: 'ET',
+    alpha3: 'ETH',
+    ioc: 'ETH'
   },
-];
+
+  {
+    id: 37,
+    name: 'Finland',
+    flag: '🇫🇮',
+    alpha2: 'FI',
+    alpha3: 'F  IN',
+    ioc: 'FIN'
+  },
+
+  {
+    id: 38,
+    name: 'France',
+    flag: '🇫🇷',
+    alpha2: 'FR',
+    alpha3: 'FRA',
+    ioc: 'FRA'
+  },
+
+  {
+    id: 39,
+    name: 'Gabon',
+    flag: '🇬🇦',
+    alpha2: 'GA',
+    alpha3: 'GAB',
+    ioc: 'GAB'
+  },
+
+  {
+    id: 40,
+    name: 'Gambia',
+    flag: '🇬🇲',
+    alpha2: 'GM',
+    alpha3: 'GMB',
+    ioc: 'GMB'
+  },
+
+  {
+    id: 41,
+    name: 'Germany',
+    flag: '🇩🇪',
+    alpha2: 'DE',
+    alpha3: 'DEU',
+    ioc: 'DE  U'
+  },
+
+  {
+    id: 42,
+    name: 'Ghana',
+    flag: '🇬🇭',
+    alpha2: 'GH',
+    alpha3: 'GHA',
+    ioc: 'GHA'
+  },
+
+  {
+    id: 43,
+    name: 'Greece',
+    flag: '🇬🇷',
+    alpha2: 'GR',
+    alpha3: 'GRC',
+    ioc: 'GR',
+  },
+  {
+    id: 44,
+    name: 'Guatemala',
+    flag: '🇬🇹',
+    alpha2: 'GT',
+    alpha3: 'GTM',
+    ioc: 'GTM'
+  },
+
+  {
+    id: 45,
+    name: 'Guyana',
+    flag: '🇬🇾',
+    alpha2: 'GY',
+    alpha3: 'GUY',
+    ioc: 'GUY'
+  },
+
+  {
+    id: 46,
+    name: 'Hong Kong',
+    flag: '🇭🇰',
+    alpha2: 'HK',
+    alpha3: 'HKG',
+    ioc: 'HKG'
+  },
+
+  {
+    id: 47,
+    name: 'Hungary',
+    flag: '🇭   🇺',
+    alpha2: 'HU',
+    alpha3: 'HUN',
+    ioc: 'HUN'
+  },
+
+  {
+    id: 48,
+    name: 'Iceland ',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 49,
+    name: 'India',
+    flag: '🇮🇳',
+    alpha2: 'IN',
+    alpha3: 'IND',
+    ioc: 'IND'
+  },
+
+  {
+    id: 50,
+    name: 'Indone  sia',
+    flag: '🇮🇩',
+    alpha2: 'ID',
+    alpha3: 'IDN',
+    ioc: 'IDN'
+  },
+
+  {
+    id: 51,
+    name: 'Ireland',
+    flag: '🇮🇪',
+    alpha2: 'IE  ',
+    alpha3: 'IRL',
+    ioc: 'IRL'
+  },
+
+  {
+    id: 52,
+    name: 'Israel',
+    flag: '🇮🇱',
+    alpha2: 'IL',
+    alpha3: 'ISR',
+    ioc: 'ISR'
+  },
+
+  {
+    id: 53,
+    name: 'Italy',
+    flag: '🇮🇹',
+    alpha2: 'IT',
+    alpha3: 'ITA',
+    ioc: 'ITA'
+  },
+
+  {
+    id: 54,
+    name: 'Jamaica',
+    flag: '🇯🇲',
+    alpha2: 'JM',
+    alpha3: 'JAM',
+    ioc: 'JAM'
+  },
+
+  {
+    id: 55,
+    name: 'Japan',
+    flag: '🇯🇵',
+    alpha2: 'JP',
+    alpha3: 'JP  N',
+    ioc: 'JPN'
+  },
+
+  {
+    id: 56,
+    name: 'Jordan',
+    flag: '🇯🇴',
+    alpha2: 'JO',
+    alpha3: 'JOR',
+    ioc: 'JOR'
+  },
+
+  {
+    id: 57,
+    name: 'Kenya',
+    flag: '🇰🇪',
+    alpha2: 'KE',
+    alpha3: 'KEN',
+    ioc: 'KEN'
+  },
+
+  {
+    id: 58,
+    name: 'Kuwait',
+    flag: '🇰🇼',
+    alpha2: 'KW',
+    alpha3: 'KWT',
+    ioc: 'KWT'
+  },
+
+  {
+    id: 59,
+    name: 'Laos',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 60,
+    name: 'Latvia',
+    flag: '🇱🇻',
+    alpha2: 'LV',
+    alpha3: 'LVA',
+    ioc: 'LVA'
+  },
+
+  {
+    id: 61,
+    name: 'Liechtenstein ',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 62,
+    name: 'Lithuania',
+    flag: '🇱🇹',
+    alpha2: 'LT',
+    alpha3: 'LTU',
+    ioc: 'LTU'
+  },
+
+  {
+    id: 63,
+    name: 'Luxembourg',
+    flag: '🇱🇺',
+    alpha2: 'LU',
+    alpha3: 'LUX',
+    ioc: 'LUX'
+  },
+
+  {
+    id: 64,
+    name: 'Macao SAR China',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 65,
+    name: 'Madagascar',
+    flag: '🇲🇬',
+    alpha2: 'MG',
+    alpha: 'MDG',
+    ioc: 'MDG'
+  },
+
+  {
+    id: 66,
+    name: 'Malaysia',
+    flag: '🇲🇾',
+    alpha2: 'MY',
+    alpha3: 'MYS',
+    ioc: 'MYS'
+  },
+
+  {
+    id: 67,
+    name: 'Malta',
+    flag: '🇲🇹',
+    alpha2: 'MT',
+    alpha3: 'MLT',
+    ioc: 'MLT'
+  },
+
+  {
+    id: 68,
+    name: 'Maur  itius',
+    flag: '🇲🇺',
+    alpha2: 'MU',
+    alpha3: 'MUS',
+    ioc: 'MUS'
+  },
+
+  {
+    id: 69,
+    name: 'Mexico',
+    flag: '🇲🇽',
+    alpha2: 'M  X',
+    alpha3: 'MEX',
+    ioc: 'MEX'
+  },
+
+  {
+    id: 70,
+    name: 'Moldova',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 71,
+    name: 'Monaco',
+    flag: '🇲🇨',
+    alpha2: 'MC',
+    alpha3: 'MCO',
+    ioc: 'MCO'
+  },
+
+  {
+    id: 72,
+    name: 'Mongolia',
+    flag: '',
+    alpha2: 'MN',
+    alpha3: 'MNG',
+    ioc: 'MNG'
+  },
+
+  {
+    id: 73,
+    name: 'Morocco',
+    flag: '🇲🇦',
+    alpha2: 'MA',
+    alpha3: 'MAR',
+    ioc: 'MAR'
+  },
+
+  {
+    id: 74,
+    name: 'Mozambique',
+    flag: '🇲🇿',
+    alpha2: 'MZ',
+    alpha3: 'MOZ',
+    ioc: 'MOZ'
+  },
+
+  {
+    id: 75,
+    name: 'Namibia',
+    flag: '🇳🇦',
+    alpha2: 'NA',
+    alpha3: 'NAM',
+    ioc: 'NAM'
+  },
+
+  {
+    id: 76,
+    name: 'Netherlands',
+    flag: '🇳🇱',
+    alpha2: 'NL',
+    alpha3: 'NLD',
+    ioc: 'NLD'
+  },
+
+  {
+    id: 77,
+    name: 'New Zealand',
+    flag: '🇳🇿',
+    alpha2: 'NZ',
+    alpha3: 'NZL',
+    ioc: 'NZL'
+  },
+
+  {
+    id: 78,
+    name: 'Nigeria',
+    flag: '🇳🇪',
+    alpha2: 'NG',
+    alpha3: 'NGA',
+    ioc: 'NER'
+  },
+
+  {
+    id: 79,
+    name: 'Nigeria',
+    flag: '🇳🇬',
+    alpha2: 'NG',
+    alpha3: 'NGA',
+    ioc: 'NGA'
+  },
+
+  {
+    id: 80,
+    name: 'North Macedonia',
+    flag: '🇲🇰',
+    alpha2: 'MK',
+    alpha3: 'MKD',
+    ioc: 'MKD'
+  },
+
+  {
+    id: 81,
+    name: 'Norway',
+    flag: '🇳🇴',
+    alpha2: 'NO',
+    alpha3: 'NOR',
+    ioc: 'NOR'
+  },
+
+  {
+    id: 82,
+    name: 'Oman',
+    flag: '🇴🇲',
+    alpha2: 'OM',
+    alpha3: 'OMN',
+    ioc: 'OMN'
+  },
+
+  {
+    id: 83,
+    name: 'Panam  a',
+    flag: '🇵🇦',
+    alpha2: 'PA',
+    alpha3: 'PAN',
+    ioc: 'PAN'
+  },
+
+  {
+    id: 84,
+    name: 'Paraguay',
+    flag: '🇵🇾',
+    alpha2: 'PY',
+    alpha3: 'PRY',
+    ioc: 'PRY'
+  },
+
+  {
+    id: 85,
+    name: 'Peru',
+    flag: '🇵🇪',
+    alpha2: 'PE',
+    alpha3: 'PER',
+    ioc: 'PER'
+  },
+
+  {
+    id: 86,
+    name: 'Philippines',
+    flag: '🇵🇭',
+    alpha2: 'PH',
+    alpha3: 'PHL',
+    ioc: 'PHL'
+  },
+
+  {
+    id: 87,
+    name: 'Poland',
+    flag: '🇵🇱',
+    alpha2: 'PL',
+    alpha3: 'POL',
+    ioc: 'POL'
+  },
+
+  {
+    id: 88,
+    name: 'Portugal',
+    flag: '🇵🇹',
+    alpha2: 'PT',
+    alpha3: 'PRT',
+    ioc: 'PRT'
+  },
+
+  {
+    id: 89,
+    name: 'Qatar',
+    flag: '🇶🇦',
+    alpha2: 'QA',
+    alpha3: 'QAT',
+    ioc: 'QAT'
+  },
+
+  {
+    id: 90,
+    name: 'Romania',
+    flag: '',
+    alpha2: 'RO',
+    alpha3: 'ROU',
+    ioc: 'ROU'
+  },
+
+  {
+    id: 91,
+    name: 'Rwanda',
+    flag: '🇷🇼',
+    alpha2: 'RW',
+    alpha3: 'RWA',
+    ioc: 'RWA'
+  },
+
+  {
+    id: 92,
+    name: 'San Marino',
+    flag: '🇸🇲',
+    alpha2: 'SM',
+    alpha3: 'SMR',
+    ioc: 'SMR'
+  },
+
+  {
+    id: 93,
+    name: 'Saudi Arabia',
+    flag: '🇸🇦',
+    alpha2: 'SA',
+    alpha3: 'SAU',
+    ioc: 'SAU'
+  },
+
+  {
+    id: 94,
+    name: 'Senegal',
+    flag: '🇸🇳',
+    alpha2: 'SN',
+    alpha3: 'SEN',
+    ioc: 'SEN'
+  },
+
+  {
+    id: 95,
+    name: 'Serbia',
+    flag: '🇷🇸',
+    alpha2: 'RS',
+    alpha3: 'SRB',
+    ioc: 'SRB'
+  },
+
+  {
+    id: 96,
+    name: 'Singapore',
+    flag: '🇸🇬',
+    alpha2: 'SG',
+    alpha3: 'SGP',
+    ioc: 'SGP'
+  },
+
+  {
+    id: 97,
+    name: 'Slovakia',
+    flag: '🇸🇰',
+    alpha2: 'SK',
+    alpha3: 'SVK',
+    ioc: 'SVK'
+  },
+
+  {
+    id: 98,
+    name: 'Sloven  ia',
+    flag: '🇸🇮',
+    alpha2: 'SI',
+    alpha3: 'SVN',
+    ioc: 'SVN'
+  },
+
+  {
+    id: 99,
+    name: 'South Africa',
+    flag: '🇿🇦',
+    alpha2: 'ZA',
+    alpha3: 'ZAF',
+    ioc: 'ZAF'
+  },
+
+  {
+    id: 100,
+    name: 'South Korea',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 101,
+    name: 'Spain',
+    flag: '🇪🇸',
+    alpha2: 'ES',
+    alpha3: 'ESP',
+    ioc: 'ESP'
+  },
+
+  {
+    id: 102,
+    name: 'Sri Lanka',
+    flag: '🇱🇰',
+    alpha2: 'LK',
+    alpha3: 'LKA',
+    ioc: 'LKA',
+  },
+  {
+    id: 103,
+    name: 'St. Lucia',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 104,
+    name: 'Sweden',
+    flag: '🇸🇪',
+    alpha2: 'SE',
+    alpha3: 'SWE',
+    ioc: 'SWE'
+  },
+
+  {
+    id: 105,
+    name: 'Switzerland ',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 106,
+    name: 'Taiwan',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 107,
+    name: 'Tanzania',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 108,
+    name: 'Thailand',
+    flag: '🇹🇭',
+    alpha2: 'TH',
+    alpha3: 'THA',
+    ioc: 'THA'
+  },
+
+  {
+    id: 109,
+    name: 'Trinidad & Tobago  ',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  },
+
+  {
+    id: 110,
+    name: 'Tunisia',
+    flag: '🇹🇳',
+    alpha2: 'TN',
+    alpha3: 'TUN',
+    ioc: 'TUN'
+  },
+
+  {
+    id: 111,
+    name: 'Turkey',
+    flag: '🇹🇷',
+    alpha2: 'TR',
+    alpha3: 'TUR',
+    ioc: 'TUR'
+  },
+
+  {
+    id: 112,
+    name: 'United Arab Emirates',
+    flag: '🇦🇪',
+    alpha2: 'AE',
+    alpha3: 'ARE',
+    ioc: 'ARE'
+  },
+
+  {
+    id: 113,
+    name: 'United Kin  gdom',
+    flag: '🇬🇧',
+    alpha2: 'GB',
+    alpha3: 'GBR',
+    ioc: 'GBR'
+  },
+
+  {
+    id: 114,
+    name: 'Uruguay',
+    flag: '🇺🇾',
+    alpha2: '  UY',
+    alpha3: 'URY',
+    ioc:
+      'URY'
+  },
+
+  {
+    id: 115,
+    name: 'Uzbekistan',
+    flag: '🇺🇿',
+    alpha2: 'UZ',
+    alpha3: 'UZB',
+    ioc: 'U  ZB'
+  },
+
+  {
+    id: 116,
+    name: 'Vietnam',
+    flag: ' ',
+    alpha2: ' ',
+    alpha3: ' ',
+    ioc: ' '
+  }
+]
 
 const SetUp = () => {
   const [cookies, setCookies] = useCookies();
@@ -368,10 +1413,9 @@ const SetUp = () => {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [value, setValue] = useState({
-    alpha2: "",
-    name: ''
+
   });
-  console.log(value)
+
   const isCookies = () => {
     if (cookies?.user_data?.category_selected) {
       if (cookies.user_data.role === "professional") {
@@ -627,13 +1671,7 @@ const SetUp = () => {
                                   certificate
                                 );
 
-                                axios
-                                  .post(
-                                    "http://13.52.16.160:8082/identity/professional_certificate",
-                                    userCertificate
-                                  )
-                                  .then((res) => console.log(res.data))
-                                  .catch((err) => console.log(err));
+                                axios.post("http://13.52.16.160:8082/identity/professional_certificate", userCertificate).then((res) => console.log('')).catch((err) => console.log(err));
 
                                 if (respo?.data?.status === "Success") {
                                   contextData?.dispatch({
@@ -893,18 +1931,15 @@ const SetUp = () => {
                         /> */}
                           <CountrySelect
                             countries={countries}
-                            value={value.name}
+                            value={value}
                             onChange={(val) => {
-                              setValue({ name: val?.name, alpha2: val?.alpha2 });
-                              // console.log(val?.name);
-                              // let id = val.id;
-                              // setimgcode( id.toLocaleUpperCase() );
+                              setValue(val);
                               setFieldValue("nation", val?.name);
 
                               setdisply("block");
                             }}
                             flags={true}
-                            placeholder={value.name ? value.name : "select country"}
+                            placeholder="select country"
                             name="nation"
                           />
                           <ErrorMessage
@@ -919,7 +1954,7 @@ const SetUp = () => {
                             <PhoneInput
                               disableDropdown
                               placeholder="Enter phone number"
-                              country={value?.alpha2.toLocaleLowerCase()}
+                              country={value?.alpha2?.toLocaleLowerCase()}
                               enableAreaCodes
                               name="mobile_no"
                               onChange={(pho, country) =>
@@ -1046,12 +2081,12 @@ const SetUp = () => {
                                 setBackImgErr("none");
                               }}
                             />
-                            <span>Background image</span>
+                            <span>Cover Image</span>
                             <span
                               style={{ marginTop: "10px" }}
                               className={`${backImgErr} text-danger `}
                             >
-                              Background image required
+                              Cover image required
                             </span>
                             <ErrorMessage
                               name="photograph"
@@ -1065,7 +2100,7 @@ const SetUp = () => {
                             as="textarea"
                             className="form-control"
                             name="job_description"
-                            id="exampleFormControlTextarea1"
+                            id="exampleFormControlTextarea2"
                             rows="9"
                             placeholder="Job Description"
                           ></Field>
@@ -1251,8 +2286,8 @@ const SetUp = () => {
                               <option value="" disabled>
                                 Experience
                               </option>
-                              {rows.map((years) => (
-                                <option value={years}>{years} Years</option>
+                              {rows.map((years, index) => (
+                                <option key={index} value={years}>{years} Years</option>
                               ))}
                               <option value={45}>45 Years</option>
                             </Field>

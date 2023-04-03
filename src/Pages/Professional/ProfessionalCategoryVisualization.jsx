@@ -23,7 +23,6 @@ const ProfessionalCategoryVisualization = () => {
           navigate('/professionaldashboard')
         }
       } else {
-        console.log(cookies?.user_data?.role)
         if (cookies?.user_data?.role === "professional") {
           setIsRender(true)
         } else {
