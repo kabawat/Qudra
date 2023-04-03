@@ -62,7 +62,7 @@ import PurchaseDesign from "./components/dashboard_tabs/Client/purchase-design";
 function App() {
   const [cookies] = useCookies()
   return (
-    <BrowserRouter basename="/">
+    <BrowserRouter>
       <ScrollToTop />
       <IconContext.Provider value={{ color: "black", className: "global-class-name" }}>
         <Routes>
