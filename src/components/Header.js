@@ -1511,18 +1511,16 @@ const HeaderDashboard = () => {
       professioanl_id: cookies?.user_data?.user_id,
       professioanl_token: cookies?.user_data?.user_token
     }).then((result) => {
-      console.log()
       const url = result?.data?.data?.link
       const link = document.createElement('a');
       link.href = url;
-      // link.setAttribute('target', '_blank'); // you can set the filename here
       document.body.appendChild(link);
       link.click();
-      if (result?.data?.status === "Failed") {
-        setIsVerify(false)
-      } else {
-        setIsVerify(true)
-      }
+      // if (result?.data?.status === "Failed") {
+      //   setIsVerify(false)
+      // } else {
+      //   setIsVerify(true)
+      // }
     })
   }
   return (

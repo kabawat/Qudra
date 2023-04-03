@@ -72,6 +72,7 @@ const ClientBuySellDesign = () => {
         })
         .then((res) => {
           if (res?.data?.status === "Success") {
+            localStorage.clear()
             setCookies("user_data", { ...cookies?.user_data, category_selected: true })
             navigate("/clientdashboard");
           }

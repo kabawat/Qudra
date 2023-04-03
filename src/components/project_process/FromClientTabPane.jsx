@@ -123,9 +123,9 @@ const FromClientTabPane = ({ location }) => {
   ];
   const d = new Date();
   let year = d.getFullYear();
-  let years=[]
-  for(let i=0; i<20;++i){
-  years.push( { value: `${year+i}`, label: `${year+i}`, name: "expiry_year" })
+  let years = []
+  for (let i = 0; i < 20; ++i) {
+    years.push({ value: `${year + i}`, label: `${year + i}`, name: "expiry_year" })
   }
 
   $(document).ready(function () {
@@ -151,26 +151,23 @@ const FromClientTabPane = ({ location }) => {
 
   const handalSubmit = (event) => {
     event.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/stripe/client/card/", {
-        ...cartInfo,
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-      })
-      .then((response) => {
-        if (response?.data?.status === "Failed") {
-          const error = response?.data?.message;
-          setPaymentError(error.split(":")[1]);
-        } else {
-          setShow(false);
-          SetCurProject({});
-          setIsPayment(false);
-          setPaymentError("");
-        }
-      })
-      .catch((error) => {
-        // console.log(error.response)
-      });
+    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
+      ...cartInfo,
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+    }).then((response) => {
+      if (response?.data?.status === "Failed") {
+        const error = response?.data?.message;
+        setPaymentError(error.split(":")[1]);
+      } else {
+        setShow(false);
+        SetCurProject({});
+        setIsPayment(false);
+        setPaymentError("");
+      }
+    }).catch((error) => {
+      // console.log(error.response)
+    });
   };
   const handalDownload = () => {
     axios.put("http://13.52.16.160:8082/client/update_status_view_file", {

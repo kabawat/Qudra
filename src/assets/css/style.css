@@ -2485,15 +2485,25 @@ canvas {
 }
 
 .leftShoppingCart img {
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  height: auto;
   border-radius: 12px;
 }
 
-.leftShoppingCart h5 {
+.PaymentCardSubmitButton {
+  padding: 10px 0px;
+  border: none;
+  border-radius: 20px
+}
+
+.ImgBox video {
+  border-radius: 12px;
+}
+
+.leftShoppingCart h2 {
   color: #159482;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 900;
 }
 
 .leftShoppingCart p {

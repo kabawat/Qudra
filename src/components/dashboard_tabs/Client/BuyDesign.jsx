@@ -11,6 +11,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useCookies } from "react-cookie";
+import { NavLink } from "react-router-dom";
 const BuyDesign = ({ setBuyDesigns }) => {
   const [purchaseDesigns, setPurchaseDesigns] = useState();
   const contextData = useContext(Global);
@@ -87,110 +88,100 @@ const BuyDesign = ({ setBuyDesigns }) => {
             {purchaseDesigns?.final_data?.length &&
               purchaseDesigns?.final_data?.map((res, index, key) => {
                 return (
-                  <>
-                    {res.image?.map((it, index) => {
-                      return (
-                        <div className="col-xl-3 col-md-6   my-3" key={key}>
+                  res.image?.map((it, index) => {
+                    return (
+                      <div className="col-xl-3 col-md-6   my-3" key={index}>
+                        <div className="card border-0 flex-row bg-dark text-white visibleForEdit" style={{ height: "240px", borderRadius: "30px" }}>
+                          <img src={`${purchaseDesigns?.image_url}${it}`} className="card-img w-100" style={{ borderRadius: "30px", objectFit: "cover", height: "100%" }} alt="..." />
                           <div
-                            className="card border-0 flex-row bg-dark text-white visibleForEdit"
+                            className="card-img-overlay"
                             style={{
-                              height: "240px",
+                              display: "flex",
+                              justifyContent: "flex-end",
+                              flexDirection: "column",
                               borderRadius: "30px",
-                            }}
-                          >
-                            <img
-                              src={`${purchaseDesigns?.image_url}${it}`}
-                              className="card-img w-100"
-                              style={{
-                                borderRadius: "30px",
-                                objectFit: "cover",
-                                height: "100%",
-                              }}
-                              alt="..."
-                            />
-                            <div
-                              className="card-img-overlay"
-                              style={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                                flexDirection: "column",
-                                borderRadius: "30px",
-                                background:
-                                  "linear-gradient(20deg, #000000a1, transparent)",
+                              background: "linear-gradient(20deg, #000000a1, transparent)",
+                              padding: " 0 10px 20px 10px",
+                            }}>
+                            <h4 className="card-title cardTitleVisible">
+                              ${res?.price[index]}/ project
+                            </h4>
 
-                                padding: " 0 10px 20px 10px",
-                              }}
-                            >
-                              <h4 className="card-title cardTitleVisible">
-                                ${res?.price[index]}/ sq.mtr
-                              </h4>
+                            <h4 className="card-title fs-20 visibleForEdit-cat">
+                              {res?.sub_category_name}
+                            </h4>
+                            <div className="row g-2">
+                              <div className="col-xxl-6 col-lg-12 col-6">
+                                <button
+                                  type="button"
+                                  className="btn btn-primary border-0"
+                                  style={{
+                                    width: "100%",
+                                    fontSize: "14px",
+                                    backgroundColor: "rgb(0, 167, 139)",
+                                  }}
+                                  onClick={() => {
+                                    setShowPurchaseDesignModal(true);
+                                    handleImageAndVideoClick(
+                                      [it],
+                                      purchaseDesigns?.image_url,
+                                      "image"
+                                    );
+                                  }}
+                                >
+                                  Preview Images
+                                </button>
+                              </div>
+                              <div className="col-xxl-6 col-lg-12 col-6">
+                                <button
+                                  type="button"
+                                  className="btn btn-primary border-0"
+                                  style={{
+                                    width: "100%",
+                                    fontSize: "14px",
+                                    backgroundColor: "rgb(0, 167, 139)",
+                                  }}
+                                  onClick={() => {
+                                    setShowPurchaseDesignModal(true);
+                                    handleImageAndVideoClick(
+                                      [res?.video[index]],
+                                      purchaseDesigns?.video_url,
+                                      "video"
+                                    );
+                                  }}
+                                >
+                                  Preview Videos
+                                </button>
+                              </div>
+                              <div className="col-xxl-6 col-lg-12 col-6">
+                                <NavLink to="/cart"
+                                  state={{
+                                    buysell_id: res?.buysell_id,
+                                    category_id: res?.category_id,
+                                    professional_id: res?.professional_id,
+                                    sub_category_id: res?.sub_category_id,
+                                    sub_category_name: res?.sub_category_name,
 
-                              <h4 className="card-title fs-20 visibleForEdit-cat">
-                                {res?.sub_category_name}
-                              </h4>
-                              <div className="row g-2">
-                                <div className="col-xxl-6 col-lg-12 col-6">
-                                  <button
-                                    type="button"
-                                    className="btn btn-primary border-0"
-                                    style={{
-                                      width: "100%",
-                                      fontSize: "14px",
-                                      backgroundColor: "rgb(0, 167, 139)",
-                                    }}
-                                    onClick={() => {
-                                      setShowPurchaseDesignModal(true);
-                                      handleImageAndVideoClick(
-                                        [it],
-                                        purchaseDesigns?.image_url,
-                                        "image"
-                                      );
-                                    }}
-                                  >
-                                    Preview Images
-                                  </button>
-                                </div>
-                                <div className="col-xxl-6 col-lg-12 col-6">
-                                  <button
-                                    type="button"
-                                    className="btn btn-primary border-0"
-                                    style={{
-                                      width: "100%",
-                                      fontSize: "14px",
-                                      backgroundColor: "rgb(0, 167, 139)",
-                                    }}
-                                    onClick={() => {
-                                      setShowPurchaseDesignModal(true);
-                                      handleImageAndVideoClick(
-                                        [res?.video[index]],
-                                        purchaseDesigns?.video_url,
-                                        "video"
-                                      );
-                                    }}
-                                  >
-                                    Preview Videos
-                                  </button>
-                                </div>
-                                <div className="col-xxl-6 col-lg-12 col-6">
-                                  <button
-                                    type="button"
-                                    className="btn btn-primary border-0"
-                                    style={{
-                                      width: "100%",
-                                      fontSize: "14px",
-                                      backgroundColor: "rgb(0, 167, 139)",
-                                    }}
-                                  >
-                                    Buy Project
-                                  </button>
-                                </div>
+                                    project_cost: res?.price[index],
+                                    video: `${purchaseDesigns?.video_url}${res?.video[index]}`,
+                                    image: `${purchaseDesigns?.image_url}${it}`,
+                                  }}
+                                  type="button"
+                                  className="btn btn-primary border-0"
+                                  style={{
+                                    width: "100%",
+                                    fontSize: "14px",
+                                    backgroundColor: "rgb(0, 167, 139)",
+                                  }}>
+                                  Buy Project
+                                </NavLink>
                               </div>
                             </div>
                           </div>
                         </div>
-                      );
-                    })}
-                  </>
+                      </div>
+                    );
+                  })
                 );
               })}
           </div>
@@ -235,7 +226,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                     ...prev,
                     page:
                       purchaseDesignsArray?.length !==
-                      purchaseDesignsPagination?.page
+                        purchaseDesignsPagination?.page
                         ? purchaseDesignsPagination?.page + 1
                         : purchaseDesignsPagination?.page,
                   }));
@@ -285,6 +276,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
             {specificProductData &&
               specificProductData.map((res) => (
                 <SwiperSlide>
+                  {console.log(res)}
                   {specificProductDataType === "image" ? (
                     <img src={res} alt={res} />
                   ) : (
