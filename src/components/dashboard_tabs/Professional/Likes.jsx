@@ -24,6 +24,18 @@ const LikesShow = () => {
   const [ isRender, setIsRender ] = useState( false )
   const [ cookies ] = useCookies()
   useEffect( () => {
+    if ( !search ) {
+      fetchLikeData();
+      setProjectPageId( {
+        page: 1,
+        page_size: 5,
+      } );
+
+    } else {
+      setLikes( [] );
+    }
+  }, [] );
+  useEffect( () => {
     if ( cookies?.user_data ) {
       if ( cookies?.user_data?.category_selected ) {
         if ( cookies?.user_data.role === "professional" ) {
@@ -68,17 +80,7 @@ const LikesShow = () => {
     fetchLikeData();
   }, [ projectPageId ] );
 
-  useEffect( () => {
-    if ( !search ) {
-      setProjectPageId( {
-        page: 1,
-        page_size: 5,
-      } );
-      fetchLikeData();
-    } else {
-      setLikes( [] );
-    }
-  }, [] );
+
 
   const [ searchPageId, setSearchPageId ] = useState( {
     page: 1,
@@ -219,12 +221,7 @@ const LikesShow = () => {
                         </div>
                       ) )
                     ) : (
-                      <div
-                        style={ { minHeight: "600px" } }
-                        className="d-flex justify-content-center align-items-center"
-                      >
-                        <span className="h4">No Liked Data To Show</span>
-                      </div>
+                      null
                     ) }
                   </div>
 

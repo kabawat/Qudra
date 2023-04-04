@@ -22,6 +22,7 @@ const Ratings = () => {
   const navigate = useNavigate()
   const [ isRender, setIsRender ] = useState( false )
   const [ cookies ] = useCookies()
+
   useEffect( () => {
     if ( cookies?.user_data ) {
       if ( cookies?.user_data?.category_selected ) {
@@ -42,6 +43,14 @@ const Ratings = () => {
     }
   }, [] )
 
+
+
+
+  const projectPaginationArray = [];
+  for ( let i = 0; i < rating?.total_data / projectPageId?.page_size; i++ ) {
+    projectPaginationArray.push( i + 1 );
+  }
+
   const fetchRatingData = () => {
     axios
       .post( "http://13.52.16.160:8082/identity/get-like-save", {
@@ -57,15 +66,6 @@ const Ratings = () => {
         }
       } );
   };
-
-  const projectPaginationArray = [];
-  for ( let i = 0; i < rating?.total_data / projectPageId?.page_size; i++ ) {
-    projectPaginationArray.push( i + 1 );
-  }
-  useEffect( () => {
-    fetchRatingData();
-  }, [ projectPageId ] );
-
   useEffect( () => {
     if ( !search ) {
       fetchRatingData();
@@ -73,6 +73,12 @@ const Ratings = () => {
       setRating( [] );
     }
   }, [] );
+
+  useEffect( () => {
+    fetchRatingData();
+  }, [ projectPageId ] );
+
+
   var searchAll = [];
   const handleSearch = ( e ) => {
     e.preventDefault();
@@ -111,7 +117,6 @@ const Ratings = () => {
         .then( ( res ) => {
           if ( res?.data?.status === "Success" ) {
             setRating( res?.data?.data );
-
             searchAll = res?.data?.data;
             setSearchdata( searchAll );
           }
@@ -120,7 +125,6 @@ const Ratings = () => {
   };
 
   const [ searchData, setSearchdata ] = useState( searchAll );
-
   const [ searchPageId, setSearchPageId ] = useState( {
     page: 1,
     page_size: 5,
@@ -220,12 +224,7 @@ const Ratings = () => {
                         </div>
                       ) )
                     ) : (
-                      <div
-                        style={ { minHeight: "600px" } }
-                        className="d-flex justify-content-center align-items-center"
-                      >
-                        <span className="h4">No Rating Data To Show</span>
-                      </div>
+                      null
                     ) }
                   </div>
                   { !search && projectPageId?.page_size < rating?.total_data ? (

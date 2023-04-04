@@ -29,6 +29,20 @@ const OngoingPane = () => {
   const [ isRender, setIsReander ] = useState( false )
   useEffect( () => {
     if ( cookies?.user_data ) {
+      axios
+        .post( "http://13.52.16.160:8082/identity/filter_projects", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          project_status: "approved",
+          ...onGoingProjectPageId,
+        } )
+        .then( ( res ) => {
+          if ( res?.data?.status === "Success" ) {
+            setOnGoingProject( res?.data?.data );
+          }
+        } );
+      //
       if ( cookies?.user_data?.category_selected ) {
         if ( cookies?.user_data?.role === "client" ) {
           setIsReander( true )
@@ -47,22 +61,23 @@ const OngoingPane = () => {
     }
   }, [] )
 
-  useEffect( () => {
-    contextData?.userData &&
-      axios
-        .post( "http://13.52.16.160:8082/identity/filter_projects", {
-          user_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          project_status: "approved",
-          ...onGoingProjectPageId,
-        } )
-        .then( ( res ) => {
-          if ( res?.data?.status === "Success" ) {
-            setOnGoingProject( res?.data?.data );
-          }
-        } );
-  }, [] );
+  // useEffect( () => {
+  //   cookies?.userData &&
+  //     axios
+  //       .post( "http://13.52.16.160:8082/identity/filter_projects", {
+  //         user_id: cookies?.user_data?.user_id,
+  //         user_token: cookies?.user_data?.user_token,
+  //         role: cookies?.user_data?.role,
+  //         project_status: "approved",
+  //         ...onGoingProjectPageId,
+  //       } )
+  //       .then( ( res ) => {
+  //         if ( res?.data?.status === "Success" ) {
+  //           setOnGoingProject( res?.data?.data );
+  //         }
+  //       } );
+  // }, [] );
+
 
   const onGoingProjectArray = [];
   for (
@@ -127,6 +142,22 @@ const OngoingPane = () => {
       }
     } );
   };
+  const searchData = () => {
+    axios
+      .post( "http://13.52.16.160:8082/identity/filter_projects", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        project_status: "approved",
+        ...onGoingProjectPageId,
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          setOnGoingProject( res?.data?.data );
+        }
+      } );
+  }
+
   return (
     isRender ? <>
       <div className="dashboard">
@@ -152,6 +183,9 @@ const OngoingPane = () => {
                               onChange={ ( e ) => {
                                 setSearchActiveProject( e?.target?.value )
                                 setNoResult( false )
+                                if ( e.target.value === "" ) {
+                                  searchData()
+                                }
                               } }
                               placeholder="Search..."
                             />
@@ -251,7 +285,8 @@ const OngoingPane = () => {
                     ) ) }
                   </div>
                   { onGoingProject.final_data?.length ? (
-                    <Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                     onGoingProject.final_data?.length > 5 ?
+                   ( <Pagination className="ps-5 paginationBoxProfessionalDashboard">
                       <Pagination.First
                         onClick={ () => {
                           setOnGoingProjectPageId( {
@@ -304,7 +339,7 @@ const OngoingPane = () => {
                           } ) );
                         } }
                       />
-                    </Pagination>
+                    </Pagination>):null
                   ) : (
                     ""
                   ) }

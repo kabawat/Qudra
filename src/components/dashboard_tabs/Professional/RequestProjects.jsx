@@ -33,6 +33,17 @@ const RequestProject = () => {
   const [ cookies ] = useCookies()
   useEffect( () => {
     if ( cookies?.user_data ) {
+      axios.post( "http://13.52.16.160:8082/identity/filter_projects", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        project_status: "pending",
+        ...myProjectPageId,
+      } ).then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          setMyProject( res?.data?.data );
+        }
+      } );
       if ( cookies?.user_data?.category_selected ) {
         if ( cookies?.user_data.role === "professional" ) {
           setIsRender( true )
@@ -51,19 +62,19 @@ const RequestProject = () => {
     }
   }, [] )
 
-  useEffect( () => {
-    axios.post( "http://13.52.16.160:8082/identity/filter_projects", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      project_status: "pending",
-      ...myProjectPageId,
-    } ).then( ( res ) => {
-      if ( res?.data?.status === "Success" ) {
-        setMyProject( res?.data?.data );
-      }
-    } );
-  }, [] );
+  // useEffect( () => {
+  //   axios.post( "http://13.52.16.160:8082/identity/filter_projects", {
+  //     user_id: cookies?.user_data?.user_id,
+  //     user_token: cookies?.user_data?.user_token,
+  //     role: cookies?.user_data?.role,
+  //     project_status: "pending",
+  //     ...myProjectPageId,
+  //   } ).then( ( res ) => {
+  //     if ( res?.data?.status === "Success" ) {
+  //       setMyProject( res?.data?.data );
+  //     }
+  //   } );
+  // }, [] );
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const handleFilterProject = ( e ) => {
     e.preventDefault()
@@ -82,6 +93,19 @@ const RequestProject = () => {
       }
     } );
   };
+  const searchData = () => {
+    axios.post( "http://13.52.16.160:8082/identity/filter_projects", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      project_status: "pending",
+      ...myProjectPageId,
+    } ).then( ( res ) => {
+      if ( res?.data?.status === "Success" ) {
+        setMyProject( res?.data?.data );
+      }
+    } )
+  }
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const paginationArray = [];
   for ( let i = 0; i < myProject?.total_data / myProjectPageId?.page_size; i++ ) {
@@ -178,7 +202,11 @@ const RequestProject = () => {
                               value={ searchActiveProject }
                               onChange={ ( e ) => {
                                 setSearchActiveProject( e?.target?.value )
-                                setNoResult( false )
+                                setNoResult( false );
+                                if ( e.target.value === "" ) {
+                                  searchData();
+                                }
+
                               } }
                               placeholder="Search..."
                             />

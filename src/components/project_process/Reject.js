@@ -1,11 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Header2 } from "../Header";
 import styled from "styled-components";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Modal } from "react-bootstrap";
-import { GiCancel } from 'react-icons/gi'
 import { useCookies } from "react-cookie";
 const Wrapper = styled.div`
   .mileStoneDate {
@@ -45,9 +42,25 @@ const Wrapper = styled.div`
 `;
 
 const Reject = ({ location }) => {
-    const [locations, setLocation] = useState(location)
     const [cookies] = useCookies()
     const navigate = useNavigate()
+    useEffect(() => {
+        if (cookies?.user_data) {
+            if (cookies?.user_data?.category_selected) {
+                if (cookies?.user_data.role === "client") {
+                    navigate('/clientdashboard')
+                }
+            } else {
+                if (cookies?.user_data.role === "professional") {
+                    navigate('/categoryArchitecture')
+                } else {
+                    navigate('/client-architechture')
+                }
+            }
+        } else {
+            navigate('/select-sign-in')
+        }
+    }, [])
     const customStyleOne = {
         borderRadius: "30px",
         filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
@@ -79,14 +92,14 @@ const Reject = ({ location }) => {
                                                 <div className="project-details">1</div>
                                                 <h5>Project Name:</h5>
                                                 <p className="m-0 ms-3">
-                                                    {locations?.state?.projectData?.project_name}
+                                                    {location?.state?.projectData?.project_name}
                                                 </p>
                                             </div>
                                             <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                                                 <div className="project-details">2</div>
                                                 <h5>Professional Name :</h5>
                                                 <p className="m-0 ms-3">
-                                                    {locations?.state?.projectData?.professional_name}
+                                                    {location?.state?.projectData?.professional_name}
                                                 </p>
                                             </div>
                                         </div>
@@ -95,14 +108,14 @@ const Reject = ({ location }) => {
                                                 <div className="project-details">3</div>
                                                 <h5>Estimated Area:</h5>
                                                 <p className="m-0 ms-3">
-                                                    {locations?.state?.projectData?.area}
+                                                    {location?.state?.projectData?.area}
                                                 </p>
                                             </div>
                                             <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                                                 <div className="project-details">4</div>
                                                 <h5>Estimated Budget:</h5>
                                                 <p className="m-0 ms-3">
-                                                    {locations?.state?.projectData?.project_cost}
+                                                    {location?.state?.projectData?.project_cost}
                                                 </p>
                                             </div>
                                         </div>
@@ -111,14 +124,14 @@ const Reject = ({ location }) => {
                                                 <div className="project-details">5</div>
                                                 <h5>Project Status:</h5>
                                                 <p className="m-0 ms-3">
-                                                    {locations?.state?.projectData?.project_status}
+                                                    {location?.state?.projectData?.project_status}
                                                 </p>
                                             </div>
                                             <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                                                 <div className="project-details">6</div>
                                                 <h5>Estimated Deadline:</h5>
                                                 <p className="m-0 ms-3">
-                                                    {locations?.state?.projectData?.estimated_time}
+                                                    {location?.state?.projectData?.estimated_time}
                                                 </p>
                                             </div>
                                         </div>
@@ -127,42 +140,42 @@ const Reject = ({ location }) => {
                             </section>
                             <section className="projectMilestoneInfo">
                                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
-                                {locations?.state?.milesStoneData?.map((res, index) => (
+                                {location?.state?.milesStoneData?.map((res, index) => (
                                     <Wrapper className="milestoneBox" key={index}>
                                         <p>{res?.milestone_name}</p>
                                         <div className="buttonAndDateMain">
                                             <div className="mileStoneDate">{res?.milestone_date}</div>
                                             {/* {
-                                                res?.status === "pending" && (
-                                                    <div className="uploadMileStone" onClick={() => { handalshow(res) }}>Upload</div>
-                                                )
-                                            }
-                                            {
-                                                (res?.status === "updated" || res?.status === "downloaded" || res?.status === "uploaded") && (
-                                                    <div className="uploadMileStone" >pending</div>
-                                                )
-                                            }
+                                            res?.status === "pending" && (
+                                                <div className="uploadMileStone" onClick={() => { handalshow(res) }}>Upload</div>
+                                            )
+                                        }
+                                        {
+                                            (res?.status === "updated" || res?.status === "downloaded" || res?.status === "uploaded") && (
+                                                <div className="uploadMileStone" >pending</div>
+                                            )
+                                        }
 
-                                            {
-                                                (res?.status === "accepted" || res?.status === "completed") && (
-                                                    <div className="uploadMileStone" >Milestone completed</div>
-                                                )
-                                            }
+                                        {
+                                            (res?.status === "accepted" || res?.status === "completed") && (
+                                                <div className="uploadMileStone" >Milestone completed</div>
+                                            )
+                                        }
 
-                                            {
-                                                res?.status === "decline" && (<>
-                                                    <button className="mileStoneDate" onClick={() => handalViewReason(res)}>
-                                                        Decline Reason
-                                                    </button>
-                                                    <div className="uploadMileStone" onClick={() => handalshow(res)}>Update</div>
-                                                </>
-                                                )
-                                            }
-                                            {
-                                                res?.status !== "pending" && (
-                                                    <div className="uploadMileStone" onClick={() => { handalDownload(res) }}>Download</div>
-                                                )
-                                            } */}
+                                        {
+                                            res?.status === "decline" && (<>
+                                                <button className="mileStoneDate" onClick={() => handalViewReason(res)}>
+                                                    Decline Reason
+                                                </button>
+                                                <div className="uploadMileStone" onClick={() => handalshow(res)}>Update</div>
+                                            </>
+                                            )
+                                        }
+                                        {
+                                            res?.status !== "pending" && (
+                                                <div className="uploadMileStone" onClick={() => { handalDownload(res) }}>Download</div>
+                                            )
+                                        } */}
 
                                         </div>
                                     </Wrapper>

@@ -89,7 +89,7 @@ const CompletedPane = () => {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
-      search_status: "approved",
+      search_status: "completed",
       search: searchActiveProject || "",
       ...completedProjectPageId,
     } ).then( ( res ) => {
@@ -101,6 +101,21 @@ const CompletedPane = () => {
       }
     } );
   };
+  const searchData = () => {
+    axios
+      .post( "http://13.52.16.160:8082/identity/filter_projects", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        project_status: "completed",
+        ...completedProjectPageId,
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          setCompletedProject( res?.data?.data );
+        }
+      } );
+  }
   return (
     <>
       <div className="dashboard">
@@ -127,7 +142,10 @@ const CompletedPane = () => {
                                   value={ searchActiveProject }
                                   onChange={ ( e ) => {
                                     setSearchActiveProject( e?.target?.value )
-                                    setNoResult( false )
+                                    setNoResult( false );
+                                    if ( e.target.value === "" ) {
+                                      searchData()
+                                    }
                                   } }
                                   placeholder="Search..."
                                 />
@@ -249,7 +267,8 @@ const CompletedPane = () => {
                         ) ) }
                       </div>
                       { completedProject?.final_data?.length ? (
-                        <Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                        completedProject?.final_data?.length >5?
+                      (  <Pagination className="ps-5 paginationBoxProfessionalDashboard">
                           <Pagination.First
                             onClick={ () => {
                               setCompletedProjectPageId( {
@@ -303,7 +322,7 @@ const CompletedPane = () => {
                               } ) );
                             } }
                           />
-                        </Pagination>
+                        </Pagination>):null
                       ) : (
                         ""
                       ) }

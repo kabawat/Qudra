@@ -29,6 +29,19 @@ const PendingProject = () => {
     const [ isRender, setIsReander ] = useState( false )
     useEffect( () => {
         if ( cookies?.user_data ) {
+            axios
+                .post( "http://13.52.16.160:8082/identity/filter_projects", {
+                    user_id: cookies?.user_data?.user_id,
+                    user_token: cookies?.user_data?.user_token,
+                    role: cookies?.user_data?.role,
+                    project_status: "pending",
+                    ...onGoingProjectPageId,
+                } )
+                .then( ( res ) => {
+                    if ( res?.data?.status === "Success" ) {
+                        setOnGoingProject( res?.data?.data );
+                    }
+                } );
             if ( cookies?.user_data?.category_selected ) {
                 if ( cookies?.user_data?.role === "client" ) {
                     setIsReander( true )
@@ -47,22 +60,22 @@ const PendingProject = () => {
         }
     }, [] )
 
-    useEffect( () => {
-        contextData?.userData &&
-            axios
-                .post( "http://13.52.16.160:8082/identity/filter_projects", {
-                    user_id: cookies?.user_data?.user_id,
-                    user_token: cookies?.user_data?.user_token,
-                    role: cookies?.user_data?.role,
-                    project_status: "pending",
-                    ...onGoingProjectPageId,
-                } )
-                .then( ( res ) => {
-                    if ( res?.data?.status === "Success" ) {
-                        setOnGoingProject( res?.data?.data );
-                    }
-                } );
-    }, [] );
+    // useEffect( () => {
+    //     contextData?.userData &&
+    //         axios
+    //             .post( "http://13.52.16.160:8082/identity/filter_projects", {
+    //                 user_id: cookies?.user_data?.user_id,
+    //                 user_token: cookies?.user_data?.user_token,
+    //                 role: cookies?.user_data?.role,
+    //                 project_status: "pending",
+    //                 ...onGoingProjectPageId,
+    //             } )
+    //             .then( ( res ) => {
+    //                 if ( res?.data?.status === "Success" ) {
+    //                     setOnGoingProject( res?.data?.data );
+    //                 }
+    //             } );
+    // }, [] );
 
     const onGoingProjectArray = [];
     for (
@@ -113,7 +126,7 @@ const PendingProject = () => {
             user_id: cookies?.user_data?.user_id,
             user_token: cookies?.user_data?.user_token,
             role: cookies?.user_data?.role,
-            search_status: "approved",
+            search_status: "pending",
             search: searchActiveProject || "",
             ...onGoingProjectPageId,
         } ).then( ( res ) => {
@@ -125,203 +138,223 @@ const PendingProject = () => {
             }
         } );
     };
-    return (
-        isRender ? <>
-            <div className="dashboard">
-                <div className="container-fluid h-100">
-                    <div className="row h-100 dashboard-theme-color">
-                        <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
-                            <ClientDashboardAside />
-                        </div>
-                        <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
-                            <HeaderDashboard />
-                            <main className="dashboard-main">
-                                <div id="myactivity" className="container-fluid  myProjectTable">
-                                    <h2 className="ps-5">Pending Project Request</h2>
+    const searchData = () => {
+        axios
+            .post( "http://13.52.16.160:8082/identity/filter_projects", {
+                user_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                project_status: "pending",
+                ...onGoingProjectPageId,
+            } )
+            .then( ( res ) => {
+                if ( res?.data?.status === "Success" ) {
+                    setOnGoingProject( res?.data?.data );
+                }
+            } );
+    }
 
-                                    <div className="m-5 shadow">
-                                        { onGoingProject?.final_data?.length ? (
-                                            <div className="row align-items-center MyProjectDisplayRow">
-                                                <div className="searchActiveProject col-8 ms-auto">
-                                                    <form onSubmit={ handleFilterProject } >
-                                                        <input
-                                                            type="text"
-                                                            value={ searchActiveProject }
-                                                            onChange={ ( e ) => {
-                                                                setSearchActiveProject( e?.target?.value )
-                                                                setNoResult( false )
-                                                            } }
-                                                            placeholder="Search..."
-                                                        />
-                                                        <button type="submit">
-                                                            <BsSearch />
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div
-                                                style={ { minHeight: "600px" } }
-                                                className="d-flex justify-content-center align-items-center"
-                                            >
-                                                <span className="h4">No Project Data To Show</span>
-                                            </div>
-                                        ) }
-                                        { noResult ? (
-                                            <div
-                                                style={ { minHeight: "600px" } }
-                                                className="d-flex justify-content-center "
-                                            >
-                                                <span className="h4">No Result Found</span>
-                                            </div>
-                                        ) : ( onGoingProject?.final_data?.length ? (
-                                            onGoingProject.final_data.map( ( res, index ) => (
-                                                <div className="row MyProjectDisplayRow" key={ index }>
-                                                    <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
-                                                        <img
-                                                            src={ res?.professional_image }
-                                                            className="img-fluid rounded-circle"
-                                                            style={ { width: "70px", height: "70px", cursor: "pointer" } }
-                                                            alt={ res?.professional_name }
-                                                            onClick={ () => {
-                                                                navigate( `/professionalprofile/${ res?.professional_id }` );
-                                                            } }
-                                                        />
-                                                        <div className="ps-3">
-                                                            <h4
-                                                                className="underline_hover"
-                                                                onClick={ () => {
-                                                                    navigate(
-                                                                        `/professionalprofile/${ res?.professional_id }`
-                                                                    );
+    return (
+        isRender ?
+            <>
+                <div className="dashboard">
+                    <div className="container-fluid h-100">
+                        <div className="row h-100 dashboard-theme-color">
+                            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+                                <ClientDashboardAside />
+                            </div>
+                            <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
+                                <HeaderDashboard />
+                                <main className="dashboard-main">
+                                    <div id="myactivity" className="container-fluid  myProjectTable">
+                                        <h2 className="ps-5">Pending Project Request</h2>
+                                        <div className="m-5 shadow">
+                                            { onGoingProject?.final_data?.length ? (
+                                                <div className="row align-items-center MyProjectDisplayRow">
+                                                    <div className="searchActiveProject col-8 ms-auto">
+                                                        <form onSubmit={ handleFilterProject } >
+                                                            <input
+                                                                type="text"
+                                                                value={ searchActiveProject }
+                                                                onChange={ ( e ) => {
+                                                                    setSearchActiveProject( e?.target?.value )
+                                                                    setNoResult( false )
+                                                                    if ( e.target.value === "" ) {
+                                                                        searchData()
+                                                                    }
                                                                 } }
-                                                            >
-                                                                { res?.professional_name }
-                                                            </h4>
-                                                            <h6>
-                                                                <CiLocationOn />
-                                                                { res?.location }
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                                        <div>
-                                                            <h5>Project Name</h5>
-                                                            <h4>{ res?.project_name }</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-3 col-md-6 ">
-                                                        <div className="row">
-                                                            <div className="col-md d-flex flex-column align-items-center justify-content-center">
-                                                                <div>
-                                                                    <h5>Status</h5>
-                                                                    <h4>{ res?.project_status }</h4>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-md d-flex flex-column align-items-center justify-content-center">
-                                                                <div>
-                                                                    <h5>Total Budget</h5>
-                                                                    <h4>${ res?.project_cost }</h4>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                                        <div>
-                                                            <h5>Area</h5>
-                                                            <h4>{ res?.area } square meter</h4>
-                                                        </div>
+                                                                placeholder="Search..."
+                                                            />
+                                                            <button type="submit">
+                                                                <BsSearch />
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </div>
-                                            ) )
-                                        ) : (
-                                            <div
-                                                style={ { minHeight: "600px" } }
-                                                className="d-flex justify-content-center align-items-center"
-                                            >
-                                                <span className="h4">No Professional Accepted Projects To Show</span>
-                                            </div>
-                                        ) ) }
-                                    </div>
-                                    { onGoingProject.final_data?.length ? (
-                                        <Pagination className="ps-5 paginationBoxProfessionalDashboard">
-                                            <Pagination.First
-                                                onClick={ () => {
-                                                    setOnGoingProjectPageId( {
-                                                        page: 1,
-                                                        page_size: 5,
-                                                    } );
-                                                } }
-                                            />
-                                            <Pagination.Prev
-                                                onClick={ () => {
-                                                    setOnGoingProjectPageId( ( prev ) => ( {
-                                                        ...prev,
-                                                        page:
-                                                            onGoingProjectPageId?.page !== 1
-                                                                ? onGoingProjectPageId?.page - 1
-                                                                : 1,
-                                                    } ) );
-                                                } }
-                                            />
-                                            { onGoingProjectArray?.map( ( res, key ) => (
-                                                <Pagination.Item
-                                                    key={ key }
-                                                    active={ onGoingProjectPageId?.page === res }
-                                                    onClick={ () => {
-                                                        setOnGoingProjectPageId( ( prev ) => ( {
-                                                            ...prev,
-                                                            page: res,
-                                                        } ) );
-                                                    } }
+                                            ) : (
+                                                <div
+                                                    style={ { minHeight: "600px" } }
+                                                    className="d-flex justify-content-center align-items-center"
                                                 >
-                                                    { res }
-                                                </Pagination.Item>
+                                                    <span className="h4">No Project Data To Show</span>
+                                                </div>
+                                            ) }
+                                            { noResult ? (
+                                                <div
+                                                    style={ { minHeight: "600px" } }
+                                                    className="d-flex justify-content-center "
+                                                >
+                                                    <span className="h4">No Result Found</span>
+                                                </div>
+                                            ) : ( onGoingProject?.final_data?.length ? (
+                                                onGoingProject.final_data.map( ( res, index ) => (
+                                                    <div className="row MyProjectDisplayRow" key={ index }>
+                                                        <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+                                                            <img
+                                                                src={ res?.professional_image }
+                                                                className="img-fluid rounded-circle"
+                                                                style={ { width: "70px", height: "70px", cursor: "pointer" } }
+                                                                alt={ res?.professional_name }
+                                                                onClick={ () => {
+                                                                    navigate( `/professionalprofile/${ res?.professional_id }` );
+                                                                } }
+                                                            />
+                                                            <div className="ps-3">
+                                                                <h4
+                                                                    className="underline_hover"
+                                                                    onClick={ () => {
+                                                                        navigate(
+                                                                            `/professionalprofile/${ res?.professional_id }`
+                                                                        );
+                                                                    } }
+                                                                >
+                                                                    { res?.professional_name }
+                                                                </h4>
+                                                                <h6>
+                                                                    <CiLocationOn />
+                                                                    { res?.location }
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                                            <div>
+                                                                <h5>Project Name</h5>
+                                                                <h4>{ res?.project_name }</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-3 col-md-6 ">
+                                                            <div className="row">
+                                                                <div className="col-md d-flex flex-column align-items-center justify-content-center">
+                                                                    <div>
+                                                                        <h5>Status</h5>
+                                                                        <h4>{ res?.project_status }</h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-md d-flex flex-column align-items-center justify-content-center">
+                                                                    <div>
+                                                                        <h5>Total Budget</h5>
+                                                                        <h4>${ res?.project_cost }</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                                            <div>
+                                                                <h5>Area</h5>
+                                                                <h4>{ res?.area } square meter</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ) )
+                                            ) : (
+                                                <div
+                                                    style={ { minHeight: "600px" } }
+                                                    className="d-flex justify-content-center align-items-center"
+                                                >
+                                                    <span className="h4">No Professional Accepted Projects To Show</span>
+                                                </div>
                                             ) ) }
-                                            <Pagination.Next
-                                                onClick={ () => {
-                                                    setOnGoingProjectPageId( ( prev ) => ( {
-                                                        ...prev,
-                                                        page:
-                                                            onGoingProjectArray?.length !== onGoingProjectPageId?.page
-                                                                ? onGoingProjectPageId?.page + 1
-                                                                : onGoingProjectPageId?.page,
-                                                    } ) );
-                                                } }
-                                            />
-                                            <Pagination.Last
-                                                onClick={ () => {
-                                                    setOnGoingProjectPageId( ( prev ) => ( {
-                                                        ...prev,
-                                                        page: onGoingProjectArray?.length,
-                                                    } ) );
-                                                } }
-                                            />
-                                        </Pagination>
-                                    ) : (
-                                        ""
-                                    ) }
-                                </div>
-                                <ToastContainer
-                                    position="top-center"
-                                    autoClose={ 3000 }
-                                    hideProgressBar={ true }
-                                    newestOnTop={ false }
-                                    closeOnClick
-                                    rtl={ false }
-                                    pauseOnFocusLoss
-                                    draggable
-                                    pauseOnHover
-                                    theme="colored"
-                                    toastStyle={ { backgroundColor: "red", color: "white" } }
-                                />
-                            </main>
+                                        </div>
+                                        { onGoingProject?.final_data?.length ? (
+                                            onGoingProject?.final_data?.length > 5 ?
+                                                ( <Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                                                    <Pagination.First
+                                                        onClick={ () => {
+                                                            setOnGoingProjectPageId( {
+                                                                page: 1,
+                                                                page_size: 5,
+                                                            } );
+                                                        } }
+                                                    />
+                                                    <Pagination.Prev
+                                                        onClick={ () => {
+                                                            setOnGoingProjectPageId( ( prev ) => ( {
+                                                                ...prev,
+                                                                page:
+                                                                    onGoingProjectPageId?.page !== 1
+                                                                        ? onGoingProjectPageId?.page - 1
+                                                                        : 1,
+                                                            } ) );
+                                                        } }
+                                                    />
+                                                    { onGoingProjectArray?.map( ( res, key ) => (
+                                                        <Pagination.Item
+                                                            key={ key }
+                                                            active={ onGoingProjectPageId?.page === res }
+                                                            onClick={ () => {
+                                                                setOnGoingProjectPageId( ( prev ) => ( {
+                                                                    ...prev,
+                                                                    page: res,
+                                                                } ) );
+                                                            } }
+                                                        >
+                                                            { res }
+                                                        </Pagination.Item>
+                                                    ) ) }
+                                                    <Pagination.Next
+                                                        onClick={ () => {
+                                                            setOnGoingProjectPageId( ( prev ) => ( {
+                                                                ...prev,
+                                                                page:
+                                                                    onGoingProjectArray?.length !== onGoingProjectPageId?.page
+                                                                        ? onGoingProjectPageId?.page + 1
+                                                                        : onGoingProjectPageId?.page,
+                                                            } ) );
+                                                        } }
+                                                    />
+                                                    <Pagination.Last
+                                                        onClick={ () => {
+                                                            setOnGoingProjectPageId( ( prev ) => ( {
+                                                                ...prev,
+                                                                page: onGoingProjectArray?.length,
+                                                            } ) );
+                                                        } }
+                                                    />
+                                                </Pagination> ) : null
+                                        ) : (
+                                            ""
+                                        ) }
+                                    </div>
+                                    <ToastContainer
+                                        position="top-center"
+                                        autoClose={ 3000 }
+                                        hideProgressBar={ true }
+                                        newestOnTop={ false }
+                                        closeOnClick
+                                        rtl={ false }
+                                        pauseOnFocusLoss
+                                        draggable
+                                        pauseOnHover
+                                        theme="colored"
+                                        toastStyle={ { backgroundColor: "red", color: "white" } }
+                                    />
+                                </main>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <Footer />
-        </> : <Loader />
+                <Footer />
+            </> : <Loader />
 
     );
 };
