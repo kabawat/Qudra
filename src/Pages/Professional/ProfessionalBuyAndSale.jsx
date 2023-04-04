@@ -971,7 +971,7 @@ const ProfessionalBuyAndSale = () => {
                                 <BsCurrencyDollar />
                                 <Field
                                   type="number"
-                                  placeholder="Enter Your Price Per Square Meter"
+                                  placeholder="Enter Your project Price "
                                   className="priceInput"
                                   name="price"
                                 />
@@ -1298,7 +1298,7 @@ const ProfessionalBuyAndSale = () => {
                                     <BsCurrencyDollar />
                                     <Field
                                       type="text"
-                                      placeholder="Enter Your Price Per Square Meter"
+                                      placeholder="Enter Your project Price "
                                       className="priceInput"
                                       name="price"
                                       value={values.price}

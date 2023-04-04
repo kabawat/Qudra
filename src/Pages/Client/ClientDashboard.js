@@ -9,7 +9,7 @@ import Loader from "../../components/Loader";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
-  const [cookies, ] = useCookies()
+  const [cookies,] = useCookies()
   const [isReander, setIsReander] = useState(false)
   useEffect(() => {
     if (cookies?.user_data) {

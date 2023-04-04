@@ -151,7 +151,7 @@ const PurchaseDesign = () => {
                                                                     </div>
                                                                     <div className="col-xxl-6 col-lg-12 col-6">
                                                                         <button className="btn btn-primary border-0" style={{ width: "100%", fontSize: "14px", backgroundColor: "rgb(0, 167, 139)" }} type="button">
-                                                                            Buy Project
+                                                                            Download Project
                                                                         </button>
                                                                     </div>
                                                                 </div>

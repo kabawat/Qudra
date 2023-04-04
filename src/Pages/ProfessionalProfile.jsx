@@ -621,7 +621,7 @@ const ProfessionalProfile = () => {
                           src="/static/images/verifiedvisualiser.png"
                           alt=""
                         />{" "}
-                        <h4>Unverified Visualizers</h4>
+                        <h4>Unverified Freelancer</h4>
                       </div>
                     ) : (
                       <div>
@@ -634,7 +634,7 @@ const ProfessionalProfile = () => {
                             padding: "10px",
                           }}
                         />
-                        <h4>Unverified Visualizers</h4>
+                        <h4>Unverified Freelancer</h4>
                       </div>
                     )}
                   </div>

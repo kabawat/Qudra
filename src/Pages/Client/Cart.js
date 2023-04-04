@@ -78,7 +78,7 @@ const Cart = () => {
         setShow(false)
       }
     })
-
+    setShow(false)
   }
 
   const handalPurchase = (event) => {

@@ -429,7 +429,7 @@ const EditProfileProfessional = ({ location }) => {
                             // setimgcode(id.toLocaleUpperCase());
                           }}
                           flags={true}
-                          placeholder="Select An Country"
+                          placeholder="Select a Country"
                           name="nation"
                         />
                         <ErrorMessage

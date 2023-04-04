@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect, useReducer } from "react";
-import $ from "jquery";
 import { BsArrowRight, BsPlusLg, BsImage } from "react-icons/bs";
 import { IoVideocamOutline } from "react-icons/io5";
 import { Button } from "react-bootstrap";
@@ -8,7 +7,6 @@ import { MultiSelect } from "react-multi-select-component";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
-import { BiEuro } from "react-icons/bi";
 import LoadingModal from "../../Modals/LoadingModal";
 import Global from "../../../context/Global";
 import { toast } from "react-toastify";
@@ -773,7 +771,7 @@ const PortfolioPane = () => {
                                             <BsCurrencyDollar />
                                             <Field
                                               type="text"
-                                              placeholder="Enter Your Price Per Square Meter "
+                                              placeholder="Enter Your project Price  "
                                               className="priceInput"
                                               name="price"
                                             />

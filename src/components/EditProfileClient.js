@@ -302,7 +302,7 @@ const EditProfileClient = ({location}) => {
                           }}
                           disabled
                           flags={true}
-                          placeholder="Select An Country"
+                          placeholder="Select a Country"
                           name="nation"
                         />
                         {nationErr && (
@@ -310,7 +310,7 @@ const EditProfileClient = ({location}) => {
                         )}
                       </div>
                       <div className="col-md my-md-3 my-1">
-                        <div className="form-group">
+                        <div className="form-group">Enter Your project Price 
                           <PhoneInput
                             value={location?.state?.mobile_no}
                             placeholder="Enter phone number"
