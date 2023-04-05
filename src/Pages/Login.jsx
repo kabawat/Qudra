@@ -170,6 +170,7 @@ const Login = () => {
                     .then((res) => {
                       if (res?.data?.status === "Success") {
                         setCookie("user_data", res?.data?.data);
+
                         axios
                           .post(
                             "http://13.52.16.160:8082/identity/get_dashboard_profile/",
@@ -196,6 +197,28 @@ const Login = () => {
                             navigate("/clientdashboard", { replace: true });
                             contextData.setShowDisclamer(true);
                           } else {
+                            axios
+                              .put(
+                                "http://13.52.16.160:8082/stripe/professionl/verify-account/",
+                                {
+                                  professioanl_id: res?.data?.data?.user_id,
+                                  professioanl_token:
+                                    res?.data?.data?.user_token,
+                                }
+                              )
+                              .then((result) => {
+                                if (result?.data?.status === "Failed") {
+                                  contextData.dispatch({
+                                    type: "VERIFIED",
+                                    value: false,
+                                  });
+                                } else {
+                                  contextData.dispatch({
+                                    type: "VERIFIED",
+                                    value: true,
+                                  });
+                                }
+                              });
                             navigate("/professionaldashboard", {
                               replace: true,
                             });
