@@ -872,6 +872,7 @@ const ProfessionalProfile = () => {
                   .then((res) => {
                     if (res?.data?.status === "Success") {
                       setShowModal(false);
+                      setDate(null);
                     }
                   });
               }

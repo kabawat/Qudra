@@ -79,7 +79,7 @@ function App() {
 
           <Route path="/taskform" element={<TaskForm />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/categoryresult" element={<CategoryResult />} />
+          <Route path="/categoryresult" element={<CategoryResult />} /> 
           {/* Professional Routes */}
           <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
 

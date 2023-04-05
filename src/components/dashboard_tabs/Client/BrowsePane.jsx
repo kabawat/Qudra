@@ -15,6 +15,7 @@ import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
 import Footer from "../../Footer";
 import Loader from "../../Loader";
+import { Backdrop, CircularProgress } from "@mui/material";
 const BrowsePane = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const BrowsePane = () => {
   const [catagoriesDropdown, SetCatagoriesDropdown] = useState([]);
   const [browserProfessionalSearchInput, setBrowserProfessionalSearchInput] =
     useState("");
-  const [browseProfessionalData, setBrowserProfessionalData] = useState(null);
+  const [browseProfessionalData, setBrowserProfessionalData] = useState();
   const [defaultProfessionalProfile, setDefaultProfessionalProfile] = useState(
     []
   );
@@ -287,25 +288,18 @@ const BrowsePane = () => {
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
-                        browserProfessionalSearchInput
-                          ? axios
-                            .post(
-                              "http://13.52.16.160:8082/client/search_professional",
-                              {
-                                client_id: cookies?.user_data?.user_id,
-                                user_token: cookies?.user_data?.user_token,
-                                role: cookies?.user_data?.role,
-                                search_data: browserProfessionalSearchInput,
-                                ...browseProfessinalSearchPageId,
-                                filter_by: filterProject,
-                              }
-                            )
-                            .then((res) => {
-                              if (res?.data?.status === "Success") {
-                                setBrowserProfessionalData(res?.data?.data);
-                              } else setBrowserProfessionalData(null);
-                            })
-                          : setBrowserProfessionalData(null);
+                        browserProfessionalSearchInput ? axios.post("http://13.52.16.160:8082/client/search_professional", {
+                          client_id: cookies?.user_data?.user_id,
+                          user_token: cookies?.user_data?.user_token,
+                          role: cookies?.user_data?.role,
+                          search_data: browserProfessionalSearchInput,
+                          ...browseProfessinalSearchPageId,
+                          filter_by: filterProject,
+                        }).then((res) => {
+                          if (res?.data?.status === "Success") {
+                            setBrowserProfessionalData(res?.data?.data);
+                          } else setBrowserProfessionalData(null);
+                        }) : setBrowserProfessionalData(null);
                       }}
                     >
                       <h3 className="m-0">Find Professionals now easily</h3>
@@ -844,7 +838,11 @@ const BrowsePane = () => {
                     </div>
                   </Modal.Body>
                 </Modal>
-              </main> : <Loader />}
+              </main> : (
+                <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!isRender}>
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+              )}
             </div>
           </div>
         </div>

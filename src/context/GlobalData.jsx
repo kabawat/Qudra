@@ -19,6 +19,7 @@ const initialState = {
   footer_explore_link: [],
   footer_resources_link: [],
   footer_icons: [],
+  verified: false,
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -54,6 +55,8 @@ const reducer = (state, action) => {
       return { ...state, footer_resources_link: action.value };
     case "FOOTER_ICONS":
       return { ...state, footer_icons: action.value };
+    case "VERIFIED":
+      return { ...state, verified: action.value };
 
     case "LOG_OUT":
       return initialState;
@@ -66,6 +69,26 @@ const GlobalData = (props) => {
   const [contextData, dispatch] = useReducer(reducer, initialState);
   const [cookies, , removeCookie] = useCookies()
   const [showDisclamer, setShowDisclamer] = useState();
+
+  useEffect(() => {
+    axios.put('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
+      professioanl_id: cookies?.user_data?.user_id,
+      professioanl_token: cookies?.user_data?.user_token
+    }).then((result) => {
+      if (result?.data?.status === "Failed") {
+        dispatch({
+          type: "VERIFIED",
+          value: false,
+        })
+      } else {
+        dispatch({
+          type: "VERIFIED",
+          value: true,
+        })
+      }
+    })
+  }, [contextData?.verified])
+
   useEffect(() => {
     if (!contextData?.userData) {
       dispatch({
@@ -73,7 +96,6 @@ const GlobalData = (props) => {
         value: cookies.user_data,
       });
     }
-
     if (!contextData?.profileData) {
       axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
         ...cookies?.user_data
@@ -171,32 +193,28 @@ const GlobalData = (props) => {
   const [unreadNotification, setUnreadNotification] = useState(null);
   useEffect(() => {
     const bringnotificationCount = () => {
-      axios
-        .post("http://13.52.16.160:8082/identity/unread_notification_count", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            setUnreadNotification(res?.data?.data?.unread_count);
-          }
-        });
+      axios.post("http://13.52.16.160:8082/identity/unread_notification_count", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+      }).then((res) => {
+        if (res?.data?.status === "Success") {
+          setUnreadNotification(res?.data?.data?.unread_count);
+        }
+      });
     };
     contextData?.userData && bringnotificationCount();
   }, [contextData?.userData]);
   const [unreadChatCount, setUnreadChatCount] = useState(null);
   useEffect(() => {
     contextData?.userData &&
-      axios
-        .post("http://13.52.16.160:8082/chat/unread_message_count", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
-        })
-        .then((res) => {
-          setUnreadChatCount(res?.data?.data?.unread_count);
-        });
+      axios.post("http://13.52.16.160:8082/chat/unread_message_count", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+      }).then((res) => {
+        setUnreadChatCount(res?.data?.data?.unread_count);
+      });
   }, [contextData?.userData]);
 
   const [notification, setNotification] = useState([]);

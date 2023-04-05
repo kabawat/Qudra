@@ -100,7 +100,7 @@ const Dashboardside = () => {
             <NavLink className={`nav-link activity-btn`} to="/like">
               <img src="/static/icon/likes2.png" alt="" className="Activities-white-icon" />
               <img src="/static/icon/likes1.png" alt="" className="Activities-green-icon" />
-              Likesaccept-project
+              Likes
             </NavLink>
           </li>
           {/* <li className="nav-item">

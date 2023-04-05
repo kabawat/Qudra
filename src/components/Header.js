@@ -1349,6 +1349,11 @@ const ChatHeader = () => {
 
 const HeaderDashboard = () => {
   const navigate = useNavigate();
+  const contextData = useContext(Global);
+  const [show, setShow] = useState(false);
+  const [showNotificationBox, setShowNotificationBox] = useState(false);
+  const [acceptProject, setAcceptProject] = useState(false);
+  const [clientDetails, setClientDetails] = useState();
   const [cookies, , removeCookie] = useCookies();
   const profileDropdown = () => {
     $(".profile-edit-dropdown").slideToggle();
@@ -1359,11 +1364,6 @@ const HeaderDashboard = () => {
       $(".profile-edit-dropdown").hide();
     }
   })
-  const contextData = useContext(Global);
-  const [show, setShow] = useState(false);
-  const [showNotificationBox, setShowNotificationBox] = useState(false);
-  const [acceptProject, setAcceptProject] = useState(false);
-  const [clientDetails, setClientDetails] = useState();
 
   const handleNotification = (res) => {
     axios.post("http://13.52.16.160:8082/client/particular_project_details", {
@@ -1493,19 +1493,7 @@ const HeaderDashboard = () => {
     }
   })
 
-  const [isVerify, setIsVerify] = useState(false)
-  useEffect(() => {
-    axios.put('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
-      professioanl_id: cookies?.user_data?.user_id,
-      professioanl_token: cookies?.user_data?.user_token
-    }).then((result) => {
-      if (result?.data?.status === "Failed") {
-        setIsVerify(false)
-      } else {
-        setIsVerify(true)
-      }
-    })
-  }, [])
+
   const handalVerify = () => {
     axios.post('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
       professioanl_id: cookies?.user_data?.user_id,
@@ -1516,15 +1504,11 @@ const HeaderDashboard = () => {
       link.href = url;
       document.body.appendChild(link);
       link.click();
-      // if (result?.data?.status === "Failed") {
-      //   setIsVerify(false)
-      // } else {
-      //   setIsVerify(true)
-      // }
     })
   }
   return (
     <>
+
       <header className="dashboard-header bg-white custom-border-radius-one">
         <div className="container-fluid px-lg-5 px-md-4 px-3">
           <div className="row py-4">
@@ -1537,18 +1521,13 @@ const HeaderDashboard = () => {
                 {
                   cookies?.user_data?.role !== 'client' ? <>
                     {
-                      cookies?.user_data?.role !== 'client' ? <>
-                        {
-                          isVerify ? <button className="verified-btn" title="verifed">
-                            <GoVerified />
-                            Account Verified
-                          </button> :
-                            <button className="verify-btn" title="verify Account" onClick={handalVerify}>
-                              <GoUnverified />
-                              Account Verify
-                            </button>
-                        }
-                      </> : ''
+                      contextData?.verified ? <button className="verified-btn" title="verifed">
+                        <GoVerified />
+                        Account Verified
+                      </button> : <button className="verify-btn" title="verify Account" onClick={handalVerify}>
+                        <GoUnverified />
+                        Account Verify
+                      </button>
                     }
                   </> : ''
                 }
@@ -1724,6 +1703,7 @@ const HeaderDashboard = () => {
           </div>
         </div>
       </header>
+
       <Modal
         centered
         show={acceptProject}

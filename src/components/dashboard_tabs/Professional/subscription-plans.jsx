@@ -11,42 +11,28 @@ import Footer from "../../Footer";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
-import Loader from "../../Loader";
 
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 const SubscriptionPlane = () => {
-  const contextData = useContext( Global );
+  const contextData = useContext(Global);
   const navigate = useNavigate();
-  const [ isRender, setIsRender ] = useState( false )
-  const [ cookies ] = useCookies()
-  useEffect( () => {
-    if ( cookies?.user_data ) {
-      if ( cookies?.user_data?.category_selected ) {
-        if ( cookies?.user_data.role === "professional" ) {
-          setIsRender( true )
-        } else {
-          navigate( '/clientdashboard' )
-        }
-      } else {
-        if ( cookies?.user_data.role === "professional" ) {
-          navigate( '/categoryArchitecture' )
-        } else {
-          navigate( '/client-architechture' )
-        }
-      }
-    } else {
-      navigate( '/select-sign-in' )
-    }
-  }, [] )
 
-  const [ plansType, setPlansType ] = useState( "monthly" );
-  const [ plans, setPlans ] = useState();
-  useEffect( () => {
+  const [plansType, setPlansType] = useState("monthly");
+  const [plans, setPlans] = useState();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+
     axios
-      .get( "http://13.52.16.160:8082/stripe/subscription-plans/" )
-      .then( ( responce ) => {
-        setPlans( responce?.data?.data?.final_list );
-      } );
-  }, [] );
+      .get("http://13.52.16.160:8082/stripe/subscription-plans/")
+      .then((responce) => {
+        setLoading(false);
+
+        setPlans(responce?.data?.data?.final_list);
+      });
+  }, []);
   return (
     <>
       <div className="dashboard">
@@ -57,6 +43,14 @@ const SubscriptionPlane = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
+              {loading ? (
+                                    <Backdrop
+                                        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                        open={loading}
+                                    >
+                                        <CircularProgress color="inherit" />
+                                    </Backdrop>
+                                ) : (
               <main className="dashboard-main">
                 <div
                   id="myactivity"
@@ -66,7 +60,7 @@ const SubscriptionPlane = () => {
                   <div className="m-0 m-md-5 shadow">
                     <main className="my-4 pb-5">
                       <div className="container">
-                        {/* <!--Section: Content--> */ }
+                        {/* <!--Section: Content--> */}
                         <section className="pt-3 text-center">
                           <h2 className="mb-4">
                             <strong>Pricing</strong>
@@ -97,33 +91,33 @@ const SubscriptionPlane = () => {
                           </div>
 
                           <div className="row gx-lg-5 mt-4">
-                            {/* <!--Grid column--> */ }
-                            { plans?.map( ( item, index ) => {
-                              if ( plansType === item?.plan_type ) {
+                            {/* <!--Grid column--> */}
+                            {plans?.map((item, index) => {
+                              if (plansType === item?.plan_type) {
                                 return (
                                   <div
-                                    key={ index }
+                                    key={index}
                                     className="col-lg-4 col-md-6 mb-4 my-2 subscription_plans"
                                   >
-                                    {/* <!-- Card --> */ }
+                                    {/* <!-- Card --> */}
                                     <div className="card border ">
                                       <div className="card-header py-3">
-                                        <p className=" mb-2">{ item.name }</p>
+                                        <p className=" mb-2">{item.name}</p>
                                         <h5 className="mb-0">
-                                          ${ item?.amount }/
-                                          { item?.plan_type === "monthly"
+                                          ${item?.amount}/
+                                          {item?.plan_type === "monthly"
                                             ? "Month"
-                                            : "Year" }
+                                            : "Year"}
                                         </h5>
                                       </div>
                                       <div className="card-body">
                                         <ul className="list-group list-group-flush">
                                           <li className="list-group-item border-0 ">
-                                            <b> Service Charge</b> :{ " " }
-                                            { item?.service_charge }%
+                                            <b> Service Charge</b> :{" "}
+                                            {item?.service_charge}%
                                           </li>
                                           <li className="list-group-item">
-                                            <b> Storage</b> : { item?.storage }
+                                            <b> Storage</b> : {item?.storage}
                                           </li>
                                         </ul>
                                       </div>
@@ -139,15 +133,15 @@ const SubscriptionPlane = () => {
                                   </div>
                                 );
                               }
-                            } ) }
+                            })}
                           </div>
                         </section>
-                        {/* <!--Section: Content--> */ }
+                        {/* <!--Section: Content--> */}
                       </div>
                     </main>
                     <main className="my-4 pb-5">
                       <div className="container">
-                        {/* <!--Section: Content--> */ }
+                        {/* <!--Section: Content--> */}
                         <section className="pt-3 text-center">
                           {/* <h2 className="mb-4">
                             <strong>Pricing</strong>
@@ -178,30 +172,30 @@ const SubscriptionPlane = () => {
                           </div>
 
                           <div className="row gx-lg-5 mt-4">
-                            {/* <!--Grid column--> */ }
-                            { plans?.map( ( item, index ) => {
-                              if ( "yearly" === item?.plan_type ) {
+                            {/* <!--Grid column--> */}
+                            {plans?.map((item, index) => {
+                              if ("yearly" === item?.plan_type) {
                                 return (
                                   <div
-                                    key={ index }
+                                    key={index}
                                     className="col-lg-4 col-md-6 mb-4 my-2 subscription_plans"
                                   >
-                                    {/* <!-- Card --> */ }
+                                    {/* <!-- Card --> */}
                                     <div className="card border ">
                                       <div className="card-header py-3">
-                                        <p className=" mb-2">{ item.name }</p>
+                                        <p className=" mb-2">{item.name}</p>
                                         <h5 className="mb-0">
-                                          { item?.amount }/ Year
+                                          {item?.amount}/ Year
                                         </h5>
                                       </div>
                                       <div className="card-body">
                                         <ul className="list-group list-group-flush">
                                           <li className="list-group-item border-0 ">
-                                            <b> Service Charge</b> :{ " " }
-                                            { item?.service_charge }%
+                                            <b> Service Charge</b> :{" "}
+                                            {item?.service_charge}%
                                           </li>
                                           <li className="list-group-item">
-                                            <b> Storage</b> : { item?.storage }
+                                            <b> Storage</b> : {item?.storage}
                                           </li>
                                         </ul>
                                       </div>
@@ -217,15 +211,15 @@ const SubscriptionPlane = () => {
                                   </div>
                                 );
                               }
-                            } ) }
+                            })}
                           </div>
                         </section>
-                        {/* <!--Section: Content--> */ }
+                        {/* <!--Section: Content--> */}
                       </div>
                     </main>
                   </div>
                 </div>
-              </main>
+              </main>)}
             </div>
           </div>
         </div>
@@ -235,4 +229,4 @@ const SubscriptionPlane = () => {
   );
 };
 
-export default React.memo( SubscriptionPlane );
+export default React.memo(SubscriptionPlane);
