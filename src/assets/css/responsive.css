@@ -1,4 +1,83 @@
-@media screen and (min-device-width: 0px) and (max-device-width: 767px) {
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  section.earners-review-carousel {
+    background-position: 12% 0%!important;
+}
+.form-image-input img {
+  width: 30%;
+}
+}
+
+
+
+@media screen and (min-width: 1280px) and (max-width:1600px) {
+
+  .henry-img img {
+    object-fit: cover;
+}
+
+.form-image-input img {
+  width: 100%;
+}
+
+}
+
+
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+
+
+/* =============== 05 April 2023 ==================== */
+
+.header-logo img {
+  height: 55px;
+}
+
+.create-account main.create-account-main form {
+  padding: 50px 20px!important;
+}
+
+div#heroes .center-text {
+  padding: 0 20px;
+}
+.btn-group.pricing_btn {
+  margin-bottom: 0px!important;
+}
+
+.subscription_plans:nth-child(2) .card-header {
+  background: #035245;
+}
+
+.card-box-our-top-clients .card {
+  background: #ededed61;
+  padding: 0px;
+  width: 95%;
+  margin: 20px auto;
+  border-radius: 20px;
+}
+
+.card-box-our-top-clients .card img {
+  border-radius: 20px 20px 0 0!important;
+}
+
+div#google_translate_element {
+  margin: 10px 20px;
+}
+
+.create-account
+  main.create-account-main
+  form
+  .create-account-input
+  .policy-span {
+    border: none;
+}
+
+.mob-column{
+  flex-direction: column;
+}
+/* =============== 05 April 2023 ==================== */
+
+
+
   .myProjectTable h2 {
     font-size: 22px;
   }
@@ -35,8 +114,9 @@
     form
     .create-account-input
     .policy-span {
-    text-align: center;
-  }
+    text-align: left;
+    display: flex;
+}
 
   .homePageherosSectionLogo {
     height: 80px !important;
@@ -83,11 +163,13 @@
   }
   .hover-section {
     min-height: 230px;
-  }
-  .Top_Earners_Ineer h2 {
-    font-size: 15px;
-    padding: 0;
-  }
+    margin-bottom: 30px;
+}
+.Top_Earners_Ineer h2 {
+  font-size: 20px;
+  padding: 0;
+  font-weight: 600;
+}
   .Top_Earners .owl-next:before {
     height: 35px;
     width: 35px;
@@ -128,8 +210,8 @@
     font-size: 16px;
   }
   .Top_Earners .owl-carousel {
-    margin: 25px 0px 25px 0px;
-  }
+    margin: 35px 0px 25px 0px;
+}
   .Top_Earners {
     background-size: 400% 106%;
     padding: 25px 0;
@@ -155,7 +237,11 @@
   section.earners-review-carousel .carousel .image-carousel-main {
     padding: 0;
     height: 350px;
+    width: 280px;
+    margin-left: 20px;
   }
+ 
+  
   section.earners-review-carousel .carousel-caption h3 {
     font-size: 22px;
   }
@@ -333,7 +419,8 @@
     min-height: auto;
     padding: 60px 20px;
     border-radius: 30px;
-  }
+    margin: 0 30px;
+}
   .let-get-started .join-us-now-main .join-us-now-text h3 {
     font-size: 22px;
   }
@@ -499,6 +586,28 @@
 }
 
 @media screen and (min-device-width: 768px) and (max-device-width: 991px) {
+
+/* =============== 05 April  ================ */
+
+.henry-img img {
+  object-fit: cover;
+}
+
+.form-image-input img {
+  width: 100%;
+}
+
+.form-image-input {
+  height: 90px;
+}
+
+/* =============== 05 April  ================ */
+
+
+
+
+
+
   .myProjectTable div.row div {
     padding: 10px 20px;
   }
@@ -529,7 +638,8 @@
   }
   .hover-section {
     min-height: 240px;
-  }
+    margin-bottom: 20px;
+}
   .hover-section:hover {
     padding-top: 10px;
   }
@@ -561,9 +671,10 @@
   }
   section.earners-review-carousel .carousel .image-carousel-main {
     padding: 0px;
-    height: 400px;
-    width: 325px;
-  }
+    height: 335px;
+    width: 270px;
+    margin-top: 40px;
+}
   footer {
     padding-top: 50px;
   }
@@ -886,6 +997,9 @@
   .homePageherosSectionLogo {
     height: 110px !important;
   }
+  .form-image-input img {
+    width: 100%;
+  }
   .create-account main.create-account-main form {
     padding: 50px;
     min-height: 475px;
@@ -931,6 +1045,7 @@
   .henry-img img {
     width: 80px !important;
     height: 80px;
+    object-fit: cover;
   }
   .add-hire .add-icon i {
     font-size: 11px;
@@ -945,7 +1060,7 @@
     font-size: 28px;
   }
   section.earners-review-carousel {
-    background-size: 130% 100%;
+    background-size: 150% 100%;
   }
   section.earners-review-carousel .carousel-caption h3 {
     font-size: 28px;
@@ -1124,7 +1239,7 @@
   }
 }
 
-@media screen and (min-device-width: 1025px) and (max-device-width: 1280px) {
+@media screen and (min-device-width: 1024px) and (max-device-width: 1279px) {
   .homePageherosSectionLogo {
     height: 120px !important;
   }
@@ -1322,7 +1437,7 @@
   }
 }
 
-@media screen and (min-device-width: 1281px) and (max-device-width: 1366px) {
+@media screen and (min-device-width: 1280px) and (max-device-width: 1365px) {
   section.earners-review-carousel {
     padding: 50px 0px;
     background-size: 120% 100%;

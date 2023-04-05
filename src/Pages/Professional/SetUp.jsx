@@ -2039,7 +2039,7 @@ const SetUp = () => {
                             style={{
                               position: "absolute",
                               bottom: "-7%",
-                              left: "3%",
+                              left: "10%",
                             }}
                           >
                             <p>{values.bio.length}/500</p>

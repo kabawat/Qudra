@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Loader from "../../components/Loader";
-import { Backdrop, CircularProgress } from "@mui/material";
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -37,7 +36,7 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <>
+    isRender ? <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
@@ -46,19 +45,15 @@ const Dashboard = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              {!isRender ? (<Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!isRender} >
-                <CircularProgress color="inherit" />
-              </Backdrop>
-              ) : <main className="dashboard-main">
+              <main className="dashboard-main">
                 <DashboardPane />
               </main>
-              }
             </div>
           </div>
         </div>
       </div>
       <Footer />
-    </>
+    </> : <Loader />
   );
 };
 

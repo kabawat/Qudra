@@ -219,6 +219,7 @@ h2 {
   width: 90px !important;
   height: 90px !important;
   border-radius: 100px;
+  object-fit: cover;
 }
 
 .henry-img {

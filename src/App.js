@@ -76,34 +76,30 @@ function App() {
           <Route path="/quadroterms" element={<QuadroTerms />} />
           <Route path="/setup" element={<SetUp />} />
           <Route path="/kickassform" element={<KickAssForm />} />
-
           <Route path="/taskform" element={<TaskForm />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/categoryresult" element={<CategoryResult />} /> 
+
+
           {/* Professional Routes */}
           <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
-
           <Route path="/Portfolio" element={<PortfolioPane />} />
-          <Route path="/like" element={<LikesShow />} />
-          <Route path="/ratings" element={<Showratings />} />
 
           <Route path="/request-projects" element={<RequestProjects />} />
+          <Route path="/pending-activity" element={<PendingActivity />} />
           <Route path="/myactivity" element={<ActivitiesPane />} />
           <Route path="/completed-activity" element={<CompletedProject />} />
-          <Route path="/pending-activity" element={<PendingActivity />} />
           <Route path="/declined-activity" element={<DeclinedActivity />} />
           <Route path="/professional-Reject" element={<Reject />} />
           <Route path="/subscription-plans" element={<SubscriptionPlans />} />
+          <Route path="/like" element={<LikesShow />} />
+          <Route path="/ratings" element={<Showratings />} />
           <Route path="/professional-guidelines" element={<ProfessionalGuidelines />} />
 
-          <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
           <Route path="/categoryArchitecture" element={<ProfessionalCategoryArchitecture />} />
           <Route path="/categoryvisualization" element={<ProfessionalCategoryVisualization />} />
           <Route path="/professional-buy-and-sale" element={<ProfessionalBuyAndSale />} />
 
           {/* Client Routes */}
           <Route path="/clientdashboard" element={<ClientDashboard />} />
-
           <Route path="/browse-professionals" element={<BrowsePane />} />
           <Route path="/ongoing-projects" element={<OngoingPane />} />
           <Route path="/pending-project" element={<PendingProject />} />
@@ -111,19 +107,25 @@ function App() {
           <Route path="/completed-projects" element={<CompletedPane />} />
           <Route path="/purchase-design" element={<PurchaseDesign />} />
           <Route path="/declined-projects" element={<DeclineProject />} />
+          <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
           <Route path="/client-liked" element={<Likes />} />
           <Route path="/client-rating" element={<Ratings />} />
           <Route path="/client-guidlines" element={<ClientGuidlines />} />
+          <Route path="/cart" element={<Cart />} />
 
           <Route path="/client-architechture" element={<ClientCategoriesArchitectural />} />
           <Route path="/client-visualisation" element={<ClientCatagoryVisualization />} />
           <Route path="/client-buy-sell" element={<ClientBuySellDesign />} />
+
+          {/* both */}
           <Route path="/project-details" element={<ProjectDetails />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/chat" element={<Chat />} />
 
+          {/* not now  */}
           <Route path="/clientCategory" element={<ClientCategory />} />
-          <Route path="/cart" element={<Cart />} />
           <Route path="/terms-condition" element={<TermsAndCondition />} />
+          <Route path="/categoryresult" element={<CategoryResult />} />
           <Route path="/getverified" element={<GetVerified />} />
         </Routes>
       </IconContext.Provider>
