@@ -171,9 +171,8 @@ const Chat = () => {
                   client_id: cookies?.user_data?.user_id,
                   role: cookies?.user_data?.role,
                   user_token: cookies?.user_data?.user_token,
-
-               professional_id:
-                    contextData?.professional_user_profile_data?.details
+                  professional_id:
+                    res?.data?.data?.professional_list[otherUserId]
                       ?.professional_id,
                 })
                 .then((respo) => {
@@ -181,13 +180,6 @@ const Chat = () => {
                     `ws://13.52.16.160:8082/ws/chat_consumer/${respo?.data?.data?.room_uuid}/`
                   );
                   setWskt(ws && ws);
-                  setChatsUserTitle( {
-                    ...chatsUserTitle, userSelected: contextData?.professional_user_profile_data?.details
-                      ?.name,
-                      userPic:contextData?.professional_user_profile_data?.details
-                      ?.user_image
-                  } )
-                  setCurrentActiveChatPane( "first" );
                 });
               axios
                 .post("http://13.52.16.160:8082/chat/all_chats/", {
@@ -440,146 +432,6 @@ const Chat = () => {
                         ))}
                   </Nav>
                 )}
-                {/* {searchState ? (
-                  <Nav variant="pills" className="flex-column">
-                    {allChatUser &&
-                      allChatUser
-                        .filter((data) =>
-                          data?.name
-                            .toLowerCase()
-                            .includes(searchPara.toLowerCase())
-                        )
-                        .map((data, index) => (
-                          <>
-                            {data?.name ? (
-                              <ChatItem
-                                key={index}
-                                avatar={data.avatar ? data.avatar : noUserPic}
-                                alt={data?.alt}
-                                title={data?.name}
-                                // subtitle={`${data?.last_msg.slice(0, 15)}${
-                                //   data?.last_msg.length <= 15 ? "" : "..."
-                                // }`}
-                                unread={data?.last_msg}
-                                onClick={() => {
-                                  setCurrentActiveChatPane("first");
-                                  setChatsUserTitle({
-                                    userPic: data?.avatar
-                                      ? data?.avatar
-                                      : noUserPic,
-                                    userSelected: data?.name,
-                                  });
-                                  setOtherUserId(index);
-                                }}
-                              />
-                            ) : (
-                              <h1 style={{ color: "white" }}>Hello</h1>
-                            )}
-                          </>
-                        ))}
-                  </Nav>
-                ) : isSearchUserFound === true ? (
-                  cookies?.user_data?.role ===
-                  "professional" ? (
-                    <Nav variant="pills" className="flex-column">
-                      {allChatUser &&
-                        allChatUser?.map((data, index) => (
-                          <>
-                            {data?.name ? (
-                              <ChatItem
-                                key={index}
-                                avatar={data.avatar ? data.avatar : noUserPic}
-                                alt={data?.alt}
-                                title={data?.name}
-                                // date={data?.last_msg_time}
-                                unread={data?.last_msg}
-                                onClick={() => {
-                                  setCurrentActiveChatPane("first");
-                                  axios
-                                    .post(
-                                      "http://13.52.16.160:8082/chat/get_room_id/",
-                                      {
-                                        professional_id:
-                                          cookies?.user_data
-                                            .user_id,
-                                        user_token:
-                                          cookies?.user_data
-                                            .user_token,
-                                        role: "professional",
-                                        client_id: data?.client_id,
-                                      }
-                                    )
-                                    .then((res) => {
-                                      if (res.data.status === "Success") {
-                                        setSearchState(false);
-                                        contextData.setIsOnChatPage(
-                                          !contextData.isOnChatPage
-                                        );
-                                      }
-                                    });
-
-                                  setSearchPara("");
-                                }}
-                              />
-                            ) : (
-                              <h1 style={{ color: "white" }}>Hello</h1>
-                            )}
-                          </>
-                        ))}
-                    </Nav>
-                  ) : (
-                    <Nav variant="pills" className="flex-column">
-                      {allChatUser &&
-                        allChatUser?.map((data, index) => (
-                          <>
-                            {data?.name ? (
-                              <ChatItem
-                                key={index}
-                                avatar={data.avatar ? data.avatar : noUserPic}
-                                alt={data?.alt}
-                                title={data?.name}
-                                // date={data?.last_msg_time}
-                                unread={data?.last_msg}
-                                onClick={() => {
-                                  setCurrentActiveChatPane("first");
-                                  axios
-                                    .post(
-                                      "http://13.52.16.160:8082/chat/get_room_id/",
-                                      {
-                                        client_id:
-                                          cookies?.user_data
-                                            ?.user_id,
-                                        user_token:
-                                          cookies?.user_data
-                                            ?.user_token,
-                                        role: cookies?.user_data
-                                          ?.role,
-                                        professional_id: data?.professional_id,
-                                      }
-                                    )
-                                    .then((res) => {
-                                      if (res.data.status === "Success") {
-                                        setSearchState(false);
-                                        contextData.setIsOnChatPage(
-                                          !contextData.isOnChatPage
-                                        );
-                                      }
-                                    });
-
-                                  setSearchPara("");
-                                }}
-                              />
-                            ) : (
-                              // "dgawuidga"
-                              <h1 style={{ color: "white" }}>Hello</h1>
-                            )}
-                          </>
-                        ))}
-                    </Nav>
-                  )
-                ) : (
-                  "no user found"
-                )} */}
               </Col>
 
               <Col
@@ -662,74 +514,41 @@ const Chat = () => {
                                   type: "message",
                                 })
                               );
-
                               setMessageInput("");
                             }}
                           />
                         </div>
                         <div className="col-2">
-                          <Formik
-                            initialValues={{
-                              file: "",
-                            }}
+                          <Formik initialValues={{ file: "", }}
                             onSubmit={(values, { setSubmitting }) => {
                               const fileUpload = new FormData();
                               fileUpload.append("attachment", values.file);
 
-                              if (
-                                cookies?.user_data.role === "professional"
-                              ) {
-                                fileUpload.append(
-                                  "professional_id",
-                                  cookies?.user_data?.user_id
-                                );
+                              if (cookies?.user_data.role === "professional") {
+                                fileUpload.append("professional_id", cookies?.user_data?.user_id);
                               } else {
-                                fileUpload.append(
-                                  "cliend_id",
-                                  cookies?.user_data.user_id
-                                );
+                                fileUpload.append("cliend_id", cookies?.user_data.user_id);
                               }
-                              fileUpload.append(
-                                "role",
-                                cookies?.user_data.role
-                              );
-                              fileUpload.append(
-                                "user_token",
-                                cookies?.user_data.user_token
-                              );
+                              fileUpload.append("role", cookies?.user_data.role);
+                              fileUpload.append("user_token", cookies?.user_data.user_token);
 
-                              if (
-                                cookies?.user_data.role === "professional"
-                              ) {
-                                fileUpload.append(
-                                  "client_id",
-                                  allChatUser[otherUserId]?.client_id
-                                );
+                              if (cookies?.user_data.role === "professional") {
+                                fileUpload.append("client_id", allChatUser[otherUserId]?.client_id);
                               } else {
-                                fileUpload.append(
-                                  "professional_id",
-                                  allChatUser[otherUserId]?.professional_id
-                                );
+                                fileUpload.append("professional_id", allChatUser[otherUserId]?.professional_id);
                               }
-
-                              axios
-                                .post(
-                                  "http://13.52.16.160:8082/chat/upload_file/",
-                                  fileUpload
-                                )
-                                .then((res) => {
-                                  if (res?.data?.status === "Success") {
-                                    wskt.send(
-                                      JSON.stringify({
-                                        message: res?.data?.data?.file_path,
-                                        attachment_id:
-                                          res?.data?.data?.attchment_id,
-                                        sender: cookies?.user_data?.role,
-                                        type: "file",
-                                      })
-                                    );
-                                  }
-                                });
+                              axios.post("http://13.52.16.160:8082/chat/upload_file/", fileUpload).then((res) => {
+                                if (res?.data?.status === "Success") {
+                                  wskt.send(
+                                    JSON.stringify({
+                                      message: res?.data?.data?.file_path,
+                                      attachment_id: res?.data?.data?.attchment_id,
+                                      sender: cookies?.user_data?.role,
+                                      type: "file",
+                                    })
+                                  );
+                                }
+                              });
                             }}
                           >
                             {({ isSubmitting, setFieldValue }) => (

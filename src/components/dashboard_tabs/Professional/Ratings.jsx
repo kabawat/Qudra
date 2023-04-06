@@ -132,10 +132,10 @@ const Ratings = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-2 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-10 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {!loading ? (<Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!loading} >
                 <CircularProgress color="inherit" />
@@ -144,7 +144,7 @@ const Ratings = () => {
                 <main className="dashboard-main">
                   <div id="liked-save" className="container-fluid  myProjectTable">
                     <h2 className="ps-5"> Ratings </h2>
-                    <div className="m-md-5 mx-2 shadow">
+                    <div className="m-xl-5 mx-2 shadow">
                       {rating?.final_data?.length ? (
                         <div className="row  align-items-center MyProjectDisplayRow">
                           <div className="searchActiveProject col-8 ms-auto">

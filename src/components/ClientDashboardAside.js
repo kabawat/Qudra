@@ -80,7 +80,7 @@ const ClientDashboardAside = () => {
           <NavLink className={`nav-link activity-btn `} to="/purchase-design" >
             <img src="/static/icon/decline_project2.png" alt="" className="Activities-white-icon" />
             <img src="/static/icon/decline_project1.png" alt="" className="Activities-green-icon" />
-            Purchase Design
+            Purchased Design
           </NavLink>
         </li>
 

@@ -87,7 +87,7 @@ const Footer = () => {
             </div>
             <div className="col-lg-9">
               <div className="row">
-                <div className="col-md">
+                <div className="col-md col-6 my-3">
                   <h3>Categories</h3>
                   <ul>
                     {contextData?.footer_catagories_link?.map((res, index) => (
@@ -97,7 +97,7 @@ const Footer = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="col-md">
+                <div className="col-md col-6 my-3">
                   <h3>Support</h3>
                   <ul>
                     {contextData?.footer_support_link?.map((res, index) => (
@@ -107,7 +107,7 @@ const Footer = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="col-md">
+                <div className="col-md col-6 my-3">
                   <h3>Explore</h3>
                   <ul>
                     {contextData?.footer_explore_link?.map((res, index) => (
@@ -117,7 +117,7 @@ const Footer = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="col-md">
+                <div className="col-md col-6 my-3">
                   <h3>Explore Resources</h3>
                   <ul>
                     {contextData?.footer_resources_link?.map((res, index) => (

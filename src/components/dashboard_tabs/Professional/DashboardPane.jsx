@@ -67,7 +67,7 @@ const DashboardPane = () => {
   return (
     <div id="dashboard-menu-bar" className="container-fluid px-lg-5 px-md-4 px-3">
       <div className="row total-earning-row pt-xxl-5 pt-4 pb-xxl-5 pb-4">
-        <div className="col-xl-9 col-lg-8 col-md-7">
+        <div className="col-xl-9 ">
           <h3 className="">
             Welcome &nbsp;
             {contextData?.profileData?.name?.split(" ")[0]}
@@ -83,7 +83,7 @@ const DashboardPane = () => {
             <div className="col-lg-4 col-12 puchase_box" onClick={sellDesignHandal}>Sell Designs <BsArrowRight /></div>
           </div>
         </div>
-        <div className="col-xl-3 col-lg-4 col-md-5">
+        <div className="col-xl-3 mt-lg-3">
           <div className="d-flex align-items-center justify-content-center top-earning-box bg-white">
             <img src="./static/images/img/TotalEarnings.png" alt="" />
             <div className="ps-2">
@@ -96,7 +96,7 @@ const DashboardPane = () => {
         </div>
       </div>
       <div className="row completed-projects-row mb-xxl-5 mb-4">
-        <div className="col-xl-9 col-lg-8 col-md-7  mb-md-0 mb-4">
+        <div className="col-xl-9 col-lg-8 mb-md-4">
           <div className="Become-professional h-100">
             <h4>How To Become</h4>
             <h3>A Top Professional</h3>
@@ -112,7 +112,7 @@ const DashboardPane = () => {
             </button>
           </div>
         </div>
-        <div className="col-xl-3 col-lg-4 col-md-5">
+        <div className="col-xl-3 col-lg-4">
           <div className="completed-projects-box h-100 d-flex align-items-center justify-content-center  flex-column bg-white">
             <h3 className="text-center">Completed Projects</h3>
             <div className="d-flex align-items-center justify-content-center  py-3 px-3">
@@ -163,43 +163,43 @@ const DashboardPane = () => {
             </div>
           </div>
           <div className="row  project-table-header text-center">
-            <div className="col-md px-0">
+            <div className="col-md px-lg-0">
               <h6>Project Name</h6>
             </div>
-            <div className="col-md px-0">
+            <div className="col-md px-lg-0">
               <h6>Work Assigned</h6>
             </div>
-            <div className="col-md px-0">
+            <div className="col-md px-lg-0">
               <h6>Client Assigned</h6>
             </div>
-            <div className="col-md px-0">
+            <div className="col-md px-lg-0">
               <h6>Project Cost</h6>
             </div>
-            <div className="col-md px-0">
+            <div className="col-md px-lg-0">
               <h6>Status</h6>
             </div>
-            <div className="col-md px-0">
+            <div className="col-md px-lg-0">
               <h6>Payment</h6>
             </div>
           </div>
           {state?.projects?.final_data?.map((res) => (
             <div className="row  project-table-details text-center">
-              <div className="col-md px-0">
+              <div className="col-md px-lg-0">
                 <p className="m-0 theme-text-color">{res?.project_name}</p>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md px-lg-0">
                 <p className="m-0">Design</p>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md px-lg-0">
                 <p className="m-0">{res?.client_name}</p>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md px-lg-0">
                 <p className="m-0">${res?.project_cost}</p>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md px-lg-0">
                 <p className="m-0">Pending</p>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md px-lg-0">
                 <p className="m-0">
                   <i className="fa fa-dot-circle"></i> Pending
                 </p>

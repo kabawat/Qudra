@@ -1055,7 +1055,7 @@ const ChatHeader = () => {
         .then((res) => {
           if (res?.data?.status === "Success") {
             contextData?.setNotification(res?.data?.data);
-            setNotificationArray(res?.data?.data?.final_data?.reverse());
+            setNotificationArray(res?.data?.data?.final_data);
             setShowNotificationBox(!showNotificationBox);
           }
         });
@@ -1449,7 +1449,7 @@ const HeaderDashboard = () => {
       }).then((res) => {
         if (res?.data?.status === "Success") {
           contextData?.setNotification(res?.data?.data);
-          setNotificationArray(res?.data?.data?.final_data?.reverse());
+          setNotificationArray(res?.data?.data?.final_data);
         }
       });
 
@@ -1512,9 +1512,9 @@ const HeaderDashboard = () => {
       <header className="dashboard-header bg-white custom-border-radius-one">
         <div className="container-fluid px-lg-5 px-md-4 px-3">
           <div className="row py-4">
-            <div className="col-xxl-9 col-xl-8 col-lg-7 d-block  d-flex align-items-center  justify-content-between ">
+            <div className="col-xxl-9 col-xl-8 col-lg-9 col-10 d-block  d-flex align-items-center  justify-content-between ">
               <Link to={cookies?.user_data?.role === "client" ? "/clientdashboard" : "/professionaldashboard"}
-                className="text-decoration-none text-dark m-0 h2">
+                className="text-decoration-none mob-heading text-dark m-0 h2">
                 Dashboard
               </Link>
               <div className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""}  py-4`}>
@@ -1523,10 +1523,10 @@ const HeaderDashboard = () => {
                     {
                       contextData?.verified ? <button className="verified-btn" title="verifed">
                         <GoVerified />
-                        Account Verified
+                        <span className="verify-text">Account Verified</span>
                       </button> : <button className="verify-btn" title="verify Account" onClick={handalVerify}>
                         <GoUnverified />
-                        Account Verify
+                        <span className="verify-text">Account Verify</span>
                       </button>
                     }
                   </> : ''
@@ -1628,10 +1628,10 @@ const HeaderDashboard = () => {
                 </Link>
               </div>
             </div>
-            <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end   justify-content-center flex-wrap">
+            <div className="col-xxl-3 col-xl-4 col-lg-3 col-2 profile-mob d-flex align-items-center justify-content-md-end justify-content-center">
 
               {cookies?.user_data?.role === "professional" ? (
-                <div>
+                <div className="user-profile-img">
                   <img
                     src={
                       contextData?.profileData &&
@@ -1647,7 +1647,7 @@ const HeaderDashboard = () => {
                   />
                 </div>
               ) : (
-                <div>
+                <div className="user-profile-img">
                   <img
                     src={
                       contextData?.profileData &&

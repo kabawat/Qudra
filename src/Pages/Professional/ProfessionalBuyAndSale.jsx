@@ -966,7 +966,7 @@ const ProfessionalBuyAndSale = () => {
                       <>
                         <Form>
                           <div className="row">
-                            <div className="col">
+                            <div className="col-md-6">
                               <div className="selectprice">
                                 <BsCurrencyDollar />
                                 <Field
@@ -982,7 +982,7 @@ const ProfessionalBuyAndSale = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col uploadimageCat">
+                            <div className="col-md-6 uploadimageCat">
                               <div
                                 className="selectCategoryMain h-100 d-flex align-items-center"
                                 style={{
@@ -1047,12 +1047,12 @@ const ProfessionalBuyAndSale = () => {
                               </span>
                             </div>
                             <div className="row">
-                              <div className="col"></div>
-                              <div className="col"></div>
+                              <div className="col-md-6"></div>
+                              <div className="col-md-6"></div>
                             </div>
                           </div>
                           <div className="row m-0 pb-3 mb-3 pt-3  ">
-                            <div className="col ps-0">
+                            <div className="col-md-6 ps-0">
                               <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
                                 <button className="w-100" type="button">
                                   <BsPlusLg
@@ -1113,7 +1113,7 @@ const ProfessionalBuyAndSale = () => {
                                 Video required
                               </span>
                             </div>
-                            <div className="col pe-0">
+                            <div className="col-md-6 pe-0">
                               <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
                                 <button className="w-100" type="button">
                                   <BsPlusLg

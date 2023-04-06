@@ -259,16 +259,14 @@ const ProfessionalProfile = () => {
   const onSetRating = (val) => {
     // setRating(val);
     // setReviewHeading(!reviewHeading);
-    axios
-      .post("http://13.52.16.160:8082/client/client_rating", {
-        professional_id:
-          contextData?.professional_user_profile_data?.details?.professional_id,
-        client_id: cookies?.user_data?.user_id,
-        rating: ratingreview.rating,
-        review: ratingreview.review,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-      })
+    axios.post("http://13.52.16.160:8082/client/client_rating", {
+      professional_id: contextData?.professional_user_profile_data?.details?.professional_id,
+      client_id: cookies?.user_data?.user_id,
+      rating: ratingreview.rating,
+      review: ratingreview.review,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+    })
       .then((res) => {
         if (res?.data?.status === "Success") {
           // setShowRating(false);
@@ -514,20 +512,16 @@ const ProfessionalProfile = () => {
                 <div
                   // to="/chat"
                   onClick={() => {
-                    axios
-                      .post("http://13.52.16.160:8082/chat/get_room_id/", {
-                        client_id: cookies?.user_data.user_id,
-                        role: cookies?.user_data.role,
-                        user_token: cookies?.user_data.user_token,
-                        professional_id:
-                          contextData?.professional_user_profile_data?.details
-                            ?.professional_id,
-                      })
-                      .then((respo) => {
-                        if (respo?.data?.status === "Success") {
-                          navigate("/chat");
-                        }
-                      });
+                    axios.post("http://13.52.16.160:8082/chat/get_room_id/", {
+                      client_id: cookies?.user_data.user_id,
+                      role: cookies?.user_data.role,
+                      user_token: cookies?.user_data.user_token,
+                      professional_id: contextData?.professional_user_profile_data?.details?.professional_id,
+                    }).then((respo) => {
+                      if (respo?.data?.status === "Success") {
+                        navigate("/chat");
+                      }
+                    });
                   }}
                   className="text-decoration-none text-black"
                 >

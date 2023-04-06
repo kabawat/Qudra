@@ -129,10 +129,10 @@ const LikesShow = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-2 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-10 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {!loading ? (<Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!loading} >
                 <CircularProgress color="inherit" />
@@ -141,10 +141,10 @@ const LikesShow = () => {
                 <main className="dashboard-main">
                   <div id="liked-save" className="container-fluid  myProjectTable">
                     <h2 className="ps-5"> LikesShow </h2>
-                    <div className="m-md-5 mx-2 shadow">
+                    <div className="m-xl-5 mx-2 shadow">
                       {likes?.final_data?.length ? (
                         <div className="row  align-items-center MyProjectDisplayRow">
-                          <div className="searchActiveProject col-8 ms-auto">
+                          <div className="searchActiveProject col-md-4 ms-auto">
                             <form onSubmit={handleSearch}>
                               <input
                                 type="text"
@@ -172,7 +172,7 @@ const LikesShow = () => {
                       {searchData && likes?.final_data ? (
                         likes?.final_data?.map((res, index) => (
                           <div className="row MyProjectDisplayRow" key={index}>
-                            <div className="col-md-6  d-flex align-items-center ">
+                            <div className="col-md-6 col-8 d-flex align-items-center ">
                               <img
                                 src={res?.client_image}
                                 className="img-fluid rounded-circle"
@@ -187,7 +187,7 @@ const LikesShow = () => {
                                 </h6>
                               </div>
                             </div>
-                            <div className="col-md-6  d-flex  align-items-center justify-content-end">
+                            <div className="col-md-6 col-4 d-flex  align-items-center justify-content-end">
                               <button className="LikeButton">
                                 <BsFillSuitHeartFill
                                   color={res?.liked ? "crimson" : "#dbdbdb"}

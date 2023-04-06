@@ -17,6 +17,10 @@
   margin: 0;
   font-family: customFontFamily, "Poppins", sans-serif;
   scroll-behavior: smooth;
+  text-transform: capitalize;
+}
+p{
+  text-transform: none;
 }
 
 .form-image-input:hover {
@@ -3530,6 +3534,17 @@ input[name="milestone_date_fifth"]::placeholder {
   margin: 0;
 }
 
+.MyProjectDisplayRow .col-lg-3:first-child {
+  min-width: 28%!important;
+}
+
+.MyProjectDisplayRow .col-lg-3:last-child {
+  min-width: 25%!important;
+}
+.MyProjectDisplayRow .col-lg-3 {
+  max-width: 15%;
+}
+
 .myProjectTable .searchActiveProject {
   position: relative;
 }
@@ -3549,6 +3564,12 @@ input[name="milestone_date_fifth"]::placeholder {
   font-size: 25px;
 }
 
+.MyProjectDisplayRow img{
+  object-fit: cover;
+  margin-left: 35px;
+}
+
+
 .myProjectTable .searchActiveProject button {
   position: absolute;
   right: 14px;
@@ -3556,7 +3577,7 @@ input[name="milestone_date_fifth"]::placeholder {
   transform: translate(0%, -50%);
   padding: 8px 15px;
   border-radius: 50px;
-  background-color: white;
+  background-color:transparent;
   border: 0;
 }
 

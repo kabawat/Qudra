@@ -84,7 +84,7 @@ const GlobalData = (props) => {
         dispatch({
           type: "VERIFIED",
           value: true,
-        })
+        })   
       }
     })
   }, [contextData?.verified])

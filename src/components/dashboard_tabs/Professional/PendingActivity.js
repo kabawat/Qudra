@@ -159,10 +159,10 @@ const PendingActivity = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-2 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-10 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {!loading ? (<Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!loading}>
                 <CircularProgress color="inherit" />
@@ -171,10 +171,10 @@ const PendingActivity = () => {
                 <main className="dashboard-main">
                   <div id="myactivity" className="container-fluid  myProjectTable">
                     <h2 className="ps-5">Projects Request By Clients</h2>
-                    <div className="m-5 shadow">
+                    <div className="m-xl-5 shadow">
                       {searchProject?.final_data.length || myProject?.final_data?.length ? (
                         <div className="row align-items-center MyProjectDisplayRow">
-                          <div className="searchActiveProject col-8 ms-auto">
+                          <div className="searchActiveProject col-md-4 ms-auto">
                             <form onSubmit={handleFilterProject} >
                               <input
                                 type="text"
@@ -194,7 +194,7 @@ const PendingActivity = () => {
                       ) : (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center align-items-center"
+                          className="d-flex  align-items-center"
                         >
                           <span className="h4">No Project Data To Show</span>
                         </div>
@@ -202,13 +202,13 @@ const PendingActivity = () => {
                       {noResult ? (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center "
+                          className="d-flex  "
                         >
                           <span className="h4">No Result Found</span>
                         </div>
                       ) : (searchProject?.final_data ? searchProject?.final_data?.map((res, index) => (
                         <div className="row MyProjectDisplayRow" key={index}>
-                          <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+                          <div className="col-lg-3 d-flex align-items-center ">
                             <img
                               src={res?.client_image}
                               className="img-fluid rounded-circle"
@@ -223,7 +223,7 @@ const PendingActivity = () => {
                               </h6>
                             </div>
                           </div>
-                          <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                             <div>
                               <h5>Project Name</h5>
                               <h4
@@ -254,23 +254,19 @@ const PendingActivity = () => {
                               </h4>
                             </div>
                           </div>
-                          <div className="col-lg-3 col-md-6 ">
-                            <div className="row">
-                              <div className="col-md d-flex flex-column align-items-center justify-content-center">
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                                 <div>
                                   <h5>Status</h5>
                                   <h4>{res?.project_status}</h4>
                                 </div>
                               </div>
-                              <div className="col-md d-flex flex-column align-items-center justify-content-center">
+                              <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                                 <div>
                                   <h5>Total Budget</h5>
                                   <h4>${res?.project_cost}</h4>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                             <div>
                               <h5>Area</h5>
                               <h4>{res?.area} square meter</h4>
@@ -279,7 +275,7 @@ const PendingActivity = () => {
                         </div>
                       )) : myProject?.final_data?.map((res, index) => (
                         <div className="row MyProjectDisplayRow" key={index}>
-                          <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+                          <div className="col-lg-3 d-flex align-items-center ">
                             <img
                               src={res?.client_image}
                               className="img-fluid rounded-circle"
@@ -294,7 +290,7 @@ const PendingActivity = () => {
                               </h6>
                             </div>
                           </div>
-                          <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                             <div>
                               <h5>Project Name</h5>
                               <h4
@@ -325,23 +321,19 @@ const PendingActivity = () => {
                               </h4>
                             </div>
                           </div>
-                          <div className="col-lg-3 col-md-6 ">
-                            <div className="row">
-                              <div className="col-md d-flex flex-column align-items-center justify-content-center">
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                                 <div>
                                   <h5>Status</h5>
                                   <h4>{res?.project_status}</h4>
                                 </div>
                               </div>
-                              <div className="col-md d-flex flex-column align-items-center justify-content-center">
+                              <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                                 <div>
                                   <h5>Total Budget</h5>
                                   <h4>${res?.project_cost}</h4>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                             <div>
                               <h5>Area</h5>
                               <h4>{res?.area} square meter</h4>

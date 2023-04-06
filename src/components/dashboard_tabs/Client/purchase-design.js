@@ -203,7 +203,7 @@ const PurchaseDesign = () => {
                                                                                 setDesignindex(index)
                                                                             }}
                                                                         >
-                                                                            Purchased Project
+                                                                            Download
                                                                         </button>
                                                                     </div>
                                                                 </div>
@@ -283,7 +283,7 @@ const PurchaseDesign = () => {
                                     <Modal.Header closeButton></Modal.Header>
                                     <Modal.Body>
                                         <Modal.Title>
-                                            Are you sure want to purchase this design
+                                            Are you sure want to download this design
                                         </Modal.Title>
                                     </Modal.Body>
 

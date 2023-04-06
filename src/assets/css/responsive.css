@@ -5,6 +5,16 @@
 .form-image-input img {
   width: 30%;
 }
+.MyProjectDisplayRow .col-lg-3:first-child {
+  min-width:100%!important;
+}
+
+.MyProjectDisplayRow .col-lg-3:last-child {
+  min-width: 30%!important;
+}
+.MyProjectDisplayRow .col-lg-3 {
+  max-width: 22%;
+}
 }
 
 
@@ -21,12 +31,87 @@
 
 }
 
+@media screen and (min-width: 320px) and (max-width: 575px) {
+.MyProjectDisplayRow .col-lg-3:first-child {
+  min-width:100%!important;
+}
+.uploadimageCat {
+  height: 52px;
+  margin-top: 20px;
+}
+.MyProjectDisplayRow .col-lg-3:last-child {
+  min-width: 100%!important;
+}
+.MyProjectDisplayRow .col-lg-3 {
+  max-width: 100%;
+}
+}
 
 
 @media screen and (min-width: 320px) and (max-width: 767px) {
 
-
 /* =============== 05 April 2023 ==================== */
+.MyProjectDisplayRow img{
+  object-fit: cover;
+  margin-left: 0;
+}
+
+.paginationBoxProfessionalDashboard.pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0px!important;
+}
+
+.verify-text{
+  display: none;
+}
+
+.profileEdit-button h4, .profile-mob h6{
+  display: none;
+}
+
+.mob-heading {
+  font-size: 19px!important;
+}
+
+header.dashboard-header .dashboard-user-notification {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid #01a789;
+}
+
+.dashboard-user-notification img {
+  width: 12px;
+}
+.dashboard-user-notification i {
+  font-size: 12px;
+}
+
+.profile-mob{
+  padding-left: 0!important;
+}
+
+header.dashboard-header .profile-edit-dropdown {
+  right: 10px;
+}
+
+.verified-btn {
+  padding: 5px;
+  display: grid;
+  place-items: center;
+  height: 30px;
+  margin-right: 10px;
+  width: 30px;
+  border: 2px solid #01a789;
+}
+
+.verified-btn svg{
+  margin-right: 0;
+}
 
 .header-logo img {
   height: 55px;
@@ -83,11 +168,11 @@ div#google_translate_element {
   }
   .myProjectTable div.row {
     min-height: 120px;
-    padding: 10px 0;
+    padding: 10px ;
   }
 
   .myProjectTable div.row div {
-    padding: 10px 20px;
+    padding: 10px 0px;
   }
 
   .purchase_dialog .puchase_box {
@@ -588,6 +673,64 @@ div#google_translate_element {
 @media screen and (min-device-width: 768px) and (max-device-width: 991px) {
 
 /* =============== 05 April  ================ */
+.profileEdit-button h4, .profile-mob h6{
+  display: none;
+}
+.uploadimageCat {
+  height: 52px;
+  margin-top: 20px;
+}
+.uploadimageCat {
+  height: 52px;
+  margin-top: 20px;
+}
+.myProjectTable h5 {
+  opacity: 0.8;
+  font-size: 20px;
+  color: #000000;
+  font-weight: 300;
+  /* font-family: "Poppins"; */
+  margin: 0;
+}
+.MyProjectDisplayRow .col-lg-3:first-child {
+  min-width:100%!important;
+}
+
+.MyProjectDisplayRow .col-lg-3:last-child {
+  min-width: 50%!important;
+}
+.MyProjectDisplayRow .col-lg-3 {
+  max-width: 50%;
+}
+header.dashboard-header .profile-edit-dropdown {
+  right: 10px;
+}
+.paginationBoxProfessionalDashboard.pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0px!important;
+}
+.Become-professional{
+  margin-bottom: 50px!important;
+}
+
+.MyProjectDisplayRow img {
+  object-fit: cover;
+  margin-left:0px;
+}
+
+.progress-bar-main {
+  display: none;
+}
+
+.side-bar-logo{
+  height:50px!important
+}
+
+.mob-hide{
+  display: none;
+}
 
 .henry-img img {
   object-fit: cover;
@@ -609,7 +752,7 @@ div#google_translate_element {
 
 
   .myProjectTable div.row div {
-    padding: 10px 20px;
+    padding: 10px;
   }
 
   .myProjectTable h2 {
@@ -706,7 +849,7 @@ div#google_translate_element {
   .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
     font-size: 12px;
     line-height: 43px;
-    padding-left: 10px;
+    padding-left: 30px;
     padding-right: 0;
   }
   .dashboard aside h1 {
@@ -994,6 +1137,61 @@ div#google_translate_element {
 }
 
 @media screen and (min-device-width: 992px) and (max-device-width: 1024px) {
+
+/* =============== 05 April  ================ */
+.profileEdit-button h4, .profile-mob h6{
+  display: none;
+}
+.uploadimageCat {
+  height: 52px;
+  margin-top: 20px;
+}
+header.dashboard-header .profile-edit-dropdown {
+  right: 20px;
+}
+
+.paginationBoxProfessionalDashboard.pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0px!important;
+}
+.Become-professional{
+  margin-bottom: 50px!important;
+}
+
+.MyProjectDisplayRow img {
+  object-fit: cover;
+  margin-left:0px;
+}
+
+.progress-bar-main {
+  display: none;
+}
+
+.side-bar-logo{
+  height:50px!important
+}
+
+.mob-hide{
+  display: none;
+}
+
+.henry-img img {
+  object-fit: cover;
+}
+
+.form-image-input img {
+  width: 100%;
+}
+
+.form-image-input {
+  height: 90px;
+}
+
+/* =============== 05 April  ================ */
+
+
   .homePageherosSectionLogo {
     height: 110px !important;
   }
@@ -1240,6 +1438,9 @@ div#google_translate_element {
 }
 
 @media screen and (min-device-width: 1024px) and (max-device-width: 1279px) {
+  header.dashboard-header .profile-edit-dropdown {
+    right: 30px;
+}
   .homePageherosSectionLogo {
     height: 120px !important;
   }
