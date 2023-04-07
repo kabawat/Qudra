@@ -163,14 +163,14 @@ const CompletedPane = () => {
                       {noResult ? (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center "
+                          className="d-flex "
                         >
                           <span className="h4">No Result Found</span>
                         </div>
                       ) : (completedProject?.final_data?.length ? (
                         completedProject?.final_data.map((res, index) => (
                           <div className="row MyProjectDisplayRow" key={index}>
-                            <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+                            <div className="col-lg-3 col-md-6 d-flex align-items-center">
                               <img
                                 onClick={() => {
                                   navigate(`/professionalprofile/${res?.professional_id}`);
@@ -197,7 +197,7 @@ const CompletedPane = () => {
                                 </h6>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                            <div className="col-lg-3 col-md-6 d-flex align-items-center">
                               <div>
                                 <h5>Project Name</h5>
                                 <h4
@@ -230,23 +230,19 @@ const CompletedPane = () => {
                                 </h4>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 ">
-                              <div className="row">
-                                <div className="col-md d-flex flex-column align-items-center justify-content-center">
+                            <div className="col-lg-3 col-md-6 d-flex align-items-center">
                                   <div>
                                     <h5>Status</h5>
                                     <h4>{res?.project_status}</h4>
                                   </div>
                                 </div>
-                                <div className="col-md d-flex flex-column align-items-center justify-content-center">
+                                <div className="col-lg-3 col-md-6 d-flex align-items-center">
                                   <div>
                                     <h5>Total Budget</h5>
                                     <h4>${res?.project_cost}</h4>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                            <div className="col-lg-3 col-md-6 d-flex align-items-center">
                               <div>
                                 <h5>Area</h5>
                                 <h4>{res?.area} square meter</h4>
@@ -257,7 +253,7 @@ const CompletedPane = () => {
                       ) : (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center align-items-center"
+                          className="d-flex align-items-center"
                         >
                           <span className="h4">No Completed Projects To Show</span>
                         </div>

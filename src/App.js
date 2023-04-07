@@ -93,9 +93,10 @@ function App() {
           <Route path="/like" element={<LikesShow />} />
           <Route path="/ratings" element={<Showratings />} />
           <Route path="/professional-guidelines" element={<ProfessionalGuidelines />} />
-
+{/* pending */}
           <Route path="/categoryArchitecture" element={<ProfessionalCategoryArchitecture />} />
           <Route path="/categoryvisualization" element={<ProfessionalCategoryVisualization />} />
+{/* pending */}
           <Route path="/professional-buy-and-sale" element={<ProfessionalBuyAndSale />} />
 
           {/* Client Routes */}

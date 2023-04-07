@@ -50,8 +50,36 @@ const ClientGuidlines = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              <div className="client-guidelines-wrapper">
-                <div className="video-container">
+              <div className="client-guidelines-wrapper row px-md-3">
+                <div className="images-container col-md-12">
+                  <ul className="image-list row">
+                    <li className="col-md-6 mb-2">
+                      <img src={clientGuidelineImg1} alt="guideline-image1" />
+                    </li>
+                    <li className="col-md-6 mb-3">
+                      <img src={clientGuidelineImg2} alt="guideline-image2" />
+                    </li>
+                    <li className="col-md-6 mb-3">
+                      <img src={clientGuidelineImg3} alt="guideline-image3" />
+                    </li>
+                    <li className="col-md-6 mb-3">
+                      <img src={clientGuidelineImg4} alt="guideline-image4" />
+                    </li>
+                    <li className="col-md-6 mb-3">
+                      <img src={clientGuidelineImg5} alt="guideline-image5" />
+                    </li>
+                    <li className="col-md-6 mb-3">
+                      <img src={clientGuidelineImg6} alt="guideline-image6" />
+                    </li>
+                    <li className="col-md-6 mb-3">
+                      <img src={clientGuidelineImg7} alt="guideline-image7" />
+                    </li>
+                    <li className="col-md-6 mb-3">
+                      <img src={clientGuidelineImg8} alt="guideline-image8" />
+                    </li>
+                  </ul>
+                </div>
+                <div className="video-container col-md-6">
                   <video
                     src={clientGuideVid}
                     controls
@@ -60,34 +88,6 @@ const ClientGuidlines = () => {
                   >
                     This video can't be played
                   </video>
-                </div>
-                <div className="images-container">
-                  <ul className="image-list">
-                    <li>
-                      <img src={clientGuidelineImg1} alt="guideline-image1" />
-                    </li>
-                    <li>
-                      <img src={clientGuidelineImg2} alt="guideline-image2" />
-                    </li>
-                    <li>
-                      <img src={clientGuidelineImg3} alt="guideline-image3" />
-                    </li>
-                    <li>
-                      <img src={clientGuidelineImg4} alt="guideline-image4" />
-                    </li>
-                    <li>
-                      <img src={clientGuidelineImg5} alt="guideline-image5" />
-                    </li>
-                    <li>
-                      <img src={clientGuidelineImg6} alt="guideline-image6" />
-                    </li>
-                    <li>
-                      <img src={clientGuidelineImg7} alt="guideline-image7" />
-                    </li>
-                    <li>
-                      <img src={clientGuidelineImg8} alt="guideline-image8" />
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>

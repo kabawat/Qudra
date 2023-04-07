@@ -71,22 +71,24 @@ const GlobalData = (props) => {
   const [showDisclamer, setShowDisclamer] = useState();
 
   useEffect(() => {
-    axios.put('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
-      professioanl_id: cookies?.user_data?.user_id,
-      professioanl_token: cookies?.user_data?.user_token
-    }).then((result) => {
-      if (result?.data?.status === "Failed") {
-        dispatch({
-          type: "VERIFIED",
-          value: false,
-        })
-      } else {
-        dispatch({
-          type: "VERIFIED",
-          value: true,
-        })   
-      }
-    })
+    if (cookies?.user_data) {
+      axios.put('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
+        professioanl_id: cookies?.user_data?.user_id,
+        professioanl_token: cookies?.user_data?.user_token
+      }).then((result) => {
+        if (result?.data?.status === "Failed") {
+          dispatch({
+            type: "VERIFIED",
+            value: false,
+          })
+        } else {
+          dispatch({
+            type: "VERIFIED",
+            value: true,
+          })
+        }
+      })
+    }
   }, [contextData?.verified])
 
   useEffect(() => {

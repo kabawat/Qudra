@@ -17,14 +17,14 @@
   margin: 0;
   font-family: customFontFamily, "Poppins", sans-serif;
   scroll-behavior: smooth;
-  text-transform: capitalize;
-}
-p{
-  text-transform: none;
 }
 
 .form-image-input:hover {
   cursor: pointer;
+}
+
+aside input {
+  opacity: 0;
 }
 
 select {
@@ -718,21 +718,14 @@ footer .quadra-copyright p {
   padding: 0 20px 0 0;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  input {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton input {
   border-radius: 30px;
   width: auto;
   padding: 10px 20px;
   margin: 10px 0;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton {
   display: unset;
 }
 
@@ -741,11 +734,7 @@ header.home-page-header ul li {
   font-size: 20px;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  button[type="submit"] {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
   position: absolute;
   right: 5px;
   padding: 11px 16px;
@@ -760,11 +749,7 @@ header.home-page-header .mobile-menu .mobile-menu-content ul li {
   list-style: none;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  button[type="submit"] {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
   position: absolute;
   right: 2px;
   padding: 10px 14px;
@@ -901,9 +886,7 @@ header.dashboard-header .dashboard-user-notification {
   z-index: 9000;
 }
 
-header.dashboard-header
-  .dashboard-user-notification
-  .dashboard-user-notification-number {
+header.dashboard-header .dashboard-user-notification .dashboard-user-notification-number {
   position: absolute;
   min-width: 20px;
   background-color: #01a78a;
@@ -1154,7 +1137,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.Residential-Architecture-page .card:hover > .card-img-overlay {
+.Residential-Architecture-page .card:hover>.card-img-overlay {
   opacity: 1;
   background: #000000ad;
 }
@@ -1188,11 +1171,7 @@ textarea {
   padding: 15px 0;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional {
   background-image: url(../img/become-professional-earner-banner.png);
   padding: 60px 0 60px 60px;
   border-radius: 30px;
@@ -1200,12 +1179,7 @@ textarea {
   background-size: 100% 100%;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  h4 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h4 {
   font-size: 32px;
   line-height: 51px;
   color: #ffffff;
@@ -1213,12 +1187,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  h3 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h3 {
   font-size: 35px;
   line-height: 51px;
   color: #ffffff;
@@ -1226,12 +1195,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  p {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional p {
   font-size: 18px;
   line-height: 34px;
   color: #ffffff;
@@ -1240,12 +1204,7 @@ textarea {
   width: 70%;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  button {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional button {
   font-size: 20px;
   line-height: 32px;
   color: #01a78a;
@@ -1257,46 +1216,27 @@ textarea {
   border-radius: 50px;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box {
   box-shadow: 0px 2px 2px 2px #adadad38;
   border-radius: 25px;
   padding: 15px 0;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h3 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h3 {
   font-size: 22px;
   color: #3a3939;
   font-weight: 600;
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h6 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h6 {
   font-size: 16px;
   color: #3a3939;
   font-weight: 300;
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h2 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h2 {
   font-size: 32px;
   color: #01a78a;
   font-weight: 600;
@@ -1454,13 +1394,7 @@ textarea {
 }
 
 .create-account main.create-account-main form input:focus,
-.create-account
-  main.create-account-main
-  form
-  select:focus.create-account
-  main.create-account-main
-  form
-  textarea:focus {
+.create-account main.create-account-main form select:focus.create-account main.create-account-main form textarea:focus {
   outline: none;
   box-shadow: none;
 }
@@ -1470,11 +1404,7 @@ textarea {
   border-radius: 50px;
 }
 
-.create-account
-  main.create-account-main
-  form
-  .create-account-input
-  input::placeholder,
+.create-account main.create-account-main form .create-account-input input::placeholder,
 .create-account main.create-account-main form select::placeholder,
 .create-account main.create-account-main form textarea::placeholder,
 .create-account main.create-account-main form .create-account-input input,
@@ -1661,11 +1591,7 @@ textarea {
   display: none;
 }
 
-.create-account
-  main.create-account-main
-  form
-  .create-account-input
-  .policy-span {
+.create-account main.create-account-main form .create-account-input .policy-span {
   padding: 15px 20px;
   font-size: 14px;
   color: #000000;
@@ -1882,11 +1808,7 @@ section.chatbox .chats-main .chats-show {
   flex-direction: column;
 }
 
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input {
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input {
   background: #eeeeee;
   padding: 15px 30px;
   border: 0px;
@@ -1907,21 +1829,9 @@ section.chatbox .chats-main .chats-show .chatbox-text-input-box button {
   right: 20px;
 }
 
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input:focus,
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input::placeholder,
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input:focus-visible {
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus,
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input::placeholder,
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus-visible {
   border: 0;
   outline: 0;
   font-size: 18px;
@@ -2975,36 +2885,31 @@ canvas {
 }
 
 .LoadingMain .cuboid .side:nth-of-type(2) {
-  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin))
-    rotateY(180deg);
+  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin)) rotateY(180deg);
   background: hsl(var(--hue), var(--sat), 25%);
 }
 
 .LoadingMain .cuboid .side:nth-of-type(3) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(90deg)
-    translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 75%);
 }
 
 .LoadingMain .cuboid .side:nth-of-type(4) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(-90deg)
-    translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(-90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: #009379;
 }
 
 .LoadingMain .cuboid .side:nth-of-type(5) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(90deg)
-    translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: #008971;
 }
 
 .LoadingMain .cuboid .side:nth-of-type(6) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(-90deg)
-    translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(-90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 20%);
 }
 
@@ -3535,12 +3440,13 @@ input[name="milestone_date_fifth"]::placeholder {
 }
 
 .MyProjectDisplayRow .col-lg-3:first-child {
-  min-width: 28%!important;
+  min-width: 28% !important;
 }
 
 .MyProjectDisplayRow .col-lg-3:last-child {
-  min-width: 25%!important;
+  min-width: 25% !important;
 }
+
 .MyProjectDisplayRow .col-lg-3 {
   max-width: 15%;
 }
@@ -3564,7 +3470,7 @@ input[name="milestone_date_fifth"]::placeholder {
   font-size: 25px;
 }
 
-.MyProjectDisplayRow img{
+.MyProjectDisplayRow img {
   object-fit: cover;
   margin-left: 35px;
 }
@@ -3577,7 +3483,7 @@ input[name="milestone_date_fifth"]::placeholder {
   transform: translate(0%, -50%);
   padding: 8px 15px;
   border-radius: 50px;
-  background-color:transparent;
+  background-color: transparent;
   border: 0;
 }
 
@@ -3795,10 +3701,12 @@ button.seeAllNotificationButton {
 #custom-text {
   margin-left: 5px;
 }
+
 .Guidelines {
   height: 100vh;
   overflow: hidden;
 }
+
 .images-container {
   width: 100%;
   height: 100%;
@@ -3808,6 +3716,7 @@ button.seeAllNotificationButton {
 .images-container::-webkit-scrollbar {
   display: none;
 }
+
 .video-container {
   display: flex;
   justify-content: center;
@@ -3827,6 +3736,7 @@ button.seeAllNotificationButton {
   border: 3px solid #01a78a;
   margin-top: 2%;
 }
+
 .Cur_proFes :hover {
   cursor: pointer;
 }
@@ -3950,6 +3860,7 @@ input[type="number"]:focus-visible {
   color: #fff;
   font-size: 22px;
 }
+
 .subscription_plans .card-header p {
   color: #fff;
   font-size: 22px;
@@ -3965,6 +3876,7 @@ input[type="number"]:focus-visible {
   font-weight: 600;
   letter-spacing: 2px;
 }
+
 .subscription_plans .card-header h5 {
   color: #fff;
   font-size: 16px;
@@ -3972,6 +3884,7 @@ input[type="number"]:focus-visible {
   font-weight: 500;
   letter-spacing: 2px;
 }
+
 /* .subscription_plans_btn {
   background-color: #01a78a;
   color: #fff;
@@ -3987,6 +3900,7 @@ input[type="number"]:focus-visible {
   border-radius: 2px;
   border: none !important;
 }
+
 .btn.subscription_plans_btn:hover {
   background: #01a78a;
   color: #fff;
@@ -3995,6 +3909,7 @@ input[type="number"]:focus-visible {
   width: 100%;
   border-radius: 0px;
 }
+
 .btn.subscription_plans_btn:active {
   background: #01a78a !important;
   color: #fff !important;
@@ -4004,9 +3919,11 @@ input[type="number"]:focus-visible {
   width: 100%;
   border-radius: 2px;
 }
+
 .subscription_plans .card-footer {
   background: transparent;
 }
+
 .pricing_btn button {
   padding: 10px 20px;
   border-radius: 30px !important;
@@ -4014,4 +3931,85 @@ input[type="number"]:focus-visible {
   font-weight: 600;
   margin-right: 10px;
   letter-spacing: 1px;
+}
+
+/* ****************************** 3danimation**********************************/
+.animaton {
+  color: white;
+  margin: 0;
+  text-align: center;
+  background-color: black;
+  cursor: crosshair;
+  position: relative;
+}
+
+.animaton canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.animaton p {
+  color: rgba(255, 255, 255, 0.5)
+}
+
+.animaton .header {
+  top: 42%;
+}
+
+.animaton .header-content {
+  padding: 50px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.animaton .footer {
+  bottom: 3%;
+}
+
+.description {
+  color: gray;
+  padding-top: 50px;
+}
+
+.animaton a,
+a:hover,
+a:visited {
+  /* color: white; */
+  text-decoration: none;
+}
+
+.animaton .disable-selection {
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer */
+  -khtml-user-select: none;
+  /* KHTML browsers (e.g. Konqueror) */
+  -webkit-user-select: none;
+  /* Chrome, Safari, and Opera */
+  -webkit-touch-callout: none;
+  /* Disable Android and iOS callouts*/
+}
+
+.animaton h1::after {
+  content: ' Three JS';
+  font-size: 12px;
+  position: absolute;
+  top: 3px;
+  padding-left: 5px;
+  font-weight: 400;
+}
+
+.animaton h2::after {
+  content: '2';
+  font-size: 12px;
+  position: absolute;
+  top: 14px;
+  padding-left: 5px;
+}
+
+.animaton .btn {
+  border-radius: 100px;
+  padding: 10px 25px;
 }

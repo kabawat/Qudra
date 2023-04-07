@@ -143,10 +143,10 @@ const Ratings = () => {
                   <CircularProgress color="inherit" />
                 </Backdrop> : <div id="liked-save" className="container-fluid  myProjectTable">
                   <h2 className="ps-5"> Ratings </h2>
-                  <div className="m-md-5 mx-2 shadow">
+                  <div className="m-lg-5 mx-2 shadow">
                     {rating?.final_data?.length ? (
                       <div className="row  align-items-center MyProjectDisplayRow">
-                        <div className="searchActiveProject col-8 ms-auto">
+                        <div className="searchActiveProject col-lg-8 ms-auto">
                           <form onSubmit={handleSearch}>
                             <input
                               type="text"

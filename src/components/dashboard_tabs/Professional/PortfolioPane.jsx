@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useReducer } from "react";
-import { BsPlusLg, BsImage } from "react-icons/bs";
+import $ from "jquery";
+import { BsArrowRight, BsPlusLg, BsImage } from "react-icons/bs";
 import { IoVideocamOutline } from "react-icons/io5";
 import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
@@ -7,8 +8,10 @@ import { MultiSelect } from "react-multi-select-component";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
+import { BiEuro } from "react-icons/bi";
 import LoadingModal from "../../Modals/LoadingModal";
 import Global from "../../../context/Global";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { GiCancel } from "react-icons/gi";
 
@@ -18,6 +21,7 @@ import InstructionModal from "../../Modals/InstructionModal";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
+import Loader from "../../Loader";
 import { useNavigate } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -99,12 +103,14 @@ const PortfolioPane = () => {
     e.target.value = null;
   };
   useEffect(() => {
+    setLoading(true);
+
     axios.post(
       "http://13.52.16.160:8082/professional/professional_sub_cat",
       cookies?.user_data
     ).then((res) => {
       if (res?.data?.status === "Success") {
-        setLoading(true);
+        setLoading(false);
 
         dispatch({ type: "SELECTED_CATAGORIES", value: res?.data?.response });
       } else {
@@ -299,14 +305,20 @@ const PortfolioPane = () => {
             </div>
             <div className="col-xxl-10 col-md-10 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              {!loading ? (
-                <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!loading} >
+              {loading ? (
+                <Backdrop
+                  sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                  open={loading}
+                >
                   <CircularProgress color="inherit" />
                 </Backdrop>
               ) : (
                 <main className="dashboard-main">
                   <>
-                    <div className="container-fluid px-lg-5 px-md-4 px-3" id="Browse-projects" >
+                    <div
+                      className="container-fluid px-lg-5 px-md-4 px-3"
+                      id="Browse-projects"
+                    >
                       <br />
                       {!showUploadDesign?.uploadCatagory && (
                         <>
@@ -319,10 +331,21 @@ const PortfolioPane = () => {
                       )}
                       {showUploadDesign?.home && (
                         <div className="row CardCatagoryMain">
-                          <div className="col-xxl col-lg-4 my-3 col-md-6" onClick={() =>
-                            setUploadDesign({ home: false, architecture: true, visualiztion: false, })}>
+                          <div
+                            className="col-xxl col-lg-4 my-3 col-md-6"
+                            onClick={() =>
+                              setUploadDesign({
+                                home: false,
+                                architecture: true,
+                                visualiztion: false,
+                              })
+                            }
+                          >
                             <div className="dashboard-theme-color d-flex align-items-center flex-column text-white browse-project-card justify-content-center residental-card">
-                              <img src="./static/images/Residental-Architechture.png" alt="" />
+                              <img
+                                src="./static/images/Residental-Architechture.png"
+                                alt=""
+                              />
                               <h6 className="pt-3">Architecture Designs</h6>
                               <div className="d-flex align-items-center ">
                                 {/* <img src="./static/images/FolderImage.png" alt="" /> */}
@@ -330,9 +353,15 @@ const PortfolioPane = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-xxl col-lg-4 my-3 col-md-6" onClick={() => setUploadDesign({
-                            home: false, architecture: false, visualiztion: true,
-                          })}
+                          <div
+                            className="col-xxl col-lg-4 my-3 col-md-6"
+                            onClick={() =>
+                              setUploadDesign({
+                                home: false,
+                                architecture: false,
+                                visualiztion: true,
+                              })
+                            }
                           >
                             <div className="dashboard-theme-color d-flex align-items-center flex-column text-white browse-project-card justify-content-center">
                               <img src="./static/images/InteriorDesigning.png" alt="" />

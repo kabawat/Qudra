@@ -1055,7 +1055,7 @@ const ChatHeader = () => {
         .then((res) => {
           if (res?.data?.status === "Success") {
             contextData?.setNotification(res?.data?.data);
-            setNotificationArray(res?.data?.data?.final_data);
+            setNotificationArray(res?.data?.data?.final_data?.reverse());
             setShowNotificationBox(!showNotificationBox);
           }
         });
@@ -1523,10 +1523,10 @@ const HeaderDashboard = () => {
                     {
                       contextData?.verified ? <button className="verified-btn" title="verifed">
                         <GoVerified />
-                        <span className="verify-text">Account Verified</span>
+                        <span className="verify-text">  Account Verified</span>
                       </button> : <button className="verify-btn" title="verify Account" onClick={handalVerify}>
                         <GoUnverified />
-                        <span className="verify-text">Account Verify</span>
+                        <span className="verify-text">Verify your Account</span>
                       </button>
                     }
                   </> : ''

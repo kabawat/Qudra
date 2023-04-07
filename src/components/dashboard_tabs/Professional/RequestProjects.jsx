@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import Global from "../../../context/Global";
 import axios from "axios";
-import { BsSearch } from "react-icons/bs";
+import { BsSearch, BsFillSuitHeartFill } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,6 +15,7 @@ import { useCookies } from "react-cookie";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 const RequestProject = () => {
+  const contextData = useContext(Global);
   const navigate = useNavigate();
   const [myProject, setMyProject] = useState([]);
   const [noResult, setNoResult] = useState(false);
@@ -198,7 +200,7 @@ const RequestProject = () => {
                       ) : (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex  align-items-center"
+                          className="d-flex w-100 justify-content-center align-items-center"
                         >
                           <span className="h4">No Project Data To Show</span>
                         </div>
@@ -206,7 +208,7 @@ const RequestProject = () => {
                       {noResult ? (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex  "
+                          className="d-flex w-100 justify-content-center align-items-center"
                         >
                           <span className="h4">No Result Found</span>
                         </div>
@@ -326,16 +328,16 @@ const RequestProject = () => {
                             </div>
                           </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex  align-items-center ">
-                            <div>
-                              <h5>Status</h5>
-                              <h4>{res?.project_status}</h4>
-                            </div>
-                          </div>
+                                <div>
+                                  <h5>Status</h5>
+                                  <h4>{res?.project_status}</h4>
+                                </div>
+                           </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex  align-items-center ">
-                            <div>
-                              <h5>Total Budget</h5>
-                              <h4>${res?.project_cost}</h4>
-                            </div>
+                                <div>
+                                  <h5>Total Budget</h5>
+                                  <h4>${res?.project_cost}</h4>
+                                </div>
                           </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex  align-items-center ">
                             <div>

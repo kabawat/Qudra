@@ -151,10 +151,10 @@ const OngoingPane = () => {
                   <div id="myactivity" className="container-fluid  myProjectTable">
                     <h2 className="ps-5">Ongoing Projects</h2>
 
-                    <div className="m-5 shadow">
+                    <div className="m-lg-5 shadow">
                       {onGoingProject?.final_data?.length ? (
                         <div className="row align-items-center MyProjectDisplayRow">
-                          <div className="searchActiveProject col-8 ms-auto">
+                          <div className="searchActiveProject col-lg-8 ms-auto">
                             <form onSubmit={handleFilterProject} >
                               <input
                                 type="text"
@@ -185,14 +185,14 @@ const OngoingPane = () => {
                       {noResult ? (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center "
+                          className="d-flex  "
                         >
                           <span className="h4">No Result Found</span>
                         </div>
                       ) : (onGoingProject?.final_data?.length ? (
                         onGoingProject.final_data.map((res, index) => (
                           <div className="row MyProjectDisplayRow" key={index}>
-                            <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+                            <div className="col-lg-3 col-md-6 d-flex align-items-center ">
                               <img
                                 src={res?.professional_image}
                                 className="img-fluid rounded-circle"
@@ -212,7 +212,7 @@ const OngoingPane = () => {
                                 </h6>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                            <div className="col-lg-3 col-md-6 d-flex  align-items-center ">
                               <div>
                                 <h5>Project Name</h5>
                                 <h4
@@ -230,23 +230,19 @@ const OngoingPane = () => {
                                 </h4>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 ">
-                              <div className="row">
-                                <div className="col-md d-flex flex-column align-items-center justify-content-center">
-                                  <div>
-                                    <h5>Status</h5>
-                                    <h4 style={{ textTransform: 'capitalize' }}>{res?.project_status}</h4>
-                                  </div>
-                                </div>
-                                <div className="col-md d-flex flex-column align-items-center justify-content-center">
-                                  <div>
-                                    <h5>Total Budget</h5>
-                                    <h4>${res?.project_cost}</h4>
-                                  </div>
-                                </div>
+                            <div className="col-lg-3 col-md-6 d-flex  align-items-center ">
+                              <div>
+                                <h5>Status</h5>
+                                <h4 style={{ textTransform: 'capitalize' }}>{res?.project_status}</h4>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                            <div className="col-lg-3 col-md-6 d-flex  align-items-center ">
+                              <div>
+                                <h5>Total Budget</h5>
+                                <h4>${res?.project_cost}</h4>
+                              </div>
+                            </div>
+                            <div className="col-lg-3 col-md-6 d-flex  align-items-center ">
                               <div>
                                 <h5>Area</h5>
                                 <h4>{res?.area} square meter</h4>
@@ -257,7 +253,7 @@ const OngoingPane = () => {
                       ) : (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center align-items-center"
+                          className="d-flex  align-items-center"
                         >
                           <span className="h4">No Ongoing Projects To Show</span>
                         </div>

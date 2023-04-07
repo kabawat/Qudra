@@ -111,10 +111,10 @@ const DeclineProject = () => {
                                     <div id="myactivity" className="container-fluid  myProjectTable">
                                         <h2 className="ps-5">Declined Projects</h2>
 
-                                        <div className="m-5 shadow">
+                                        <div className="m-lg-5 shadow">
                                             {completedProject?.final_data?.length ? (
                                                 <div className="row align-items-center MyProjectDisplayRow">
-                                                    <div className="searchActiveProject col-8 ms-auto">
+                                                    <div className="searchActiveProject col-lg-8 ms-auto">
                                                         <form onSubmit={handleFilterProject} >
                                                             <input
                                                                 type="text"
@@ -145,14 +145,14 @@ const DeclineProject = () => {
                                             {noResult ? (
                                                 <div
                                                     style={{ minHeight: "600px" }}
-                                                    className="d-flex justify-content-center "
+                                                    className="d-flex "
                                                 >
                                                     <span className="h4">No Result Found</span>
                                                 </div>
                                             ) : (completedProject?.final_data?.length ? (
                                                 completedProject?.final_data.map((res, index) => (
                                                     <div className="row MyProjectDisplayRow" key={index}>
-                                                        <div className="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
+                                                        <div className="col-lg-3 col-md-6 d-flex align-items-center">
                                                             <img
                                                                 onClick={() => {
                                                                     navigate(`/professionalprofile/${res?.professional_id}`);
@@ -179,29 +179,25 @@ const DeclineProject = () => {
                                                                 </h6>
                                                             </div>
                                                         </div>
-                                                        <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                                        <div className="col-lg-3 col-md-6 d-flex align-items-center">
                                                             <div>
                                                                 <h5>Project Name</h5>
                                                                 <h4>{res?.project_name}</h4>
                                                             </div>
                                                         </div>
-                                                        <div className="col-lg-3 col-md-6 ">
-                                                            <div className="row">
-                                                                <div className="col-md d-flex flex-column align-items-center justify-content-center">
-                                                                    <div>
-                                                                        <h5>Status</h5>
-                                                                        <h4>{res?.project_status}</h4>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-md d-flex flex-column align-items-center justify-content-center">
-                                                                    <div>
-                                                                        <h5>Total Budget</h5>
-                                                                        <h4>${res?.project_cost}</h4>
-                                                                    </div>
-                                                                </div>
+                                                        <div className="col-lg-3 col-md-6 d-flex align-items-center">
+                                                            <div>
+                                                                <h5>Status</h5>
+                                                                <h4>{res?.project_status}</h4>
                                                             </div>
                                                         </div>
-                                                        <div className="col-lg-3 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                                        <div className="col-lg-3 col-md-6 d-flex align-items-center">
+                                                            <div>
+                                                                <h5>Total Budget</h5>
+                                                                <h4>${res?.project_cost}</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-3 col-md-6 d-flex align-items-center">
                                                             <div>
                                                                 <h5>Area</h5>
                                                                 <h4>{res?.area} square meter</h4>
@@ -210,12 +206,7 @@ const DeclineProject = () => {
                                                     </div>
                                                 ))
                                             ) : (
-                                                <div
-                                                    style={{ minHeight: "600px" }}
-                                                    className="d-flex justify-content-center align-items-center"
-                                                >
-                                                    <span className="h4">No Declined Projects To Show</span>
-                                                </div>
+                                               ''
                                             ))}
                                         </div>
                                         {completedProject?.final_data?.length ? (

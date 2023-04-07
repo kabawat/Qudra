@@ -18,13 +18,14 @@ import {
   layer52,
 } from "../components/images";
 import { HeaderHome } from "../components/Header";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Footer from "../components/Footer";
 import OwlCarousel from "react-owl-carousel";
 import { useNavigate } from "react-router-dom";
 import HeroesSection from "../components/HeroesSection";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useCookies } from "react-cookie";
+import { Button, Modal } from "react-bootstrap";
 const options1 = {
   loop: false,
   margin: 10,
@@ -194,6 +195,8 @@ const Home = () => {
         setPlans(responce?.data?.data?.final_list);
       });
   }, []);
+
+
 
   return isRender ? (
     <>
@@ -727,7 +730,7 @@ const Home = () => {
                 {/* <!--Section: Content--> */}
                 <section className="pt-3 text-center">
                   <h2 className="mb-4">
-                    <strong>Pricing</strong>
+                    <strong>Subscription plans</strong>
                   </h2>
 
                   <div
@@ -735,7 +738,7 @@ const Home = () => {
                     role="group"
                     aria-label="Basic example"
                   >
-                    <h3>Monthly billing</h3>
+                    <h3>Monthly plans </h3>
                   </div>
 
                   <div className="row gx-lg-5 mt-4">
@@ -762,17 +765,14 @@ const Home = () => {
                                     {item?.service_charge}%
                                   </li>
                                   <li className="list-group-item">
-                                    <b> Storage</b> : {item?.storage}
+                                    <b> Storage</b> : {item?.storage === 'infinity' ? 'Infinity' : `${item?.storage} GB`}
                                   </li>
                                 </ul>
                               </div>
                               <div className="card-footer p-0">
-                                <button
-                                  type="button"
-                                  className="btn subscription_plans_btn"
-                                >
-                                  Buy now
-                                </button>
+                                {
+                                  cookies?.user_data ? <NavLink to="/subscription-plans" className='btn subscription_plans_btn'>Buy now</NavLink> : <NavLink to="/login" state={{ role: "professional" }} className='btn subscription_plans_btn'>Buy now</NavLink>
+                                }
                               </div>
                             </div>
                           </div>
@@ -784,9 +784,9 @@ const Home = () => {
                 {/* <!--Section: Content--> */}
               </div>
             </main>
-          </div>
-        </div>
-      </main>
+          </div >
+        </div >
+      </main >
 
       <main className="dashboard-main pb-5" style={{ background: "#f6feff" }}>
         <div id="myactivity" className="container-fluid  myProjectTable">
@@ -800,7 +800,7 @@ const Home = () => {
                     role="group"
                     aria-label="Basic example"
                   >
-                    <h3>Annual billign</h3>
+                    <h3>Annual plans</h3>
                   </div>
 
                   <div className="row gx-lg-5 mt-4">
@@ -827,17 +827,14 @@ const Home = () => {
                                     {item?.service_charge}%
                                   </li>
                                   <li className="list-group-item">
-                                    <b> Storage</b> : {item?.storage}
+                                    <b> Storage</b> : {item?.storage === 'infinity' ? 'Infinity' : `${item?.storage} GB`}
                                   </li>
-                                </ul>
+                                </ul>     
                               </div>
                               <div className="card-footer p-0">
-                                <button
-                                  type="button"
-                                  className="btn subscription_plans_btn"
-                                >
-                                  Buy now
-                                </button>
+                                {
+                                  cookies?.user_data ? <NavLink to="/subscription-plans" className='btn subscription_plans_btn'>Buy now</NavLink> : <NavLink to="/login" state={{ role: "professional" }} className='btn subscription_plans_btn'>Buy now</NavLink>
+                                }
                               </div>
                             </div>
                           </div>
@@ -852,7 +849,6 @@ const Home = () => {
           </div>
         </div>
       </main>
-
       <section className="our-top-clients-sec">
         <div className="container">
           <h2>Our Top Clients</h2>

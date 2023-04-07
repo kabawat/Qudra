@@ -547,7 +547,7 @@ const FromClientTabPane = ({ location }) => {
               <div className="row  py-3">
                 <div className="col-8">
                   <div className="row">
-                    <h6>Expiration Date</h6>
+                    <h6>Expiry Date</h6>
                     <div className="col cardExpiry monthInput">
                       <div className="border-bottom">
                         <Select

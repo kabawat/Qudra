@@ -7,12 +7,21 @@ const ClientDashboardAside = () => {
   const contextData = useContext(Global);
   return (
     <aside>
-      <Link to="/" className="d-block px-3 ps-xxl-4 ps-4 pb-4 pb-xxl-2  pt-5 pt-xxl-5">
-        <img src="/static/images/Quadra-transparrent-logo.png"
-          alt="logo" style={{ height: "100px" }}
-        />
-      </Link>
-      <ul className="nav nav-tabs flex-column border-0 ps-xxl-4 ps-2 mt-3">
+      <div className="d-flex px-3 ps-xxl-4 ps-4 pb-4 pb-xxl-2  pt-5 pt-xxl-5">
+        <Link to="/" >
+          <img src="/static/images/Quadra-transparrent-logo.png" className="logo"
+            alt="logo" style={{ height: "100px" }}
+          />
+        </Link>
+      </div>
+      <label htmlFor="dash" className="dashboard-toggle-menu" style={{ cursor: 'pointer', display: "none" }}>
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+      <input type="checkbox" name="" id="dash" />
+
+      <ul className="nav nav-tabs flex-column menu-cont border-0 ps-xxl-4 ps-md-2 mt-3">
         <li className="nav-item">
           <NavLink className={`nav-link dashboard-button `} to="/clientdashboard" >
             <img src="/static/images/Dashboard-menu-button.png" alt="" className="dashboard-white-icon" />

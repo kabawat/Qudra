@@ -197,7 +197,7 @@ const ActivitiesPane = () => {
                       ) : (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex  align-items-center"
+                          className="d-flex w-100 justify-content-center align-items-center"
                         >
                           <span className="h4">No Project Data To Show</span>
                         </div>
@@ -258,17 +258,17 @@ const ActivitiesPane = () => {
                             </div>
                           </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
-                                <div>
-                                  <h5>Status</h5>
-                                  <h4>{res?.project_status}</h4>
-                                </div>
-                              </div>
+                            <div>
+                              <h5>Status</h5>
+                              <h4>{res?.project_status}</h4>
+                            </div>
+                          </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
-                                <div>
-                                  <h5>Total Budget</h5>
-                                  <h4>${res?.project_cost}</h4>
-                                </div>
-                              </div>
+                            <div>
+                              <h5>Total Budget</h5>
+                              <h4>${res?.project_cost}</h4>
+                            </div>
+                          </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                             <div>
                               <h5>Area</h5>
@@ -325,17 +325,17 @@ const ActivitiesPane = () => {
                             </div>
                           </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
-                                <div>
-                                  <h5>Status</h5>
-                                  <h4>{res?.project_status}</h4>
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
-                                <div>
-                                  <h5>Total Budget</h5>
-                                  <h4>${res?.project_cost}</h4>
-                                </div>
-                              </div>
+                            <div>
+                              <h5>Status</h5>
+                              <h4>{res?.project_status}</h4>
+                            </div>
+                          </div>
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
+                            <div>
+                              <h5>Total Budget</h5>
+                              <h4>${res?.project_cost}</h4>
+                            </div>
+                          </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center ">
                             <div>
                               <h5>Area</h5>

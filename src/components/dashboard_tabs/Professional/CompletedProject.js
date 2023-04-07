@@ -190,7 +190,7 @@ const CompletedProject = () => {
                       ) : (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex align-items-center"
+                          className="d-flex w-100 justify-content-center align-items-center"
                         >
                           <span className="h4">No Project Data To Show</span>
                         </div>
@@ -198,7 +198,7 @@ const CompletedProject = () => {
                       {noResult ? (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex "
+                          className="d-flex w-100 justify-content-center align-items-center"
                         >
                           <span className="h4">No Result Found</span>
                         </div>

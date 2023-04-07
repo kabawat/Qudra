@@ -66,7 +66,7 @@ const DashboardPane = () => {
         <br />
 
         <div className="row total-earning-row pt-xxl-5 pt-4 pb-xxl-5 pb-4">
-          <div className="col-md-5 col-xl-7">
+          <div className=" col-xl-7">
             <h3 className="">
               Welcome {contextData?.profileData?.name?.split(" ")[0]}&nbsp;!
             </h3>
@@ -85,7 +85,7 @@ const DashboardPane = () => {
               </div>
             </div>
           </div>
-          <div className=" col-md-7 col-xl-5">
+          <div className=" col-lg-7 col-xl-5">
             <div className="d-flex align-items-center text-center justify-content-around top-earning-box bg-white">
               <div className="d-flex align-items-center justify-content-center p-3">
                 <img src="./static/images/TotalEarnings.png" alt="" />
@@ -116,14 +116,14 @@ const DashboardPane = () => {
           </div>
         </div>
         <div className="row  mb-xxl-5 mb-4 client-project-main-row">
-          <div className="col-xl-4 col-md-12 my-3">
+          <div className="col-xxl-4 col-md-12 my-3">
            
             {/* <ResizableBox> */}
             <Chart data={data} series={series} axes={axes} tooltip />
             {/* </ResizableBox> */}
           </div>
 
-          <div className="col-xl-4 col-md-12 my-3">
+          <div className="col-xxl-4 col-md-12 my-3">
             <div className="bg-white chat-to-professional-client-page d-flex flex-column justify-content-between h-100 p-md-4 p-3 border">
               <div className="d-flex align-items-center justify-content-between">
                 <h3>Professional</h3>
@@ -203,7 +203,7 @@ const DashboardPane = () => {
             </div>
           </div>
 
-          <div className="col-xl-4 col-md-12 my-3">
+          <div className="col-xxl-4 col-md-12 my-3">
             <div className="bg-white recent-payments-client-page d-flex justify-content-between flex-column h-100 p-md-4 p-3 border">
               <div className="d-flex align-items-center justify-content-between">
                 <h3>Recent Payment</h3>
@@ -276,22 +276,22 @@ const DashboardPane = () => {
               </div>
             </div>
             <div className="row project-table-header text-center">
-              <div className="col-md px-0">
+              <div className="col-md">
                 <h6>Project Name</h6>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md">
                 <h6>Work Assigned</h6>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md">
                 <h6>Professional Assigned</h6>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md">
                 <h6>Project Cost</h6>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md">
                 <h6>Status</h6>
               </div>
-              <div className="col-md px-0">
+              <div className="col-md">
                 <h6>Payment</h6>
               </div>
             </div>
@@ -301,22 +301,22 @@ const DashboardPane = () => {
                   className="row project-table-details text-center"
                   key={index}
                 >
-                  <div className="col-md px-0">
+                  <div className="col-md">
                     <p className="m-0 theme-text-color text-capitalize">{res?.project_name}</p>
                   </div>
-                  <div className="col-md px-0">
+                  <div className="col-md">
                     <p className="m-0 text-capitalize">Design</p>
                   </div>
-                  <div className="col-md px-0">
+                  <div className="col-md">
                     <p className="m-0 text-capitalize">{res?.professional_name}</p>
                   </div>
-                  <div className="col-md px-0">
+                  <div className="col-md">
                     <p className="m-0">${res?.project_cost}</p>
                   </div>
-                  <div className="col-md px-0">
+                  <div className="col-md">
                     <p className="m-0 text-capitalize">{res?.project_status}</p>
                   </div>
-                  <div className="col-md px-0">
+                  <div className="col-md">
                     <p className="m-0 text-capitalize">
                       {res?.payment_status}
                     </p>

@@ -398,19 +398,11 @@ const ProfessionalBuyAndSale = () => {
                             state?.preview_catagory_designs?.image.map(
                               (res, index) => {
                                 return (
-                                  <div
-                                    key={index}
-                                    className="col-lg-4 my-3 col-md-6                                                                                           "
-                                  >
-                                    <div
-                                      style={{
-                                        height: "240px",
-                                        borderRadius: "30px",
-                                      }}
+                                  <div key={index} className="col-lg-4 my-3 col-md-6">
+                                    <div style={{ height: "240px", borderRadius: "30px", }}
                                       className="card border-0 flex-row bg-dark text-white visibleForEdit"
                                     >
-                                      <img
-                                        src={`${state?.preview_catagory_designs?.image_url}${res}`}
+                                      <img src={`${state?.preview_catagory_designs?.image_url}${res}`}
                                         className="card-img"
                                         alt="..."
                                         style={{ borderRadius: "30px" }}
@@ -425,12 +417,7 @@ const ProfessionalBuyAndSale = () => {
                                         }}
                                       >
                                         <h4 className="card-title cardTitleVisible">
-                                          $
-                                          {
-                                            state?.preview_catagory_designs
-                                              ?.price[index]
-                                          }
-                                          / sq.mtr
+                                          ${state?.preview_catagory_designs?.price[index]}/ project
                                         </h4>
                                         <div className="row">
                                           <div
@@ -638,14 +625,11 @@ const ProfessionalBuyAndSale = () => {
                                                 <h6 className="m-0 py-2 text-md-start text-center">
                                                   {res?.sub_category}
                                                 </h6>
-                                                <input
-                                                  type="checkbox"
+                                                <input type="checkbox"
                                                   id={`${i}checkbox`}
                                                   name={res?.sub_category_id}
                                                   className="large-checkbox"
-                                                  style={{
-                                                    cursor: "pointer",
-                                                  }}
+                                                  style={{ cursor: "pointer" }}
                                                   onInput={(e) => {
                                                     if (e.target.checked) {
                                                       setFieldValue(

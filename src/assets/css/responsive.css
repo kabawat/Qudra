@@ -50,6 +50,69 @@
 
 @media screen and (min-width: 320px) and (max-width: 767px) {
 
+  /* -------- 07 april  ------ */
+
+
+  .dashboard-toggle-menu span {
+    background-color: #fff;
+    height: 3.5px;
+    width: 35px;
+    display: block;
+    margin: 6px 0;
+    border-radius: 3px;
+}
+
+.dashboard-toggle-menu span:nth-child(2){
+  width: 25px;
+  margin-left: auto;
+}
+
+.dashboard-toggle-menu {
+  display: block!important;
+  right: 15px;
+  top: 60px;
+  position: absolute;
+}
+
+.logo{
+  height: 50px!important;
+}
+
+.dashboard aside {
+  min-height: auto;
+}
+
+  .menu-cont{
+    left: -100%;
+    position: absolute;
+    width: 100%;
+    top: 120px;
+    background: #00a78b;
+    z-index: 9;
+    transition: all ease-in-out 0.3s;
+    padding-bottom: 30px;
+  }
+
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link.active{
+    border-radius: 0px!important;
+  }
+ 
+  .dashboard-toggle-menu {
+    display: block!important;
+    right: 15px;
+    top: 60px;
+    position: absolute;
+}
+
+  aside input:checked ~ .menu-cont{
+    left: 0!important;
+  }
+
+ input:checked ~ .dashboard-toggle-menu > span:nth-child(2){
+    display: none!important;
+  }
+
+
 /* =============== 05 April 2023 ==================== */
 .MyProjectDisplayRow img{
   object-fit: cover;

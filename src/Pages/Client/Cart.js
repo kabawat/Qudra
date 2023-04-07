@@ -111,11 +111,11 @@ const Cart = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              <div className="cart_page_main mx-5 px-5 my-5 py-5 ">
-                <div className="shoppingCartMain">
+              <div className="cart_page_main mx-lg-5 px-lg-5 my-lg-5 py-lg-5 ">
+                <div className="shoppingCartMain px-2">
                   <h3 className="border-bottom pb-4">Shopping Cart</h3>
                   <div className="row justify-content-between m-0 pt-4">
-                    <div className="col-7 leftShoppingCart">
+                    <div className="col-xl-7 leftShoppingCart">
                       <h2 className="pb-4">{location?.state?.sub_category_name}</h2>
                       <div className="row">
                         <div className="col">
@@ -136,7 +136,7 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-4 rightShoppingCart">
+                    <div className="col-xl-4 rightShoppingCart">
                       <div className="row">
                         <div className="col-12">
                           <div className="row">
@@ -237,7 +237,7 @@ const Cart = () => {
                 <div className="row  py-3">
                   <div className="col-8">
                     <div className="row">
-                      <h6>Expiration Date</h6>
+                      <h6>Expiry Date</h6>
                       <div className="col cardExpiry monthInput">
                         <div className="border-bottom">
                           <Select

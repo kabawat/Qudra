@@ -385,7 +385,7 @@ const BrowsePane = () => {
                       {browserProfessionalSearchInput
                         ? browseProfessionalData &&
                         browseProfessionalData?.final_data?.map((res) => (
-                          <div className="col-xxl-4 col-md-6  my-3">
+                          <div className="col-xxl-4 col-lg-6  my-3">
                             <div className="item">
                               <div className="henry-section">
                                 <div className="henry-img">
@@ -435,7 +435,7 @@ const BrowsePane = () => {
                         ))
                         : defaultProfessionalProfile &&
                         defaultProfessionalProfile?.final_data?.map((res, key) => (
-                          <div className="col-xxl-4 col-md-6  my-3" key={key}>
+                          <div className="col-xxl-4 col-lg-6  my-3" key={key}>
                             <div className="item">
                               <div className="henry-section">
                                 <div className="henry-img">

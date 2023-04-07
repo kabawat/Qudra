@@ -58,7 +58,7 @@ const PurchaseDesign = () => {
                     }
                     // console.log( res?.data?.data );
                 } else {
-                    setIsReander(false);
+                    setIsReander(true);
                 }
             });
         } else {
