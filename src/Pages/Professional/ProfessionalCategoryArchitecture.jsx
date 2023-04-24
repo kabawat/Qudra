@@ -70,7 +70,7 @@ const ProfessionalCategoryArchitecture = () => {
         sel_sub_cat: { 1: [] },
       })
     );
-    localStorage.setItem("selectImg", JSON.stringify(selectList));
+    localStorage.removeItem("selectImg");
     navigate("/categoryvisualization");
   };
   const submitData = (event) => {

@@ -464,7 +464,7 @@ const PurchaseDesign = () => {
                               name="comment[text]"
                               id="comment_text"
                               cols="40"
-                              class="ui-autocomplete-input"
+                              className="ui-autocomplete-input"
                               autocomplete="off"
                               role="textbox"
                               aria-autocomplete="list"

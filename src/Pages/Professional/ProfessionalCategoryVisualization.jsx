@@ -72,11 +72,13 @@ const ProfessionalCategoryVisualization = () => {
         user_id: contextData?.userData?.user_id,
         user_token: contextData?.userData?.user_token,
         role: contextData?.userData?.role,
-        cat_id: [...selectedCatagory.category?.cat_id, 2],
+        category: {
+          cat_id: [...new Set([...selectedCatagory?.category?.cat_id, 2])],
+        },
         sel_sub_cat: { ...sel_sub_cat },
       })
     );
-    localStorage.setItem("selectImg2", JSON.stringify(selectList));
+    localStorage.setItem("selectImg2", JSON.stringify([]));
     navigate("/professional-buy-and-sale");
   };
   const submitData = (event) => {
@@ -89,7 +91,7 @@ const ProfessionalCategoryVisualization = () => {
     });
 
     let sel_sub_cat = {
-      1: selectedCatagory.sel_sub_cat[1],
+      1: selectedCatagory?.sel_sub_cat[1],
       2: valueArray,
     };
 
@@ -101,7 +103,9 @@ const ProfessionalCategoryVisualization = () => {
           user_id: contextData?.userData?.user_id,
           user_token: contextData?.userData?.user_token,
           role: contextData?.userData?.role,
-          cat_id: [...selectedCatagory.category?.cat_id, 2],
+          category: {
+            cat_id: [...new Set([...selectedCatagory?.category?.cat_id, 2])],
+          },
           sel_sub_cat: { ...sel_sub_cat },
         })
       );

@@ -178,17 +178,17 @@ const ProfessionalBuyAndSale = () => {
 
   const languagesArchitecture = [
     contextData?.static_buy_sale_design?.data?.length &&
-      contextData?.static_buy_sale_design?.data?.filter((ress) =>
-        ress !== "" ||
+    contextData?.static_buy_sale_design?.data?.filter((ress) =>
+      ress !== "" ||
         null ||
         (state?.selected_catagories &&
           state?.selected_catagories[3].includes(ress?.sub_category_id))
-          ? {
-              label: ress?.sub_category,
-              value: ress?.sub_category_id,
-            }
-          : ""
-      ),
+        ? {
+          label: ress?.sub_category,
+          value: ress?.sub_category_id,
+        }
+        : ""
+    ),
   ];
   const newCatagoriesArchitecture =
     languagesArchitecture[0] &&
@@ -223,7 +223,7 @@ const ProfessionalBuyAndSale = () => {
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
           category: {
-            cat_id: [...selectedCatagories?.cat_id, 3],
+            cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
           },
           sel_sub_cat: {
             ...selectedCatagories.sel_sub_cat,
@@ -278,39 +278,37 @@ const ProfessionalBuyAndSale = () => {
 
   const backButtonFunc = () => {
     setShowImagesSection(false);
-    dispatch({ type: "SUB_CATAGORY_DESIGNS", value: null });
+    // dispatch({ type: "SUB_CATAGORY_DESIGNS", value: null });
   };
 
   const handleSkipButton = () => {
+    const list = [...selectedCatagories?.sel_sub_cat['2'], ...selectedCatagories?.sel_sub_cat['1']]
     try {
-      selectedCatagories &&
-        Object.values(selectedCatagories.sel_sub_cat).map((val) => {
-          if (!val.length) {
-            throw new Error("Please select at least one category");
-          }
-          axios
-            .post("http://13.52.16.160:8082/professional/sel_sub_category", {
-              user_id: cookies?.user_data?.user_id,
-              user_token: cookies?.user_data?.user_token,
-              role: cookies?.user_data?.role,
-              category: {
-                cat_id: [...selectedCatagories?.cat_id, 3],
-              },
-              sel_sub_cat: {
-                ...selectedCatagories.sel_sub_cat,
-                3: [],
-              },
-            })
-            .then((res) => {
-              if (res?.data?.status === "Success") {
-                setCookies("user_data", {
-                  ...cookies?.user_data,
-                  category_selected: true,
-                });
-                navigate("/professionaldashboard");
-              }
+      if (list.length && selectedCatagories) {
+        axios.post("http://13.52.16.160:8082/professional/sel_sub_category", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          category: {
+            cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
+          },
+          sel_sub_cat: {
+            ...selectedCatagories?.sel_sub_cat,
+            3: [],
+          },
+        }).then((res) => {
+          if (res?.data?.status === "Success") {
+            setCookies("user_data", {
+              ...cookies?.user_data,
+              category_selected: true,
             });
+            localStorage.clear()
+            navigate("/professionaldashboard");
+          }
         });
+      } else {
+        throw new Error("Please select at least one category");
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -389,7 +387,6 @@ const ProfessionalBuyAndSale = () => {
                               showImagesSection
                                 ? backButtonFunc()
                                 : navigate("/categoryvisualization");
-                              localStorage.removeItem("SelectedCatagories");
                             }}
                           ></i>
                         </div>
@@ -531,7 +528,7 @@ const ProfessionalBuyAndSale = () => {
                                             </button>
                                           </div>
                                           {cookies?.user_data.role ===
-                                          "client" ? (
+                                            "client" ? (
                                             <div
                                               className="col-xxl-6 col-md-12 col-6"
                                               style={{ padding: "6px" }}
@@ -822,9 +819,9 @@ const ProfessionalBuyAndSale = () => {
                         .then((res) => {
                           return res?.data?.status === "Success"
                             ? (dispatch({
-                                type: "BUYSALE_DESIGN_UPLOAD_MODAL",
-                                value: false,
-                              }),
+                              type: "BUYSALE_DESIGN_UPLOAD_MODAL",
+                              value: false,
+                            }),
                               setCatagoriesDropdown([]))
                             : "";
                         });
@@ -1104,8 +1101,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                          "..." +
-                                          name.slice(-4)
+                                        "..." +
+                                        name.slice(-4)
                                         : name;
                                     setvidlbl(trimmedFileName);
                                     setvidstyle("block");
@@ -1141,8 +1138,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                          "..." +
-                                          name.slice(-4)
+                                        "..." +
+                                        name.slice(-4)
                                         : name;
 
                                     setziplbl(trimmedFileName);
@@ -1254,7 +1251,7 @@ const ProfessionalBuyAndSale = () => {
                           ...cookies?.user_data,
                           price:
                             state?.preview_catagory_designs?.price[
-                              state?.preview_catagory_data?.index
+                            state?.preview_catagory_data?.index
                             ],
                           image: "",
                           video: "",
@@ -1345,12 +1342,12 @@ const ProfessionalBuyAndSale = () => {
                                           imgPreview
                                             ? imgPreview
                                             : state?.preview_catagory_designs
-                                                ?.image_url +
-                                              state?.preview_catagory_designs
-                                                ?.image[
-                                                state?.preview_catagory_data
-                                                  ?.index
-                                              ]
+                                              ?.image_url +
+                                            state?.preview_catagory_designs
+                                              ?.image[
+                                            state?.preview_catagory_data
+                                              ?.index
+                                            ]
                                         }
                                         alt="preview"
                                       />
@@ -1409,10 +1406,10 @@ const ProfessionalBuyAndSale = () => {
                                         {vidlbl
                                           ? vidlbl
                                           : state?.preview_catagory_designs
-                                              ?.video[
-                                              state?.preview_catagory_data
-                                                ?.index
-                                            ]}
+                                            ?.video[
+                                          state?.preview_catagory_data
+                                            ?.index
+                                          ]}
                                       </span>
                                       {/* <span
                                       style={{
@@ -1442,8 +1439,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                              "..." +
-                                              name.slice(-4)
+                                            "..." +
+                                            name.slice(-4)
                                             : name;
                                         setFieldValue(
                                           "video",
@@ -1481,8 +1478,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                              "..." +
-                                              name.slice(-4)
+                                            "..." +
+                                            name.slice(-4)
                                             : name;
                                         setzipstyle("block");
                                         setziplbl(trimmedFileName);
@@ -1493,10 +1490,10 @@ const ProfessionalBuyAndSale = () => {
                                         {ziplbl
                                           ? ziplbl
                                           : state?.preview_catagory_designs
-                                              ?.project[
-                                              state?.preview_catagory_data
-                                                ?.index
-                                            ]}
+                                            ?.project[
+                                          state?.preview_catagory_data
+                                            ?.index
+                                          ]}
                                       </span>
                                       {/* <span
                                       style={{

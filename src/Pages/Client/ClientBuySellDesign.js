@@ -57,26 +57,24 @@ const ClientBuySellDesign = () => {
 
   const formSubmit = (valueArray) => {
     if (valueArray.length) {
-      axios
-        .post("http://13.52.16.160:8082/client/sel_sub_category", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
-          category: {
-            cat_id: [...selectedCatagories?.cat_id, 3],
-          },
-          sel_sub_cat: {
-            ...selectedCatagories.sel_sub_cat,
-            3: valueArray,
-          },
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            localStorage.clear()
-            setCookies("user_data", { ...cookies?.user_data, category_selected: true })
-            navigate("/clientdashboard");
-          }
-        });
+      axios.post("http://13.52.16.160:8082/client/sel_sub_category", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+        category: {
+          cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
+        },
+        sel_sub_cat: {
+          ...selectedCatagories.sel_sub_cat,
+          3: valueArray,
+        },
+      }).then((res) => {
+        if (res?.data?.status === "Success") {
+          localStorage.clear()
+          setCookies("user_data", { ...cookies?.user_data, category_selected: true })
+          navigate("/clientdashboard");
+        }
+      });
     } else {
       toast.error("You must select an category!", {
         position: "top-right",
@@ -100,26 +98,26 @@ const ClientBuySellDesign = () => {
       });
   }, []);
   const handleSkipButton = () => {
-    if (selectedCatagories.length) {
-      axios
-        .post("http://13.52.16.160:8082/client/sel_sub_category", {
-          user_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: contextData?.userData?.role,
-          category: {
-            cat_id: [...selectedCatagories?.cat_id, 3],
-          },
-          sel_sub_cat: {
-            ...selectedCatagories.sel_sub_cat,
-            3: [],
-          },
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            setCookies("user_data", { ...cookies?.user_data, category_selected: true })
-            navigate("/clientdashboard");
-          }
-        });
+    const list = [...selectedCatagories?.sel_sub_cat['1'], ...selectedCatagories?.sel_sub_cat['2']]
+    if (list.length) {
+      axios.post("http://13.52.16.160:8082/client/sel_sub_category", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: contextData?.userData?.role,
+        category: {
+          cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
+        },
+        sel_sub_cat: {
+          ...selectedCatagories.sel_sub_cat,
+          3: [],
+        },
+      }).then((res) => {
+        if (res?.data?.status === "Success") {
+          setCookies("user_data", { ...cookies?.user_data, category_selected: true })
+          localStorage.clear()
+          navigate("/clientdashboard");
+        }
+      });
     } else {
       toast.error("You must select an category!", {
         position: "top-right",

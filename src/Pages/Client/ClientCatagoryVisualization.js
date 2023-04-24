@@ -62,6 +62,7 @@ const ClientCatagoryVisualization = () => {
   const [selectedCatagory, setSelectedCatagory] = useState(
     JSON.parse(localStorage.getItem("SelectedCatagories"))
   );
+
   const SkipPage = () => {
     let sel_sub_cat = {
       1: selectedCatagory?.sel_sub_cat[1],
@@ -73,11 +74,11 @@ const ClientCatagoryVisualization = () => {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-        cat_id: [...selectedCatagory.category?.cat_id, 2],
+        category: { cat_id: [...new Set([...selectedCatagory.category?.cat_id, 2])] },
         sel_sub_cat: { ...sel_sub_cat },
       })
     );
-    localStorage.setItem("selectImg2", JSON.stringify(selectList));
+    localStorage.setItem("selectImg2", JSON.stringify([]));
     navigate("/client-buy-sell");
   };
   const submitData = (event) => {
@@ -102,7 +103,7 @@ const ClientCatagoryVisualization = () => {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
-          cat_id: [...selectedCatagory.category?.cat_id, 2],
+          category: { cat_id: [...new Set([...selectedCatagory.category?.cat_id, 2])] },
           sel_sub_cat: { ...sel_sub_cat },
         })
       );
@@ -242,7 +243,7 @@ const ClientCatagoryVisualization = () => {
                       <button
                         type="submit"
                         className="create-account-btn"
-                        // onClick={() => navigate("/client-visualisation")}
+                      // onClick={() => navigate("/client-visualisation")}
                       >
                         Continue <BsArrowRight style={{ color: "white" }} />
                       </button>

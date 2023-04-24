@@ -800,7 +800,7 @@ const EditProfileProfessional = ({ location }) => {
                               placeholder="Enter Minimum Rate Per Square Meter in $"
                             />
 
-                            <i class="fa-solid fa-tag"></i>
+                            <i className="fa-solid fa-tag"></i>
 
                             <ErrorMessage
                               name="price_range"
