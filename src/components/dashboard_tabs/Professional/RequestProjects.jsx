@@ -176,7 +176,7 @@ const RequestProject = () => {
               ) : (
                 <main className="dashboard-main">
                   <div id="myactivity" className="container-fluid  myProjectTable">
-                    <h2 className="ps-5">Projects Request By Clients</h2>
+                    <h2 className="ps-5">Projects Request From Clients</h2>
                     <div className="m-xl-5 shadow">
                       {searchProject?.final_data.length || myProject?.final_data?.length ? (
                         <div className="row align-items-center MyProjectDisplayRow">

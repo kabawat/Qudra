@@ -169,155 +169,102 @@ const SubscriptionPlane = () => {
                   <div id="myactivity" className="container-fluid  myProjectTable" >
                     <h2 className="ps-5">Subscription Plans</h2>
                     <div className="m-0 m-md-5 shadow">
-                      <main className="my-4 pb-5">
-                        <div className="container">
-                          {/* <!--Section: Content--> */}
-                          <section className="pt-3 text-center">
-                            <h2 className="mb-4">
-                              <strong>Subscription Plans</strong>
-                            </h2>
-
-                            <div
-                              className="btn-group pricing_btn mb-4"
-                              role="group"
-                              aria-label="Basic example"
-                            >
-                              <h3>Monthly Plans</h3>
-                            </div>
-
-                            <div className="row gx-lg-5 mt-4">
-                              {/* <!--Grid column--> */}
-                              {plans?.map((item, index) => {
-                                if (item?.plan_type === 'monthly') {
-                                  return (
-                                    <div
-                                      key={index}
-                                      className="col-lg-4 col-md-6 mb-4 my-2 subscription_plans"
-                                    >
-                                      {/* <!-- Card --> */}
-                                      <div className="card border ">
-                                        <div className="card-header py-3">
-                                          <p className=" mb-2 text-capitalize" >{item.name}</p>
-                                          <h5 className="mb-0">
-                                            ${item?.amount}/Month
-                                          </h5>
-                                        </div>
-                                        <div className="card-body">
-                                          <ul className="list-group list-group-flush">
-                                            <li className="list-group-item border-0 ">
-                                              <b> Service Charge</b> :{" "}
-                                              {item?.service_charge}%
-                                            </li>
-                                            <li className="list-group-item">
-                                              <b> Storage</b> : {item?.storage === 'infinity' ? "Infinity" : `${item?.storage} GB`}
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div className="card-footer p-0">
-                                          {
-                                            currentPlans === item?.id ? <div style={subscription}>
-                                              <button type="button" className="btn subscription_plans_btn" style={{ cursor: 'context-menu' }} >
-                                                Active
-                                              </button>
-                                              {
-                                                noPlans ? <button type="button" className="btn subscription_plans_btn bg-danger" style={{ cursor: 'context-menu', color: '#fff' }}>
-                                                  Cancelled
-                                                </button> : (
-                                                  (currentPlans !== 1) && <button type="button" className="btn subscription_plans_btn bg-danger" onClick={() => setIsCencel(true)}>
-                                                    Cancel
-                                                  </button>)
-                                              }
-
-                                            </div> : ((item?.id === 1) ? <button type="button" className="btn subscription_plans_btn" >
-                                              Upgrade
-                                            </button> : <button type="button" className="btn subscription_plans_btn" onClick={() => handlePayment(item)} >
-                                              Upgrade
-                                            </button>)
-                                          }
-
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                }
-                              })}
-                            </div>
-                          </section>
-                          {/* <!--Section: Content--> */}
+                      <div className="row mx-0">
+                        <div className="col-md-5 plan-bg">
+                          <ul className="plan-box-tab d-flex mb-0 list-unstyled">
+                            <li><a href="" className="active">Monthly</a></li>
+                            <li><a href="">Annually</a></li>
+                          </ul>
+                          <p className="mb-0">*Save up to 27% when you pay annually</p>
                         </div>
-                      </main>
-                      <main className="my-4 pb-5">
-                        <div className="container">
-                          {/* <!--Section: Content--> */}
-                          <section className="pt-3 text-center">
-                            <div
-                              className="btn-group pricing_btn mb-4"
-                              role="group"
-                              aria-label="Basic example"
-                            >
-                              <h3>Annual Plans</h3>
+                        <div className="col-md-7 px-0">
+                            <div className="heading border-bottom">
+                               <ul className="list-unstyled pl-0 mb-0 d-flex">
+                                <li>Basic</li>
+                                <li>Professional</li>
+                                <li>Premium</li>
+                               </ul>
                             </div>
-
-                            <div className="row gx-lg-5 mt-4">
-                              {/* <!--Grid column--> */}
-                              {plans?.map((item, index) => {
-                                if (item?.plan_type === 'yearly') {
-                                  return (
-                                    <div
-                                      key={index}
-                                      className="col-lg-4 col-md-6 mb-4 my-2 subscription_plans"
-                                    >
-                                      {/* <!-- Card --> */}
-                                      <div className="card border ">
-                                        <div className="card-header py-3">
-                                          <p className=" mb-2 text-capitalize">{item.name}</p>
-                                          <h5 className="mb-0">
-                                            ${item?.amount}/Year
-                                          </h5>
-                                        </div>
-                                        <div className="card-body">
-                                          <ul className="list-group list-group-flush">
-                                            <li className="list-group-item border-0 ">
-                                              <b> Service Charge</b> :{" "}
-                                              {item?.service_charge}%
-                                            </li>
-                                            <li className="list-group-item">
-                                              <b> Storage</b> : {item?.storage === 'infinity' ? "Infinity" : `${item?.storage} GB`}
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div className="card-footer p-0">
-                                          {
-                                            currentPlans === item?.id ? <div style={subscription}>
-                                              <button type="button" className="btn subscription_plans_btn" style={{ cursor: 'context-menu' }} >
-                                                Active
-                                              </button>
-                                              {
-                                                noPlans ? <button type="button" className="btn subscription_plans_btn bg-danger" style={{ cursor: 'context-menu', color: '#fff' }}>
-                                                  Cancelled
-                                                </button> : (
-                                                  (currentPlans !== 4) && <button type="button" className="btn subscription_plans_btn bg-danger" onClick={() => setIsCencel(true)}>
-                                                    Cancel
-                                                  </button>)
-                                              }
-
-                                            </div> : ((item?.id === 4) ? <button type="button" className="btn subscription_plans_btn" >
-                                              Upgrade
-                                            </button> : <button type="button" className="btn subscription_plans_btn" onClick={() => handlePayment(item)} >
-                                              Upgrade
-                                            </button>)
-                                          }
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                }
-                              })}
+                            <div className="heading">
+                               <ul className="list-unstyled pl-0 mb-0 d-flex">
+                                <li>FREE</li>
+                                <li>$18.99 <br/> Per Month+</li>
+                                <li>$37.99 <br/>  Per Month</li>
+                               </ul>
                             </div>
-                          </section>
-                          {/* <!--Section: Content--> */}
                         </div>
-                      </main>
+                      </div>
+                      <div className="row fetures align-items-center mx-0">
+                        <div className="col-md-5">
+                           <p>Feature</p>
+                        </div>
+                        <div className="col-md-7 px-0">
+                            <ul className="d-flex mb-0 list-unstyled">
+                              <li></li>
+                              <li><button className="buy-now-btn">Buy</button></li>
+                              <li><button className="buy-now-btn">Buy</button></li>
+                            </ul>
+                        </div>
+                      </div>
+
+                      <div className="row fetures2 py-3 align-items-center mx-0">
+                        <div className="col-md-5 d-flex flex-column">
+                           <p>Storage</p>
+                           <small>User can upload their works upto specified storage</small>
+                        </div>
+                        <div className="col-md-7 px-0">
+                            <ul className="d-flex mb-0 list-unstyled">
+                              <li><p className="ms-0">Upto 1 GB</p></li>
+                              <li><p className="ms-0">Upto 20 GB</p></li>
+                              <li><p className="ms-0">Unlimited Storage</p></li>
+                            </ul>
+                        </div>
+                      </div>
+
+
+                      <div className="row fetures py-3 align-items-center mx-0">
+                        <div className="col-md-5 d-flex flex-column">
+                           <p>Services Charges</p>
+                           <small>We charge a nominal fee for our services on every paid invoice</small>
+                        </div>
+                        <div className="col-md-7 px-0">
+                            <ul className="d-flex mb-0 list-unstyled">
+                              <li><p className="ms-0">9%</p></li>
+                              <li><p className="ms-0">7%</p></li>
+                              <li><p className="ms-0">6%</p></li>
+                            </ul>
+                        </div>
+                      </div>
+
+                      <div className="row fetures2 py-3 align-items-center mx-0">
+                        <div className="col-md-5 d-flex flex-column">
+                           <p>Search Boost</p>
+                           <small>This feature helps your profile rank higher on the search results</small>
+                        </div>
+                        <div className="col-md-7 px-0">
+                            <ul className="d-flex mb-0 list-unstyled">
+                              <li><p className="ms-0">Not enable </p></li>
+                              <li><p className="ms-0">Enable for search results on paying extra amount</p></li>
+                              <li><p className="ms-0">Enable for search results on paying extra amount</p></li>
+                            </ul>
+                        </div>
+                      </div>
+
+
+                      <div className="row fetures py-3 align-items-center mx-0">
+                        <div className="col-md-5 d-flex flex-column">
+                           <p>Find Jobs</p>
+                           <small>Search for jobs in your category</small>
+                        </div>
+                        <div className="col-md-7 px-0">
+                            <ul className="d-flex mb-0 list-unstyled">
+                              <li><p className="ms-0">Enable</p></li>
+                              <li><p className="ms-0">Enable</p></li>
+                              <li><p className="ms-0">Enable</p></li>
+                            </ul>
+                        </div>
+                      </div>
+                      
                     </div>
                   </div>
                 </main>)}

@@ -186,15 +186,15 @@ const Home = () => {
     }
   };
 
-  const [plansType, setPlansType] = useState("monthly");
-  const [plans, setPlans] = useState();
-  useEffect(() => {
-    axios
-      .get("http://13.52.16.160:8082/stripe/subscription-plans/")
-      .then((responce) => {
-        setPlans(responce?.data?.data?.final_list);
-      });
-  }, []);
+  // const [plansType, setPlansType] = useState("monthly");
+  // const [plans, setPlans] = useState();
+  // useEffect(() => {
+  //   axios
+  //     .get("http://13.52.16.160:8082/stripe/subscription-plans/")
+  //     .then((responce) => {
+  //       setPlans(responce?.data?.data?.final_list);
+  //     });
+  // }, []);
 
 
 
@@ -721,134 +721,6 @@ const Home = () => {
         </div>
       </section>
 
-      <main className="dashboard-main pt-0" style={{ background: "#f6feff" }}>
-        <div id="myactivity" className="container-fluid  myProjectTable">
-          {/* <h2 className="ps-5">Subscription Plans</h2> */}
-          <div className="">
-            <main className="mt-4">
-              <div className="container">
-                {/* <!--Section: Content--> */}
-                <section className="pt-3 text-center">
-                  <h2 className="mb-4">
-                    <strong>Subscription plans</strong>
-                  </h2>
-
-                  <div
-                    className="btn-group pricing_btn mb-4"
-                    role="group"
-                    aria-label="Basic example"
-                  >
-                    <h3>Monthly plans </h3>
-                  </div>
-
-                  <div className="row gx-lg-5 mt-4">
-                    {/* <!--Grid column--> */}
-                    {plans?.map((item, index) => {
-                      if (item?.plan_type === 'monthly') {
-                        return (
-                          <div
-                            key={index}
-                            className="col-lg-4 col-md-6 mb-4 my-2 subscription_plans"
-                          >
-                            {/* <!-- Card --> */}
-                            <div className="card border ">
-                              <div className="card-header py-3">
-                                <p className=" mb-2">{item.name}</p>
-                                <h5 className="mb-0">
-                                  ${item?.amount}/Month
-                                </h5>
-                              </div>
-                              <div className="card-body">
-                                <ul className="list-group list-group-flush">
-                                  <li className="list-group-item border-0 ">
-                                    <b> Service Charge</b> :{" "}
-                                    {item?.service_charge}%
-                                  </li>
-                                  <li className="list-group-item">
-                                    <b> Storage</b> : {item?.storage === 'infinity' ? 'Infinity' : `${item?.storage} GB`}
-                                  </li>
-                                </ul>
-                              </div>
-                              <div className="card-footer p-0">
-                                {
-                                  cookies?.user_data ? <NavLink to="/subscription-plans" className='btn subscription_plans_btn'>Buy now</NavLink> : <NavLink to="/login" state={{ role: "professional" }} className='btn subscription_plans_btn'>Buy now</NavLink>
-                                }
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
-                </section>
-                {/* <!--Section: Content--> */}
-              </div>
-            </main>
-          </div >
-        </div >
-      </main >
-
-      <main className="dashboard-main pb-5" style={{ background: "#f6feff" }}>
-        <div id="myactivity" className="container-fluid  myProjectTable">
-          <div className="">
-            <main className="">
-              <div className="container">
-                {/* <!--Section: Content--> */}
-                <section className="pt-3 text-center">
-                  <div
-                    className="btn-group pricing_btn mb-4"
-                    role="group"
-                    aria-label="Basic example"
-                  >
-                    <h3>Annual plans</h3>
-                  </div>
-
-                  <div className="row gx-lg-5 mt-4">
-                    {/* <!--Grid column--> */}
-                    {plans?.map((item, index) => {
-                      if (item?.plan_type === 'yearly') {
-                        return (
-                          <div
-                            key={index}
-                            className="col-lg-4 col-md-6 mb-4 my-2 subscription_plans"
-                          >
-                            {/* <!-- Card --> */}
-                            <div className="card border ">
-                              <div className="card-header py-3">
-                                <p className=" mb-2">{item.name}</p>
-                                <h5 className="mb-0">
-                                  ${item?.amount}/Year
-                                </h5>
-                              </div>
-                              <div className="card-body">
-                                <ul className="list-group list-group-flush">
-                                  <li className="list-group-item border-0 ">
-                                    <b> Service Charge</b> :{" "}
-                                    {item?.service_charge}%
-                                  </li>
-                                  <li className="list-group-item">
-                                    <b> Storage</b> : {item?.storage === 'infinity' ? 'Infinity' : `${item?.storage} GB`}
-                                  </li>
-                                </ul>     
-                              </div>
-                              <div className="card-footer p-0">
-                                {
-                                  cookies?.user_data ? <NavLink to="/subscription-plans" className='btn subscription_plans_btn'>Buy now</NavLink> : <NavLink to="/login" state={{ role: "professional" }} className='btn subscription_plans_btn'>Buy now</NavLink>
-                                }
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
-                </section>
-                {/* <!--Section: Content--> */}
-              </div>
-            </main>
-          </div>
-        </div>
-      </main>
       <section className="our-top-clients-sec">
         <div className="container">
           <h2>Our Top Clients</h2>

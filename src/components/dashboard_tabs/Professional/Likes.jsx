@@ -140,7 +140,7 @@ const LikesShow = () => {
               ) : (
                 <main className="dashboard-main">
                   <div id="liked-save" className="container-fluid  myProjectTable">
-                    <h2 className="ps-5"> LikesShow </h2>
+                    <h2 className="ps-5"> Likes </h2>
                     <div className="m-xl-5 mx-2 shadow">
                       {likes?.final_data?.length ? (
                         <div className="row  align-items-center MyProjectDisplayRow">

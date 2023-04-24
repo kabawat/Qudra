@@ -166,7 +166,7 @@ const CompletedProject = () => {
               ) : (
                 <main className="dashboard-main">
                   <div id="myactivity" className="container-fluid  myProjectTable">
-                    <h2 className="ps-5">Projects Request By Clients</h2>
+                    <h2 className="ps-5">Completed Projects</h2>
                     <div className="m-xl-5 shadow">
                       {searchProject?.final_data.length || myProject?.final_data?.length ? (
                         <div className="row align-items-center MyProjectDisplayRow">
@@ -251,17 +251,17 @@ const CompletedProject = () => {
                             </div>
                           </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
-                                <div>
-                                  <h5>Status</h5>
-                                  <h4>{res?.project_status}</h4>
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
-                                <div>
-                                  <h5>Total Budget</h5>
-                                  <h4>${res?.project_cost}</h4>
-                                </div>
-                              </div>
+                            <div>
+                              <h5>Status</h5>
+                              <h4>{res?.project_status}</h4>
+                            </div>
+                          </div>
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+                            <div>
+                              <h5>Total Budget</h5>
+                              <h4>${res?.project_cost}</h4>
+                            </div>
+                          </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
                             <div>
                               <h5>Area</h5>
@@ -318,17 +318,17 @@ const CompletedProject = () => {
                             </div>
                           </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
-                                <div>
-                                  <h5>Status</h5>
-                                  <h4>{res?.project_status}</h4>
-                                </div>
-                              </div>
-                              <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
-                                <div>
-                                  <h5>Total Budget</h5>
-                                  <h4>${res?.project_cost}</h4>
-                                </div>
-                              </div>
+                            <div>
+                              <h5>Status</h5>
+                              <h4>{res?.project_status}</h4>
+                            </div>
+                          </div>
+                          <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+                            <div>
+                              <h5>Total Budget</h5>
+                              <h4>${res?.project_cost}</h4>
+                            </div>
+                          </div>
                           <div className="col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
                             <div>
                               <h5>Area</h5>
