@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import { GiCancel } from "react-icons/gi";
 import { useCookies } from "react-cookie";
-import { AiOutlineInfoCircle } from 'react-icons/ai'
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useEffect } from "react";
 const Wrapper = styled.div`
   .mileStoneDate {
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   }
   .update {
     padding: 10px 10px;
-    background: transparent!important;
+    background: transparent !important;
     border: none;
     border-left: 1px solid #01a78a;
     text-align: center;
@@ -68,23 +68,23 @@ const Wrapper = styled.div`
     border-left: 1px solid #01a78a;
   }
   .Milestone {
-      position: static !important;
-      border: none;
-      border-left: 1px solid #01a78a;
-      padding: 12px;
-      width: 170px;
-      text-align: center;
-    }
+    position: static !important;
+    border: none;
+    border-left: 1px solid #01a78a;
+    padding: 12px;
+    width: 180px;
+    text-align: center;
+  }
 
-    .decline {
+  .decline {
     position: static !important;
     border: none;
     border-left: 1px solid #01a78a;
     padding: 12px;
     width: 60px;
     text-align: center;
-    background: #abb3aa33
-}
+    background: #abb3aa33;
+  }
 `;
 
 const FromProfessionalTabPane = ({ location }) => {
@@ -99,38 +99,43 @@ const FromProfessionalTabPane = ({ location }) => {
   };
 
   useEffect(() => {
-    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-      client_id: locations.state.projectDetails?.id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      professional_id: cookies?.user_data?.user_id,
-      project_id: locations.state?.projectDetails?.project_id,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        axios.post(
-          "http://13.52.16.160:8082/client/particular_project_details",
-          {
-            client_id: locations.state.projectDetails?.id,
-            professional_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            project_id: project?.project_id,
-          }
-        ).then((respo) => {
-          if (respo?.data?.status === "Success") {
-            setLocation({
-              state: {
-                projectDetails: { ...locations?.state?.projectDetails },
-                projectData: respo?.data?.data,
-                milesStoneData: res?.data?.data,
-                isFromProfessionalTab: true,
-              },
+    // console.log(location.state?.projectDetails?.project_id);
+    axios
+      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+        client_id: locations.state.projectDetails?.id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        professional_id: cookies?.user_data?.user_id,
+        project_id: location.state?.projectDetails?.project_id,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          axios
+            .post(
+              "http://13.52.16.160:8082/client/particular_project_details",
+              {
+                client_id: locations.state.projectDetails?.id,
+                professional_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                project_id: location.state?.projectDetails?.project_id,
+              }
+            )
+            .then((respo) => {
+              if (respo?.data?.status === "Success") {
+                setLocation({
+                  state: {
+                    projectDetails: { ...location?.state?.projectDetails },
+                    projectData: respo?.data?.data,
+                    milesStoneData: res?.data?.data,
+                    isFromProfessionalTab: true,
+                  },
+                });
+              }
             });
-          }
-        });
-      }
-    });
-  }, [])
+        }
+      });
+  }, []);
   const [project, setProject] = useState();
   const [file, setFile] = useState("");
   const [error, setError] = useState("");
@@ -150,37 +155,41 @@ const FromProfessionalTabPane = ({ location }) => {
     setFile("");
     setError("");
     setShow(false);
-    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-      client_id: locations.state.projectDetails?.id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      professional_id: cookies?.user_data?.user_id,
-      project_id: locations.state?.projectDetails?.project_id,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        axios.post(
-          "http://13.52.16.160:8082/client/particular_project_details",
-          {
-            client_id: locations.state.projectDetails?.id,
-            professional_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            project_id: project?.project_id,
-          }
-        ).then((respo) => {
-          if (respo?.data?.status === "Success") {
-            setLocation({
-              state: {
-                projectDetails: { ...locations?.state?.projectDetails },
-                projectData: respo?.data?.data,
-                milesStoneData: res?.data?.data,
-                isFromProfessionalTab: true,
-              },
+    axios
+      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+        client_id: locations.state.projectDetails?.id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        professional_id: cookies?.user_data?.user_id,
+        project_id: locations.state?.projectDetails?.project_id,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          axios
+            .post(
+              "http://13.52.16.160:8082/client/particular_project_details",
+              {
+                client_id: locations.state.projectDetails?.id,
+                professional_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                project_id: project?.project_id,
+              }
+            )
+            .then((respo) => {
+              if (respo?.data?.status === "Success") {
+                setLocation({
+                  state: {
+                    projectDetails: { ...locations?.state?.projectDetails },
+                    projectData: respo?.data?.data,
+                    milesStoneData: res?.data?.data,
+                    isFromProfessionalTab: true,
+                  },
+                });
+              }
             });
-          }
-        });
-      }
-    });
+        }
+      });
   };
 
   const handleMilestoneUpdate = async (event) => {
@@ -264,9 +273,9 @@ const FromProfessionalTabPane = ({ location }) => {
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">2</div>
-                        <h5>Professional Name :</h5>
+                        <h5>Client Name :</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.professional_name}
+                          {locations?.state?.projectData?.client_name}
                         </p>
                       </div>
                     </div>
@@ -325,19 +334,18 @@ const FromProfessionalTabPane = ({ location }) => {
                       {(res?.status === "updated" ||
                         res?.status === "downloaded" ||
                         res?.status === "uploaded") && (
-                          <div className="pendingMileStone">pending</div>
-                        )}
+                        <div className="pendingMileStone">pending</div>
+                      )}
 
                       {(res?.status === "accepted" ||
                         res?.status === "completed") && (
-                          <div className="Milestone">
-                            Milestone completed
-                          </div>
-                        )}
+                        <div className="Milestone">Milestone completed</div>
+                      )}
 
                       {res?.status === "decline" && (
                         <>
-                          <button title="Decline Reason"
+                          <button
+                            title="Decline Reason"
                             className="mileStoneDate decline"
                             onClick={() => handalViewReason(res)}
                           >
@@ -345,7 +353,7 @@ const FromProfessionalTabPane = ({ location }) => {
                           </button>
                           <div
                             className="update"
-                            style={{ cursor: 'pointer' }}
+                            style={{ cursor: "pointer" }}
                             onClick={() => handalshow(res)}
                           >
                             Update
@@ -436,7 +444,13 @@ const FromProfessionalTabPane = ({ location }) => {
         </Modal.Header>
         <Modal.Footer>
           <div className="text-center">
-            <Button className="theme-bg-color border-0" onClick={() => { setIsReason(false); setReason(""); }} >
+            <Button
+              className="theme-bg-color border-0"
+              onClick={() => {
+                setIsReason(false);
+                setReason("");
+              }}
+            >
               ok
             </Button>
           </div>

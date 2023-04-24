@@ -20,16 +20,23 @@ import Button from "react-bootstrap/Button";
 const SignUpSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Password must be aleast 8 characters long!")
-    .max(30, "Password is too long!").trim()
+    .max(30, "Password is too long!")
+    .trim()
     .required("Password required"),
-  email: Yup.string().email("Enter a valid email").trim().required("Email required"),
-  last_name: Yup.string().trim()
+  email: Yup.string()
+    .email("Enter a valid email")
+    .trim()
+    .required("Email required"),
+  last_name: Yup.string()
+    .trim()
     .min(3, "Enter valid Last name")
     .required("Last name required"),
-  mobile_no: Yup.string().trim()
+  mobile_no: Yup.string()
+    .trim()
     .min(10, "Enter valid mobile number")
     .required("Mobile number required"),
-  first_name: Yup.string().trim()
+  first_name: Yup.string()
+    .trim()
     .min(3, "Minimum 3 character required")
     .required("First name required"),
   agreedTerms: Yup.bool().oneOf(
@@ -43,7 +50,7 @@ const style = {
   textDecoration: "none",
 };
 
-const EditProfileClient = ({location}) => {
+const EditProfileClient = ({ location }) => {
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const [cookies] = useCookies();
@@ -291,38 +298,46 @@ const EditProfileClient = ({location}) => {
                           alt="United States"
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
                         /> */}
-                        <CountrySelect
-                          value={value}
-                          onChange={(val) => {
-                            setNationerr(false);
-                            setValue(val);
-                            setFieldValue("nation", val?.name);
-                            // let id = val.id;
-                            // setimgcode(id.toLocaleUpperCase());
-                          }}
+                        <div className="create-account-input">
+                          <Field
+                            value={value.name}
+                            type="text"
+                            name="nation"
+                            className="form-control"
+                          />
+                        </div>
+                        {/* <CountrySelect
+                          value={location?.state?.nation}
+                          // onChange={(val) => {
+                          //   setNationerr(false);
+                          //   setValue(val);
+                          //   setFieldValue("nation", val?.name);
+                          //   // let id = val.id;
+                          //   // setimgcode(id.toLocaleUpperCase());
+                          // }}
                           disabled
                           flags={true}
                           placeholder="Select a Country"
                           name="nation"
-                        />
-                        {nationErr && (
+                        /> */}
+                        {/* {nationErr && (
                           <p className="text-danger">Country name required</p>
-                        )}
+                        )} */}
                       </div>
                       <div className="col-md my-md-3 my-1">
-                        <div className="form-group">Enter Your project Price 
+                        <div className="form-group">
                           <PhoneInput
                             value={location?.state?.mobile_no}
                             placeholder="Enter phone number"
                             country={value?.alpha2}
                             enableAreaCodes
                             name="mobile_no"
-                            onChange={(pho, country) =>
-                              setFieldValue(
-                                "mobile_no",
-                                `+${country.dialCode}${pho}`
-                              )
-                            }
+                            // onChange={(pho, country) =>
+                            //   setFieldValue(
+                            //     "mobile_no",
+                            //     `+${country.dialCode}${pho}`
+                            //   )
+                            // }
                             disabled
                             inputStyle={{
                               padding: "26px",

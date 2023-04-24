@@ -8,7 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import Global from "../context/Global";
 import useWindowSize from "../Hooks/useWindowSize";
 import { useCookies } from "react-cookie";
-import { GoUnverified, GoVerified } from 'react-icons/go'
+import { GoUnverified, GoVerified } from "react-icons/go";
 const style = {
   color: "white",
   textDecoration: "none",
@@ -41,15 +41,17 @@ const Header2 = ({ link }) => {
   };
   //Edit-Profile button function
   const handleEditProfileButton = () => {
-    axios.put("http://13.52.16.160:8082/identity/update_account", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        navigate("/edit-profile", { state: res?.data?.data });
-      }
-    });
+    axios
+      .put("http://13.52.16.160:8082/identity/update_account", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          navigate("/edit-profile", { state: res?.data?.data });
+        }
+      });
   };
 
   return (
@@ -115,9 +117,13 @@ const Header2 = ({ link }) => {
                         </div>
                       )}
                       <div className="ps-3">
-                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
-                          <h4 className="userName" >
-                            {contextData?.profileData && contextData?.profileData?.name}
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          onClick={profileDropdown}
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -147,7 +153,8 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData && contextData?.profileData?.email}
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
                         </h6>
                       </div>
                     </div>
@@ -188,9 +195,13 @@ const Header2 = ({ link }) => {
                         </div>
                       )}
                       <div className="ps-3">
-                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
-                          <h4 className="userName" >
-                            {contextData?.profileData && contextData?.profileData?.name}
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          onClick={profileDropdown}
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -220,12 +231,14 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData && contextData?.profileData?.email}
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
                         </h6>
                       </div>
                     </div>
                   )}
-                  {window.location.pathname === "/professional-buy-and-sale" && (
+                  {window.location.pathname ===
+                    "/professional-buy-and-sale" && (
                     <div className="d-flex align-items-center flex-wrap profileinfo">
                       {cookies?.user_data?.role === "professional" ? (
                         <div>
@@ -261,9 +274,13 @@ const Header2 = ({ link }) => {
                         </div>
                       )}
                       <div className="ps-3">
-                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
-                          <h4 className="userName" >
-                            {contextData?.profileData && contextData?.profileData?.name}
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          onClick={profileDropdown}
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -293,7 +310,8 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData && contextData?.profileData?.email}
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
                         </h6>
                       </div>
                     </div>
@@ -334,9 +352,13 @@ const Header2 = ({ link }) => {
                         </div>
                       )}
                       <div className="ps-3">
-                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
-                          <h4 className="userName" >
-                            {contextData?.profileData && contextData?.profileData?.name}
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          onClick={profileDropdown}
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -366,7 +388,8 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData && contextData?.profileData?.email}
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
                         </h6>
                       </div>
                     </div>
@@ -407,9 +430,13 @@ const Header2 = ({ link }) => {
                         </div>
                       )}
                       <div className="ps-3">
-                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
-                          <h4 className="userName" >
-                            {contextData?.profileData && contextData?.profileData?.name}
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          onClick={profileDropdown}
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -439,7 +466,8 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData && contextData?.profileData?.email}
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
                         </h6>
                       </div>
                     </div>
@@ -480,9 +508,13 @@ const Header2 = ({ link }) => {
                         </div>
                       )}
                       <div className="ps-3">
-                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
-                          <h4 className="userName" >
-                            {contextData?.profileData && contextData?.profileData?.name}
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          onClick={profileDropdown}
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -512,7 +544,8 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData && contextData?.profileData?.email}
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
                         </h6>
                       </div>
                     </div>
@@ -553,23 +586,28 @@ const Header2 = ({ link }) => {
                         </div>
                       )}
                       <div className="ps-3">
-                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
-                          <h4 className="userName" >
-                            {contextData?.profileData && contextData?.profileData?.name}
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          onClick={profileDropdown}
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
                         </button>
                         <div className="profile-edit-dropdown">
                           <div className=" d-flex flex-column ">
-
                             <Link
-                              to={cookies?.user_data?.role === "client" ? "/clientdashboard" : "/professionaldashboard"}
+                              to={
+                                cookies?.user_data?.role === "client"
+                                  ? "/clientdashboard"
+                                  : "/professionaldashboard"
+                              }
                               className="d-flex justify-content-center rounded-top"
                             >
-                              <button>
-                                Dashboard
-                              </button>
+                              <button>Dashboard</button>
                             </Link>
                             <Link
                               to=""
@@ -586,7 +624,8 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData && contextData?.profileData?.email}
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
                         </h6>
                       </div>
                     </div>
@@ -627,9 +666,13 @@ const Header2 = ({ link }) => {
                         </div>
                       )}
                       <div className="ps-3">
-                        <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
-                          <h4 className="userName" >
-                            {contextData?.profileData && contextData?.profileData?.name}
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          onClick={profileDropdown}
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -644,7 +687,10 @@ const Header2 = ({ link }) => {
                                 Edit Profile
                               </button>
                             </Link>
-                            <Link to="" className="d-flex justify-content-center rounded-bottom" >
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
                               <button
                                 onClick={() => {
                                   setShow(true);
@@ -656,7 +702,8 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData && contextData?.profileData?.email}
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
                         </h6>
                       </div>
                     </div>
@@ -863,11 +910,12 @@ const HeaderHome = () => {
                         {cookies?.user_data && (
                           <>
                             <li>
-                              <Link to={
-                                userData?.role === "client"
-                                  ? "/clientdashboard"
-                                  : "/professionaldashboard"
-                              }
+                              <Link
+                                to={
+                                  userData?.role === "client"
+                                    ? "/clientdashboard"
+                                    : "/professionaldashboard"
+                                }
                                 state={{ fromHomePage: true }}
                               >
                                 Dashboard
@@ -900,7 +948,7 @@ const HeaderHome = () => {
                               )
                             }
                           >
-                            Businewdwadawss
+                            Business
                           </Link>
                         </li>
                         <li onClick={googleTranslateElementInit}>
@@ -1102,8 +1150,9 @@ const ChatHeader = () => {
                 Dashboard
               </Link>
               <div
-                className={`d-flex align-items-center ${widowSize.width > 992 ? "border-end" : ""
-                  }  py-4`}
+                className={`d-flex align-items-center ${
+                  widowSize.width > 992 ? "border-end" : ""
+                }  py-4`}
               >
                 <div
                   className="dashboard-user-notification me-md-3 me-2"
@@ -1133,6 +1182,8 @@ const ChatHeader = () => {
                           background: "#01a78a",
                           padding: "4px",
                           overflowY: "auto",
+                          borderTop: " 4px solid #01a78a",
+                          borderBottom: " 4px solid #01a78a",
                         }}
                       >
                         {contextData?.notification.length === 0 ? (
@@ -1280,7 +1331,10 @@ const ChatHeader = () => {
                       </button>
                     </Link>
 
-                    <Link to="" className="d-flex justify-content-center rounded-bottom">
+                    <Link
+                      to=""
+                      className="d-flex justify-content-center rounded-bottom"
+                    >
                       <button
                         onClick={() => {
                           setShow(true);
@@ -1359,65 +1413,81 @@ const HeaderDashboard = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");
   };
-  window.addEventListener('click', event => {
-    if (event.target.id !== 'Edit_toggle') {
+  window.addEventListener("click", (event) => {
+    if (event.target.id !== "Edit_toggle") {
       $(".profile-edit-dropdown").hide();
     }
-  })
+  });
 
   const handleNotification = (res) => {
-    axios.post("http://13.52.16.160:8082/client/particular_project_details", {
-      professional_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      project_id: res?.detail?.project_id,
-    }).then((respo) => {
-      if (respo?.data?.status === "Success") {
-        if (clientDetails) {
+    axios
+      .post("http://13.52.16.160:8082/client/particular_project_details", {
+        professional_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        project_id: res?.detail?.project_id,
+      })
+      .then((respo) => {
+        if (respo?.data?.status === "Success") {
           navigate("/project-details", {
+            // state: {
+            //   projectData: respo?.data?.data,
+            //   clientDetails: clientDetails,
+            //   isFromProfessionalNotification: true,
+            // },
             state: {
               projectData: respo?.data?.data,
-              clientDetails: clientDetails,
+              client_id: res?.detail?.client_id,
+              client_project_id: res?.detail?.project_id,
               isFromProfessionalNotification: true,
             },
           });
         }
-      }
-    });
+      });
   };
-  const handleClientAcceptation = (client_id, client_project_id) => {
-    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-      client_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      professional_id: client_id,
-      project_id: client_project_id,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        axios.post("http://13.52.16.160:8082/client/particular_project_details",
-          {
-            client_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            project_id: client_project_id,
-          }
-        ).then((respo) => {
-          if (respo?.data?.status === "Success") {
-            if (clientDetails !== undefined) {
-              navigate("/project-details", {
-                state: {
-                  projectDetails: { client_id, client_project_id },
-                  projectData: respo?.data?.data,
-                  milesStoneData: res?.data?.data,
-                  isFromClientNotification: true,
-                },
-              });
-            }
-          }
-        });
-      }
-    });
+
+  const handleClientAcceptation = (id, project_id) => {
+    axios
+      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        professional_id: id,
+        project_id: project_id,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          axios
+            .post(
+              "http://13.52.16.160:8082/client/particular_project_details",
+              {
+                client_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                project_id: project_id,
+              }
+            )
+            .then((respo) => {
+              if (respo?.data?.status === "Success") {
+                navigate("/project-details", {
+                  state: {
+                    // projectDetails: { id, },
+                    projectData: respo?.data?.data,
+                    milesStoneData: res?.data?.data,
+                    isFromClientNotification: true,
+                    professional_id: id,
+                    project_id: project_id,
+                  },
+                });
+              }
+            });
+        }
+      });
   };
+  const handleClientProccess = (payload) => {
+    navigate(payload);
+  };
+
   const widowSize = useWindowSize();
   const [notificationPageId, setNotificationPageId] = useState({
     page: 1,
@@ -1441,39 +1511,45 @@ const HeaderDashboard = () => {
   // };
   useEffect(() => {
     cookies?.user_data &&
-      axios.post("http://13.52.16.160:8082/identity/get-notifications", {
+      axios
+        .post("http://13.52.16.160:8082/identity/get-notifications", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          ...notificationPageId,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            contextData?.setNotification(res?.data?.data);
+            setNotificationArray(res?.data?.data?.final_data);
+          }
+        });
+
+    axios
+      .post("http://13.52.16.160:8082/identity/unread_notification_count", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-        ...notificationPageId,
-      }).then((res) => {
+      })
+      .then((res) => {
         if (res?.data?.status === "Success") {
-          contextData?.setNotification(res?.data?.data);
-          setNotificationArray(res?.data?.data?.final_data);
+          contextData?.setUnreadNotification(res?.data?.data?.unread_count);
         }
       });
-
-    axios.post("http://13.52.16.160:8082/identity/unread_notification_count", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        contextData?.setUnreadNotification(res?.data?.data?.unread_count);
-      }
-    });
-  }, [showNotificationBox])
+  }, [showNotificationBox]);
 
   const handleEditProfileButton = () => {
-    axios.put("http://13.52.16.160:8082/identity/update_account", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        navigate("/edit-profile", { state: res?.data?.data });
-      }
-    });
+    axios
+      .put("http://13.52.16.160:8082/identity/update_account", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          navigate("/edit-profile", { state: res?.data?.data });
+        }
+      });
   };
 
   // const bringnotificationCount = () => {
@@ -1487,53 +1563,93 @@ const HeaderDashboard = () => {
   //     }
   //   });
   // };
-  window.addEventListener('click', event => {
-    if (event.target.id !== 'toggleNoti') {
-      setShowNotificationBox(false)
+  window.addEventListener("click", (event) => {
+    if (event.target.id !== "toggleNoti") {
+      setShowNotificationBox(false);
     }
-  })
-
+    if (event.target.id === "SeeAll") {
+      setShowNotificationBox(true);
+    }
+  });
 
   const handalVerify = () => {
-    axios.post('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
-      professioanl_id: cookies?.user_data?.user_id,
-      professioanl_token: cookies?.user_data?.user_token
-    }).then((result) => {
-      const url = result?.data?.data?.link
-      const link = document.createElement('a');
-      link.href = url;
-      document.body.appendChild(link);
-      link.click();
-    })
-  }
+    axios
+      .post("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+        professioanl_id: cookies?.user_data?.user_id,
+        professioanl_token: cookies?.user_data?.user_token,
+      })
+      .then((result) => {
+        const url = result?.data?.data?.link;
+        const link = document.createElement("a");
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+      });
+  };
+
+  const reportHandle = (payload) => {
+    navigate("/Report", {
+      state: { ...payload },
+    });
+  };
+
+  // const reportHandle = (payload) => {
+  //     navigate("/Report", {
+  //       state: { ...payload },
+  //     });
+
+  // condition on this state is inverted //
+  const [seeAllNotification, setSeeAllNotification] = useState(true);
   return (
     <>
-
       <header className="dashboard-header bg-white custom-border-radius-one">
         <div className="container-fluid px-lg-5 px-md-4 px-3">
           <div className="row py-4">
-            <div className="col-xxl-9 col-xl-8 col-lg-9 col-10 d-block  d-flex align-items-center  justify-content-between ">
-              <Link to={cookies?.user_data?.role === "client" ? "/clientdashboard" : "/professionaldashboard"}
-                className="text-decoration-none mob-heading text-dark m-0 h2">
+            <div className="col-xxl-9 col-xl-8 col-lg-8 col-10 d-block  d-flex align-items-center  justify-content-between ">
+              <Link
+                to={
+                  cookies?.user_data?.role === "client"
+                    ? "/clientdashboard"
+                    : "/professionaldashboard"
+                }
+                className="text-decoration-none mob-heading text-dark m-0 h2"
+              >
                 Dashboard
               </Link>
-              <div className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""}  py-4`}>
-                {
-                  cookies?.user_data?.role !== 'client' ? <>
-                    {
-                      contextData?.verified ? <button className="verified-btn" title="verifed">
+              <div
+                className={`d-flex align-items-center ${
+                  widowSize?.width > 992 ? "border-end" : ""
+                }  py-4`}
+              >
+                {cookies?.user_data?.role !== "client" ? (
+                  <>
+                    {contextData?.verified ? (
+                      <button className="verified-btn" title="verifed">
                         <GoVerified />
-                        <span className="verify-text">  Account Verified</span>
-                      </button> : <button className="verify-btn" title="verify Account" onClick={handalVerify}>
+                        <span className="verify-text"> Account Verified</span>
+                      </button>
+                    ) : (
+                      <button
+                        className="verify-btn"
+                        title="verify Account"
+                        onClick={handalVerify}
+                      >
                         <GoUnverified />
                         <span className="verify-text">Verify your Account</span>
                       </button>
-                    }
-                  </> : ''
-                }
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
                 <div className="dashboard-user-notification me-md-3 me-2">
                   <i className="fa-solid fa-bell"></i>
-                  <div id="toggleNoti" onClick={() => { setShowNotificationBox(!showNotificationBox) }}></div>
+                  <div
+                    id="toggleNoti"
+                    onClick={() => {
+                      setShowNotificationBox(!showNotificationBox);
+                    }}
+                  ></div>
                   {contextData?.unreadNotification === 0 ? (
                     ""
                   ) : (
@@ -1552,14 +1668,76 @@ const HeaderDashboard = () => {
                           background: "#01a78a",
                           padding: "4px",
                           overflowY: "auto",
+                          borderTop: " 4px solid #01a78a",
+                          borderBottom: " 4px solid #01a78a",
                         }}
                       >
                         {notificationArray.length === 0 ? (
                           <div className="text-white text-center">
                             No Messages To Display
                           </div>
+                        ) : seeAllNotification ? (
+                          notificationArray.map((res, keys) => {
+                            if (keys < 7) {
+                              return (
+                                <div
+                                  key={keys}
+                                  className="message"
+                                  onClick={() => {
+                                    setClientDetails({
+                                      client_id: res?.detail?.client_id,
+                                      client_project_id:
+                                        res?.detail?.project_id,
+                                    });
+                                    if (
+                                      res?.notification.includes(
+                                        "You have received a Project request by the"
+                                      )
+                                    ) {
+                                      handleNotification(res);
+                                    }
+                                    if (
+                                      res?.notification.includes(
+                                        "accepted by the"
+                                      )
+                                    ) {
+                                      handleClientAcceptation(
+                                        res?.detail?.professional_id,
+                                        res?.detail?.project_id
+                                      );
+                                    }
+                                    if (
+                                      res?.notification.includes(
+                                        "is approved by the"
+                                      )
+                                    ) {
+                                      handleClientProccess("/myactivity");
+                                    }
+                                    if (
+                                      res?.notification.includes(
+                                        "updated the file of"
+                                      )
+                                    ) {
+                                      handleClientProccess("/ongoing-projects");
+                                    }
+                                    if (
+                                      res?.notification.includes(
+                                        "reported your"
+                                      )
+                                    ) {
+                                      reportHandle(res?.detail);
+                                    }
+                                  }}
+                                >
+                                  <p>
+                                    {new Date(res?.timestamp).toUTCString()}
+                                  </p>
+                                  {res?.notification}
+                                </div>
+                              );
+                            }
+                          })
                         ) : (
-                          notificationArray &&
                           notificationArray.map((res, keys) => (
                             <div
                               key={keys}
@@ -1584,6 +1762,20 @@ const HeaderDashboard = () => {
                                     res?.detail?.project_id
                                   );
                                 }
+                                if (
+                                  res?.notification.includes(
+                                    "is approved by the"
+                                  )
+                                ) {
+                                  handleClientProccess("/myactivity");
+                                }
+                                if (
+                                  res?.notification.includes(
+                                    "updated the file of"
+                                  )
+                                ) {
+                                  handleClientProccess("/ongoing-projects");
+                                }
                               }}
                             >
                               <p>{new Date(res?.timestamp).toUTCString()}</p>
@@ -1592,9 +1784,15 @@ const HeaderDashboard = () => {
                           ))
                         )}
                         <div className="bg-white">
-                          {contextData?.notification?.total_data > 10 && (
-                            <button className="seeAllNotificationButton">
-                              See All
+                          {contextData?.notification?.total_data > 7 && (
+                            <button
+                              className="seeAllNotificationButton"
+                              id="SeeAll"
+                              onClick={() => {
+                                setSeeAllNotification(!seeAllNotification);
+                              }}
+                            >
+                              {seeAllNotification ? "See All" : "See Less"}
                             </button>
                           )}
                         </div>
@@ -1628,8 +1826,7 @@ const HeaderDashboard = () => {
                 </Link>
               </div>
             </div>
-            <div className="col-xxl-3 col-xl-4 col-lg-3 col-2 profile-mob d-flex align-items-center justify-content-md-end justify-content-center">
-
+            <div className="col-xxl-3 col-xl-4 col-lg-4 col-2 profile-mob d-flex align-items-center justify-content-md-end justify-content-center">
               {cookies?.user_data?.role === "professional" ? (
                 <div className="user-profile-img">
                   <img
@@ -1664,7 +1861,10 @@ const HeaderDashboard = () => {
                 </div>
               )}
               <div className="ps-3">
-                <button className="d-flex align-items-center profileEdit-button" onClick={profileDropdown}>
+                <button
+                  className="d-flex align-items-center profileEdit-button"
+                  onClick={profileDropdown}
+                >
                   <h4>
                     {contextData?.profileData && contextData?.profileData?.name}
                   </h4>

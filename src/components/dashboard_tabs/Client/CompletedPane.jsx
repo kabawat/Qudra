@@ -153,12 +153,7 @@ const CompletedPane = () => {
                           </div>
                         </div>
                       ) : (
-                        <div
-                          style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center align-items-center"
-                        >
-                          <span className="h4">No Project Data To Show</span>
-                        </div>
+                        ''
                       )}
                       {noResult ? (
                         <div
@@ -201,6 +196,7 @@ const CompletedPane = () => {
                               <div>
                                 <h5>Project Name</h5>
                                 <h4
+                                style={{textTransform: 'capitalize'}}
                                   className="underline_hover"
                                   onClick={() => {
                                     if (res?.project_status === "accepted" || res?.project_status === "completed") {
@@ -233,7 +229,7 @@ const CompletedPane = () => {
                             <div className="col-lg-3 col-md-6 d-flex align-items-center">
                                   <div>
                                     <h5>Status</h5>
-                                    <h4>{res?.project_status}</h4>
+                                    <h4 style={{textTransform: 'capitalize'}}>{res?.project_status}</h4>
                                   </div>
                                 </div>
                                 <div className="col-lg-3 col-md-6 d-flex align-items-center">
@@ -253,9 +249,9 @@ const CompletedPane = () => {
                       ) : (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex align-items-center"
+                          className="d-grid align-items-center"
                         >
-                          <span className="h4">No Completed Projects To Show</span>
+                          <span className="h4 text-center">No Completed Projects To Show</span>
                         </div>
                       ))}
                     </div>

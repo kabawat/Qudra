@@ -1,33 +1,93 @@
 import React, { useState, useContext, useEffect } from "react";
+import Chart from "react-apexcharts";
 import { BsArrowRight } from "react-icons/bs";
 import axios from "axios";
-import { Chart } from "react-charts";
+// import { Chart } from "react-charts";
 import BuyDesign from "./BuyDesign";
 import Pagination from "react-bootstrap/Pagination";
 import Global from "../../../context/Global";
+import { useCookies } from "react-cookie";
 import useDemoConfig from "../../../components/Graph/Client/useDemoConfig";
+import { Link } from "react-router-dom";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 const DashboardPane = () => {
   const contextData = useContext(Global);
+  const [cookies] = useCookies();
+  const [profData, setProfData] = useState([]);
+  const [payData, setPayData] = useState([]);
   const [buyDesigns, setBuyDesigns] = useState(false);
   const [onGoingProject, setOnGoingProject] = useState([]);
   const [onGoingProjectPageId, setOnGoingProjectPageId] = useState({
     page: 1,
     page_size: 5,
   });
+
+  const [userdata, setuserdata] = useState("");
+
   useEffect(() => {
     contextData?.userData &&
-      axios.post("http://13.52.16.160:8082/identity/filter_projects", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        project_status: "approved",
+      axios
+        .post("http://13.52.16.160:8082/identity/filter_projects", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          project_status: "approved",
+          ...onGoingProjectPageId,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setOnGoingProject(res?.data?.data);
+          }
+        });
+    //changes
+    axios
+      .post("http://13.52.16.160:8082/client/browse_profesional_list", {
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
         ...onGoingProjectPageId,
-      }).then((res) => {
+      })
+      .then((res) => {
         if (res?.data?.status === "Success") {
-          setOnGoingProject(res?.data?.data);
+          setProfData(res?.data?.data);
+          // console.log("proooooo", res?.data?.data);
         }
       });
   }, [onGoingProjectPageId]);
+
+  useEffect(() => {
+    contextData?.userData &&
+      axios
+        .post("http://13.52.16.160:8082/client/client_recent_payments/", {
+          client_id: cookies?.user_data?.user_id,
+          client_token: cookies?.user_data?.user_token,
+        })
+        .then((res) => {
+          // if (res?.data?.status === "Success") {
+          setPayData(res?.data?.data);
+          // console.log(res.data?.data);s
+          // console.log("proooooo", res?.data?.data);
+          // }
+        });
+  }, []);
+
   const onGoingProjectArray = [];
   for (
     let i = 0;
@@ -36,9 +96,19 @@ const DashboardPane = () => {
   ) {
     onGoingProjectArray.push(i + 1);
   }
-  useEffect(() => { }, []);
+  useEffect(() => {
+    axios
+      .post("http://13.52.16.160:8082/client/client_graph_data", {
+        user_token: cookies?.user_data?.user_token,
+        client_id: cookies?.user_data?.user_id,
+        role: cookies?.user_data?.role,
+      })
+      .then((response) => {
+        setuserdata(response.data.data);
+      });
+  }, []);
   const { data } = useDemoConfig({
-    series: 1,
+    series: 2,
     datums: 12,
     dataType: "ordinal",
   });
@@ -57,6 +127,26 @@ const DashboardPane = () => {
     ],
     []
   );
+
+  const datas = {
+    labels: "Jan Feb Mar Apr May June July Aug Sep Oct Nov Dec",
+    datasets: [
+      {
+        label: "Projects",
+        data: userdata && Object.values(userdata).map((it) => it),
+        backgroundColor: "rgb(74, 181, 235)",
+      },
+    ],
+  };
+
+  // const options = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: "top",
+  //     },
+  //   },
+  // };
 
   return buyDesigns ? (
     <BuyDesign setBuyDesigns={setBuyDesigns} />
@@ -117,9 +207,89 @@ const DashboardPane = () => {
         </div>
         <div className="row  mb-xxl-5 mb-4 client-project-main-row">
           <div className="col-xxl-4 col-md-12 my-3">
-           
             {/* <ResizableBox> */}
-            <Chart data={data} series={series} axes={axes} tooltip />
+            <div className="container-fluid mb-5">
+              <Chart
+                className="chart"
+                type="bar"
+                // width={500}
+                height={450}
+                // height={"150%"}
+                series={[
+                  {
+                    name: "Projects",
+                    data: [
+                      0,
+                      0,
+                      0,
+                      userdata && userdata.graph_data.April,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                    ],
+                  },
+                ]}
+                options={{
+                  colors: ["#01a78a"],
+                  theme: { mode: "light" },
+
+                  xaxis: {
+                    tickPlacement: "on",
+                    categories: [
+                      "Jan",
+                      "Feb",
+                      "Mar",
+                      "Apr",
+                      "May",
+                      "Jun",
+                      "Jul",
+                      "Aug",
+                      "Sep",
+                      "Oct",
+                      "Nov",
+                      "Dec",
+                    ],
+                    title: {
+                      text: userdata && `Year ${userdata?.graph_year}`,
+                      style: { color: "#212529", fontSize: 30 },
+                    },
+                  },
+
+                  yaxis: {
+                    labels: {
+                      formatter: (val) => {
+                        return `${val}`;
+                      },
+                      style: { fontSize: "15", colors: ["#212529"] },
+                    },
+                    title: {
+                      text: "Projects",
+                      style: { color: "#212529", fontSize: 20 },
+                    },
+                  },
+
+                  legend: {
+                    show: true,
+                    position: "right",
+                  },
+
+                  dataLabels: {
+                    formatter: (val) => {
+                      return `${val}`;
+                    },
+                    style: {
+                      colors: ["#f4f4f4"],
+                      fontSize: 15,
+                    },
+                  },
+                }}
+              ></Chart>
+            </div>
             {/* </ResizableBox> */}
           </div>
 
@@ -127,79 +297,48 @@ const DashboardPane = () => {
             <div className="bg-white chat-to-professional-client-page d-flex flex-column justify-content-between h-100 p-md-4 p-3 border">
               <div className="d-flex align-items-center justify-content-between">
                 <h3>Professional</h3>
-                <a href="" className="text-decoration-none">
+                <Link
+                  to="/browse-professionals"
+                  className="text-decoration-none"
+                >
                   <h2>View All</h2>
-                </a>
+                </Link>
               </div>
-              <div className="row py-4">
-                <div className="col-md-2">
-                  <img
-                    src="./static/images/UserIcon.png"
-                    alt=""
-                    className="client-page-client-image"
-                  />
-                </div>
+              {/* //////////////////////////////////////////// */}
+              {profData &&
+                profData?.final_data?.map((item, index) => {
+                  if (index < 3) {
+                    return (
+                      <div className="row py-4">
+                        <div className="col-md-2">
+                          <img
+                            src={item.avatar}
+                            alt=""
+                            className="client-page-client-image"
+                          />
+                        </div>
 
-                <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
-                  <div className="ps-md-4">
-                    <h5>Alice Wade</h5>
-                    <h6>Alicewade@gmail.com</h6>
-                  </div>
-                  <div>
-                    <img
-                      src="./static/images/messageGreenIcon.png"
-                      alt=""
-                      className="messageGreenIcon"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row align-items-center py-4 border-top border-bottom">
-                <div className="col-md-2">
-                  <img
-                    src="./static/images/UserIcon.png"
-                    alt=""
-                    className="client-page-client-image"
-                  />
-                </div>
-
-                <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
-                  <div className="ps-md-4">
-                    <h5>Alice Wade</h5>
-                    <h6>Alicewade@gmail.com</h6>
-                  </div>
-                  <div>
-                    <img
-                      src="./static/images/messageGreenIcon.png"
-                      alt=""
-                      className="messageGreenIcon"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row py-4">
-                <div className="col-md-2">
-                  <img
-                    src="./static/images/UserIcon.png"
-                    alt=""
-                    className="client-page-client-image"
-                  />
-                </div>
-
-                <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
-                  <div className="ps-md-4">
-                    <h5>Alice Wade</h5>
-                    <h6>Alicewade@gmail.com</h6>
-                  </div>
-                  <div>
-                    <img
-                      src="./static/images/messageGreenIcon.png"
-                      alt=""
-                      className="messageGreenIcon"
-                    />
-                  </div>
-                </div>
-              </div>
+                        <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
+                          <div className="ps-md-4">
+                            <h5>{item.name}</h5>
+                            <h6>{item.email}</h6>
+                          </div>
+                          <div>
+                            <Link
+                              to={`/professionalprofile/${item.professional_id}`}
+                            >
+                              <img
+                                src="./static/images/messageGreenIcon.png"
+                                alt=""
+                                className="messageGreenIcon"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
             </div>
           </div>
 
@@ -208,62 +347,40 @@ const DashboardPane = () => {
               <div className="d-flex align-items-center justify-content-between">
                 <h3>Recent Payment</h3>
               </div>
-              <div className="row py-4">
-                <div className="col-md-2 ">
-                  <img
-                    src="./static/images/UserIcon.png"
-                    alt=""
-                    className="client-page-client-image"
-                  />
-                </div>
+              {/* //////////////////////////////////////////// */}
+              {payData.length ? (
+                payData?.map((item, index) => {
+                  if (index < 3) {
+                    return (
+                      <>
+                        <div className="row py-4">
+                          <div className="col-md-2 ">
+                            <img
+                              src={item.image}
+                              alt=""
+                              className="client-page-client-image"
+                            />
+                          </div>
 
-                <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
-                  <div className="ps-md-4">
-                    <h5>Alice Wade</h5>
-                    <h6>alicewade@gmail.com</h6>
-                  </div>
-                  <div>
-                    <h4>$500</h4>
-                  </div>
-                </div>
-              </div>
-              <div className="row py-4 border-top border-bottom">
-                <div className="col-md-2 ">
-                  <img
-                    src="./static/images/UserIcon.png"
-                    alt=""
-                    className="client-page-client-image"
-                  />
-                </div>
-
-                <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
-                  <div className="ps-md-4">
-                    <h5>Alice Wade</h5>
-                    <h6>alicewade@gmail.com</h6>
-                  </div>
-                  <div>
-                    <h4>$500</h4>
-                  </div>
-                </div>
-              </div>
-              <div className="row py-4">
-                <div className="col-md-2 ">
-                  <img
-                    src="./static/images/UserIcon.png"
-                    alt=""
-                    className="client-page-client-image"
-                  />
-                </div>
-                <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
-                  <div className="ps-md-4">
-                    <h5>Alice Wade</h5>
-                    <h6>alicewade@gmail.com</h6>
-                  </div>
-                  <div>
-                    <h4>$500</h4>
-                  </div>
-                </div>
-              </div>
+                          <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
+                            <div className="ps-md-4">
+                              <h5>{item.professional_name} </h5>
+                              <h6>{item.email}</h6>
+                            </div>
+                            <div>
+                              <h4>${item.price}</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  }
+                })
+              ) : (
+                <h3 style={{ color: "#00A78B", margin: "auto" }}>
+                  No Recent Payment
+                </h3>
+              )}
             </div>
           </div>
         </div>
@@ -302,13 +419,17 @@ const DashboardPane = () => {
                   key={index}
                 >
                   <div className="col-md">
-                    <p className="m-0 theme-text-color text-capitalize">{res?.project_name}</p>
+                    <p className="m-0 theme-text-color text-capitalize">
+                      {res?.project_name}
+                    </p>
                   </div>
                   <div className="col-md">
                     <p className="m-0 text-capitalize">Design</p>
                   </div>
                   <div className="col-md">
-                    <p className="m-0 text-capitalize">{res?.professional_name}</p>
+                    <p className="m-0 text-capitalize">
+                      {res?.professional_name}
+                    </p>
                   </div>
                   <div className="col-md">
                     <p className="m-0">${res?.project_cost}</p>
@@ -317,9 +438,7 @@ const DashboardPane = () => {
                     <p className="m-0 text-capitalize">{res?.project_status}</p>
                   </div>
                   <div className="col-md">
-                    <p className="m-0 text-capitalize">
-                      {res?.payment_status}
-                    </p>
+                    <p className="m-0 text-capitalize">{res?.payment_status}</p>
                   </div>
                 </div>
               ))

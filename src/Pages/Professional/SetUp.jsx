@@ -73,1348 +73,1066 @@ const languages = [
   { label: "Swedis", value: "Swedis" },
   { label: "Ukrainian", value: "Ukrainian" },
 ];
-// const countries = [
-//   {
-//     id: 1,
-//     name: "Australia",
-//     flag: "🇦🇺",
-//     alpha2: "AU",
-//     alpha3: "AUS",
-//     ioc: "AUS",
-//   },
-//   {
-//     id: 2,
-//     name: "Austria",
-//     flag: "🇦🇹",
-//     alpha2: "AT",
-//     alpha3: "AUT",
-//     ioc: "AUT",
-//   },
-//   {
-//     id: 3,
-//     name: "Belgium",
-//     flag: "🇧🇪",
-//     alpha2: "BE",
-//     alpha3: "BEL",
-//     ioc: "BEL",
-//   },
-//   {
-//     id: 4,
-//     name: "Bulgaria",
-//     flag: "🇧🇬",
-//     alpha2: "BG",
-//     alpha3: "BGR",
-//     ioc: "BUL",
-//   },
-//   {
-//     id: 5,
-//     name: "Canada",
-//     flag: "🇨🇦",
-//     alpha2: "CA",
-//     alpha3: "CAN",
-//     ioc: "CAN",
-//   },
-//   {
-//     id: 6,
-//     name: "Cyprus",
-//     flag: "🇨🇾",
-//     alpha2: "CY",
-//     alpha3: "CYP",
-//     ioc: "CYP",
-//   },
-//   {
-//     id: 7,
-//     name: "Czech Republic",
-//     flag: "🇨🇿",
-//     alpha2: "CZ",
-//     alpha3: "CZE",
-//     ioc: "CZE",
-//   },
-//   {
-//     id: 8,
-//     name: "Denmark",
-//     flag: "🇩🇰",
-//     alpha2: "DK",
-//     alpha3: "DNK",
-//     ioc: "DEN",
-//   },
-//   {
-//     id: 9,
-//     name: "Estonia",
-//     flag: "🇪🇪",
-//     alpha2: "EE",
-//     alpha3: "EST",
-//     ioc: "EST",
-//   },
-//   {
-//     id: 10,
-//     name: "Finland",
-//     flag: "🇫🇮",
-//     alpha2: "FI",
-//     alpha3: "FIN",
-//     ioc: "FIN",
-//   },
-//   {
-//     id: 11,
-//     name: "France",
-//     flag: "🇫🇷",
-//     alpha2: "FR",
-//     alpha3: "FRA",
-//     ioc: "FRA",
-//   },
-//   {
-//     id: 12,
-//     name: "Germany",
-//     flag: "🇩🇪",
-//     alpha2: "DE",
-//     alpha3: "DEU",
-//     ioc: "GER",
-//   },
-//   {
-//     id: 13,
-//     name: "Greece",
-//     flag: "🇬🇷",
-//     alpha2: "GR",
-//     alpha3: "GRC",
-//     ioc: "GRE",
-//   },
-//   {
-//     id: 14,
-//     name: "Hong Kong",
-//     flag: "🇭🇰",
-//     alpha2: "HK",
-//   },
-//   {
-//     id: 15,
-//     name: "Hungary",
-//     flag: "🇭🇺",
-//     alpha2: "HU",
-//     alpha3: "HUN",
-//     ioc: "HUN",
-//   },
-//   {
-//     id: 16,
-//     name: "Ireland",
-//     flag: "🇮🇪",
-//     alpha2: "IE",
-//     alpha3: "IRL",
-//     ioc: "IRL",
-//   },
-//   {
-//     id: 17,
-//     name: "Italy",
-//     flag: "🇮🇹",
-//     alpha2: "IT",
-//     alpha3: "ITA",
-//     ioc: "ITA",
-//   },
-//   {
-//     id: 18,
-//     name: "Japan",
-//     flag: "🇯🇵",
-//     alpha2: "JP",
-//     alpha3: "JPN",
-//     ioc: "JPN",
-//   },
-//   {
-//     id: 19,
-//     name: "Latvia",
-//     flag: "🇱🇻",
-//     alpha2: "LV",
-//     alpha3: "LVA",
-//     ioc: "LAT",
-//   },
-//   {
-//     id: 20,
-//     name: "Lithuania",
-//     flag: "🇱🇹",
-//     alpha2: "LT",
-//     alpha3: "LTU",
-//     ioc: "LTU",
-//   },
-//   {
-//     id: 21,
-//     name: "Luxembourg",
-//     flag: "🇱🇺",
-//     alpha2: "LU",
-//     alpha3: "LUX",
-//     ioc: "LUX",
-//   },
-//   {
-//     id: 22,
-//     name: "Malta",
-//     flag: "🇲🇹",
-//     alpha2: "MT",
-//     alpha3: "MLT",
-//     ioc: "MLT",
-//   },
-//   {
-//     id: 23,
-//     name: "Netherlands",
-//     flag: "🇳🇱",
-//     alpha2: "NL",
-//     alpha3: "NLD",
-//     ioc: "NED",
-//   },
-//   {
-//     id: 24,
-//     name: "New Zealand",
-//     flag: "🇳🇿",
-//     alpha2: "NZ",
-//     alpha3: "NZL",
-//     ioc: "NZL",
-//   },
-//   {
-//     id: 25,
-//     name: "Norway",
-//     flag: "🇳🇴",
-//     alpha2: "NO",
-//     alpha3: "NOR",
-//     ioc: "NOR",
-//   },
-//   {
-//     id: 26,
-//     name: "Poland",
-//     flag: "🇵🇱",
-//     alpha2: "PL",
-//     alpha3: "POL",
-//     ioc: "POL",
-//   },
-//   {
-//     id: 27,
-//     name: "Portugal",
-//     flag: "🇵🇹",
-//     alpha2: "PT",
-//     alpha3: "PRT",
-//     ioc: "POR",
-//   },
-//   {
-//     id: 28,
-//     name: "Romania",
-//     flag: "🇷🇴",
-//     alpha2: "RO",
-//     alpha3: "ROU",
-//     ioc: "ROU",
-//   },
-//   {
-//     id: 29,
-//     name: "Singapore",
-//     flag: "🇸🇬",
-//     alpha2: "SG",
-//     alpha3: "SGP",
-//     ioc: "SGP",
-//   },
-//   {
-//     id: 30,
-//     name: "Slovakia",
-//     flag: "🇸🇰",
-//     alpha2: "SK",
-//     alpha3: "SVK",
-//     ioc: "SVK",
-//   },
-//   {
-//     id: 31,
-//     name: "Slovenia",
-//     flag: "🇸🇮",
-//     alpha2: "SI",
-//     alpha3: "SVN",
-//     ioc: "SLO",
-//   },
-//   {
-//     id: 32,
-//     name: "Spain",
-//     flag: "🇪🇸",
-//     alpha2: "ES",
-//     alpha3: "ESP",
-//     ioc: "ESP",
-//   },
-//   {
-//     id: 33,
-//     name: "Sweden",
-//     flag: "🇸🇪",
-//     alpha2: "SE",
-//     alpha3: "SWE",
-//     ioc: "SWE",
-//   },
-//   {
-//     id: 34,
-//     name: "Switzerland",
-//     flag: "🇨🇭",
-//     alpha2: "ch",
-//     alpha3: "CHE",
-//     ioc: "SUI",
-//   },
-//   {
-//     id: 35,
-//     name: "United Kingdom of Great Britain and Northern Ireland",
-//     flag: "🇬🇧",
-//     alpha2: "gb",
-//     alpha3: "GBR",
-//     ioc: "GBR",
-//   },
-//   {
-//     id: 36,
-//     name: "United States of America",
-//     flag: "🇺🇸",
-//     alpha2: "us",
-//     alpha3: "USA",
-//     ioc: "USA",
-//   },
-// ];
 
 const countries = [
   {
     id: 1,
-    name: 'Albania',
-    flag: '🇦🇱',
-    alpha2: 'AL',
-    alpha3: 'ALB',
-    ioc: 'ALB'
+    name: "Albania",
+    flag: "AL",
+    alpha2: "AL",
+    alpha3: "ALB",
+    ioc: "ALB",
   },
 
   {
     id: 2,
-    name: 'Algeria',
-    flag: '🇩🇿',
-    alpha2: 'DZ',
-    alpha3: 'DZA',
-    ioc: 'DZA'
+    name: "Algeria",
+    flag: "DZ",
+    alpha2: "DZ",
+    alpha3: "DZA",
+    ioc: "DZA",
   },
 
   {
     id: 3,
-    name: 'Angola',
-    flag: '🇦🇴',
-    alpha2: 'AO',
-    alpha3: 'AGO',
-    ioc: 'AGO'
+    name: "Angola",
+    flag: "AO",
+    alpha2: "AO",
+    alpha3: "AGO",
+    ioc: "AGO",
   },
 
   {
     id: 4,
-    name: 'Antigua & Barbuda',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Antigua & Barbuda",
+    flag: "AG",
+    alpha2: "AG",
+    alpha3: "ATG",
+    ioc: "ANT",
   },
 
   {
     id: 5,
-    name: 'Argentina',
-    flag: '🇦🇷',
-    alpha2: 'AR',
-    alpha3: 'ARG',
-    ioc: 'ARG'
+    name: "Argentina",
+    flag: "AR",
+    alpha2: "AR",
+    alpha3: "ARG",
+    ioc: "ARG",
   },
 
   {
     id: 6,
-    name: 'Armenia',
-    flag: '🇦🇲',
-    alpha2: 'AM',
-    alpha3: 'ARM',
-    ioc: 'ARM'
+    name: "Armenia",
+    flag: "AM",
+    alpha2: "AM",
+    alpha3: "ARM",
+    ioc: "ARM",
   },
 
   {
     id: 7,
-    name: 'Australia',
-    flag: '🇦🇺',
-    alpha2: 'AU',
-    alpha3: 'AUS',
-    ioc: 'AUS'
+    name: "Australia",
+    flag: "AU",
+    alpha2: "AU",
+    alpha3: "AUS",
+    ioc: "AUS",
   },
 
   {
     id: 8,
-    name: 'Austria',
-    flag: '🇦🇹',
-    alpha2: 'AT',
-    alpha3: 'AUT',
-    ioc: 'AUT'
+    name: "Austria",
+    flag: "AT",
+    alpha2: "AT",
+    alpha3: "AUT",
+    ioc: "AUT",
   },
 
   {
     id: 9,
-    name: 'Azerbaijan',
-    flag: '🇦🇿',
-    alpha2: 'AZ',
-    alpha3: 'AZE',
-    ioc: 'AZE'
+    name: "Azerbaijan",
+    flag: "AZ",
+    alpha2: "AZ",
+    alpha3: "AZE",
+    ioc: "AZE",
   },
 
   {
     id: 10,
-    name: 'Bahamas',
-    flag: '🇧🇸',
-    alpha2: 'BS',
-    alpha3: 'BHS',
-    ioc: 'BHS'
+    name: "Bahamas",
+    flag: "BS",
+    alpha2: "BS",
+    alpha3: "BHS",
+    ioc: "BHS",
   },
 
   {
     id: 11,
-    name: 'Bahrain',
-    flag: '🇧🇭',
-    alpha2: 'BH',
-    alpha3: 'BHR',
-    ioc: 'BHR'
+    name: "Bahrain",
+    flag: "BH",
+    alpha2: "BH",
+    alpha3: "BHR",
+    ioc: "BHR",
   },
 
   {
     id: 12,
-    name: 'Bangladesh',
-    flag: '🇧🇩',
-    alpha2: 'BD',
-    alpha3: 'BGD',
-    ioc: 'BGD'
+    name: "Bangladesh",
+    flag: "BD",
+    alpha2: "BD",
+    alpha3: "BGD",
+    ioc: "BGD",
   },
 
   {
     id: 13,
-    name: 'Belgium',
-    flag: '🇧🇪',
-    alpha2: 'BE',
-    alpha3: 'BEL',
-    ioc: 'BEL'
+    name: "Belgium",
+    flag: "BE",
+    alpha2: "BE",
+    alpha3: "BEL",
+    ioc: "BEL",
   },
 
   {
     id: 14,
-    name: 'Benin',
-    flag: '🇧🇯',
-    alpha2: 'BJ',
-    alpha3: 'BEN',
-    ioc: 'BEN'
+    name: "Benin",
+    flag: "BJ",
+    alpha2: "BJ",
+    alpha3: "BEN",
+    ioc: "BEN",
   },
 
   {
     id: 15,
-    name: 'Bhutan',
-    flag: '🇧🇹',
-    alpha2: 'BT',
-    alpha3: 'B  TN',
-    ioc: 'BTN'
+    name: "Bhutan",
+    flag: "BT",
+    alpha2: "BT",
+    alpha3: "B  TN",
+    ioc: "BTN",
   },
 
   {
     id: 16,
-    name: 'Bolivia',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Bolivia",
+    flag: "BO",
+    alpha2: "BO",
+    alpha3: "BOL",
+    ioc: "BOL",
   },
 
   {
     id: 17,
-    name: 'Bosnia & Herzegovina',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Bosnia & Herzegovina",
+    flag: "BA",
+    alpha2: "BA",
+    alpha3: "BIH",
+    ioc: "BIH",
   },
 
   {
     id: 18,
-    name: 'Botswana',
-    flag: '🇧🇼',
-    alpha2: 'BW',
-    alpha3: 'BWA',
-    ioc: 'BWA'
+    name: "Botswana",
+    flag: "BW",
+    alpha2: "BW",
+    alpha3: "BWA",
+    ioc: "BWA",
   },
 
   {
     id: 19,
-    name: 'Brunei',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Brunei",
+    flag: "BN",
+    alpha2: "BN",
+    alpha3: "BRN",
+    ioc: "BRU",
   },
 
   {
     id: 20,
-    name: 'Bulgaria',
-    flag: '🇧🇬',
-    alpha2: 'BG',
-    alpha3: 'BGR',
-    ioc: 'BGR'
+    name: "Bulgaria",
+    flag: "BG",
+    alpha2: "BG",
+    alpha3: "BGR",
+    ioc: "BGR",
   },
 
   {
     id: 21,
-    name: 'Cambodia',
-    flag: '🇰🇭',
-    alpha2: 'KH',
-    alpha3: 'KHM',
-    ioc: 'KHM'
+    name: "Cambodia",
+    flag: "KH",
+    alpha2: "KH",
+    alpha3: "KHM",
+    ioc: "KHM",
   },
 
   {
     id: 22,
-    name: 'Canada',
-    flag: '🇨🇦',
-    alpha2: 'CA',
-    alpha3: 'CAN',
-    ioc: 'CAN'
+    name: "Canada",
+    flag: "CA",
+    alpha2: "CA",
+    alpha3: "CAN",
+    ioc: "CAN",
   },
 
   {
     id: 23,
-    name: 'Chile',
-    flag: '🇨🇱',
-    alpha2: 'CL',
-    alpha3: 'CHL',
-    ioc: 'CHL'
+    name: "Chile",
+    flag: "CL",
+    alpha2: "CL",
+    alpha3: "CHL",
+    ioc: "CHL",
   },
 
   {
     id: 24,
-    name: 'Colombia',
-    flag: '',
-    alpha2: 'CO',
-    alpha3: 'COL',
-    ioc: 'COL'
+    name: "Colombia",
+    flag: "CO",
+    alpha2: "CO",
+    alpha3: "COL",
+    ioc: "COL",
   },
 
   {
     id: 25,
-    name: 'Costa Rica',
-    flag: '🇨🇷',
-    alpha2: 'CR',
-    alpha3: 'CRI',
-    ioc: 'CRI'
+    name: "Costa Rica",
+    flag: "CR",
+    alpha2: "CR",
+    alpha3: "CRI",
+    ioc: "CRI",
   },
 
   {
     id: 26,
-    name: 'Côte d’Ivoire',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Côte d’Ivoire",
+    flag: "CI",
+    alpha2: "CI",
+    alpha3: "CIV",
+    ioc: "CIV",
   },
 
   {
     id: 27,
-    name: 'Croatia ',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Croatia ",
+    flag: "HR",
+    alpha2: "HR",
+    alpha3: "HRV",
+    ioc: "CRO",
   },
 
   {
     id: 28,
-    name: 'Cyprus',
-    flag: '🇨🇾',
-    alpha2: 'CY',
-    alpha3: 'CYP',
-    ioc: 'CYP'
+    name: "Cyprus",
+    flag: "CY",
+    alpha2: "CY",
+    alpha3: "CYP",
+    ioc: "CYP",
   },
 
   {
     id: 29,
-    name: 'Czech Republic ',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Czech Republic ",
+    flag: "CZ",
+    alpha2: "CZ",
+    alpha3: "CZE",
+    ioc: "CZE",
   },
 
   {
     id: 30,
-    name: 'Denmark',
-    flag: '🇩🇰',
-    alpha2: 'DK',
-    alpha3: 'DNK',
-    ioc: 'DNK'
+    name: "Denmark",
+    flag: "DK",
+    alpha2: "DK",
+    alpha3: "DNK",
+    ioc: "DNK",
   },
 
   {
     id: 31,
-    name: 'Dominican Republic',
-    flag: '🇩🇴',
-    alpha2: 'DO',
-    alpha3: 'DOM',
-    ioc: 'DOM'
+    name: "Dominican Republic",
+    flag: "DO",
+    alpha2: "DO",
+    alpha3: "DOM",
+    ioc: "DOM",
   },
 
   {
     id: 32,
-    name: 'Ecuador',
-    flag: '🇪🇨',
-    alpha2: 'EC',
-    alpha3: 'ECU',
-    ioc: 'ECU'
+    name: "Ecuador",
+    flag: "EC",
+    alpha2: "EC",
+    alpha3: "ECU",
+    ioc: "ECU",
   },
 
   {
     id: 33,
-    name: 'Egypt',
-    flag: '🇪🇬',
-    alpha2: 'EG',
-    alpha3: 'EGY',
-    ioc: 'EGY'
+    name: "Egypt",
+    flag: "EG",
+    alpha2: "EG",
+    alpha3: "EGY",
+    ioc: "EGY",
   },
 
   {
     id: 34,
-    name: 'El Salvador',
-    flag: '🇸🇻',
-    alpha2: 'SV',
-    alpha3: 'SLV',
-    ioc: 'SLV'
+    name: "El Salvador",
+    flag: "SV",
+    alpha2: "SV",
+    alpha3: "SLV",
+    ioc: "SLV",
   },
 
   {
     id: 35,
-    name: 'Estonia',
-    flag: '🇪🇪',
-    alpha2: 'EE',
-    alpha3: 'EST',
-    ioc: 'EST'
+    name: "Estonia",
+    flag: "EE",
+    alpha2: "EE",
+    alpha3: "EST",
+    ioc: "EST",
   },
 
   {
     id: 36,
-    name: 'Ethiopia',
-    flag: '  🇪🇹',
-    alpha2: 'ET',
-    alpha3: 'ETH',
-    ioc: 'ETH'
+    name: "Ethiopia",
+    flag: "  ET",
+    alpha2: "ET",
+    alpha3: "ETH",
+    ioc: "ETH",
   },
 
   {
     id: 37,
-    name: 'Finland',
-    flag: '🇫🇮',
-    alpha2: 'FI',
-    alpha3: 'F  IN',
-    ioc: 'FIN'
+    name: "Finland",
+    flag: "FI",
+    alpha2: "FI",
+    alpha3: "F  IN",
+    ioc: "FIN",
   },
 
   {
     id: 38,
-    name: 'France',
-    flag: '🇫🇷',
-    alpha2: 'FR',
-    alpha3: 'FRA',
-    ioc: 'FRA'
+    name: "France",
+    flag: "FR",
+    alpha2: "FR",
+    alpha3: "FRA",
+    ioc: "FRA",
   },
 
   {
     id: 39,
-    name: 'Gabon',
-    flag: '🇬🇦',
-    alpha2: 'GA',
-    alpha3: 'GAB',
-    ioc: 'GAB'
+    name: "Gabon",
+    flag: "GA",
+    alpha2: "GA",
+    alpha3: "GAB",
+    ioc: "GAB",
   },
 
   {
     id: 40,
-    name: 'Gambia',
-    flag: '🇬🇲',
-    alpha2: 'GM',
-    alpha3: 'GMB',
-    ioc: 'GMB'
+    name: "Gambia",
+    flag: "GM",
+    alpha2: "GM",
+    alpha3: "GMB",
+    ioc: "GMB",
   },
 
   {
     id: 41,
-    name: 'Germany',
-    flag: '🇩🇪',
-    alpha2: 'DE',
-    alpha3: 'DEU',
-    ioc: 'DE  U'
+    name: "Germany",
+    flag: "DE",
+    alpha2: "DE",
+    alpha3: "DEU",
+    ioc: "DE  U",
   },
 
   {
     id: 42,
-    name: 'Ghana',
-    flag: '🇬🇭',
-    alpha2: 'GH',
-    alpha3: 'GHA',
-    ioc: 'GHA'
+    name: "Ghana",
+    flag: "GH",
+    alpha2: "GH",
+    alpha3: "GHA",
+    ioc: "GHA",
   },
 
   {
     id: 43,
-    name: 'Greece',
-    flag: '🇬🇷',
-    alpha2: 'GR',
-    alpha3: 'GRC',
-    ioc: 'GR',
+    name: "Greece",
+    flag: "GR",
+    alpha2: "GR",
+    alpha3: "GRC",
+    ioc: "GR",
   },
   {
     id: 44,
-    name: 'Guatemala',
-    flag: '🇬🇹',
-    alpha2: 'GT',
-    alpha3: 'GTM',
-    ioc: 'GTM'
+    name: "Guatemala",
+    flag: "GT",
+    alpha2: "GT",
+    alpha3: "GTM",
+    ioc: "GTM",
   },
 
   {
     id: 45,
-    name: 'Guyana',
-    flag: '🇬🇾',
-    alpha2: 'GY',
-    alpha3: 'GUY',
-    ioc: 'GUY'
+    name: "Guyana",
+    flag: "GY",
+    alpha2: "GY",
+    alpha3: "GUY",
+    ioc: "GUY",
   },
 
   {
     id: 46,
-    name: 'Hong Kong',
-    flag: '🇭🇰',
-    alpha2: 'HK',
-    alpha3: 'HKG',
-    ioc: 'HKG'
+    name: "Hong Kong",
+    flag: "HK",
+    alpha2: "HK",
+    alpha3: "HKG",
+    ioc: "HKG",
   },
 
   {
     id: 47,
-    name: 'Hungary',
-    flag: '🇭   🇺',
-    alpha2: 'HU',
-    alpha3: 'HUN',
-    ioc: 'HUN'
+    name: "Hungary",
+    flag: "HU",
+    alpha2: "HU",
+    alpha3: "HUN",
+    ioc: "HUN",
   },
 
   {
     id: 48,
-    name: 'Iceland ',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Iceland ",
+    flag: "IS",
+    alpha2: "IS",
+    alpha3: "ISL",
+    ioc: "ISL",
   },
 
   {
     id: 49,
-    name: 'India',
-    flag: '🇮🇳',
-    alpha2: 'IN',
-    alpha3: 'IND',
-    ioc: 'IND'
+    name: "India",
+    flag: "IN",
+    alpha2: "IN",
+    alpha3: "IND",
+    ioc: "IND",
   },
 
   {
     id: 50,
-    name: 'Indone  sia',
-    flag: '🇮🇩',
-    alpha2: 'ID',
-    alpha3: 'IDN',
-    ioc: 'IDN'
+    name: "Indone  sia",
+    flag: "ID",
+    alpha2: "ID",
+    alpha3: "IDN",
+    ioc: "IDN",
   },
 
   {
     id: 51,
-    name: 'Ireland',
-    flag: '🇮🇪',
-    alpha2: 'IE  ',
-    alpha3: 'IRL',
-    ioc: 'IRL'
+    name: "Ireland",
+    flag: "IE",
+    alpha2: "IE  ",
+    alpha3: "IRL",
+    ioc: "IRL",
   },
 
   {
     id: 52,
-    name: 'Israel',
-    flag: '🇮🇱',
-    alpha2: 'IL',
-    alpha3: 'ISR',
-    ioc: 'ISR'
+    name: "Israel",
+    flag: "IL",
+    alpha2: "IL",
+    alpha3: "ISR",
+    ioc: "ISR",
   },
 
   {
     id: 53,
-    name: 'Italy',
-    flag: '🇮🇹',
-    alpha2: 'IT',
-    alpha3: 'ITA',
-    ioc: 'ITA'
+    name: "Italy",
+    flag: "IT",
+    alpha2: "IT",
+    alpha3: "ITA",
+    ioc: "ITA",
   },
 
   {
     id: 54,
-    name: 'Jamaica',
-    flag: '🇯🇲',
-    alpha2: 'JM',
-    alpha3: 'JAM',
-    ioc: 'JAM'
+    name: "Jamaica",
+    flag: "JM",
+    alpha2: "JM",
+    alpha3: "JAM",
+    ioc: "JAM",
   },
 
   {
     id: 55,
-    name: 'Japan',
-    flag: '🇯🇵',
-    alpha2: 'JP',
-    alpha3: 'JP  N',
-    ioc: 'JPN'
+    name: "Japan",
+    flag: "JP",
+    alpha2: "JP",
+    alpha3: "JPN",
+    ioc: "JPN",
   },
 
   {
     id: 56,
-    name: 'Jordan',
-    flag: '🇯🇴',
-    alpha2: 'JO',
-    alpha3: 'JOR',
-    ioc: 'JOR'
+    name: "Jordan",
+    flag: "JO",
+    alpha2: "JO",
+    alpha3: "JOR",
+    ioc: "JOR",
   },
 
   {
     id: 57,
-    name: 'Kenya',
-    flag: '🇰🇪',
-    alpha2: 'KE',
-    alpha3: 'KEN',
-    ioc: 'KEN'
+    name: "Kenya",
+    flag: "KE",
+    alpha2: "KE",
+    alpha3: "KEN",
+    ioc: "KEN",
   },
 
   {
     id: 58,
-    name: 'Kuwait',
-    flag: '🇰🇼',
-    alpha2: 'KW',
-    alpha3: 'KWT',
-    ioc: 'KWT'
+    name: "Kuwait",
+    flag: "KW",
+    alpha2: "KW",
+    alpha3: "KWT",
+    ioc: "KWT",
   },
 
   {
     id: 59,
-    name: 'Laos',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Laos",
+    flag: "LA",
+    alpha2: "LA",
+    alpha3: "LAO",
+    ioc: "LAO",
   },
 
   {
     id: 60,
-    name: 'Latvia',
-    flag: '🇱🇻',
-    alpha2: 'LV',
-    alpha3: 'LVA',
-    ioc: 'LVA'
+    name: "Latvia",
+    flag: "LV",
+    alpha2: "LV",
+    alpha3: "LVA",
+    ioc: "LVA",
   },
 
   {
     id: 61,
-    name: 'Liechtenstein ',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Liechtenstein ",
+    flag: "LI",
+    alpha2: "LI",
+    alpha3: "LIE",
+    ioc: "LIE",
   },
 
   {
     id: 62,
-    name: 'Lithuania',
-    flag: '🇱🇹',
-    alpha2: 'LT',
-    alpha3: 'LTU',
-    ioc: 'LTU'
+    name: "Lithuania",
+    flag: "LT",
+    alpha2: "LT",
+    alpha3: "LTU",
+    ioc: "LTU",
   },
 
   {
     id: 63,
-    name: 'Luxembourg',
-    flag: '🇱🇺',
-    alpha2: 'LU',
-    alpha3: 'LUX',
-    ioc: 'LUX'
+    name: "Luxembourg",
+    flag: "LU",
+    alpha2: "LU",
+    alpha3: "LUX",
+    ioc: "LUX",
   },
 
   {
     id: 64,
-    name: 'Macao SAR China',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Macao SAR China",
+    flag: "MO",
+    alpha2: "MO",
+    alpha3: "MAC",
+    ioc: "MAC",
   },
 
   {
     id: 65,
-    name: 'Madagascar',
-    flag: '🇲🇬',
-    alpha2: 'MG',
-    alpha: 'MDG',
-    ioc: 'MDG'
+    name: "Madagascar",
+    flag: "MG",
+    alpha2: "MG",
+    alpha: "MDG",
+    ioc: "MDG",
   },
 
   {
     id: 66,
-    name: 'Malaysia',
-    flag: '🇲🇾',
-    alpha2: 'MY',
-    alpha3: 'MYS',
-    ioc: 'MYS'
+    name: "Malaysia",
+    flag: "MY",
+    alpha2: "MY",
+    alpha3: "MYS",
+    ioc: "MYS",
   },
 
   {
     id: 67,
-    name: 'Malta',
-    flag: '🇲🇹',
-    alpha2: 'MT',
-    alpha3: 'MLT',
-    ioc: 'MLT'
+    name: "Malta",
+    flag: "MT",
+    alpha2: "MT",
+    alpha3: "MLT",
+    ioc: "MLT",
   },
 
   {
     id: 68,
-    name: 'Maur  itius',
-    flag: '🇲🇺',
-    alpha2: 'MU',
-    alpha3: 'MUS',
-    ioc: 'MUS'
+    name: "Mauritius",
+    flag: "MU",
+    alpha2: "MU",
+    alpha3: "MUS",
+    ioc: "MUS",
   },
 
   {
     id: 69,
-    name: 'Mexico',
-    flag: '🇲🇽',
-    alpha2: 'M  X',
-    alpha3: 'MEX',
-    ioc: 'MEX'
+    name: "Mexico",
+    flag: "MX",
+    alpha2: "MX",
+    alpha3: "MEX",
+    ioc: "MEX",
   },
 
   {
     id: 70,
-    name: 'Moldova',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Moldova",
+    flag: "MD",
+    alpha2: "MD",
+    alpha3: "MDA",
+    ioc: "MDA",
   },
 
   {
     id: 71,
-    name: 'Monaco',
-    flag: '🇲🇨',
-    alpha2: 'MC',
-    alpha3: 'MCO',
-    ioc: 'MCO'
+    name: "Monaco",
+    flag: "MC",
+    alpha2: "MC",
+    alpha3: "MCO",
+    ioc: "MCO",
   },
 
   {
     id: 72,
-    name: 'Mongolia',
-    flag: '',
-    alpha2: 'MN',
-    alpha3: 'MNG',
-    ioc: 'MNG'
+    name: "Mongolia",
+    flag: "MN",
+    alpha2: "MN",
+    alpha3: "MNG",
+    ioc: "MGL",
   },
 
   {
     id: 73,
-    name: 'Morocco',
-    flag: '🇲🇦',
-    alpha2: 'MA',
-    alpha3: 'MAR',
-    ioc: 'MAR'
+    name: "Morocco",
+    flag: "MA",
+    alpha2: "MA",
+    alpha3: "MAR",
+    ioc: "MAR",
   },
 
   {
     id: 74,
-    name: 'Mozambique',
-    flag: '🇲🇿',
-    alpha2: 'MZ',
-    alpha3: 'MOZ',
-    ioc: 'MOZ'
+    name: "Mozambique",
+    flag: "MZ",
+    alpha2: "MZ",
+    alpha3: "MOZ",
+    ioc: "MOZ",
   },
 
   {
     id: 75,
-    name: 'Namibia',
-    flag: '🇳🇦',
-    alpha2: 'NA',
-    alpha3: 'NAM',
-    ioc: 'NAM'
+    name: "Namibia",
+    flag: "NA",
+    alpha2: "NA",
+    alpha3: "NAM",
+    ioc: "NAM",
   },
 
   {
     id: 76,
-    name: 'Netherlands',
-    flag: '🇳🇱',
-    alpha2: 'NL',
-    alpha3: 'NLD',
-    ioc: 'NLD'
+    name: "Netherlands",
+    flag: "NL",
+    alpha2: "NL",
+    alpha3: "NLD",
+    ioc: "NLD",
   },
 
   {
     id: 77,
-    name: 'New Zealand',
-    flag: '🇳🇿',
-    alpha2: 'NZ',
-    alpha3: 'NZL',
-    ioc: 'NZL'
+    name: "New Zealand",
+    flag: "NZ",
+    alpha2: "NZ",
+    alpha3: "NZL",
+    ioc: "NZL",
   },
 
   {
     id: 78,
-    name: 'Nigeria',
-    flag: '🇳🇪',
-    alpha2: 'NG',
-    alpha3: 'NGA',
-    ioc: 'NER'
+    name: "Nigeria",
+    flag: "NE",
+    alpha2: "NG",
+    alpha3: "NGA",
+    ioc: "NER",
   },
 
   {
     id: 79,
-    name: 'Nigeria',
-    flag: '🇳🇬',
-    alpha2: 'NG',
-    alpha3: 'NGA',
-    ioc: 'NGA'
+    name: "Nigeria",
+    flag: "NG",
+    alpha2: "NG",
+    alpha3: "NGA",
+    ioc: "NGA",
   },
 
   {
     id: 80,
-    name: 'North Macedonia',
-    flag: '🇲🇰',
-    alpha2: 'MK',
-    alpha3: 'MKD',
-    ioc: 'MKD'
+    name: "North Macedonia",
+    flag: "MK",
+    alpha2: "MK",
+    alpha3: "MKD",
+    ioc: "MKD",
   },
 
   {
     id: 81,
-    name: 'Norway',
-    flag: '🇳🇴',
-    alpha2: 'NO',
-    alpha3: 'NOR',
-    ioc: 'NOR'
+    name: "Norway",
+    flag: "ND",
+    alpha2: "NO",
+    alpha3: "NOR",
+    ioc: "NOR",
   },
 
   {
     id: 82,
-    name: 'Oman',
-    flag: '🇴🇲',
-    alpha2: 'OM',
-    alpha3: 'OMN',
-    ioc: 'OMN'
+    name: "Oman",
+    flag: "OM",
+    alpha2: "OM",
+    alpha3: "OMN",
+    ioc: "OMN",
   },
 
   {
     id: 83,
-    name: 'Panam  a',
-    flag: '🇵🇦',
-    alpha2: 'PA',
-    alpha3: 'PAN',
-    ioc: 'PAN'
+    name: "Panama",
+    flag: "PA",
+    alpha2: "PA",
+    alpha3: "PAN",
+    ioc: "PAN",
   },
 
   {
     id: 84,
-    name: 'Paraguay',
-    flag: '🇵🇾',
-    alpha2: 'PY',
-    alpha3: 'PRY',
-    ioc: 'PRY'
+    name: "Paraguay",
+    flag: "PY",
+    alpha2: "PY",
+    alpha3: "PRY",
+    ioc: "PRY",
   },
 
   {
     id: 85,
-    name: 'Peru',
-    flag: '🇵🇪',
-    alpha2: 'PE',
-    alpha3: 'PER',
-    ioc: 'PER'
+    name: "Peru",
+    flag: "PE",
+    alpha2: "PE",
+    alpha3: "PER",
+    ioc: "PER",
   },
 
   {
     id: 86,
-    name: 'Philippines',
-    flag: '🇵🇭',
-    alpha2: 'PH',
-    alpha3: 'PHL',
-    ioc: 'PHL'
+    name: "Philippines",
+    flag: "PH",
+    alpha2: "PH",
+    alpha3: "PHL",
+    ioc: "PHL",
   },
 
   {
     id: 87,
-    name: 'Poland',
-    flag: '🇵🇱',
-    alpha2: 'PL',
-    alpha3: 'POL',
-    ioc: 'POL'
+    name: "Poland",
+    flag: "PL",
+    alpha2: "PL",
+    alpha3: "POL",
+    ioc: "POL",
   },
 
   {
     id: 88,
-    name: 'Portugal',
-    flag: '🇵🇹',
-    alpha2: 'PT',
-    alpha3: 'PRT',
-    ioc: 'PRT'
+    name: "Portugal",
+    flag: "PT",
+    alpha2: "PT",
+    alpha3: "PRT",
+    ioc: "PRT",
   },
 
   {
     id: 89,
-    name: 'Qatar',
-    flag: '🇶🇦',
-    alpha2: 'QA',
-    alpha3: 'QAT',
-    ioc: 'QAT'
+    name: "Qatar",
+    flag: "QA",
+    alpha2: "QA",
+    alpha3: "QAT",
+    ioc: "QAT",
   },
 
   {
     id: 90,
-    name: 'Romania',
-    flag: '',
-    alpha2: 'RO',
-    alpha3: 'ROU',
-    ioc: 'ROU'
+    name: "Romania",
+    flag: "RO",
+    alpha2: "RO",
+    alpha3: "ROU",
+    ioc: "ROU",
   },
 
   {
     id: 91,
-    name: 'Rwanda',
-    flag: '🇷🇼',
-    alpha2: 'RW',
-    alpha3: 'RWA',
-    ioc: 'RWA'
+    name: "Rwanda",
+    flag: "RW",
+    alpha2: "RW",
+    alpha3: "RWA",
+    ioc: "RWA",
   },
 
   {
     id: 92,
-    name: 'San Marino',
-    flag: '🇸🇲',
-    alpha2: 'SM',
-    alpha3: 'SMR',
-    ioc: 'SMR'
+    name: "San Marino",
+    flag: "SM",
+    alpha2: "SM",
+    alpha3: "SMR",
+    ioc: "SMR",
   },
 
   {
     id: 93,
-    name: 'Saudi Arabia',
-    flag: '🇸🇦',
-    alpha2: 'SA',
-    alpha3: 'SAU',
-    ioc: 'SAU'
+    name: "Saudi Arabia",
+    flag: "SA",
+    alpha2: "SA",
+    alpha3: "SAU",
+    ioc: "SAU",
   },
 
   {
     id: 94,
-    name: 'Senegal',
-    flag: '🇸🇳',
-    alpha2: 'SN',
-    alpha3: 'SEN',
-    ioc: 'SEN'
+    name: "Senegal",
+    flag: "SN",
+    alpha2: "SN",
+    alpha3: "SEN",
+    ioc: "SEN",
   },
 
   {
     id: 95,
-    name: 'Serbia',
-    flag: '🇷🇸',
-    alpha2: 'RS',
-    alpha3: 'SRB',
-    ioc: 'SRB'
+    name: "Serbia",
+    flag: "RS",
+    alpha2: "RS",
+    alpha3: "SRB",
+    ioc: "SRB",
   },
 
   {
     id: 96,
-    name: 'Singapore',
-    flag: '🇸🇬',
-    alpha2: 'SG',
-    alpha3: 'SGP',
-    ioc: 'SGP'
+    name: "Singapore",
+    flag: "SG",
+    alpha2: "SG",
+    alpha3: "SGP",
+    ioc: "SGP",
   },
 
   {
     id: 97,
-    name: 'Slovakia',
-    flag: '🇸🇰',
-    alpha2: 'SK',
-    alpha3: 'SVK',
-    ioc: 'SVK'
+    name: "Slovakia",
+    flag: "SK",
+    alpha2: "SK",
+    alpha3: "SVK",
+    ioc: "SVK",
   },
 
   {
     id: 98,
-    name: 'Sloven  ia',
-    flag: '🇸🇮',
-    alpha2: 'SI',
-    alpha3: 'SVN',
-    ioc: 'SVN'
+    name: "Slovenia",
+    flag: "SI",
+    alpha2: "SI",
+    alpha3: "SVN",
+    ioc: "SVN",
   },
 
   {
     id: 99,
-    name: 'South Africa',
-    flag: '🇿🇦',
-    alpha2: 'ZA',
-    alpha3: 'ZAF',
-    ioc: 'ZAF'
+    name: "South Africa",
+    flag: "ZA",
+    alpha2: "ZA",
+    alpha3: "ZAF",
+    ioc: "ZAF",
   },
 
   {
     id: 100,
-    name: 'South Korea',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "South Korea",
+    flag: "KR",
+    alpha2: "KR",
+    alpha3: "KR",
+    ioc: "KR",
   },
 
   {
     id: 101,
-    name: 'Spain',
-    flag: '🇪🇸',
-    alpha2: 'ES',
-    alpha3: 'ESP',
-    ioc: 'ESP'
+    name: "Spain",
+    flag: "ES",
+    alpha2: "ES",
+    alpha3: "ESP",
+    ioc: "ESP",
   },
 
   {
     id: 102,
-    name: 'Sri Lanka',
-    flag: '🇱🇰',
-    alpha2: 'LK',
-    alpha3: 'LKA',
-    ioc: 'LKA',
+    name: "Sri Lanka",
+    flag: "LK",
+    alpha2: "LK",
+    alpha3: "LKA",
+    ioc: "LKA",
   },
   {
     id: 103,
-    name: 'St. Lucia',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Saint Lucia",
+    flag: "LC",
+    alpha2: "LC",
+    alpha3: "LCA",
+    ioc: "LCA",
   },
 
   {
     id: 104,
-    name: 'Sweden',
-    flag: '🇸🇪',
-    alpha2: 'SE',
-    alpha3: 'SWE',
-    ioc: 'SWE'
+    name: "Sweden",
+    flag: "SE",
+    alpha2: "SE",
+    alpha3: "SWE",
+    ioc: "SWE",
   },
 
   {
     id: 105,
-    name: 'Switzerland ',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Switzerland ",
+    flag: "CH",
+    alpha2: "CH",
+    alpha3: "CHE",
+    ioc: "SUI",
   },
 
   {
     id: 106,
-    name: 'Taiwan',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Taiwan",
+    flag: "TW",
+    alpha2: "TW",
+    alpha3: "TWN",
+    ioc: "TPE",
   },
 
   {
     id: 107,
-    name: 'Tanzania',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Tanzania",
+    flag: "TZ",
+    alpha2: "TZ",
+    alpha3: "TZA",
+    ioc: "TAN",
   },
 
   {
     id: 108,
-    name: 'Thailand',
-    flag: '🇹🇭',
-    alpha2: 'TH',
-    alpha3: 'THA',
-    ioc: 'THA'
+    name: "Thailand",
+    flag: "TH",
+    alpha2: "TH",
+    alpha3: "THA",
+    ioc: "THA",
   },
 
   {
     id: 109,
-    name: 'Trinidad & Tobago  ',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
+    name: "Trinidad & Tobago  ",
+    flag: "TT",
+    alpha2: "TT",
+    alpha3: "TTO",
+    ioc: "TRI",
   },
 
   {
     id: 110,
-    name: 'Tunisia',
-    flag: '🇹🇳',
-    alpha2: 'TN',
-    alpha3: 'TUN',
-    ioc: 'TUN'
+    name: "Tunisia",
+    flag: "TN",
+    alpha2: "TN",
+    alpha3: "TUN",
+    ioc: "TUN",
   },
 
   {
     id: 111,
-    name: 'Turkey',
-    flag: '🇹🇷',
-    alpha2: 'TR',
-    alpha3: 'TUR',
-    ioc: 'TUR'
+    name: "Turkey",
+    flag: "TR",
+    alpha2: "TR",
+    alpha3: "TUR",
+    ioc: "TUR",
   },
 
   {
     id: 112,
-    name: 'United Arab Emirates',
-    flag: '🇦🇪',
-    alpha2: 'AE',
-    alpha3: 'ARE',
-    ioc: 'ARE'
+    name: "United Arab Emirates",
+    flag: "AE",
+    alpha2: "AE",
+    alpha3: "ARE",
+    ioc: "ARE",
   },
 
   {
     id: 113,
-    name: 'United Kin  gdom',
-    flag: '🇬🇧',
-    alpha2: 'GB',
-    alpha3: 'GBR',
-    ioc: 'GBR'
+    name: "United Kingdom of Great Britain",
+    flag: "GB",
+    alpha2: "GB",
+    alpha3: "GBR",
+    ioc: "GBR",
   },
 
   {
     id: 114,
-    name: 'Uruguay',
-    flag: '🇺🇾',
-    alpha2: '  UY',
-    alpha3: 'URY',
-    ioc:
-      'URY'
+    name: "Uruguay",
+    flag: "UY",
+    alpha2: "UY",
+    alpha3: "URY",
+    ioc: "URY",
   },
 
   {
     id: 115,
-    name: 'Uzbekistan',
-    flag: '🇺🇿',
-    alpha2: 'UZ',
-    alpha3: 'UZB',
-    ioc: 'U  ZB'
+    name: "Uzbekistan",
+    flag: "UZ",
+    alpha2: "UZ",
+    alpha3: "UZB",
+    ioc: "UZB",
   },
 
   {
     id: 116,
-    name: 'Vietnam',
-    flag: ' ',
-    alpha2: ' ',
-    alpha3: ' ',
-    ioc: ' '
-  }
-]
+    name: "United States of America",
+    flag: "US",
+    alpha2: "US",
+    alpha3: "USA",
+    ioc: "USA",
+  },
+
+  {
+    id: 117,
+    name: "Vietnam",
+    flag: "VN",
+    alpha2: "VN",
+    alpha3: "VNM",
+    ioc: "VIE",
+  },
+];
 
 const SetUp = () => {
   const [cookies, setCookies] = useCookies();
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [value, setValue] = useState({
-
-  });
+  const [value, setValue] = useState({});
 
   const isCookies = () => {
     if (cookies?.user_data?.category_selected) {
@@ -1476,6 +1194,7 @@ const SetUp = () => {
       .max(500)
       .required("About required"),
     nation: Yup.string().required("Country name required"),
+    price_range: Yup.string().required("Price Range required"),
   });
   const [filePic, setFilePic] = useState("");
   const photoChange = (e) => {
@@ -1538,7 +1257,7 @@ const SetUp = () => {
           setExistingEmail(false);
           handleOTP("");
           setLoadingActive(false);
-          setVerifyButtonText("verify ");
+          setVerifyButtonText("Verify ");
         } else {
           setShow(true);
           setLoadingActive(false);
@@ -1564,7 +1283,7 @@ const SetUp = () => {
 
   const handleEmailFocus = () => {
     setExistingEmail(true);
-    setVerifyButtonText("verify");
+    setVerifyButtonText("Verify");
     setOtpResponse(false);
   };
 
@@ -1580,7 +1299,7 @@ const SetUp = () => {
         if (res?.data?.status === "Success") {
           setShow(false);
           setotpdisplay("none");
-          setVerifyButtonText("verified");
+          setVerifyButtonText("Verified");
           $(".emailVerifyBtnProfessional").css("pointer-events", "none");
           handleOTP("");
         } else {
@@ -1618,6 +1337,7 @@ const SetUp = () => {
                     skills: "",
                     mobile_verify: "True",
                     experience: "",
+                    price_range: "",
                   }}
                   validationSchema={SetUpSchema}
                   onSubmit={(values, { setSubmitting }) => {
@@ -1671,7 +1391,13 @@ const SetUp = () => {
                                   certificate
                                 );
 
-                                axios.post("http://13.52.16.160:8082/identity/professional_certificate", userCertificate).then((res) => console.log('')).catch((err) => console.log(err));
+                                axios
+                                  .post(
+                                    "http://13.52.16.160:8082/identity/professional_certificate",
+                                    userCertificate
+                                  )
+                                  .then((res) => console.log(""))
+                                  .catch((err) => console.log(err));
 
                                 if (respo?.data?.status === "Success") {
                                   contextData?.dispatch({
@@ -1938,7 +1664,7 @@ const SetUp = () => {
 
                               setdisply("block");
                             }}
-                            flags={true}
+                            flags={false}
                             placeholder="select country"
                             name="nation"
                           />
@@ -2008,7 +1734,9 @@ const SetUp = () => {
                                 setprofileerr("none");
                               }}
                             />
-                            <span className="mt-1">Profile Picture</span>
+                            <span className="mt-1" style={{ color: "#505050" }}>
+                              Profile Picture
+                            </span>
                             <span
                               style={{ marginTop: "10px" }}
                               className={`${profileerr} text-danger `}
@@ -2038,8 +1766,8 @@ const SetUp = () => {
                           <div
                             style={{
                               position: "absolute",
-                              bottom: "-7%",
-                              left: "10%",
+                              bottom: "-4%",
+                              left: "4%",
                             }}
                           >
                             <p>{values.bio.length}/500</p>
@@ -2051,7 +1779,7 @@ const SetUp = () => {
                           />
                         </div>
                       </div>
-                      <div className="row">
+                      <div className="row ">
                         <div className="col-md-3 col-xl-2 my-md-3 my-1">
                           <div>
                             <div
@@ -2081,7 +1809,9 @@ const SetUp = () => {
                                 setBackImgErr("none");
                               }}
                             />
-                            <span>Cover Image</span>
+                            <span style={{ color: "#505050" }}>
+                              Cover Image
+                            </span>
                             <span
                               style={{ marginTop: "10px" }}
                               className={`${backImgErr} text-danger `}
@@ -2194,13 +1924,14 @@ const SetUp = () => {
                                       </button>
                                       <span id="custom-text">
                                         {certificate
-                                          ? `${certificate.name.length > 15
-                                            ? certificate.name.slice(
-                                              0,
-                                              15
-                                            ) + certificate.name.slice(-4)
-                                            : certificate.name
-                                          }`
+                                          ? `${
+                                              certificate.name.length > 15
+                                                ? certificate.name.slice(
+                                                    0,
+                                                    15
+                                                  ) + certificate.name.slice(-4)
+                                                : certificate.name
+                                            }`
                                           : " No file chosen, yet."}
                                       </span>
                                     </div>
@@ -2229,7 +1960,7 @@ const SetUp = () => {
                                     style={{ padding: "15px 30px" }}
                                     type="text"
                                     className="mt-2"
-                                    placeholder="Enter Here Your Other"
+                                    placeholder="Enter Your Education"
                                     value={educationInput}
                                     onChange={(e) => {
                                       setEducationInput(e.target.value);
@@ -2263,7 +1994,7 @@ const SetUp = () => {
                                 );
                                 setSkill(skills);
                               }}
-                              labelledBy="Select"
+                              labelledBy="Select Skills"
                               name={skills}
                             />
 
@@ -2287,7 +2018,9 @@ const SetUp = () => {
                                 Experience
                               </option>
                               {rows.map((years, index) => (
-                                <option key={index} value={years}>{years} Years</option>
+                                <option key={index} value={years}>
+                                  {years} Years
+                                </option>
                               ))}
                               <option value={45}>45 Years</option>
                             </Field>
@@ -2299,9 +2032,29 @@ const SetUp = () => {
                           </div>
                         </div>
                       </div>
+                      {/* d********************************************************************** */}
+                      <div className="row justify-content-center">
+                        <div className="col-md my-md-3 my-1">
+                          {/* <label htmlFor="price_range"> Minimum Rate Per Square Meter </label> */}
+                          <div className="create-account-input">
+                            <Field
+                              name="price_range"
+                              type="number"
+                              className="form-control"
+                              placeholder="Enter Minimum Rate Per Square Meter in $"
+                            />
+                            <i class="fa-solid fa-tag"></i>
+                            <ErrorMessage
+                              name="price_range"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
+                        </div>
+                      </div>
 
                       <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
-                        {verifyButtonText === "verify" ? (
+                        {verifyButtonText === "Verify" ? (
                           <button
                             type="button"
                             className="create-account-btn"

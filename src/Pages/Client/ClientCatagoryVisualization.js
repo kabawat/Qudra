@@ -13,27 +13,27 @@ const ClientCatagoryVisualization = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
   const [selectList, setSelectList] = useState();
-  const [cookies,] = useCookies()
-  const [isRender, setIsRender] = useState(false)
+  const [cookies] = useCookies();
+  const [isRender, setIsRender] = useState(false);
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data?.role === "client") {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         } else {
-          navigate('/professionaldashboard')
+          navigate("/professionaldashboard");
         }
       } else {
         if (cookies?.user_data?.role === "client") {
-          setIsRender(true)
+          setIsRender(true);
         } else {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     let list = {};
@@ -143,7 +143,7 @@ const ClientCatagoryVisualization = () => {
                   <h1>Choose Categories</h1>
                   <div className="category-button">
                     <h6 className="text-center">
-                      I want 3D Visualization designing
+                      I am looking for 3d visualizers
                     </h6>
                   </div>
 
@@ -183,7 +183,13 @@ const ClientCatagoryVisualization = () => {
                               >
                                 <div className="row  category-box">
                                   <div className="col-md-3 col-12 h-100 text-center  px-2">
-                                    <div className={selectList[`checkbox${i}`]?"p-md-1 p-lg-3 icon-box active":"p-md-1 p-lg-3 icon-box"}>
+                                    <div
+                                      className={
+                                        selectList[`checkbox${i}`]
+                                          ? "p-md-1 p-lg-3 icon-box "
+                                          : "p-md-1 p-lg-3 icon-box"
+                                      }
+                                    >
                                       <img
                                         id={i + "icon"}
                                         src={
@@ -236,7 +242,7 @@ const ClientCatagoryVisualization = () => {
                       <button
                         type="submit"
                         className="create-account-btn"
-                      // onClick={() => navigate("/client-visualisation")}
+                        // onClick={() => navigate("/client-visualisation")}
                       >
                         Continue <BsArrowRight style={{ color: "white" }} />
                       </button>

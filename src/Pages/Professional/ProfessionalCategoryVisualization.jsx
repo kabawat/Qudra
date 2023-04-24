@@ -183,7 +183,7 @@ const ProfessionalCategoryVisualization = () => {
                               >
                                 <div className="row  category-box">
                                   <div className="col-md-3 col-12 h-100 text-center  px-2">
-                                    <div className={selectList[`checkbox${i}`] ? "p-md-1 p-lg-3 icon-box active" : "p-md-1 p-lg-3 icon-box"}>
+                                    <div className={selectList[`checkbox${i}`] ? "p-md-1 p-lg-3 icon-box " : "p-md-1 p-lg-3 icon-box"}>
                                       <img
                                         id={i + "icon"}
                                         src={

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
+
 const HeroesSection = () => {
   const navigate = useNavigate();
 
@@ -9,8 +10,12 @@ const HeroesSection = () => {
     <>
       <div
         id="heroes"
-        style={{ position: "relative", background: "cadetblue" }}
+        style={{
+          position: "relative",
+        }}
       >
+        {" "}
+        <div id="particle-canvas"></div>
         <div
           className="center-text"
           style={{

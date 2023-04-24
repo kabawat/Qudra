@@ -178,17 +178,17 @@ const ProfessionalBuyAndSale = () => {
 
   const languagesArchitecture = [
     contextData?.static_buy_sale_design?.data?.length &&
-    contextData?.static_buy_sale_design?.data?.filter((ress) =>
-      ress !== "" ||
+      contextData?.static_buy_sale_design?.data?.filter((ress) =>
+        ress !== "" ||
         null ||
         (state?.selected_catagories &&
           state?.selected_catagories[3].includes(ress?.sub_category_id))
-        ? {
-          label: ress?.sub_category,
-          value: ress?.sub_category_id,
-        }
-        : ""
-    ),
+          ? {
+              label: ress?.sub_category,
+              value: ress?.sub_category_id,
+            }
+          : ""
+      ),
   ];
   const newCatagoriesArchitecture =
     languagesArchitecture[0] &&
@@ -236,7 +236,9 @@ const ProfessionalBuyAndSale = () => {
               ...cookies?.user_data,
               category_selected: true,
             });
-            localStorage.removeItem('SelectedCatagories')
+            localStorage.removeItem("SelectedCatagories");
+            localStorage.clear("SelectedCatagories");
+            localStorage.clear();
             navigate("/professionaldashboard");
           }
         });
@@ -398,11 +400,19 @@ const ProfessionalBuyAndSale = () => {
                             state?.preview_catagory_designs?.image.map(
                               (res, index) => {
                                 return (
-                                  <div key={index} className="col-lg-4 my-3 col-md-6">
-                                    <div style={{ height: "240px", borderRadius: "30px", }}
+                                  <div
+                                    key={index}
+                                    className="col-lg-4 my-3 col-md-6"
+                                  >
+                                    <div
+                                      style={{
+                                        height: "240px",
+                                        borderRadius: "30px",
+                                      }}
                                       className="card border-0 flex-row bg-dark text-white visibleForEdit"
                                     >
-                                      <img src={`${state?.preview_catagory_designs?.image_url}${res}`}
+                                      <img
+                                        src={`${state?.preview_catagory_designs?.image_url}${res}`}
                                         className="card-img"
                                         alt="..."
                                         style={{ borderRadius: "30px" }}
@@ -417,7 +427,12 @@ const ProfessionalBuyAndSale = () => {
                                         }}
                                       >
                                         <h4 className="card-title cardTitleVisible">
-                                          ${state?.preview_catagory_designs?.price[index]}/ project
+                                          $
+                                          {
+                                            state?.preview_catagory_designs
+                                              ?.price[index]
+                                          }
+                                          / project
                                         </h4>
                                         <div className="row">
                                           <div
@@ -516,7 +531,7 @@ const ProfessionalBuyAndSale = () => {
                                             </button>
                                           </div>
                                           {cookies?.user_data.role ===
-                                            "client" ? (
+                                          "client" ? (
                                             <div
                                               className="col-xxl-6 col-md-12 col-6"
                                               style={{ padding: "6px" }}
@@ -625,7 +640,8 @@ const ProfessionalBuyAndSale = () => {
                                                 <h6 className="m-0 py-2 text-md-start text-center">
                                                   {res?.sub_category}
                                                 </h6>
-                                                <input type="checkbox"
+                                                <input
+                                                  type="checkbox"
                                                   id={`${i}checkbox`}
                                                   name={res?.sub_category_id}
                                                   className="large-checkbox"
@@ -806,9 +822,9 @@ const ProfessionalBuyAndSale = () => {
                         .then((res) => {
                           return res?.data?.status === "Success"
                             ? (dispatch({
-                              type: "BUYSALE_DESIGN_UPLOAD_MODAL",
-                              value: false,
-                            }),
+                                type: "BUYSALE_DESIGN_UPLOAD_MODAL",
+                                value: false,
+                              }),
                               setCatagoriesDropdown([]))
                             : "";
                         });
@@ -1038,18 +1054,21 @@ const ProfessionalBuyAndSale = () => {
                           <div className="row m-0 pb-3 mb-3 pt-3  ">
                             <div className="col-md-6 ps-0">
                               <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
-                                <button className="w-100" type="button">
+                                <button className="w-100 pointer" type="button">
                                   <BsPlusLg
+                                    className="pointer"
                                     style={{
                                       color: "#fff",
                                       fontSize: "17px",
                                     }}
                                   />
-                                  <span className="ps-2">Upload Video</span>
+                                  <span className="ps-2 cursor-pointer">
+                                    Upload Video
+                                  </span>
                                 </button>
                                 <div
                                   className={vidstyle}
-                                  style={{ marginTop: "2%" }}
+                                  style={{ marginTop: "2%", cursor: "pointer" }}
                                 >
                                   <span>{vidlbl}</span>
                                   <span
@@ -1071,11 +1090,12 @@ const ProfessionalBuyAndSale = () => {
                                     />
                                   </span>
                                 </div>
-                                <p className="ps-4"></p>
+                                <p className="ps-4 "></p>
                                 <input
                                   type="file"
                                   accept="video/*"
                                   name="project"
+                                  className="pointer"
                                   onChange={(e) => {
                                     setFieldValue("video", e.target.files[0]);
                                     setvidclear(e);
@@ -1084,8 +1104,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                        "..." +
-                                        name.slice(-4)
+                                          "..." +
+                                          name.slice(-4)
                                         : name;
                                     setvidlbl(trimmedFileName);
                                     setvidstyle("block");
@@ -1110,6 +1130,7 @@ const ProfessionalBuyAndSale = () => {
                                 </button>
                                 <p className="ps-4"> </p>
                                 <input
+                                  className="pointer"
                                   type="file"
                                   accept=".zip,.rar,.7zip"
                                   name="project"
@@ -1120,8 +1141,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                        "..." +
-                                        name.slice(-4)
+                                          "..." +
+                                          name.slice(-4)
                                         : name;
 
                                     setziplbl(trimmedFileName);
@@ -1233,7 +1254,7 @@ const ProfessionalBuyAndSale = () => {
                           ...cookies?.user_data,
                           price:
                             state?.preview_catagory_designs?.price[
-                            state?.preview_catagory_data?.index
+                              state?.preview_catagory_data?.index
                             ],
                           image: "",
                           video: "",
@@ -1324,12 +1345,12 @@ const ProfessionalBuyAndSale = () => {
                                           imgPreview
                                             ? imgPreview
                                             : state?.preview_catagory_designs
-                                              ?.image_url +
-                                            state?.preview_catagory_designs
-                                              ?.image[
-                                            state?.preview_catagory_data
-                                              ?.index
-                                            ]
+                                                ?.image_url +
+                                              state?.preview_catagory_designs
+                                                ?.image[
+                                                state?.preview_catagory_data
+                                                  ?.index
+                                              ]
                                         }
                                         alt="preview"
                                       />
@@ -1388,10 +1409,10 @@ const ProfessionalBuyAndSale = () => {
                                         {vidlbl
                                           ? vidlbl
                                           : state?.preview_catagory_designs
-                                            ?.video[
-                                          state?.preview_catagory_data
-                                            ?.index
-                                          ]}
+                                              ?.video[
+                                              state?.preview_catagory_data
+                                                ?.index
+                                            ]}
                                       </span>
                                       {/* <span
                                       style={{
@@ -1421,8 +1442,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                            "..." +
-                                            name.slice(-4)
+                                              "..." +
+                                              name.slice(-4)
                                             : name;
                                         setFieldValue(
                                           "video",
@@ -1460,8 +1481,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                            "..." +
-                                            name.slice(-4)
+                                              "..." +
+                                              name.slice(-4)
                                             : name;
                                         setzipstyle("block");
                                         setziplbl(trimmedFileName);
@@ -1472,10 +1493,10 @@ const ProfessionalBuyAndSale = () => {
                                         {ziplbl
                                           ? ziplbl
                                           : state?.preview_catagory_designs
-                                            ?.project[
-                                          state?.preview_catagory_data
-                                            ?.index
-                                          ]}
+                                              ?.project[
+                                              state?.preview_catagory_data
+                                                ?.index
+                                            ]}
                                       </span>
                                       {/* <span
                                       style={{

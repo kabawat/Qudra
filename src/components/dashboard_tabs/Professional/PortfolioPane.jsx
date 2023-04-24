@@ -48,32 +48,32 @@ const PortfolioPane = () => {
     selected_catagories: null,
     delete_project_modal: false,
   };
-  const navigate = useNavigate()
-  const [isRender, setIsRender] = useState(false)
+  const navigate = useNavigate();
+  const [isRender, setIsRender] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   useEffect(() => {
     setLoading(true);
 
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data.role === "professional") {
-          setIsRender(true)
+          setIsRender(true);
         } else {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         }
       } else {
         if (cookies?.user_data.role === "professional") {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [])
+  }, []);
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -105,21 +105,23 @@ const PortfolioPane = () => {
   useEffect(() => {
     setLoading(true);
 
-    axios.post(
-      "http://13.52.16.160:8082/professional/professional_sub_cat",
-      cookies?.user_data
-    ).then((res) => {
-      if (res?.data?.status === "Success") {
-        setLoading(false);
+    axios
+      .post(
+        "http://13.52.16.160:8082/professional/professional_sub_cat",
+        cookies?.user_data
+      )
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setLoading(false);
 
-        dispatch({ type: "SELECTED_CATAGORIES", value: res?.data?.response });
-      } else {
-        dispatch({
-          type: "SELECTED_CATAGORIES",
-          value: { 1: [], 2: [], 3: [] },
-        });
-      }
-    });
+          dispatch({ type: "SELECTED_CATAGORIES", value: res?.data?.response });
+        } else {
+          dispatch({
+            type: "SELECTED_CATAGORIES",
+            value: { 1: [], 2: [], 3: [] },
+          });
+        }
+      });
   }, [
     PortfolioData?.architecture_design_upload_modal,
     PortfolioData?.visualization_design_upload_modal,
@@ -134,33 +136,37 @@ const PortfolioPane = () => {
     price: Yup.string().required("Please enter a price"),
   });
   const deleteProject = () => {
-    axios.post("http://13.52.16.160:8082/professional/delete_designs", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      category_id: parseInt(PortfolioData?.sub_catagory_data?.CataId),
-      sub_category_id: parseInt(PortfolioData?.sub_catagory_data?.SubCataId),
-      index_no: PortfolioData?.delete_project_modal?.index,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setLoading(false);
+    axios
+      .post("http://13.52.16.160:8082/professional/delete_designs", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        category_id: parseInt(PortfolioData?.sub_catagory_data?.CataId),
+        sub_category_id: parseInt(PortfolioData?.sub_catagory_data?.SubCataId),
+        index_no: PortfolioData?.delete_project_modal?.index,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setLoading(false);
 
-        fetchUserSubCata();
-      }
-      dispatch({ type: "DELETE_PROJECT", value: false });
-    });
+          fetchUserSubCata();
+        }
+        dispatch({ type: "DELETE_PROJECT", value: false });
+      });
   };
 
   const fetchUserSubCata = () => {
-    axios.post("http://13.52.16.160:8082/professional/sub_cat_data", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      category_id: parseInt(PortfolioData?.sub_catagory_data?.CataId),
-      sub_category_id: PortfolioData?.sub_catagory_data?.SubCataId,
-    }).then((res) => {
-      dispatch({ type: "SUB_CATAGORY_DESIGNS", value: res?.data });
-    });
+    axios
+      .post("http://13.52.16.160:8082/professional/sub_cat_data", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        category_id: parseInt(PortfolioData?.sub_catagory_data?.CataId),
+        sub_category_id: PortfolioData?.sub_catagory_data?.SubCataId,
+      })
+      .then((res) => {
+        dispatch({ type: "SUB_CATAGORY_DESIGNS", value: res?.data });
+      });
   };
 
   useEffect(() => {
@@ -193,19 +199,19 @@ const PortfolioPane = () => {
   }, [PortfolioData?.sub_catagory_data, PortfolioData?.upload_designs_modal]);
   const languagesArchitecture = [
     contextData?.static_architecture_design?.data?.length &&
-    contextData?.static_architecture_design?.data?.filter((ress) => {
-      return ress !== "" ||
-        null ||
-        (PortfolioData?.selected_catagories &&
-          PortfolioData?.selected_catagories[1].includes(
-            ress?.sub_category_id
-          ))
-        ? {
-          label: ress?.sub_category,
-          value: ress?.sub_category_id,
-        }
-        : "";
-    }),
+      contextData?.static_architecture_design?.data?.filter((ress) => {
+        return ress !== "" ||
+          null ||
+          (PortfolioData?.selected_catagories &&
+            PortfolioData?.selected_catagories[1].includes(
+              ress?.sub_category_id
+            ))
+          ? {
+              label: ress?.sub_category,
+              value: ress?.sub_category_id,
+            }
+          : "";
+      }),
   ];
   const newCatagoriesArchitecture =
     languagesArchitecture[0] &&
@@ -228,19 +234,19 @@ const PortfolioPane = () => {
 
   const languagesVisualization = [
     contextData?.static_visualization_design?.data?.length &&
-    contextData?.static_visualization_design?.data?.filter((ress) => {
-      return ress !== "" ||
-        null ||
-        (PortfolioData?.selected_catagories &&
-          PortfolioData?.selected_catagories[2].includes(
-            ress?.sub_category_id
-          ))
-        ? {
-          label: ress?.sub_category,
-          value: ress?.sub_category_id,
-        }
-        : "";
-    }),
+      contextData?.static_visualization_design?.data?.filter((ress) => {
+        return ress !== "" ||
+          null ||
+          (PortfolioData?.selected_catagories &&
+            PortfolioData?.selected_catagories[2].includes(
+              ress?.sub_category_id
+            ))
+          ? {
+              label: ress?.sub_category,
+              value: ress?.sub_category_id,
+            }
+          : "";
+      }),
   ];
   const newCatagoriesVisualization =
     languagesVisualization[0] &&
@@ -307,7 +313,10 @@ const PortfolioPane = () => {
               <HeaderDashboard />
               {loading ? (
                 <Backdrop
-                  sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
                   open={loading}
                 >
                   <CircularProgress color="inherit" />
@@ -324,8 +333,9 @@ const PortfolioPane = () => {
                         <>
                           <h3 className="pt-xxl-5 pt-4">Choose Catagory</h3>
                           <h4 className="pb-xxl-5 pb-4">
-                            Choose the catagories given below whether you want to processed
-                            with Architecture Designs or 3D Visualization.
+                            Choose the catagories given below whether you want
+                            to processed with Architecture Designs or 3D
+                            Visualization.
                           </h4>
                         </>
                       )}
@@ -349,7 +359,9 @@ const PortfolioPane = () => {
                               <h6 className="pt-3">Architecture Designs</h6>
                               <div className="d-flex align-items-center ">
                                 {/* <img src="./static/images/FolderImage.png" alt="" /> */}
-                                <span className="ps-2">{/* <b> 100+</b> Files */}</span>
+                                <span className="ps-2">
+                                  {/* <b> 100+</b> Files */}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -364,11 +376,16 @@ const PortfolioPane = () => {
                             }
                           >
                             <div className="dashboard-theme-color d-flex align-items-center flex-column text-white browse-project-card justify-content-center">
-                              <img src="./static/images/InteriorDesigning.png" alt="" />
+                              <img
+                                src="./static/images/InteriorDesigning.png"
+                                alt=""
+                              />
                               <h6 className="pt-3">3D Visualisation Designs</h6>
                               <div className="d-flex align-items-center ">
                                 {/* <img src="./static/images/FolderImage.png" alt="" /> */}
-                                <span className="ps-2">{/* <b> 100+</b> Files */}</span>
+                                <span className="ps-2">
+                                  {/* <b> 100+</b> Files */}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -376,48 +393,58 @@ const PortfolioPane = () => {
                       )}
                       {showUploadDesign?.architecture && (
                         <div className=" ArchitectureCardCatagoryMainInner row">
-                          {contextData?.static_architecture_design?.data?.length &&
-                            contextData?.static_architecture_design?.data?.map((res, key) => {
-                              return PortfolioData?.selected_catagories &&
-                                PortfolioData?.selected_catagories[1].includes(
-                                  res?.sub_category_id
-                                ) ? (
-                                <div className="col-xxl-3 col-xl-4  my-3 col-md-6" key={key}>
+                          {contextData?.static_architecture_design?.data
+                            ?.length &&
+                            contextData?.static_architecture_design?.data?.map(
+                              (res, key) => {
+                                return PortfolioData?.selected_catagories &&
+                                  PortfolioData?.selected_catagories[1].includes(
+                                    res?.sub_category_id
+                                  ) ? (
                                   <div
-                                    className="dashboard-theme-color d-flex align-items-center flex-column text-white browse-project-card justify-content-center residental-card"
-                                    onClick={() => {
-                                      dispatch({
-                                        type: "SUB_CATAGORY_DATA",
-                                        value: {
-                                          CataName: res?.sub_category,
-                                          CataId: res?.category_id,
-                                          SubCataId: res?.sub_category_id,
-                                        },
-                                      });
-                                      setUploadDesign({
-                                        home: false,
-                                        architecture: false,
-                                        visualiztion: false,
-                                        uploadCatagory: true,
-                                      });
-                                    }}
+                                    className="col-xxl-3 col-xl-4  my-3 col-md-6"
+                                    key={key}
                                   >
-                                    <img
-                                      src={res?.unactive_icon}
-                                      alt=""
-                                      style={{ filter: "brightness(4.5)" }}
-                                    />
-                                    <h6 className="pt-3">{res?.sub_category}</h6>
-                                    <div className="d-flex align-items-center ">
-                                      {/* <img src="./static/images/FolderImage.png" alt="" /> */}
-                                      <span className="ps-2">{/* <b> 100+</b> Files */}</span>
+                                    <div
+                                      className="dashboard-theme-color d-flex align-items-center flex-column text-white browse-project-card justify-content-center residental-card"
+                                      onClick={() => {
+                                        dispatch({
+                                          type: "SUB_CATAGORY_DATA",
+                                          value: {
+                                            CataName: res?.sub_category,
+                                            CataId: res?.category_id,
+                                            SubCataId: res?.sub_category_id,
+                                          },
+                                        });
+                                        setUploadDesign({
+                                          home: false,
+                                          architecture: false,
+                                          visualiztion: false,
+                                          uploadCatagory: true,
+                                        });
+                                      }}
+                                    >
+                                      <img
+                                        src={res?.unactive_icon}
+                                        alt=""
+                                        style={{ filter: "brightness(4.5)" }}
+                                      />
+                                      <h6 className="pt-3">
+                                        {res?.sub_category}
+                                      </h6>
+                                      <div className="d-flex align-items-center ">
+                                        {/* <img src="./static/images/FolderImage.png" alt="" /> */}
+                                        <span className="ps-2">
+                                          {/* <b> 100+</b> Files */}
+                                        </span>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              ) : (
-                                ""
-                              );
-                            })}
+                                ) : (
+                                  ""
+                                );
+                              }
+                            )}
                           <div
                             className="col-xxl-3 col-xl-4  my-3 col-md-6"
                             onClick={() => {
@@ -428,7 +455,9 @@ const PortfolioPane = () => {
                             }}
                           >
                             <div className=" d-flex align-items-center border browse-project-card justify-content-center residental-card">
-                              <h6 className="m-0 theme-text-color pe-4">Add New Catagory</h6>
+                              <h6 className="m-0 theme-text-color pe-4">
+                                Add New Catagory
+                              </h6>
                               <BsPlusLg className="theme-text-color" />
                             </div>
                           </div>
@@ -457,7 +486,8 @@ const PortfolioPane = () => {
                       )}
                       {showUploadDesign?.visualiztion && (
                         <div className=" VisualisationCardCatagoryMainInner row">
-                          {contextData?.static_visualization_design?.data?.length &&
+                          {contextData?.static_visualization_design?.data
+                            ?.length &&
                             contextData?.static_visualization_design?.data?.map(
                               (res, key) => {
                                 return PortfolioData?.selected_catagories &&
@@ -495,7 +525,9 @@ const PortfolioPane = () => {
                                         alt=""
                                         style={{ filter: "brightness(4.5)" }}
                                       />
-                                      <h6 className="pt-3">{res?.sub_category}</h6>
+                                      <h6 className="pt-3">
+                                        {res?.sub_category}
+                                      </h6>
                                       <div className="d-flex align-items-center ">
                                         {/* <img src="./static/images/FolderImage.png" alt="" /> */}
                                         <span className="ps-2">
@@ -519,7 +551,9 @@ const PortfolioPane = () => {
                             }}
                           >
                             <div className=" d-flex align-items-center border browse-project-card justify-content-center residental-card">
-                              <h6 className="m-0 theme-text-color pe-4">Add New Catagory</h6>
+                              <h6 className="m-0 theme-text-color pe-4">
+                                Add New Catagory
+                              </h6>
                               <BsPlusLg className="theme-text-color" />
                             </div>
                           </div>
@@ -570,8 +604,9 @@ const PortfolioPane = () => {
                                       <h5 className="card-title">
                                         $
                                         {
-                                          PortfolioData?.preview_catagory_designs?.price[
-                                          index
+                                          PortfolioData
+                                            ?.preview_catagory_designs?.price[
+                                            index
                                           ]
                                         }
                                         / sq.mtr
@@ -603,9 +638,10 @@ const PortfolioPane = () => {
                                             </Button>
                                           </div>
                                           {PortfolioData?.sub_catagory_data &&
-                                            PortfolioData?.sub_catagory_data?.CataId == 2 ? (
-                                            PortfolioData?.sub_catagory_data?.Video ===
-                                              "True" ? (
+                                          PortfolioData?.sub_catagory_data
+                                            ?.CataId == 2 ? (
+                                            PortfolioData?.sub_catagory_data
+                                              ?.Video === "True" ? (
                                               <div className="col-xxl-6 col-lg-12 col-6">
                                                 <Button
                                                   style={{
@@ -646,7 +682,10 @@ const PortfolioPane = () => {
                                               onClick={() => {
                                                 dispatch({
                                                   type: "DELETE_PROJECT",
-                                                  value: { show: true, index: index },
+                                                  value: {
+                                                    show: true,
+                                                    index: index,
+                                                  },
                                                 });
                                               }}
                                             >
@@ -663,14 +702,19 @@ const PortfolioPane = () => {
                             <div
                               className="col-xl-3 col-md-6   my-3"
                               onClick={() =>
-                                dispatch({ type: "UPLOAD_DESIGNS_MODAL", value: true })
+                                dispatch({
+                                  type: "UPLOAD_DESIGNS_MODAL",
+                                  value: true,
+                                })
                               }
                             >
                               <div
                                 className="card  flex-column bg-white  text-white d-flex align-items-center justify-content-center"
                                 style={{ border: "1px groove #bcbcbc" }}
                               >
-                                <BsPlusLg style={{ color: "#00a78b", fontSize: "22px" }} />
+                                <BsPlusLg
+                                  style={{ color: "#00a78b", fontSize: "22px" }}
+                                />
                                 <p
                                   style={{
                                     color: "#00a78b",
@@ -697,7 +741,10 @@ const PortfolioPane = () => {
                                 closeButton
                                 style={{ margin: "0 0 0 auto" }}
                                 onClick={() => {
-                                  dispatch({ type: "UPLOAD_DESIGNS_MODAL", value: false });
+                                  dispatch({
+                                    type: "UPLOAD_DESIGNS_MODAL",
+                                    value: false,
+                                  });
                                   blankfield();
                                   blankfields();
                                   setErrimg("none");
@@ -714,15 +761,15 @@ const PortfolioPane = () => {
                               <Modal.Body>
                                 <h4>
                                   {PortfolioData?.sub_catagory_data &&
-                                    PortfolioData?.sub_catagory_data.CataId == 1
+                                  PortfolioData?.sub_catagory_data.CataId == 1
                                     ? "Upload Your Price And Image "
                                     : canUploadVideo === "True"
-                                      ? "Upload Your Price, Image And Video "
-                                      : "Upload Your Price And Image"}
+                                    ? "Upload Your Price, Image And Video "
+                                    : "Upload Your Price And Image"}
                                 </h4>
 
                                 {PortfolioData?.sub_catagory_data &&
-                                  PortfolioData?.sub_catagory_data.CataId == 1 ? (
+                                PortfolioData?.sub_catagory_data.CataId == 1 ? (
                                   <Formik
                                     initialValues={{
                                       price: "",
@@ -747,11 +794,18 @@ const PortfolioPane = () => {
                                         "category_id",
                                         PortfolioData?.sub_catagory_data?.CataId
                                       );
-                                      catagoryUpload.append("image", values?.image);
-                                      catagoryUpload.append("price", values?.price);
+                                      catagoryUpload.append(
+                                        "image",
+                                        values?.image
+                                      );
+                                      catagoryUpload.append(
+                                        "price",
+                                        values?.price
+                                      );
                                       catagoryUpload.append(
                                         "sub_category_id",
-                                        PortfolioData?.sub_catagory_data?.SubCataId
+                                        PortfolioData?.sub_catagory_data
+                                          ?.SubCataId
                                       );
                                       if (!values?.image) {
                                         seterrimgdisplay("block");
@@ -765,13 +819,13 @@ const PortfolioPane = () => {
                                           .then((res) => {
                                             res.data.status === "Success"
                                               ? dispatch({
-                                                type: "UPLOAD_DESIGNS_MODAL",
-                                                value: false,
-                                              })
+                                                  type: "UPLOAD_DESIGNS_MODAL",
+                                                  value: false,
+                                                })
                                               : dispatch({
-                                                type: "UPLOAD_DESIGNS_MODAL",
-                                                value: true,
-                                              });
+                                                  type: "UPLOAD_DESIGNS_MODAL",
+                                                  value: true,
+                                                });
                                             setLoader(false);
                                             setdisplaycls("none");
                                             setimgPreview("");
@@ -788,7 +842,7 @@ const PortfolioPane = () => {
                                             <div className="selectprice">
                                               <BsCurrencyDollar />
                                               <Field
-                                                type="text"
+                                                type="number"
                                                 placeholder="Enter Your Price Per Square Meter "
                                                 className="priceInput"
                                                 name="price"
@@ -802,7 +856,7 @@ const PortfolioPane = () => {
                                           </div>
                                         </div>
                                         <div className="row m-0 pb-5 mb-3">
-                                          <div className="d-flex imageDropBoxDashboardProfessional align-items-center flex-row">
+                                          <div className="d-flex  imageDropBoxDashboardProfessional align-items-center flex-row">
                                             <button>
                                               <BsPlusLg
                                                 style={{
@@ -810,20 +864,29 @@ const PortfolioPane = () => {
                                                   fontSize: "17px",
                                                 }}
                                               />
-                                              <span className="ps-2">Upload Image</span>
+                                              <span className="ps-2">
+                                                Upload Image
+                                              </span>
                                             </button>
                                             <p className="ps-4">
-                                              Drag and Drop any image that might be helpful in
-                                              explaining your breif here
+                                              Drag and Drop any image that might
+                                              be helpful in explaining your
+                                              breif here
                                             </p>
                                             <input
                                               type="file"
+                                              style={{ cursor: "pointer" }}
                                               name="image"
                                               accept="image/*"
                                               onChange={(e) => {
-                                                setFieldValue("image", e?.target?.files[0]);
+                                                setFieldValue(
+                                                  "image",
+                                                  e?.target?.files[0]
+                                                );
                                                 setimgPreview(
-                                                  URL.createObjectURL(e.target.files[0])
+                                                  URL.createObjectURL(
+                                                    e.target.files[0]
+                                                  )
                                                 );
                                                 setgetevent(e);
                                                 setdisplaycls("block");
@@ -831,7 +894,9 @@ const PortfolioPane = () => {
                                               }}
                                             />
                                           </div>
-                                          <span className={`${errimgdisplay} text-danger`}>
+                                          <span
+                                            className={`${errimgdisplay} text-danger`}
+                                          >
                                             Image required
                                           </span>
                                           <div
@@ -845,7 +910,8 @@ const PortfolioPane = () => {
                                             <img
                                               src={imgPreview}
                                               style={{
-                                                width: "200px",
+                                                width: "100px",
+                                                height: "70px",
                                               }}
                                               alt=""
                                             />
@@ -899,15 +965,24 @@ const PortfolioPane = () => {
                                         "category_id",
                                         PortfolioData?.sub_catagory_data?.CataId
                                       );
-                                      catagoryUpload.append("image", values?.image);
+                                      catagoryUpload.append(
+                                        "image",
+                                        values?.image
+                                      );
                                       catagoryUpload.append(
                                         "video",
-                                        canUploadVideo === "True" ? values?.video : ""
+                                        canUploadVideo === "True"
+                                          ? values?.video
+                                          : ""
                                       );
-                                      catagoryUpload.append("price", values?.price);
+                                      catagoryUpload.append(
+                                        "price",
+                                        values?.price
+                                      );
                                       catagoryUpload.append(
                                         "sub_category_id",
-                                        PortfolioData?.sub_catagory_data?.SubCataId
+                                        PortfolioData?.sub_catagory_data
+                                          ?.SubCataId
                                       );
                                       if (!values.image) {
                                         seterrimgdisplay("block");
@@ -985,8 +1060,9 @@ const PortfolioPane = () => {
                                           </div>
                                         </div>
                                         <div
-                                          className={`row ${canUploadVideo ? "mt-4" : "mt-2"
-                                            }`}
+                                          className={`row ${
+                                            canUploadVideo ? "mt-4" : "mt-2"
+                                          }`}
                                         >
                                           {canUploadVideo === "True" ? (
                                             <>
@@ -997,7 +1073,8 @@ const PortfolioPane = () => {
                                                 <div
                                                   className="selectCategoryMain  subCataSelectInnerMainDiv d-flex align-items-center h-100"
                                                   style={{
-                                                    border: "1px solid rgb(118, 118, 118)",
+                                                    border:
+                                                      "1px solid rgb(118, 118, 118)",
                                                     borderRadius: "5px",
                                                   }}
                                                 >
@@ -1012,18 +1089,26 @@ const PortfolioPane = () => {
                                                         e?.target?.files[0]
                                                       );
                                                       setimgPreviewList(
-                                                        URL.createObjectURL(e.target.files[0])
+                                                        URL.createObjectURL(
+                                                          e.target.files[0]
+                                                        )
                                                       );
 
-                                                      let name = e.target.files[0].name;
+                                                      let name =
+                                                        e.target.files[0].name;
                                                       const maxLength = 20;
                                                       const trimmedFileName =
                                                         name.length > maxLength
-                                                          ? name.slice(0, maxLength) +
-                                                          "..." +
-                                                          name.slice(-4)
+                                                          ? name.slice(
+                                                              0,
+                                                              maxLength
+                                                            ) +
+                                                            "..." +
+                                                            name.slice(-4)
                                                           : name;
-                                                      setimglbl(trimmedFileName);
+                                                      setimglbl(
+                                                        trimmedFileName
+                                                      );
                                                       setclsstyle("block");
                                                       setimgstyle("block");
                                                       setimgclear(e);
@@ -1060,20 +1145,27 @@ const PortfolioPane = () => {
                                                         setimgPreviewList("");
                                                         imgnull(imgclear);
                                                         setclsstyle("none");
-                                                        setFieldValue("image", null);
+                                                        setFieldValue(
+                                                          "image",
+                                                          null
+                                                        );
                                                         setimgdisplay("none");
                                                       }}
                                                     />
                                                   </span>
                                                 </div>
-                                                <span className={`${errimg} text-danger`}>
+                                                <span
+                                                  className={`${errimg} text-danger`}
+                                                >
                                                   Image required
                                                 </span>
                                               </div>
                                               <div className="col ">
                                                 <div
                                                   className="selectprice subCataSelectInnerMainDiv "
-                                                  style={{ paddingLeft: "50px" }}
+                                                  style={{
+                                                    paddingLeft: "50px",
+                                                  }}
                                                 >
                                                   <IoVideocamOutline />
                                                   <input
@@ -1086,15 +1178,21 @@ const PortfolioPane = () => {
                                                         e?.target?.files[0]
                                                       );
                                                       setvidclear(e);
-                                                      let name = e.target.files[0].name;
+                                                      let name =
+                                                        e.target.files[0].name;
                                                       const maxLength = 20;
                                                       const trimmedFileName =
                                                         name.length > maxLength
-                                                          ? name.slice(0, maxLength) +
-                                                          "..." +
-                                                          name.slice(-4)
+                                                          ? name.slice(
+                                                              0,
+                                                              maxLength
+                                                            ) +
+                                                            "..." +
+                                                            name.slice(-4)
                                                           : name;
-                                                      setvidlbl(trimmedFileName);
+                                                      setvidlbl(
+                                                        trimmedFileName
+                                                      );
                                                       setvidstyle("block");
                                                       setviddisplay("none");
                                                     }}
@@ -1118,7 +1216,10 @@ const PortfolioPane = () => {
                                                         setvidstyle("none");
                                                         setvidlbl("");
                                                         vidnull(vidclear);
-                                                        setFieldValue("video", null);
+                                                        setFieldValue(
+                                                          "video",
+                                                          null
+                                                        );
                                                       }}
                                                     />
                                                   </span>
@@ -1142,11 +1243,14 @@ const PortfolioPane = () => {
                                                         fontSize: "17px",
                                                       }}
                                                     />
-                                                    <span className="ps-2">Upload Image</span>
+                                                    <span className="ps-2">
+                                                      Upload Image
+                                                    </span>
                                                   </button>
                                                   <p className="ps-4">
-                                                    Drag and Drop any image that might be
-                                                    helpful in explaining your breif here
+                                                    Drag and Drop any image that
+                                                    might be helpful in
+                                                    explaining your breif here
                                                   </p>
                                                   <input
                                                     type="file"
@@ -1158,7 +1262,9 @@ const PortfolioPane = () => {
                                                         e?.target?.files[0]
                                                       );
                                                       setimgPreview(
-                                                        URL.createObjectURL(e.target.files[0])
+                                                        URL.createObjectURL(
+                                                          e.target.files[0]
+                                                        )
                                                       );
                                                       setgetevent(e);
                                                       setdisplaycls("block");
@@ -1192,7 +1298,10 @@ const PortfolioPane = () => {
                                                       paddingLeft: "20%",
                                                     }}
                                                     onClick={() => {
-                                                      setFieldValue("image", "");
+                                                      setFieldValue(
+                                                        "image",
+                                                        ""
+                                                      );
                                                       setimgPreview(null);
                                                       setdisplaycls("none");
                                                       fileclear(getevent);
@@ -1206,14 +1315,19 @@ const PortfolioPane = () => {
                                               <div className="col d-none ">
                                                 <div
                                                   className="selectprice subCataSelectInnerMainDiv "
-                                                  style={{ paddingLeft: "50px" }}
+                                                  style={{
+                                                    paddingLeft: "50px",
+                                                  }}
                                                 >
                                                   <IoVideocamOutline />
                                                   <input
                                                     type="file"
                                                     name="video"
                                                     onInput={(e) => {
-                                                      setFieldValue("video", "");
+                                                      setFieldValue(
+                                                        "video",
+                                                        ""
+                                                      );
                                                     }}
                                                   />
                                                   <p>Upload a Video</p>
@@ -1239,7 +1353,7 @@ const PortfolioPane = () => {
                           </div>
 
                           {PortfolioData?.sub_catagory_data &&
-                            PortfolioData?.sub_catagory_data.CataId == 1 ? (
+                          PortfolioData?.sub_catagory_data.CataId == 1 ? (
                             <button
                               className="dashboard-theme-color mb-5"
                               onClick={() => {
@@ -1249,7 +1363,10 @@ const PortfolioPane = () => {
                                   visualiztion: false,
                                   uploadCatagory: false,
                                 });
-                                dispatch({ type: "SUB_CATAGORY_DESIGNS", value: [] });
+                                dispatch({
+                                  type: "SUB_CATAGORY_DESIGNS",
+                                  value: [],
+                                });
                               }}
                             >
                               <span>
@@ -1267,7 +1384,10 @@ const PortfolioPane = () => {
                                   visualiztion: true,
                                   uploadCatagory: false,
                                 });
-                                dispatch({ type: "SUB_CATAGORY_DESIGNS", value: [] });
+                                dispatch({
+                                  type: "SUB_CATAGORY_DESIGNS",
+                                  value: [],
+                                });
                               }}
                             >
                               <span>
@@ -1291,14 +1411,18 @@ const PortfolioPane = () => {
                       <button
                         className="closeModalPreviewData"
                         onClick={() => {
-                          dispatch({ type: "PREVIEW_DATA_MODAL", value: false });
+                          dispatch({
+                            type: "PREVIEW_DATA_MODAL",
+                            value: false,
+                          });
                         }}
                       >
                         x
                       </button>
 
                       {PortfolioData?.preview_catagory_data &&
-                        PortfolioData?.preview_catagory_data?.type === "image" && (
+                        PortfolioData?.preview_catagory_data?.type ===
+                          "image" && (
                           <img
                             src={PortfolioData?.preview_catagory_data?.image}
                             alt=""
@@ -1307,9 +1431,13 @@ const PortfolioPane = () => {
                           />
                         )}
                       {PortfolioData?.preview_catagory_data &&
-                        PortfolioData?.preview_catagory_data?.type === "video" &&
+                        PortfolioData?.preview_catagory_data?.type ===
+                          "video" &&
                         PortfolioData?.preview_catagory_data?.video && (
-                          <video className="img-fluid h-100 object-fit-contain" controls>
+                          <video
+                            className="img-fluid h-100 object-fit-contain"
+                            controls
+                          >
                             <source
                               src={
                                 PortfolioData?.preview_catagory_data?.video &&
@@ -1358,19 +1486,24 @@ const PortfolioPane = () => {
                               setCatErr(true);
                               return false;
                             }
-                            axios.put("http://13.52.16.160:8082/professional/sel_sub_category", {
-                              ...cookies?.user_data,
-                              category_id: "1",
-                              new_sub_cat: values?.new_sub_cat,
-                            }).then((res) => {
-                              return res?.data?.status === "Success"
-                                ? (dispatch({
-                                  type: "ARCHITECTURE_DESIGN_UPLOAD_MODAL",
-                                  value: false,
-                                }),
-                                  setCatagoriesDropdown([]))
-                                : "";
-                            });
+                            axios
+                              .put(
+                                "http://13.52.16.160:8082/professional/sel_sub_category",
+                                {
+                                  ...cookies?.user_data,
+                                  category_id: "1",
+                                  new_sub_cat: values?.new_sub_cat,
+                                }
+                              )
+                              .then((res) => {
+                                return res?.data?.status === "Success"
+                                  ? (dispatch({
+                                      type: "ARCHITECTURE_DESIGN_UPLOAD_MODAL",
+                                      value: false,
+                                    }),
+                                    setCatagoriesDropdown([]))
+                                  : "";
+                              });
                           }}
                         >
                           {({ isSubmitting, setFieldValue }) => (
@@ -1384,7 +1517,9 @@ const PortfolioPane = () => {
                                       setCatErr(false);
                                       setFieldValue(
                                         "new_sub_cat",
-                                        catagoriesDropdown?.map((val) => val?.value)
+                                        catagoriesDropdown?.map(
+                                          (val) => val?.value
+                                        )
                                       );
                                       setCatagoriesDropdown(catagoriesDropdown);
                                     }}
@@ -1448,17 +1583,20 @@ const PortfolioPane = () => {
                               return false;
                             }
                             axios
-                              .put("http://13.52.16.160:8082/professional/sel_sub_category", {
-                                ...cookies?.user_data,
-                                category_id: "2",
-                                new_sub_cat: values?.new_sub_cat,
-                              })
+                              .put(
+                                "http://13.52.16.160:8082/professional/sel_sub_category",
+                                {
+                                  ...cookies?.user_data,
+                                  category_id: "2",
+                                  new_sub_cat: values?.new_sub_cat,
+                                }
+                              )
                               .then((res) => {
                                 return res?.data?.status === "Success"
                                   ? (dispatch({
-                                    type: "VISUALIZATION_DESIGN_UPLOAD_MODAL",
-                                    value: false,
-                                  }),
+                                      type: "VISUALIZATION_DESIGN_UPLOAD_MODAL",
+                                      value: false,
+                                    }),
                                     setCatagoriesDropdown([]))
                                   : "";
                               });
@@ -1475,7 +1613,9 @@ const PortfolioPane = () => {
                                       setCatErr(false);
                                       setFieldValue(
                                         "new_sub_cat",
-                                        catagoriesDropdown?.map((val) => val?.value)
+                                        catagoriesDropdown?.map(
+                                          (val) => val?.value
+                                        )
                                       );
                                       setCatagoriesDropdown(catagoriesDropdown);
                                     }}
@@ -1525,14 +1665,18 @@ const PortfolioPane = () => {
                           <Button
                             className="theme-text-color bg-white mx-2"
                             style={{ border: "2px solid" }}
-                            onClick={() => dispatch({ type: "DELETE_PROJECT", value: false })}
+                            onClick={() =>
+                              dispatch({ type: "DELETE_PROJECT", value: false })
+                            }
                           >
                             Close
                           </Button>
                           <Button
                             className="theme-bg-color border-0 mx-2"
                             onClick={() =>
-                              deleteProject(PortfolioData?.delete_project_modal?.index)
+                              deleteProject(
+                                PortfolioData?.delete_project_modal?.index
+                              )
                             }
                           >
                             Delete Project
@@ -1541,7 +1685,8 @@ const PortfolioPane = () => {
                       </Modal.Body>
                     </Modal>
                   </>
-                </main>)}
+                </main>
+              )}
             </div>
           </div>
         </div>

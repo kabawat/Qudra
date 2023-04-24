@@ -106,9 +106,11 @@ const EditProfileProfessional = ({ location }) => {
     // languages: Yup.array().required('suraj '),
     education: Yup.string().required("Education  required"),
     // skills: Yup.array().required("Skills required"),
-    job_description: Yup.string().trim()
+    job_description: Yup.string()
+      .trim()
       .min(100, "Minimum 100 character required")
       .required("Job description  required"),
+    price_range: Yup.string().required("Price range required"),
 
     nation: Yup.string().required("Country name required"),
     bio: Yup.string().min(100).max(500).trim().required("About required"),
@@ -232,7 +234,7 @@ const EditProfileProfessional = ({ location }) => {
   );
 
   const [eduErr, setEduErr] = useState(false);
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
   const profileUpdated = () => {
     if (cookies?.user_data?.category_selected) {
       navigate("/professionaldashboard");
@@ -263,6 +265,7 @@ const EditProfileProfessional = ({ location }) => {
                   skills: arraySkills,
                   mobile_verify: "True",
                   experience: location?.state?.experience,
+                  price_range: location?.state?.price_range,
                 }}
                 validationSchema={SetUpSchema}
                 onSubmit={(value) => {
@@ -355,7 +358,7 @@ const EditProfileProfessional = ({ location }) => {
                                 type: "FETCH_PROFILE_DATA",
                                 value: res?.data?.data,
                               });
-                              setShow(true)
+                              setShow(true);
                             });
                         }
                       });
@@ -419,19 +422,28 @@ const EditProfileProfessional = ({ location }) => {
                           alt="United States"
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
                         /> */}
-                        <CountrySelect
+                        {/* <CountrySelect
                           value={value}
                           disabled
                           onChange={(val) => {
                             setValue(val);
                             setFieldValue("nation", val?.name);
-                            // let id = val.id;
-                            // setimgcode(id.toLocaleUpperCase());
+                            let id = val.id;
+                            setimgcode(id.toLocaleUpperCase());
                           }}
                           flags={true}
                           placeholder="Select a Country"
                           name="nation"
-                        />
+                        /> */}
+                        <div className="create-account-input">
+                          <Field
+                            value={value.name}
+                            disabled
+                            name="nation"
+                            type="text"
+                            className="form-control"
+                          />
+                        </div>
                         <ErrorMessage
                           name="nation"
                           component="div"
@@ -448,12 +460,12 @@ const EditProfileProfessional = ({ location }) => {
                             enableAreaCodes
                             disabled
                             name="mobile_no"
-                            onChange={(pho, country) =>
-                              setFieldValue(
-                                "mobile_no",
-                                `+${country.dialCode}${pho}`
-                              )
-                            }
+                            // onChange={(pho, country) =>
+                            //   setFieldValue(
+                            //     "mobile_no",
+                            //     `+${country.dialCode}${pho}`
+                            //   )
+                            // }
                             inputStyle={{
                               padding: "26px",
                               width: "100%",
@@ -497,7 +509,9 @@ const EditProfileProfessional = ({ location }) => {
                               photoChange(event);
                             }}
                           />
-                          <p style={{ marginTop: "10px" }}>Profile Picture</p>
+                          <p style={{ marginTop: "10px", color: "#505050" }}>
+                            Profile Picture
+                          </p>
                           <ErrorMessage
                             name="photograph"
                             component="div"
@@ -513,7 +527,7 @@ const EditProfileProfessional = ({ location }) => {
                           as="textarea"
                           className="form-control h-100"
                           id="exampleFormControlTextarea1"
-                          rows="9"
+                          rows="7"
                           name="bio"
                           maxLength="500"
                           placeholder="About"
@@ -521,7 +535,7 @@ const EditProfileProfessional = ({ location }) => {
                         <div
                           style={{
                             position: "absolute",
-                            bottom: "-7%",
+                            bottom: "-4%",
                             left: "3%",
                           }}
                         >
@@ -534,7 +548,7 @@ const EditProfileProfessional = ({ location }) => {
                         />
                       </div>
                     </div>
-                    <div className="row">
+                    <div className="row marginForCover">
                       <div className="col-md-3 col-xl-2 my-md-3 my-1">
                         <div>
                           <div
@@ -556,7 +570,10 @@ const EditProfileProfessional = ({ location }) => {
                               photoChange2(event);
                             }}
                           />
-                          <p style={{ marginTop: "10px" }}> Background Image</p>
+                          <p style={{ marginTop: "10px", color: "#505050" }}>
+                            {" "}
+                            Cover Image
+                          </p>
                           <ErrorMessage
                             name="photograph2"
                             component="div"
@@ -619,8 +636,8 @@ const EditProfileProfessional = ({ location }) => {
                               otherEdu
                                 ? "Other"
                                 : educationSelect
-                                  ? educationSelect
-                                  : location.state.education
+                                ? educationSelect
+                                : location.state.education
                             }
                             className="form-select form-education-select"
                             onChange={(e) => {
@@ -643,12 +660,13 @@ const EditProfileProfessional = ({ location }) => {
                             {eduErr ? "Education Required " : ""}
                           </p>
                           <div className="certificate-other">
-                            <div
-                              onClick={() => {
-                                document.getElementById("certificate").click();
-                              }}
-                            >
+                            <div>
                               <button
+                                onClick={() => {
+                                  document
+                                    .getElementById("certificate")
+                                    .click();
+                                }}
                                 type="button"
                                 id="custom-button"
                                 style={{
@@ -658,25 +676,35 @@ const EditProfileProfessional = ({ location }) => {
                                 Update Certificate
                               </button>
                               <span id="custom-text">
-                                {certificate?.name
-                                  ? certificate.name.length > 10
-                                    ? certificate.name.slice(0, 10) +
-                                    ".." +
-                                    certificate.name.slice(-4)
-                                    : certificate.name
-                                  : location.state.professional_certificate
-                                    .length > 10
+                                <a
+                                  href={location.state.professional_certificate}
+                                  style={{
+                                    color: "#505050",
+                                    textDecoration: "none",
+                                  }}
+                                  target="_blank"
+                                  download
+                                >
+                                  {certificate?.name
+                                    ? certificate.name.length > 10
+                                      ? certificate.name.slice(0, 10) +
+                                        ".." +
+                                        certificate.name.slice(-4)
+                                      : certificate.name
+                                    : location.state.professional_certificate
+                                        .length > 10
                                     ? location.state.professional_certificate.slice(
-                                      59,
-                                      69
-                                    ) +
-                                    ".." +
-                                    location.state.professional_certificate.slice(
-                                      -4
-                                    )
+                                        59,
+                                        69
+                                      ) +
+                                      ".." +
+                                      location.state.professional_certificate.slice(
+                                        -4
+                                      )
                                     : location.state.professional_certificate.slice(
-                                      59
-                                    )}
+                                        59
+                                      )}
+                                </a>
                               </span>
                             </div>
                             <input
@@ -760,6 +788,26 @@ const EditProfileProfessional = ({ location }) => {
                             component="div"
                             className="m-2 text-danger"
                           />
+                        </div>
+                      </div>
+                      <div className="row justify-content-center">
+                        <div className="col-md my-md-3 my-1">
+                          <div className="create-account-input">
+                            <Field
+                              name="price_range"
+                              type="number"
+                              className="form-control"
+                              placeholder="Enter Minimum Rate Per Square Meter in $"
+                            />
+
+                            <i class="fa-solid fa-tag"></i>
+
+                            <ErrorMessage
+                              name="price_range"
+                              component="div"
+                              className="m-2 text-danger"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>

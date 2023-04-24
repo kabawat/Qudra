@@ -155,7 +155,7 @@ const ClientBuySellDesign = () => {
                     <>
                       <h1>Choose Categories</h1>
                       <div className="category-button">
-                        <h6 className="text-center">Designs I Want To Buy</h6>
+                        <h6 className="text-center">I want to buy design</h6>
                       </div>
 
                       <br />
@@ -193,7 +193,7 @@ const ClientBuySellDesign = () => {
                                   >
                                     <div className="row  category-box">
                                       <div className="col-md-3 col-12 h-100 text-center  px-2">
-                                        <div className="p-md-1 p-lg-3 icon-box active">
+                                        <div className="p-md-1 p-lg-3 icon-box ">
                                           <img
                                             id={i + "icon"}
                                             src={name?.unactive_icon}

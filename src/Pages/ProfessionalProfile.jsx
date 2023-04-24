@@ -20,6 +20,7 @@ import { TbHeart } from "react-icons/tb";
 import { GoUnverified } from "react-icons/go";
 import Button from "react-bootstrap/Button";
 import { ShareSocial } from "react-share-social";
+import { BsCurrencyDollar } from "react-icons/bs";
 
 import * as Yup from "yup";
 import { useCookies } from "react-cookie";
@@ -81,95 +82,97 @@ const ProfessionalProfile = () => {
 
   useEffect(() => {
     setLoader(true);
-    axios.post("http://13.52.16.160:8082/professional/professional_profile", {
-      client_id: cookies?.user_data?.user_id,
-      role: cookies?.user_data?.role,
-      user_token: cookies?.user_data?.user_token,
-      professional_id: params?.professional_id,
-    }).then((respo) => {
-      setLikepro(respo?.data?.data?.liked);
-      setRating({
-        ...ratingreview,
-        rating: !respo?.data?.data?.rating_given
-          ? 0
-          : respo?.data?.data?.rating_given,
-        review: respo?.data?.data?.review_given
-          ? respo?.data?.data?.review_given
-          : "",
-      });
-      if (respo?.data?.data?.rating_given === false) {
-        setReviewHeading(false);
-      } else {
-        setReviewHeading(true);
-      }
-      if (respo?.data?.status === "Success") {
-        if (cookies?.user_data?.role === "client") {
-          axios
-            .post(
-              "http://13.52.16.160:8082/professional/professional_sub_cat",
-              {
-                client_id: cookies?.user_data?.user_id,
-                professional_id: params?.professional_id,
-                role: cookies?.user_data?.role,
-                user_token: cookies?.user_data?.user_token,
-              }
-            )
-            .then((res) => {
-              if (res?.data?.status === "Success") {
-                contextData?.dispatch({
-                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                  value: {
-                    details: respo?.data?.data,
-                    selected_catagories: res?.data?.response,
-                  },
-                });
-
-                setLoader(false);
-              } else {
-                contextData?.dispatch({
-                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                  value: {
-                    details: respo?.data?.data,
-                    selected_catagories: {
-                      1: [],
-                      2: [],
-                      3: [],
-                    },
-                  },
-                });
-                navigate(-1);
-                setLoader(false);
-              }
-            });
+    axios
+      .post("http://13.52.16.160:8082/professional/professional_profile", {
+        client_id: cookies?.user_data?.user_id,
+        role: cookies?.user_data?.role,
+        user_token: cookies?.user_data?.user_token,
+        professional_id: params?.professional_id,
+      })
+      .then((respo) => {
+        setLikepro(respo?.data?.data?.liked);
+        setRating({
+          ...ratingreview,
+          rating: !respo?.data?.data?.rating_given
+            ? 0
+            : respo?.data?.data?.rating_given,
+          review: respo?.data?.data?.review_given
+            ? respo?.data?.data?.review_given
+            : "",
+        });
+        if (respo?.data?.data?.rating_given === false) {
+          setReviewHeading(false);
         } else {
-          axios
-            .post(
-              "http://13.52.16.160:8082/professional/professional_sub_cat",
-              {
-                user_id: cookies?.user_data?.user_id,
-                role: cookies?.user_data?.role,
-                user_token: cookies?.user_data?.user_token,
-              }
-            )
-            .then((response) => {
-              if (response?.data?.status === "Success") {
-                contextData?.dispatch({
-                  type: "PROFESSIONAL_USER_PROFILE_DATA",
-                  value: {
-                    details: respo?.data?.data,
-                    selected_catagories: response?.data?.response,
-                  },
-                });
-                setLoader(false);
-              } else {
-                navigate(-1);
-              }
-            });
+          setReviewHeading(true);
         }
-      } else {
-        navigate("/clientdashboard");
-      }
-    });
+        if (respo?.data?.status === "Success") {
+          if (cookies?.user_data?.role === "client") {
+            axios
+              .post(
+                "http://13.52.16.160:8082/professional/professional_sub_cat",
+                {
+                  client_id: cookies?.user_data?.user_id,
+                  professional_id: params?.professional_id,
+                  role: cookies?.user_data?.role,
+                  user_token: cookies?.user_data?.user_token,
+                }
+              )
+              .then((res) => {
+                if (res?.data?.status === "Success") {
+                  contextData?.dispatch({
+                    type: "PROFESSIONAL_USER_PROFILE_DATA",
+                    value: {
+                      details: respo?.data?.data,
+                      selected_catagories: res?.data?.response,
+                    },
+                  });
+
+                  setLoader(false);
+                } else {
+                  contextData?.dispatch({
+                    type: "PROFESSIONAL_USER_PROFILE_DATA",
+                    value: {
+                      details: respo?.data?.data,
+                      selected_catagories: {
+                        1: [],
+                        2: [],
+                        3: [],
+                      },
+                    },
+                  });
+                  navigate(-1);
+                  setLoader(false);
+                }
+              });
+          } else {
+            axios
+              .post(
+                "http://13.52.16.160:8082/professional/professional_sub_cat",
+                {
+                  user_id: cookies?.user_data?.user_id,
+                  role: cookies?.user_data?.role,
+                  user_token: cookies?.user_data?.user_token,
+                }
+              )
+              .then((response) => {
+                if (response?.data?.status === "Success") {
+                  contextData?.dispatch({
+                    type: "PROFESSIONAL_USER_PROFILE_DATA",
+                    value: {
+                      details: respo?.data?.data,
+                      selected_catagories: response?.data?.response,
+                    },
+                  });
+                  setLoader(false);
+                } else {
+                  navigate(-1);
+                }
+              });
+          }
+        } else {
+          navigate("/clientdashboard");
+        }
+      });
   }, [cookies?.user_data]);
 
   useEffect(() => {
@@ -446,8 +449,8 @@ const ProfessionalProfile = () => {
                         name="read-only"
                         value={parseInt(
                           contextData?.professional_user_profile_data &&
-                          contextData?.professional_user_profile_data?.details
-                            ?.ratings
+                            contextData?.professional_user_profile_data?.details
+                              ?.ratings
                         )}
                         readOnly
                       />
@@ -489,6 +492,16 @@ const ProfessionalProfile = () => {
                       Reviews
                     </span>
                   </div>
+                  <div className="col-md">
+                    <span>
+                      <span style={{ padding: "0 5px" }}>
+                        Minimum Rate Per sq.mtr :
+                        {contextData?.professional_user_profile_data &&
+                          contextData?.professional_user_profile_data?.details
+                            ?.price_range}
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -508,7 +521,7 @@ const ProfessionalProfile = () => {
                 >
                   <div className="py-md-0 py-2 Cur_proFes">
                     <img src="/static/images/addHire.png" alt="" />
-                    <h4>Hire Professional</h4>
+                    <h4>Hire Freelancer</h4>
                   </div>
                 </div>
                 <div
@@ -689,7 +702,7 @@ const ProfessionalProfile = () => {
                           }}
                         />
                       )}
-                      <h4>{likepro ? "Liked" : "Like this Profile"}</h4>
+                      <h4>{likepro ? "Liked" : "Like"}</h4>
                     </div>
                   </div>
                 </div>
@@ -710,74 +723,74 @@ const ProfessionalProfile = () => {
       </section>
       {contextData?.professional_user_profile_data?.selected_catagories[1]
         ?.length && (
-          <section
-            className="Top_Earners  profile-page-sec-four"
-            style={windowSize?.width > 768 ? customStyleOne : customStyleTwo}
-          >
-            <div className="container">
-              <div className="Top_Earners_Ineer">
-                <h2>Architecture Designs Portfolio </h2>
-              </div>
-              <OwlCarousel
-                className="owl-carousel portfolio-slider owl-theme"
-                {...options}
-              >
-                {contextData?.static_architecture_design?.data?.length &&
-                  contextData?.static_architecture_design?.data?.map(
-                    (res, key) => {
-                      return contextData?.professional_user_profile_data &&
-                        contextData?.professional_user_profile_data?.selected_catagories[1].includes(
-                          res.sub_category_id
-                        ) ? (
-                        <CatagoryResultCard
-                          key={key}
-                          res={res}
-                          catagoryId={1}
-                          subCatagoryId={res.sub_category_id}
-                        />
-                      ) : (
-                        ""
-                      );
-                    }
-                  )}
-              </OwlCarousel>
+        <section
+          className="Top_Earners  profile-page-sec-four"
+          style={windowSize?.width > 768 ? customStyleOne : customStyleTwo}
+        >
+          <div className="container">
+            <div className="Top_Earners_Ineer">
+              <h2>Architecture Designs Portfolio </h2>
             </div>
-          </section>
-        )}
+            <OwlCarousel
+              className="owl-carousel portfolio-slider owl-theme"
+              {...options}
+            >
+              {contextData?.static_architecture_design?.data?.length &&
+                contextData?.static_architecture_design?.data?.map(
+                  (res, key) => {
+                    return contextData?.professional_user_profile_data &&
+                      contextData?.professional_user_profile_data?.selected_catagories[1].includes(
+                        res.sub_category_id
+                      ) ? (
+                      <CatagoryResultCard
+                        key={key}
+                        res={res}
+                        catagoryId={1}
+                        subCatagoryId={res.sub_category_id}
+                      />
+                    ) : (
+                      ""
+                    );
+                  }
+                )}
+            </OwlCarousel>
+          </div>
+        </section>
+      )}
 
       {contextData?.professional_user_profile_data?.selected_catagories[2]
         ?.length && (
-          <section className="Top_Earners Recent_Earners profile-page-sec-four">
-            <div className="container">
-              <div className="Top_Earners_Ineer">
-                <h2>3D Visualization Designs Portfolio</h2>
-              </div>
-              <OwlCarousel
-                className="owl-carousel portfolio-slider owl-theme"
-                {...options}
-              >
-                {contextData?.static_visualization_design?.data?.length &&
-                  contextData?.static_visualization_design?.data?.map(
-                    (res, key) => {
-                      return contextData?.professional_user_profile_data &&
-                        contextData?.professional_user_profile_data?.selected_catagories[2].includes(
-                          res.sub_category_id
-                        ) ? (
-                        <CatagoryResultCard
-                          key={key}
-                          res={res}
-                          catagoryId={2}
-                          subCatagoryId={res.sub_category_id}
-                        />
-                      ) : (
-                        ""
-                      );
-                    }
-                  )}
-              </OwlCarousel>
+        <section className="Top_Earners Recent_Earners profile-page-sec-four">
+          <div className="container">
+            <div className="Top_Earners_Ineer">
+              <h2>3D Visualization Designs Portfolio</h2>
             </div>
-          </section>
-        )}
+            <OwlCarousel
+              className="owl-carousel portfolio-slider owl-theme"
+              {...options}
+            >
+              {contextData?.static_visualization_design?.data?.length &&
+                contextData?.static_visualization_design?.data?.map(
+                  (res, key) => {
+                    return contextData?.professional_user_profile_data &&
+                      contextData?.professional_user_profile_data?.selected_catagories[2].includes(
+                        res.sub_category_id
+                      ) ? (
+                      <CatagoryResultCard
+                        key={key}
+                        res={res}
+                        catagoryId={2}
+                        subCatagoryId={res.sub_category_id}
+                      />
+                    ) : (
+                      ""
+                    );
+                  }
+                )}
+            </OwlCarousel>
+          </div>
+        </section>
+      )}
 
       <section className="profile-page-sec-five">
         <div className="container">
@@ -939,13 +952,15 @@ const ProfessionalProfile = () => {
                       className="mt-2 text-danger"
                     />
                   </div>
-                  <div className="col-md-6 ">
+                  <div className="col-md-6 " style={{ position: "relative" }}>
                     <Field
                       name="budget"
                       type="number"
-                      placeholder="Estimated Budget"
+                      placeholder="Estimated Budget in $"
                       min="0"
+                      style={{ paddingLeft: "7%" }}
                     />
+
                     <ErrorMessage
                       name="budget"
                       component="div"
@@ -971,7 +986,9 @@ const ProfessionalProfile = () => {
         theme="light"
       />
     </main>
-  ) : <Loader />
+  ) : (
+    <Loader />
+  );
 };
 
 export default ProfessionalProfile;

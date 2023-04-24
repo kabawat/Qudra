@@ -50,7 +50,52 @@ const ClientGuidlines = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              <div className="client-guidelines-wrapper row px-md-3">
+
+              <div className="professional-guidelines-wrapper">
+                <div className="Guidelines">
+                  <div className="images-container">
+                    <div className="row p-4">
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <div className="video-container">
+                          <video
+                            src={clientGuideVid}
+                            poster={clientGuidelineImg1}
+                            controls
+                            preload="auto"
+                          >
+                            This video is not supported by your browser
+                          </video>
+                        </div>
+                      </div>
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <img src={clientGuidelineImg1} alt="guideline-image1" />
+                      </div>
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <img src={clientGuidelineImg2} alt="guideline-image2" />
+                      </div>
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <img src={clientGuidelineImg3} alt="guideline-image3" />
+                      </div>
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <img src={clientGuidelineImg4} alt="guideline-image4" />
+                      </div>
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <img src={clientGuidelineImg5} alt="guideline-image5" />
+                      </div>
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <img src={clientGuidelineImg6} alt="guideline-image6" />
+                      </div>
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <img src={clientGuidelineImg7} alt="guideline-image7" />
+                      </div>
+                      <div className="col-md-6 col-lg-6 my-2">
+                        <img src={clientGuidelineImg8} alt="guideline-image8" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* <div className="client-guidelines-wrapper row px-md-3">
                 <div className="images-container col-md-12">
                   <ul className="image-list row">
                     <li className="col-md-6 mb-2">
@@ -89,7 +134,7 @@ const ClientGuidlines = () => {
                     This video can't be played
                   </video>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

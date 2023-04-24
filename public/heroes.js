@@ -322,3 +322,15 @@
 //   let target = document.getElementById("heroes");
 //   target.appendChild(renderer.domElement);
 // }
+
+//Rohit sir code--
+
+var canvasDiv = document.getElementById("particle-canvas");
+var options = {
+  particleColor: "#fff",
+  background: "img/demo-bg.jpg",
+  interactive: true,
+  speed: "medium",
+  density: "high",
+};
+var particleCanvas = new ParticleNetwork(canvasDiv, options);

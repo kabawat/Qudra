@@ -14,7 +14,7 @@ import { Button, Modal } from "react-bootstrap";
 const SubscriptionPlane = () => {
   const navigate = useNavigate();
   const [cookies] = useCookies()
-  const [plans, setPlans] = useState();
+  // const [plans, setPlans] = useState();
   const [loading, setLoading] = useState(false);
   const [currentPlans, setCurrentPlans] = useState(1)
   const [isError, setIsError] = useState(false)
@@ -23,6 +23,15 @@ const SubscriptionPlane = () => {
     display: 'flex'
   }
   const [noPlans, setNoPlans] = useState(false)
+
+  const [plansList, setPlansList] = useState([])
+  const [typePlans, setTypePlans] = useState('monthly')
+  const [isPayment, setIsPayment] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const [show, setShow] = useState(false)
+
+  const [curCart, setCurCart] = useState({})
+
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
@@ -33,7 +42,13 @@ const SubscriptionPlane = () => {
             setNoPlans(is_cancel)
             axios.get("http://13.52.16.160:8082/stripe/subscription-plans/").then((responce) => {
               setLoading(true);
-              setPlans(responce?.data?.data?.final_list);
+              const { final_list } = responce?.data?.data
+              const list = final_list.filter((item) => {
+                if (item?.plan_type === typePlans) {
+                  return item
+                }
+              })
+              setPlansList(list)
             });
           })
         } else {
@@ -49,7 +64,7 @@ const SubscriptionPlane = () => {
     } else {
       navigate('/select-sign-in')
     }
-  }, []);
+  }, [typePlans]);
 
   // Subscript 
   const months = [
@@ -85,11 +100,7 @@ const SubscriptionPlane = () => {
       [name]: value,
     });
   };
-  const [isPayment, setIsPayment] = useState(false);
-  const [paymentError, setPaymentError] = useState("");
-  const [show, setShow] = useState(false)
 
-  const [curCart, setCurCart] = useState({})
   const handlePayment = (payload) => {
     setCurCart(payload)
     setIsPayment(true)
@@ -132,7 +143,7 @@ const SubscriptionPlane = () => {
     })
   }
 
-  // 
+
   const [isCencel, setIsCencel] = useState(false)
   const handalCencel = () => {
     axios.put('http://13.52.16.160:8082/stripe/subscription/', {
@@ -145,11 +156,18 @@ const SubscriptionPlane = () => {
         setNoPlans(is_cancel)
         axios.get("http://13.52.16.160:8082/stripe/subscription-plans/").then((responce) => {
           setIsCencel(false)
-          setPlans(responce?.data?.data?.final_list);
+          const { final_list } = responce?.data?.data
+          const list = final_list.filter((item) => {
+            if (item?.plan_type === typePlans) {
+              return item
+            }
+          })
+          setPlansList(list)
         });
       })
     })
   }
+
 
   return (
     <>
@@ -172,99 +190,147 @@ const SubscriptionPlane = () => {
                       <div className="row mx-0">
                         <div className="col-md-5 plan-bg">
                           <ul className="plan-box-tab d-flex mb-0 list-unstyled">
-                            <li><a href="" className="active">Monthly</a></li>
-                            <li><a href="">Annually</a></li>
+                            <li><button className={typePlans === 'monthly' ? "active" : ''} onClick={() => {
+                              setTypePlans("monthly")
+                            }}>Monthly</button></li>
+                            <li><button className={typePlans !== 'monthly' ? "active" : ''} onClick={() => {
+                              setTypePlans("yearly")
+                            }}>Annually</button></li>
                           </ul>
-                          <p className="mb-0">*Save up to 27% when you pay annually</p>
+                          {/* <p className="mb-0">*Save up to 27% when you pay annually</p> */}
                         </div>
                         <div className="col-md-7 px-0">
-                            <div className="heading border-bottom">
-                               <ul className="list-unstyled pl-0 mb-0 d-flex">
-                                <li>Basic</li>
-                                <li>Professional</li>
-                                <li>Premium</li>
-                               </ul>
-                            </div>
-                            <div className="heading">
-                               <ul className="list-unstyled pl-0 mb-0 d-flex">
-                                <li>FREE</li>
-                                <li>$18.99 <br/> Per Month+</li>
-                                <li>$37.99 <br/>  Per Month</li>
-                               </ul>
-                            </div>
+                          <div className="heading border-bottom">
+                            <ul className="list-unstyled pl-0 mb-0 d-flex">
+                              <li>Basic</li>
+                              <li>Professional</li>
+                              <li>Premium</li>
+                            </ul>
+                          </div>
+                          <div className="heading">
+                            <ul className="list-unstyled pl-0 mb-0 d-flex">
+                              <li>FREE</li>
+                              <li>${plansList[1]?.amount}<br /> Per {plansList[1]?.plan_type === 'monthly' ? "Month" : 'Year'}</li>
+                              <li>${plansList[2]?.amount}<br /> Per {plansList[1]?.plan_type === 'monthly' ? "Month" : 'Year'}</li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                       <div className="row fetures align-items-center mx-0">
                         <div className="col-md-5">
-                           <p>Feature</p>
+                          <p>Feature</p>
                         </div>
                         <div className="col-md-7 px-0">
-                            <ul className="d-flex mb-0 list-unstyled">
-                              <li></li>
-                              <li><button className="buy-now-btn">Buy</button></li>
-                              <li><button className="buy-now-btn">Buy</button></li>
-                            </ul>
+                          <ul className="d-flex mb-0 list-unstyled">
+                            <li>
+                              {
+                                plansList[0].id === currentPlans ? (
+                                  <div className="d-flex">
+                                    <button className="buy-now-btn-active">active</button>
+                                  </div>
+                                ) : (
+                                  <button className="buy-now-btn" onClick={() => {
+                                    handlePayment(plansList[0])
+                                  }}>Buy</button>
+                                )
+                              }
+                            </li>
+                            <li>
+                              {
+                                plansList[1].id === currentPlans ? (
+                                  <div className="d-flex">
+                                    <button className="buy-now-btn-active">active</button>
+                                    {
+                                      noPlans ? <button className="buy-now-btn-cancel" style={{ marginLeft: '3px' }}>cancelled</button> : <button className="buy-now-btn-cancel" style={{ marginLeft: '3px' }} onClick={handalCencel}>cancel</button>
+                                    }
+                                  </div>
+                                ) : (
+                                  <button className="buy-now-btn" onClick={() => {
+                                    handlePayment(plansList[1])
+                                  }}>Buy</button>
+                                )
+                              }
+                            </li>
+                            {
+                              console.log(currentPlans)
+                            }
+                            <li>{
+
+                              plansList[2].id === currentPlans ? (
+                                <div className="d-flex">
+                                  <button className="buy-now-btn-active">active</button>
+                                  {
+                                    noPlans ? <button className="buy-now-btn-cancel" style={{ marginLeft: '3px' }}>cancelled</button> : <button className="buy-now-btn-cancel" style={{ marginLeft: '3px' }} onClick={handalCencel}>cancel</button>
+                                  }
+                                </div>
+                              ) : (
+                                <button className="buy-now-btn" onClick={() => {
+                                  handlePayment(plansList[2])
+                                }}>Buy</button>
+                              )
+                            }</li>
+                          </ul>
                         </div>
                       </div>
 
                       <div className="row fetures2 py-3 align-items-center mx-0">
                         <div className="col-md-5 d-flex flex-column">
-                           <p>Storage</p>
-                           <small>User can upload their works upto specified storage</small>
+                          <p>Storage</p>
+                          <small>User can upload their works upto specified storage</small>
                         </div>
                         <div className="col-md-7 px-0">
-                            <ul className="d-flex mb-0 list-unstyled">
-                              <li><p className="ms-0">Upto 1 GB</p></li>
-                              <li><p className="ms-0">Upto 20 GB</p></li>
-                              <li><p className="ms-0">Unlimited Storage</p></li>
-                            </ul>
+                          <ul className="d-flex mb-0 list-unstyled">
+                            <li><p className="ms-0">{plansList[0]?.storage} GB</p></li>
+                            <li><p className="ms-0">{plansList[1]?.storage} GB</p></li>
+                            <li><p className="ms-0">Unlimited Storage</p></li>
+                          </ul>
                         </div>
                       </div>
 
 
                       <div className="row fetures py-3 align-items-center mx-0">
                         <div className="col-md-5 d-flex flex-column">
-                           <p>Services Charges</p>
-                           <small>We charge a nominal fee for our services on every paid invoice</small>
+                          <p>Services Charges</p>
+                          <small>We charge a nominal fee for our services on every paid invoice</small>
                         </div>
                         <div className="col-md-7 px-0">
-                            <ul className="d-flex mb-0 list-unstyled">
-                              <li><p className="ms-0">9%</p></li>
-                              <li><p className="ms-0">7%</p></li>
-                              <li><p className="ms-0">6%</p></li>
-                            </ul>
+                          <ul className="d-flex mb-0 list-unstyled">
+                            <li><p className="ms-0">{plansList[0]?.service_charge}%</p></li>
+                            <li><p className="ms-0">{plansList[1]?.service_charge}%</p></li>
+                            <li><p className="ms-0">{plansList[2]?.service_charge}%</p></li>
+                          </ul>
                         </div>
                       </div>
 
                       <div className="row fetures2 py-3 align-items-center mx-0">
                         <div className="col-md-5 d-flex flex-column">
-                           <p>Search Boost</p>
-                           <small>This feature helps your profile rank higher on the search results</small>
+                          <p>Search Boost</p>
+                          <small>This feature helps your profile rank higher on the search results</small>
                         </div>
                         <div className="col-md-7 px-0">
-                            <ul className="d-flex mb-0 list-unstyled">
-                              <li><p className="ms-0">Not enable </p></li>
-                              <li><p className="ms-0">Enable for search results on paying extra amount</p></li>
-                              <li><p className="ms-0">Enable for search results on paying extra amount</p></li>
-                            </ul>
+                          <ul className="d-flex mb-0 list-unstyled">
+                            <li><p className="ms-0">Not enable </p></li>
+                            <li><p className="ms-0">Enable for search results on paying extra amount</p></li>
+                            <li><p className="ms-0">Enable for search results on paying extra amount</p></li>
+                          </ul>
                         </div>
                       </div>
 
 
                       <div className="row fetures py-3 align-items-center mx-0">
                         <div className="col-md-5 d-flex flex-column">
-                           <p>Find Jobs</p>
-                           <small>Search for jobs in your category</small>
+                          <p>Find Jobs</p>
+                          <small>Search for jobs in your category</small>
                         </div>
                         <div className="col-md-7 px-0">
-                            <ul className="d-flex mb-0 list-unstyled">
-                              <li><p className="ms-0">Enable</p></li>
-                              <li><p className="ms-0">Enable</p></li>
-                              <li><p className="ms-0">Enable</p></li>
-                            </ul>
+                          <ul className="d-flex mb-0 list-unstyled">
+                            <li><p className="ms-0">Enable</p></li>
+                            <li><p className="ms-0">Enable</p></li>
+                            <li><p className="ms-0">Enable</p></li>
+                          </ul>
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
                 </main>)}

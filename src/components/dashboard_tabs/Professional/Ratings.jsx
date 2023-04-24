@@ -143,7 +143,7 @@ const Ratings = () => {
               ) : (
                 <main className="dashboard-main">
                   <div id="liked-save" className="container-fluid  myProjectTable">
-                    <h2 className="ps-5"> Ratings </h2>
+                    <h2 className="ps-5"> Clients Ratings </h2>
                     <div className="m-xl-5 mx-2 shadow">
                       {rating?.final_data?.length ? (
                         <div className="row  align-items-center MyProjectDisplayRow">

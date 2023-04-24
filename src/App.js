@@ -44,8 +44,8 @@ import Likes from "./components/dashboard_tabs/Client/Likes";
 import ClientGuidlines from "./components/guidelines/ClientGuidlines";
 import PortfolioPane from "./components/dashboard_tabs/Professional/PortfolioPane";
 import ActivitiesPane from "./components/dashboard_tabs/Professional/ActivitiesPane";
-import LikesShow from "./components/dashboard_tabs/Professional/Likes"
-import Showratings from "./components/dashboard_tabs/Professional/Ratings"
+import LikesShow from "./components/dashboard_tabs/Professional/Likes";
+import Showratings from "./components/dashboard_tabs/Professional/Ratings";
 import ProfessionalGuidelines from "./components/guidelines/ProfessionalGuidelines";
 import RequestProjects from "./components/dashboard_tabs/Professional/RequestProjects";
 import AcceptProject from "./components/dashboard_tabs/Client/acceptProject";
@@ -58,13 +58,17 @@ import Reject from "./components/project_process/Reject";
 import PendingActivity from "./components/dashboard_tabs/Professional/PendingActivity";
 import SubscriptionPlans from "./components/dashboard_tabs/Professional/subscription-plans";
 import PurchaseDesign from "./components/dashboard_tabs/Client/purchase-design";
+import Report from "./components/dashboard_tabs/Professional/Report";
+import ReportTab from "./components/dashboard_tabs/Professional/ReportTab";
 
 function App() {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   return (
     <BrowserRouter basename="/">
       <ScrollToTop />
-      <IconContext.Provider value={{ color: "black", className: "global-class-name" }}>
+      <IconContext.Provider
+        value={{ color: "black", className: "global-class-name" }}
+      >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Home />} />
@@ -78,10 +82,14 @@ function App() {
           <Route path="/kickassform" element={<KickAssForm />} />
           <Route path="/taskform" element={<TaskForm />} />
 
-
           {/* Professional Routes */}
-          <Route path="/professionaldashboard" element={<ProfessionalDashboard />} />
+          <Route
+            path="/professionaldashboard"
+            element={<ProfessionalDashboard />}
+          />
           <Route path="/Portfolio" element={<PortfolioPane />} />
+          <Route path="/Report" element={<Report />} />
+          <Route path="/reports-tab" element={<ReportTab />} />
 
           <Route path="/request-projects" element={<RequestProjects />} />
           <Route path="/pending-activity" element={<PendingActivity />} />
@@ -92,12 +100,24 @@ function App() {
           <Route path="/subscription-plans" element={<SubscriptionPlans />} />
           <Route path="/like" element={<LikesShow />} />
           <Route path="/ratings" element={<Showratings />} />
-          <Route path="/professional-guidelines" element={<ProfessionalGuidelines />} />
-{/* pending */}
-          <Route path="/categoryArchitecture" element={<ProfessionalCategoryArchitecture />} />
-          <Route path="/categoryvisualization" element={<ProfessionalCategoryVisualization />} />
-{/* pending */}
-          <Route path="/professional-buy-and-sale" element={<ProfessionalBuyAndSale />} />
+          <Route
+            path="/professional-guidelines"
+            element={<ProfessionalGuidelines />}
+          />
+          {/* pending */}
+          <Route
+            path="/categoryArchitecture"
+            element={<ProfessionalCategoryArchitecture />}
+          />
+          <Route
+            path="/categoryvisualization"
+            element={<ProfessionalCategoryVisualization />}
+          />
+          {/* pending */}
+          <Route
+            path="/professional-buy-and-sale"
+            element={<ProfessionalBuyAndSale />}
+          />
 
           {/* Client Routes */}
           <Route path="/clientdashboard" element={<ClientDashboard />} />
@@ -108,14 +128,23 @@ function App() {
           <Route path="/completed-projects" element={<CompletedPane />} />
           <Route path="/purchase-design" element={<PurchaseDesign />} />
           <Route path="/declined-projects" element={<DeclineProject />} />
-          <Route path="/professionalprofile/:professional_id" element={<ProfessionalProfile />} />
+          <Route
+            path="/professionalprofile/:professional_id"
+            element={<ProfessionalProfile />}
+          />
           <Route path="/client-liked" element={<Likes />} />
           <Route path="/client-rating" element={<Ratings />} />
           <Route path="/client-guidlines" element={<ClientGuidlines />} />
           <Route path="/cart" element={<Cart />} />
 
-          <Route path="/client-architechture" element={<ClientCategoriesArchitectural />} />
-          <Route path="/client-visualisation" element={<ClientCatagoryVisualization />} />
+          <Route
+            path="/client-architechture"
+            element={<ClientCategoriesArchitectural />}
+          />
+          <Route
+            path="/client-visualisation"
+            element={<ClientCatagoryVisualization />}
+          />
           <Route path="/client-buy-sell" element={<ClientBuySellDesign />} />
 
           {/* both */}

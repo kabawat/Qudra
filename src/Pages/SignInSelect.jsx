@@ -20,62 +20,62 @@ const bStyle = {
 const SignInSelect = () => {
   const navigate = useNavigate();
   const contextData = useContext(Global);
-  const [cookies,] = useCookies()
-  const [isRender, setIsRender] = useState(false)
+  const [cookies] = useCookies();
+  const [isRender, setIsRender] = useState(false);
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data?.role === "client") {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         } else {
-          navigate('/professionaldashboard')
+          navigate("/professionaldashboard");
         }
       } else {
         if (cookies?.user_data?.role === "professional") {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       }
     } else {
-      setIsRender(true)
+      setIsRender(true);
     }
-  }, [])
+  }, []);
 
+  // useEffect(() => {
+  //   const user_data = cookies?.user_data;
+  //   if (user_data) {
+  //     axios
+  //       .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+  //         ...user_data,
+  //       })
+  //       .then((res) => {
+  //         contextData?.dispatch({
+  //           type: "FETCH_PROFILE_DATA",
+  //           value: res?.data?.data,
+  //         });
 
-  useEffect(() => {
-    const user_data = cookies?.user_data
-    if (user_data) {
-      axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-        ...user_data
-      }).then((res) => {
-        contextData?.dispatch({
-          type: "FETCH_PROFILE_DATA",
-          value: res?.data?.data,
-        });
+  //         contextData?.dispatch({
+  //           type: "FETCH_USER_DATA",
+  //           value: user_data,
+  //         });
+  //         if (res?.data?.data?.category_selected === false) {
+  //           navigate("/categoryArchitecture");
+  //         } else {
+  //           if (res?.data?.data?.role === "client") {
+  //             contextData.setShowDisclamer(true);
+  //             navigate("/", { replace: true });
+  //           } else {
+  //             contextData.setShowDisclamer(true);
+  //             navigate("/", { replace: true });
+  //           }
+  //         }
+  //       });
+  //   }
+  // }, []);
 
-        contextData?.dispatch({
-          type: "FETCH_USER_DATA",
-          value: user_data
-        });
-        if (res?.data?.data?.category_selected === false) {
-          navigate("/categoryArchitecture");
-        } else {
-          if (res?.data?.data?.role === "client") {
-            contextData.setShowDisclamer(true);
-            navigate("/", { replace: true });
-          } else {
-            contextData.setShowDisclamer(true);
-            navigate("/", { replace: true });
-          }
-        }
-      });
-    }
-
-  }, [])
-
-  return (
-    isRender ? <>
+  return isRender ? (
+    <>
       <div className="create-account let-get-started">
         <Header3 />
         <div className="join-us-now-main d-md-flex align-items-center">
@@ -112,7 +112,9 @@ const SignInSelect = () => {
           </div>
         </div>
       </div>
-    </> : <Loader />
+    </>
+  ) : (
+    <Loader />
   );
 };
 

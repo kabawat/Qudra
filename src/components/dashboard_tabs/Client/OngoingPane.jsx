@@ -14,10 +14,9 @@ import { useCookies } from "react-cookie";
 import { BsSearch } from "react-icons/bs";
 import { Backdrop, CircularProgress } from "@mui/material";
 
-
 const OngoingPane = () => {
   const navigate = useNavigate();
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   const contextData = useContext(Global);
   const [noResult, setNoResult] = useState(false);
   const [searchActiveProject, setSearchActiveProject] = useState();
@@ -27,7 +26,7 @@ const OngoingPane = () => {
     page_size: 5,
   });
 
-  const [isRender, setIsReander] = useState(false)
+  const [isRender, setIsReander] = useState(false);
   useEffect(() => {
     if (cookies?.user_data) {
       axios
@@ -37,28 +36,29 @@ const OngoingPane = () => {
           role: cookies?.user_data?.role,
           project_status: "approved",
           ...onGoingProjectPageId,
-        }).then((res) => {
+        })
+        .then((res) => {
           if (res?.data?.status === "Success") {
             setOnGoingProject(res?.data?.data);
             if (cookies?.user_data?.category_selected) {
               if (cookies?.user_data?.role === "client") {
-                setIsReander(true)
+                setIsReander(true);
               } else {
-                navigate('/professionaldashboard')
+                navigate("/professionaldashboard");
               }
             } else {
               if (cookies?.user_data?.role === "client") {
-                navigate('/client-architechture')
+                navigate("/client-architechture");
               } else {
-                navigate('/categoryArchitecture')
+                navigate("/categoryArchitecture");
               }
             }
           }
         });
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [onGoingProjectPageId])
+  }, [onGoingProjectPageId]);
 
   const onGoingProjectArray = [];
   for (
@@ -70,69 +70,78 @@ const OngoingPane = () => {
   }
 
   const handleClientAcceptation = (id, project_id, project_cost) => {
-    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-      client_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      professional_id: id,
-      project_id: project_id,
-    })
+    axios
+      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        professional_id: id,
+        project_id: project_id,
+      })
       .then((res) => {
         if (res?.data?.status === "Success") {
-          axios.post("http://13.52.16.160:8082/client/particular_project_details", {
-            client_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            project_id: project_id,
-          }).then((respo) => {
-            if (respo?.data?.status === "Success") {
-              if (id !== undefined) {
-                navigate("/project-details", {
-                  state: {
-                    projectDetails: { id, project_id },
-                    projectData: respo?.data?.data,
-                    milesStoneData: res?.data?.data,
-                    isFromClientTab: true,
-                    project_cost: project_cost
-                  },
-                });
+          axios
+            .post(
+              "http://13.52.16.160:8082/client/particular_project_details",
+              {
+                client_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                project_id: project_id,
               }
-            }
-          });
+            )
+            .then((respo) => {
+              if (respo?.data?.status === "Success") {
+                if (id !== undefined) {
+                  navigate("/project-details", {
+                    state: {
+                      projectDetails: { id, project_id },
+                      projectData: respo?.data?.data,
+                      milesStoneData: res?.data?.data,
+                      isFromClientTab: true,
+                      project_cost: project_cost,
+                    },
+                  });
+                }
+              }
+            });
         }
       });
   };
   const handleFilterProject = (e) => {
-    e.preventDefault()
-    axios.post("http://13.52.16.160:8082/identity/search_projects", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      search_status: "approved",
-      search: searchActiveProject || "",
-      ...onGoingProjectPageId,
-    }).then((res) => {
-      if (res?.data?.status === "Failed") {
-        setNoResult(true)
-
-      } else {
-        setOnGoingProject(res?.data?.data);
-      }
-    });
+    e.preventDefault();
+    axios
+      .post("http://13.52.16.160:8082/identity/search_projects", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        search_status: "approved",
+        search: searchActiveProject || "",
+        ...onGoingProjectPageId,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Failed") {
+          setNoResult(true);
+        } else {
+          setOnGoingProject(res?.data?.data);
+        }
+      });
   };
   const searchData = () => {
-    axios.post("http://13.52.16.160:8082/identity/filter_projects", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      project_status: "approved",
-      ...onGoingProjectPageId,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setOnGoingProject(res?.data?.data);
-      }
-    });
-  }
+    axios
+      .post("http://13.52.16.160:8082/identity/filter_projects", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        project_status: "approved",
+        ...onGoingProjectPageId,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setOnGoingProject(res?.data?.data);
+        }
+      });
+  };
 
   return (
     <>
@@ -144,29 +153,43 @@ const OngoingPane = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              {
-                !isRender ? <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!isRender}>
+              {!isRender ? (
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={!isRender}
+                >
                   <CircularProgress color="inherit" />
-                </Backdrop> : <main className="dashboard-main">
-                  <div id="myactivity" className="container-fluid  myProjectTable">
-                    <h2 className="ps-5">Ongoing Projects</h2>
+                </Backdrop>
+              ) : (
+                <main className="dashboard-main">
+                  <div
+                    id="myactivity"
+                    className="container-fluid  myProjectTable"
+                  >
+                    <h2 className="ps-lg-5">
+                      Projects Running With Professionals
+                    </h2>
 
                     <div className="m-lg-5 shadow">
                       {onGoingProject?.final_data?.length ? (
                         <div className="row align-items-center MyProjectDisplayRow">
                           <div className="searchActiveProject col-lg-8 ms-auto">
-                            <form onSubmit={handleFilterProject} >
+                            <form onSubmit={handleFilterProject}>
                               <input
+                                style={{ fontWeight: "bold" }}
                                 type="text"
                                 value={searchActiveProject}
                                 onChange={(e) => {
-                                  setSearchActiveProject(e?.target?.value)
-                                  setNoResult(false)
+                                  setSearchActiveProject(e?.target?.value);
+                                  setNoResult(false);
                                   if (e.target.value === "") {
-                                    searchData()
+                                    searchData();
                                   }
                                 }}
-                                placeholder="Search..."
+                                placeholder=" Search via project name and Professionals name"
                               />
                               <button type="submit">
                                 <BsSearch />
@@ -175,12 +198,7 @@ const OngoingPane = () => {
                           </div>
                         </div>
                       ) : (
-                        <div
-                          style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center align-items-center"
-                        >
-                          <span className="h4">No Project Data To Show</span>
-                        </div>
+                        ""
                       )}
                       {noResult ? (
                         <div
@@ -189,21 +207,34 @@ const OngoingPane = () => {
                         >
                           <span className="h4">No Result Found</span>
                         </div>
-                      ) : (onGoingProject?.final_data?.length ? (
+                      ) : onGoingProject?.final_data?.length ? (
                         onGoingProject.final_data.map((res, index) => (
                           <div className="row MyProjectDisplayRow" key={index}>
-                            <div className="col-lg-3 col-md-6 d-flex align-items-center ">
+                            <div className="col-xl-4 col-lg-12 col-md-6 p-3 d-flex align-items-center ">
                               <img
                                 src={res?.professional_image}
                                 className="img-fluid rounded-circle"
-                                style={{ width: "70px", height: "70px", cursor: "pointer" }}
+                                style={{
+                                  width: "70px",
+                                  height: "70px",
+                                  cursor: "pointer",
+                                }}
                                 alt={res?.professional_name}
                                 onClick={() => {
-                                  navigate(`/professionalprofile/${res?.professional_id}`);
+                                  navigate(
+                                    `/professionalprofile/${res?.professional_id}`
+                                  );
                                 }}
                               />
                               <div className="ps-3">
-                                <h4 className="underline_hover" onClick={() => { navigate(`/professionalprofile/${res?.professional_id}`) }}>
+                                <h4
+                                  className="underline_hover"
+                                  onClick={() => {
+                                    navigate(
+                                      `/professionalprofile/${res?.professional_id}`
+                                    );
+                                  }}
+                                >
                                   {res?.professional_name}
                                 </h4>
                                 <h6>
@@ -212,11 +243,11 @@ const OngoingPane = () => {
                                 </h6>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 d-flex  align-items-center ">
+                            <div className="col-xl-2 col-md-6 p-3 col-lg-6 d-flex  align-items-center ">
                               <div>
-                                <h5>Project Name</h5>
+                                <h5>Project Name </h5>
                                 <h4
-                                  style={{ textTransform: 'capitalize' }}
+                                  style={{ textTransform: "capitalize" }}
                                   className="underline_hover"
                                   onClick={() => {
                                     handleClientAcceptation(
@@ -230,19 +261,21 @@ const OngoingPane = () => {
                                 </h4>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 d-flex  align-items-center ">
+                            <div className="col-xl-2 col-md-6 p-3 col-lg-6 d-flex  align-items-center ">
                               <div>
                                 <h5>Status</h5>
-                                <h4 style={{ textTransform: 'capitalize' }}>{res?.project_status}</h4>
+                                <h4 style={{ textTransform: "capitalize" }}>
+                                  {res?.project_status}
+                                </h4>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 d-flex  align-items-center ">
+                            <div className="col-xl-2 col-md-6 p-3 col-lg-6 d-flex  align-items-center ">
                               <div>
                                 <h5>Total Budget</h5>
                                 <h4>${res?.project_cost}</h4>
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-6 d-flex  align-items-center ">
+                            <div className="col-xl-2 col-md-6 p-3 col-lg-6 d-flex  align-items-center ">
                               <div>
                                 <h5>Area</h5>
                                 <h4>{res?.area} square meter</h4>
@@ -253,15 +286,17 @@ const OngoingPane = () => {
                       ) : (
                         <div
                           style={{ minHeight: "600px" }}
-                          className="d-flex  align-items-center"
+                          className="d-grid  align-items-center"
                         >
-                          <span className="h4">No Ongoing Projects To Show</span>
+                          <span className="h4 text-center">
+                            No Ongoing Projects To Show
+                          </span>
                         </div>
-                      ))}
+                      )}
                     </div>
                     {onGoingProject.final_data?.length ? (
-                      onGoingProject.total_data > 5 ?
-                        (<Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                      onGoingProject.total_data > 5 ? (
+                        <Pagination className="ps-5 paginationBoxProfessionalDashboard">
                           <Pagination.First
                             onClick={() => {
                               setOnGoingProjectPageId({
@@ -300,7 +335,8 @@ const OngoingPane = () => {
                               setOnGoingProjectPageId((prev) => ({
                                 ...prev,
                                 page:
-                                  onGoingProjectArray?.length !== onGoingProjectPageId?.page
+                                  onGoingProjectArray?.length !==
+                                  onGoingProjectPageId?.page
                                     ? onGoingProjectPageId?.page + 1
                                     : onGoingProjectPageId?.page,
                               }));
@@ -314,7 +350,8 @@ const OngoingPane = () => {
                               }));
                             }}
                           />
-                        </Pagination>) : null
+                        </Pagination>
+                      ) : null
                     ) : (
                       ""
                     )}
@@ -333,15 +370,13 @@ const OngoingPane = () => {
                     toastStyle={{ backgroundColor: "red", color: "white" }}
                   />
                 </main>
-              }
-
+              )}
             </div>
           </div>
         </div>
       </div>
       <Footer />
     </>
-
   );
 };
 

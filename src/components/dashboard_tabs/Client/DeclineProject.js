@@ -139,7 +139,7 @@ const DeclineProject = () => {
                                                     style={{ minHeight: "600px" }}
                                                     className="d-flex justify-content-center align-items-center"
                                                 >
-                                                    <span className="h4">No Project Data To Show</span>
+                                                    <span className="h4">No  Declined Projects To Show</span>
                                                 </div>
                                             )}
                                             {noResult ? (
@@ -182,13 +182,13 @@ const DeclineProject = () => {
                                                         <div className="col-lg-3 col-md-6 d-flex align-items-center">
                                                             <div>
                                                                 <h5>Project Name</h5>
-                                                                <h4>{res?.project_name}</h4>
+                                                                <h4 style={{textTransform: 'capitalize'}}>{res?.project_name}</h4>
                                                             </div>
                                                         </div>
                                                         <div className="col-lg-3 col-md-6 d-flex align-items-center">
                                                             <div>
                                                                 <h5>Status</h5>
-                                                                <h4>{res?.project_status}</h4>
+                                                                <h4 style={{textTransform: 'capitalize'}}>{res?.project_status}</h4>
                                                             </div>
                                                         </div>
                                                         <div className="col-lg-3 col-md-6 d-flex align-items-center">

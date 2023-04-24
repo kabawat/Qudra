@@ -15,43 +15,47 @@ import { useCookies } from "react-cookie";
 import { BsArrowRight } from "react-icons/bs";
 import Select from "react-select";
 const FromClientTabPane = ({ location }) => {
-  const [locations, setLoctions] = useState(location)
+  const [locations, setLoctions] = useState(location);
   useEffect(() => {
-    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-      client_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      professional_id: locations?.state?.projectDetails?.id,
-      project_id: locations?.state?.projectDetails?.project_id,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        axios.post("http://13.52.16.160:8082/client/particular_project_details",
-          {
-            client_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            project_id: locations?.state?.projectDetails?.project_id,
-          }
-        )
-          .then((respo) => {
-            if (respo?.data?.status === "Success") {
-              if (locations?.state?.projectDetails?.id !== undefined) {
-                const state = {
-                  projectDetails: locations?.state?.projectDetails,
-                  projectData: respo?.data?.data,
-                  milesStoneData: res?.data?.data,
-                  project_cost: locations?.state?.project_cost
-                }
-                setLoctions({
-                  ...locations,
-                  state: state,
-                })
+    axios
+      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        professional_id: locations?.state?.projectDetails?.id,
+        project_id: locations?.state?.projectDetails?.project_id,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          axios
+            .post(
+              "http://13.52.16.160:8082/client/particular_project_details",
+              {
+                client_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                project_id: locations?.state?.projectDetails?.project_id,
               }
-            }
-          });
-      }
-    });
-  }, [])
+            )
+            .then((respo) => {
+              if (respo?.data?.status === "Success") {
+                if (locations?.state?.projectDetails?.id !== undefined) {
+                  const state = {
+                    projectDetails: locations?.state?.projectDetails,
+                    projectData: respo?.data?.data,
+                    milesStoneData: res?.data?.data,
+                    project_cost: locations?.state?.project_cost,
+                  };
+                  setLoctions({
+                    ...locations,
+                    state: state,
+                  });
+                }
+              }
+            });
+        }
+      });
+  }, []);
   const contextData = useContext(Global);
   const customStyleOne = {
     borderRadius: "30px",
@@ -80,8 +84,8 @@ const FromClientTabPane = ({ location }) => {
       position: static !important;
       border: none;
       border-left: 1px solid #01a78a;
-      padding: 12px;
-      width: 170px;
+      padding: 5px;
+      width: 180px;
       text-align: center;
     }
   `;
@@ -121,9 +125,13 @@ const FromClientTabPane = ({ location }) => {
   ];
   const d = new Date();
   let year = d.getFullYear();
-  let years = []
+  let years = [];
   for (let i = 0; i < 20; ++i) {
-    years.push({ value: `${year + i}`, label: `${year + i}`, name: "expiry_year" })
+    years.push({
+      value: `${year + i}`,
+      label: `${year + i}`,
+      name: "expiry_year",
+    });
   }
 
   $(document).ready(function () {
@@ -149,102 +157,188 @@ const FromClientTabPane = ({ location }) => {
 
   const handalSubmit = (event) => {
     event.preventDefault();
-    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
-      ...cartInfo,
-      client_id: cookies?.user_data?.user_id,
-      client_token: cookies?.user_data?.user_token,
-    }).then((response) => {
-      if (response?.data?.status === "Failed") {
-        const error = response?.data?.message;
-        setPaymentError(error.split(":")[1]);
-      } else {
-        setShow(false);
-        SetCurProject({});
-        setIsPayment(false);
-        setPaymentError("");
-      }
-    }).catch((error) => {
-      // console.log(error.response)
-    });
+    axios
+      .post("http://13.52.16.160:8082/stripe/client/card/", {
+        ...cartInfo,
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+      })
+      .then((response) => {
+        if (response?.data?.status === "Failed") {
+          const error = response?.data?.message;
+          setPaymentError(error.split(":")[1]);
+        } else {
+          setShow(false);
+          SetCurProject({});
+          setIsPayment(false);
+          setPaymentError("");
+        }
+      })
+      .catch((error) => {
+        // console.log(error.response)
+      });
   };
+
   const handalDownload = () => {
-    axios.put("http://13.52.16.160:8082/client/update_status_view_file", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: "client",
-      project_id: curProject?.project_id,
-      milestone_id: curProject?.milestone_id,
-    }).then((response) => {
-      setShow(false);
-      if (
-        response?.data?.error_code === 109 &&
-        response?.data?.status === "Failed"
-      ) {
-        setIsPayment(true);
-      } else {
-        const url = response.data?.data?.file;
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", url.split("/")[5]); // you can set the filename here
-        document.body.appendChild(link);
-        link.click();
-      }
-    });
-
-  };
-
-  const [acceptShow, setAcceptShow] = useState(false);
-  const AcceptHandal = () => {
-    axios.post("http://13.52.16.160:8082/client/update_status_view_file", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: "client",
-      project_id: curProject?.project_id,
-      milestone_id: curProject?.milestone_id,
-      status: "accepted",
-    }).then((result) => {
-      if (result?.data?.status === "Success") {
-        axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-          client_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          professional_id: locations?.state?.projectDetails?.id,
-          project_id: locations?.state?.projectDetails?.project_id,
-        }).then((res) => {
-          if (res?.data?.status === "Success") {
-            axios.post("http://13.52.16.160:8082/client/particular_project_details",
+    axios
+      .put("http://13.52.16.160:8082/client/update_status_view_file", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: "client",
+        project_id: curProject?.project_id,
+        milestone_id: curProject?.milestone_id,
+      })
+      .then((response) => {
+        setShow(false);
+        if (
+          response?.data?.error_code === 109 &&
+          response?.data?.status === "Failed"
+        ) {
+          setIsPayment(true);
+        } else {
+          axios
+            .post(
+              "http://13.52.16.160:8082/client/particular_project_milestones",
               {
                 client_id: cookies?.user_data?.user_id,
                 user_token: cookies?.user_data?.user_token,
                 role: cookies?.user_data?.role,
+                professional_id: locations?.state?.projectDetails?.id,
                 project_id: locations?.state?.projectDetails?.project_id,
               }
-            ).then((respo) => {
-              if (respo?.data?.status === "Success") {
-                if (locations?.state?.projectDetails?.id !== undefined) {
-                  const state = {
-                    projectDetails: locations?.state?.projectDetails,
-                    projectData: respo?.data?.data,
-                    milesStoneData: res?.data?.data,
-                    project_cost: locations?.state?.project_cost
-                  }
-                  setLoctions({
-                    ...locations,
-                    state: state,
-                  })
-                }
+            )
+            .then((res) => {
+              if (res?.data?.status === "Success") {
+                axios
+                  .post(
+                    "http://13.52.16.160:8082/client/particular_project_details",
+                    {
+                      client_id: cookies?.user_data?.user_id,
+                      user_token: cookies?.user_data?.user_token,
+                      role: cookies?.user_data?.role,
+                      project_id: locations?.state?.projectDetails?.project_id,
+                    }
+                  )
+                  .then((respo) => {
+                    if (respo?.data?.status === "Success") {
+                      if (locations?.state?.projectDetails?.id !== undefined) {
+                        const state = {
+                          projectDetails: locations?.state?.projectDetails,
+                          projectData: respo?.data?.data,
+                          milesStoneData: res?.data?.data,
+                          project_cost: locations?.state?.project_cost,
+                        };
+                        setLoctions({
+                          ...locations,
+                          state: state,
+                        });
+                      }
+                    }
+                  });
               }
             });
+          const url = response.data?.data?.file;
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", url.split("/")[5]); // you can set the filename here
+          document.body.appendChild(link);
+          link.click();
+        }
+      });
+  };
+  const handalDownloadInvoice = (payload) => {
+    axios
+      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        professional_id: locations?.state?.projectDetails?.id,
+        project_id: locations?.state?.projectDetails?.project_id,
+      })
+      .then((response) => {
+        const data = response.data.data?.filter((item) => {
+          if (payload?.milestone_id === item?.milestone_id) {
+            return item;
           }
         });
+        setShow(false);
+        if (
+          response?.data?.error_code === 109 &&
+          response?.data?.status === "Failed"
+        ) {
+          setIsPayment(true);
+        } else {
+          const url = data[0]?.invoice;
+          const link = document.createElement("a");
+          link.setAttribute("target", "_blank");
+          link.href = url;
+          link.setAttribute("download", url.split("/")[5]); // you can set the filename here
+          document.body.appendChild(link);
+          link.click();
+        }
+      });
+  };
+
+  const [acceptShow, setAcceptShow] = useState(false);
+  const AcceptHandal = () => {
+    axios
+      .post("http://13.52.16.160:8082/client/update_status_view_file", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: "client",
+        project_id: curProject?.project_id,
+        milestone_id: curProject?.milestone_id,
+        status: "accepted",
+      })
+      .then((result) => {
+        if (result?.data?.status === "Success") {
+          axios
+            .post(
+              "http://13.52.16.160:8082/client/particular_project_milestones",
+              {
+                client_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                professional_id: locations?.state?.projectDetails?.id,
+                project_id: locations?.state?.projectDetails?.project_id,
+              }
+            )
+            .then((res) => {
+              if (res?.data?.status === "Success") {
+                axios
+                  .post(
+                    "http://13.52.16.160:8082/client/particular_project_details",
+                    {
+                      client_id: cookies?.user_data?.user_id,
+                      user_token: cookies?.user_data?.user_token,
+                      role: cookies?.user_data?.role,
+                      project_id: locations?.state?.projectDetails?.project_id,
+                    }
+                  )
+                  .then((respo) => {
+                    if (respo?.data?.status === "Success") {
+                      if (locations?.state?.projectDetails?.id !== undefined) {
+                        const state = {
+                          projectDetails: locations?.state?.projectDetails,
+                          projectData: respo?.data?.data,
+                          milesStoneData: res?.data?.data,
+                          project_cost: locations?.state?.project_cost,
+                        };
+                        setLoctions({
+                          ...locations,
+                          state: state,
+                        });
+                      }
+                    }
+                  });
+              }
+            });
+          SetCurProject({});
+          setAcceptShow(false);
+        }
         SetCurProject({});
         setAcceptShow(false);
-      }
-      SetCurProject({});
-      setAcceptShow(false);
-    });
-
-
+      });
   };
 
   const [reason, setReason] = useState("");
@@ -252,62 +346,73 @@ const FromClientTabPane = ({ location }) => {
   const [DeclineShow, setDeclineShow] = useState(false);
   const declineHandal = () => {
     if (reason) {
-      axios.post("http://13.52.16.160:8082/client/update_status_view_file", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: "client",
-        project_id: curProject?.project_id,
-        milestone_id: curProject?.milestone_id,
-        status: "decline",
-        reason: reason,
-      }).then((result) => {
-        if (result?.data?.status === "Success") {
-          SetCurProject({});
-          setDeclineShow(false);
-          SetReasonError("");
-          setReason("");
-          axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-            client_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            professional_id: locations?.state?.projectDetails?.id,
-            project_id: locations?.state?.projectDetails?.project_id,
-          }).then((res) => {
-            if (res?.data?.status === "Success") {
-              axios.post("http://13.52.16.160:8082/client/particular_project_details",
+      axios
+        .post("http://13.52.16.160:8082/client/update_status_view_file", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: "client",
+          project_id: curProject?.project_id,
+          milestone_id: curProject?.milestone_id,
+          status: "decline",
+          reason: reason,
+        })
+        .then((result) => {
+          if (result?.data?.status === "Success") {
+            SetCurProject({});
+            setDeclineShow(false);
+            SetReasonError("");
+            setReason("");
+            axios
+              .post(
+                "http://13.52.16.160:8082/client/particular_project_milestones",
                 {
                   client_id: cookies?.user_data?.user_id,
                   user_token: cookies?.user_data?.user_token,
                   role: cookies?.user_data?.role,
+                  professional_id: locations?.state?.projectDetails?.id,
                   project_id: locations?.state?.projectDetails?.project_id,
                 }
-              ).then((respo) => {
-                if (respo?.data?.status === "Success") {
-                  if (locations?.state?.projectDetails?.id !== undefined) {
-                    const state = {
-                      projectDetails: locations?.state?.projectDetails,
-                      projectData: respo?.data?.data,
-                      milesStoneData: res?.data?.data,
-                      project_cost: locations?.state?.project_cost
-                    }
-                    setLoctions({
-                      ...locations,
-                      state: state,
-                    })
-                  }
+              )
+              .then((res) => {
+                if (res?.data?.status === "Success") {
+                  axios
+                    .post(
+                      "http://13.52.16.160:8082/client/particular_project_details",
+                      {
+                        client_id: cookies?.user_data?.user_id,
+                        user_token: cookies?.user_data?.user_token,
+                        role: cookies?.user_data?.role,
+                        project_id:
+                          locations?.state?.projectDetails?.project_id,
+                      }
+                    )
+                    .then((respo) => {
+                      if (respo?.data?.status === "Success") {
+                        if (
+                          locations?.state?.projectDetails?.id !== undefined
+                        ) {
+                          const state = {
+                            projectDetails: locations?.state?.projectDetails,
+                            projectData: respo?.data?.data,
+                            milesStoneData: res?.data?.data,
+                            project_cost: locations?.state?.project_cost,
+                          };
+                          setLoctions({
+                            ...locations,
+                            state: state,
+                          });
+                        }
+                      }
+                    });
                 }
               });
-            }
-          });
-        } else {
-          SetReasonError("Failed due to some reason");
-        }
-      });
+          } else {
+            SetReasonError("Failed due to some reason");
+          }
+        });
     } else {
       SetReasonError("Reason Required");
     }
-
-
   };
   return (
     <div className="create-account">
@@ -315,7 +420,7 @@ const FromClientTabPane = ({ location }) => {
       <main>
         <div className="container mb-5 bg-white" style={customStyleOne}>
           <div className="row m-0">
-            <div className=" col-xxl-8 col-xl-9 col-lg-10 col-md-11 col-sm mx-auto">
+            <div className=" col-xxl-9 col-xl-9 col-lg-10 col-md-11 col-sm mx-auto">
               <section className="ProjectDetailsPageProjectDetailsSection">
                 <div className="row">
                   <div className="col ">
@@ -393,57 +498,73 @@ const FromClientTabPane = ({ location }) => {
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
                 {locations?.state?.milesStoneData?.map((res, index) => (
                   <Wrapper className="milestoneBox">
-                    <p>{res?.milestone_name}</p>
+                    <p style={{ textTransform: "capitalize" }}>
+                      {res?.milestone_name}
+                    </p>
                     <div className="preview">
                       <div className="date"> {res?.milestone_date}</div>
                       {(res?.status === "pending" ||
                         res?.status === "decline") && (
-                          <button
-                            className="prewviewButton default-cursor"
-                            type="button"
-                          >
-                            pending
-                          </button>
-                        )}
+                        <button
+                          className="prewviewButton default-cursor"
+                          type="button"
+                        >
+                          Pending
+                        </button>
+                      )}
                       {(res?.status === "downloaded" ||
                         res?.status === "updated" ||
                         res?.status === "uploaded") && (
-                          <>
-                            <div className="accept_btn_group">
-                              <button
-                                onClick={() => {
-                                  setAcceptShow(true);
-                                  SetCurProject({ ...res });
-                                }}
-                              >
-                                Accept
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setDeclineShow(true);
-                                  SetCurProject({ ...res });
-                                }}
-                              >
-                                Decline
-                              </button>
-                            </div>
-                            <button
-                              className="prewviewButton"
-                              onClick={() => {
-                                SetCurProject({ ...res });
-                                setShow(true);
-                              }}
-                              type="button"
-                            >
-                              Download
-                            </button>
-                          </>
-                        )}
-                      {res?.status === "accepted" && (
                         <>
                           <div className="accept_btn_group">
+                            <button
+                              onClick={() => {
+                                setAcceptShow(true);
+                                SetCurProject({ ...res });
+                              }}
+                            >
+                              Accept
+                            </button>
+                            <button
+                              onClick={() => {
+                                setDeclineShow(true);
+                                SetCurProject({ ...res });
+                              }}
+                            >
+                              Decline
+                            </button>
+                          </div>
+                          <button
+                            className="prewviewButton"
+                            onClick={() => {
+                              SetCurProject({ ...res });
+                              setShow(true);
+                            }}
+                            type="button"
+                          >
+                            Download
+                          </button>
+                        </>
+                      )}
+                      {res?.status === "accepted" && (
+                        <>
+                          <div
+                            className="accept_btn_group"
+                            style={{ margin: "auto" }}
+                          >
                             <div className="Milestone">Milestone Completed</div>
                           </div>
+                          {res?.invoice && (
+                            <div className="accept_btn_group">
+                              <button
+                                className="Milestone"
+                                onClick={() => handalDownloadInvoice(res)}
+                              >
+                                Download Invoice
+                              </button>
+                            </div>
+                          )}
+
                           <button
                             className="prewviewButton"
                             onClick={() => {
@@ -458,7 +579,10 @@ const FromClientTabPane = ({ location }) => {
                       )}
                       {res?.status === "completed" && (
                         <>
-                          <div className="accept_btn_group">
+                          <div
+                            className="accept_btn_group"
+                            // style={{ margin: "auto" }}
+                          >
                             <button>Milestone Completed</button>
                           </div>
                           <button

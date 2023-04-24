@@ -45,7 +45,7 @@ const EditProfileClient = () => {
   const contextData = useContext(Global);
   const location = useLocation();
   const [isLoading, setLoading] = useState(false);
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
 
   const [value, setValue] = useState({
     // alpha2: "us",
@@ -56,6 +56,8 @@ const EditProfileClient = () => {
     // ioc: "usa",
     name: location?.state?.nation,
   });
+
+  console.log(value);
 
   const [imgcode, setimgcode] = useState(getCode(location?.state?.nation));
 
@@ -190,8 +192,7 @@ const EditProfileClient = () => {
                                   "http://13.52.16.160:8082/identity/get_dashboard_profile/",
                                   {
                                     user_id: cookies?.user_data?.user_id,
-                                    user_token:
-                                      cookies?.user_data?.user_token,
+                                    user_token: cookies?.user_data?.user_token,
                                     role: "client",
                                   }
                                 )
@@ -279,22 +280,30 @@ const EditProfileClient = () => {
                           alt="United States"
                           src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${imgcode}.svg`}
                         /> */}
-                        <CountrySelect
+
+                        {/* <CountrySelect
                           value={value}
+                          disabled
                           onChange={(val) => {
                             setNationerr(false);
                             setValue(val);
                             setFieldValue("nation", val?.name);
-                            // let id = val.id;
-                            // setimgcode(id.toLocaleUpperCase());
+                            let id = val.id;
+                            setimgcode(id.toLocaleUpperCase());
                           }}
                           flags={true}
                           placeholder="Select a Country"
                           name="nation"
-                        />
-                        {nationErr && (
-                          <p className="text-danger">Country name required</p>
-                        )}
+                        /> */}
+                        <div className="create-account-input">
+                          <Field
+                            value={value.name}
+                            disabled
+                            name="nation"
+                            type="text"
+                            className="form-control"
+                          />
+                        </div>
                       </div>
                       <div className="col-md my-md-3 my-1">
                         <div className="form-group">
@@ -304,12 +313,13 @@ const EditProfileClient = () => {
                             country={value?.alpha2}
                             enableAreaCodes
                             name="mobile_no"
-                            onChange={(pho, country) =>
-                              setFieldValue(
-                                "mobile_no",
-                                `+${country.dialCode}${pho}`
-                              )
-                            }
+                            disabled
+                            // onChange={(pho, country) =>
+                            //   setFieldValue(
+                            //     "mobile_no",
+                            //     `+${country.dialCode}${pho}`
+                            //   )
+                            // }
                             inputStyle={{
                               padding: "26px",
                               width: "100%",

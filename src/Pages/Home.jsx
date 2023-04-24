@@ -147,20 +147,20 @@ const Home = () => {
     }
   };
   const handleProjectsServices = () => {
-    if (cookies?.user?.role === "client") {
+    if (contextData?.userData?.role === "professional") {
+      contextData?.dispatch({
+        type: "CURRENT_PROFESSIONAL_TAB",
+        value: "activities",
+      });
+      navigate("/professionaldashboard");
+    } else if (contextData?.userData?.role === "client") {
       contextData?.dispatch({
         type: "CURRENT_CLIENT_TAB",
         value: "Ongoing",
       });
       navigate("/clientdashboard");
-    } else if (cookies?.user?.role === "professional") {
-      contextData?.dispatch({
-        type: "CURRENT_PROFESSIONAL_TAB",
-        value: "activities",
-      });
-      navigate("professionaldashboard");
     } else {
-      navigate("join");
+      navigate("/join");
     }
   };
   const handleProfessionalServices = () => {
@@ -186,17 +186,15 @@ const Home = () => {
     }
   };
 
-  // const [plansType, setPlansType] = useState("monthly");
-  // const [plans, setPlans] = useState();
-  // useEffect(() => {
-  //   axios
-  //     .get("http://13.52.16.160:8082/stripe/subscription-plans/")
-  //     .then((responce) => {
-  //       setPlans(responce?.data?.data?.final_list);
-  //     });
-  // }, []);
-
-
+  const [plansType, setPlansType] = useState("monthly");
+  const [plans, setPlans] = useState();
+  useEffect(() => {
+    axios
+      .get("http://13.52.16.160:8082/stripe/subscription-plans/")
+      .then((responce) => {
+        setPlans(responce?.data?.data?.final_list);
+      });
+  }, []);
 
   return isRender ? (
     <>
