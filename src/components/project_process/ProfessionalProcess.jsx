@@ -172,43 +172,35 @@ const ProfessionalProcess = ({ location }) => {
                 validationSchema={SignUpSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setLoading(true);
-                  axios
-                    .put(
-                      "http://13.52.16.160:8082/stripe/professionl/verify-account/",
-                      {
-                        professioanl_id: cookies?.user_data?.user_id,
-                        professioanl_token: cookies?.user_data?.user_token,
-                      }
-                    )
-                    .then((result) => {
-                      if (result?.data?.status === "Failed") {
-                        setShow(true);
-                      } else {
-                        axios
-                          .post(
-                            "http://13.52.16.160:8082/professional/project_details",
-                            {
-                              ...location?.state?.clientDetails,
-                              user_token: cookies?.user_data?.user_token,
-                              professional_id: cookies?.user_data?.user_id,
-                              role: "professional",
-                              client_id: location?.state?.client_id,
-                              client_project_id:
-                                location?.state?.client_project_id,
-                              ...values,
-                            }
-                          )
-                          .then((res) => {
-                            if (res?.data?.status === "Success") {
-                              handleProfessionalDecesion(
-                                "accepted",
-                                values?.professional_budget,
-                                values?.estimated_date
-                              );
-                            }
-                          });
-                      }
-                    });
+                  axios.put("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+                    professioanl_id: cookies?.user_data?.user_id,
+                    professioanl_token: cookies?.user_data?.user_token,
+                  }).then((result) => {
+                    console.log(result)
+                    if (result?.data?.status === "Failed") {
+                      setLoading(false)
+                      setShow(true);
+                    } else {
+                      axios.post("http://13.52.16.160:8082/professional/project_details", {
+                        ...location?.state?.clientDetails,
+                        user_token: cookies?.user_data?.user_token,
+                        professional_id: cookies?.user_data?.user_id,
+                        role: "professional",
+                        client_id: location?.state?.client_id,
+                        client_project_id:
+                          location?.state?.client_project_id,
+                        ...values,
+                      }).then((res) => {
+                        if (res?.data?.status === "Success") {
+                          handleProfessionalDecesion(
+                            "accepted",
+                            values?.professional_budget,
+                            values?.estimated_date
+                          );
+                        }
+                      });
+                    }
+                  });
                 }}
               >
                 {({ isSubmitting, setFieldValue }) => (
@@ -485,9 +477,8 @@ const ProfessionalProcess = ({ location }) => {
                               display: "block",
                             }}
                             type="button"
-                            className={`theme-text-color bg-white   ${
-                              windowSize?.width > 576 ? "ms-auto" : "mx-auto"
-                            }`}
+                            className={`theme-text-color bg-white   ${windowSize?.width > 576 ? "ms-auto" : "mx-auto"
+                              }`}
                           >
                             Decline
                             <i className="fa-solid  fa-arrow-right-long me-3"></i>
@@ -496,9 +487,8 @@ const ProfessionalProcess = ({ location }) => {
                         <div className="col-sm">
                           <button
                             type="submit"
-                            className={`theme-bg-color text-white   ${
-                              windowSize?.width > 576 ? "me-auto" : "mx-auto"
-                            }`}
+                            className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"
+                              }`}
                           >
                             Accept
                             <i className="fa-solid  fa-arrow-right-long ms-3"></i>
