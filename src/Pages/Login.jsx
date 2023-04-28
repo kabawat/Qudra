@@ -113,8 +113,9 @@ const Login = () => {
         }
         toast(
           <div
-            className={`text-center ${res?.data?.status === "Failed" ? "text-danger" : "text-success"
-              } fw-bold`}
+            className={`text-center ${
+              res?.data?.status === "Failed" ? "text-danger" : "text-success"
+            } fw-bold`}
           >
             {res?.data?.status === "Failed" ? res?.data?.message : ""}
             {res?.data?.status === "Success" ? res?.data?.message : ""}
@@ -334,9 +335,9 @@ const Login = () => {
                                 ($("#EmailInputSignUpForm").val() === ""
                                   ? { pointerEvents: "none" }
                                   : { pointerEvents: "all" },
-                                  verifyButtonText === "Sent"
-                                    ? { pointerEvents: "none" }
-                                    : { pointerEvents: "all" })
+                                verifyButtonText === "Sent"
+                                  ? { pointerEvents: "none" }
+                                  : { pointerEvents: "all" })
                               }
                             >
                               {loadingActive ? (
@@ -433,7 +434,7 @@ const Login = () => {
                         <i className="fa-solid  fa-arrow-right-long ms-3 "></i>
                       </button>
                     </div>
-                    <div className="d-flex align-items-center my-3 justify-content-center py-md-5">
+                    {/* <div className="d-flex align-items-center my-3 justify-content-center py-md-5">
                       <div className="horizontal-line"></div>
                       <p className="m-0 mx-2">Open With</p>
                       <div className="horizontal-line"></div>
@@ -471,7 +472,7 @@ const Login = () => {
                         )}
                         redirectURI="https://redirectUrl.com"
                       />
-                    </div>
+                    </div> */}
                   </Form>
                 )}
               </Formik>

@@ -28,6 +28,11 @@ const Header2 = ({ link }) => {
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
   const logoutHandle = () => {
+    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+    });
     setShow(false);
     localStorage.clear();
     removeCookie("user_data");
@@ -742,7 +747,11 @@ const Header2 = ({ link }) => {
 const HeaderHome = () => {
   const [cookies, , removeCookie] = useCookies();
   const [userData, setUserData] = useState(cookies?.user_data);
-
+  const navigate = useNavigate();
+  const profileDropdown = () => {
+    $(".profile-edit-dropdown").slideToggle();
+    $(".profileEdit-button i").toggleClass("i-rotate");
+  };
   const textClick = () => {
     $(".mobile-menu").css("top", "0");
   };
@@ -760,6 +769,26 @@ const HeaderHome = () => {
       { pageLanguage: "en" },
       "google_translate_element"
     );
+  };
+  const handleEditProfileButton = () => {
+    axios
+      .put("http://13.52.16.160:8082/identity/update_account", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          navigate("/edit-profile", { state: res?.data?.data });
+        }
+      });
+  };
+  const logoutapi = () => {
+    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+    });
   };
   return (
     <div>
@@ -790,6 +819,125 @@ const HeaderHome = () => {
                       </li>
                     )}
                     {cookies?.user_data && (
+                      <div className="row align-item-center homepage-user-profile ">
+                        {cookies?.user_data?.role === "professional" ? (
+                          <div
+                            className="user-profile-img col"
+                            style={{
+                              padding: "0",
+                            }}
+                          >
+                            <img
+                              src={
+                                contextData?.profileData &&
+                                contextData?.profileData?.user_image_url
+                              }
+                              alt=""
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                cursor: "pointer",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            className="user-profile-img col"
+                            style={{
+                              padding: "0",
+                            }}
+                          >
+                            <img
+                              src={
+                                contextData?.profileData &&
+                                contextData?.profileData?.user_image_url
+                              }
+                              alt=""
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                cursor: "pointer",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </div>
+                        )}
+                        <div className="ps-3 col">
+                          <button
+                            className="d-flex align-items-center profileEdit-button"
+                            onClick={profileDropdown}
+                          >
+                            <h4>
+                              {contextData?.profileData &&
+                                contextData?.profileData?.name}
+                            </h4>
+                            <i className="fa-solid fa-caret-down i-rotate text-white"></i>
+                            <div id="Edit_toggle"></div>
+                          </button>
+                          <div className="profile-edit-dropdown">
+                            <div className=" d-flex flex-column ">
+                              <Link
+                                to=""
+                                className="d-flex justify-content-center rounded-top"
+                              >
+                                <button onClick={handleEditProfileButton}>
+                                  Edit Profile
+                                </button>
+                              </Link>
+                              <Link
+                                to={
+                                  cookies?.user_data?.role === "client"
+                                    ? "/clientdashboard"
+                                    : "/professionaldashboard"
+                                }
+                                className="d-flex justify-content-center rounded-top"
+                              >
+                                <button>Dashboard</button>
+                              </Link>
+                              <Link
+                                to=""
+                                className="d-flex justify-content-center rounded-bottom"
+                              >
+                                <button
+                                  onClick={() => {
+                                    setShow(true);
+                                  }}
+                                >
+                                  Log Out
+                                </button>
+                              </Link>
+                            </div>
+                          </div>
+                          <h6 className="m-0">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.email}
+                          </h6>
+                        </div>
+                      </div>
+                      // <li>
+                      //   <Link
+                      //     to={
+                      //       userData?.role === "client"
+                      //         ? "/clientdashboard"
+                      //         : "/professionaldashboard"
+                      //     }
+                      //     state={ { fromHomePage: true } }
+                      //   >
+                      //     <img
+                      //       style={ {
+                      //         width: "60px",
+                      //         height: "60px",
+                      //         borderRadius: "50%",
+                      //         outline: "4px solid white",
+                      //       } }
+                      //       src={ contextData?.profileData?.user_image_url }
+                      //       alt=""
+                      //     />
+                      //   </Link>
+                      // </li>
+                    )}
+                    {/* {cookies?.user_data && (
                       <li>
                         <Link
                           to={
@@ -811,17 +959,10 @@ const HeaderHome = () => {
                           />
                         </Link>
                       </li>
-                    )}
+                    )} */}
                     {!cookies?.user_data && (
                       <li>
                         <Link to="/select-sign-in">Sign In</Link>
-                      </li>
-                    )}
-                    {cookies?.user_data && (
-                      <li>
-                        <Link to="/" onClick={() => setShow(true)}>
-                          Sign Out
-                        </Link>
                       </li>
                     )}
 
@@ -841,6 +982,7 @@ const HeaderHome = () => {
                         <Button
                           className="theme-bg-color border-0"
                           onClick={() => {
+                            logoutapi();
                             removeCookie("user_data");
                             closeBtnClick();
                             setShow(false);
@@ -1600,6 +1742,13 @@ const HeaderDashboard = () => {
 
   // condition on this state is inverted //
   const [seeAllNotification, setSeeAllNotification] = useState(true);
+  const logoutapi = () => {
+    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+    });
+  };
   return (
     <>
       <header className="dashboard-header bg-white custom-border-radius-one">
@@ -1937,6 +2086,7 @@ const HeaderDashboard = () => {
           <Button
             className="theme-bg-color border-0"
             onClick={() => {
+              logoutapi();
               setShow(false);
               localStorage.clear();
               removeCookie("user_data");

@@ -5,6 +5,7 @@ import Global from "../../context/Global";
 import { useNavigate, Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { MdCloudUpload } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import useWindowSize from "../../Hooks/useWindowSize";
 import { useCookies } from "react-cookie";
@@ -84,6 +85,20 @@ const ProfessionalProcess = ({ location }) => {
   };
   const [loading, setLoading] = useState(false);
 
+  const [fileReport, setFileReport] = useState();
+  const [reportUpload, setreportUpload] = useState(false);
+  const [attachement, setAttachement] = useState("");
+
+  function handleChange_File(e) {
+    const file = URL.createObjectURL(e.target.files[0]);
+    let pdfFile = e.target.files[0].name;
+    setAttachement(e.target.files[0]);
+    setFileReport(pdfFile);
+    setreportUpload(true);
+    // setreportUpload(true);
+    // setAttachementError("");
+  }
+
   return loading ? (
     <Loader />
   ) : (
@@ -92,7 +107,7 @@ const ProfessionalProcess = ({ location }) => {
       <main>
         <div className="container mb-5 bg-white" style={customStyleOne}>
           <div className="row m-0">
-            <div className=" col-xxl-8 col-xl-9 col-lg-10 col-md-11 col-sm mx-auto">
+            <div className=" col-xxl-10 col-xl-10 col-lg-11 col-md-11 col-sm mx-auto">
               <section className="ProjectDetailsPageProjectDetailsSection">
                 <div className="row">
                   <div className="col ">
@@ -132,35 +147,70 @@ const ProfessionalProcess = ({ location }) => {
                         </p>
                       </div>
                     </div>
-                    <div className="row ">
+                    <div className="row">
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">3</div>
-                        <h5>Estimated Area:</h5>
+                        <h5>Project File Attachement:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.area}
+                          <a
+                            style={{ color: "#01a78a" }}
+                            href={location?.state?.projectData?.attachment}
+                            download={location?.state?.projectData?.attachment}
+                            target="_blank"
+                          >
+                            View
+                          </a>
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">4</div>
+                        <h5>Work Assigned:</h5>
+                        <p className="m-0 ms-3">
+                          {location?.state?.projectData?.work_assigned}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row ">
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">5</div>
+                        <h5>Estimated Area:</h5>
+                        <p className="m-0 ms-3">
+                          {location?.state?.projectData?.area} sq meter
+                        </p>
+                      </div>
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">6</div>
                         <h5>Estimated Budget:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_cost}
+                          $ {location?.state?.projectData?.project_cost}
                         </p>
                       </div>
                     </div>
                     <div className="row">
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
-                        <div className="project-details">5</div>
+                        <div className="project-details">7</div>
                         <h5>Project Status:</h5>
-                        <p className="m-0 ms-3">
+                        <p
+                          className="m-0 ms-3"
+                          style={{ textTransform: "capitalize" }}
+                        >
                           {location?.state?.projectData?.project_status}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
-                        <div className="project-details">6</div>
+                        <div className="project-details">8</div>
                         <h5>Estimated Deadline:</h5>
                         <p className="m-0 ms-3">
                           {location?.state?.projectData?.estimated_time}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">9</div>
+                        <h5>Project Description:</h5>
+                        <p className="m-0 ms-3">
+                          {location?.state?.projectData?.description}
                         </p>
                       </div>
                     </div>
@@ -172,35 +222,62 @@ const ProfessionalProcess = ({ location }) => {
                 validationSchema={SignUpSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setLoading(true);
-                  axios.put("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
-                    professioanl_id: cookies?.user_data?.user_id,
-                    professioanl_token: cookies?.user_data?.user_token,
-                  }).then((result) => {
-                    console.log(result)
-                    if (result?.data?.status === "Failed") {
-                      setLoading(false)
-                      setShow(true);
-                    } else {
-                      axios.post("http://13.52.16.160:8082/professional/project_details", {
-                        ...location?.state?.clientDetails,
-                        user_token: cookies?.user_data?.user_token,
-                        professional_id: cookies?.user_data?.user_id,
-                        role: "professional",
-                        client_id: location?.state?.client_id,
-                        client_project_id:
-                          location?.state?.client_project_id,
-                        ...values,
-                      }).then((res) => {
-                        if (res?.data?.status === "Success") {
-                          handleProfessionalDecesion(
-                            "accepted",
-                            values?.professional_budget,
-                            values?.estimated_date
-                          );
-                        }
-                      });
-                    }
-                  });
+                  axios
+                    .put(
+                      "http://13.52.16.160:8082/stripe/professionl/verify-account/",
+                      {
+                        professioanl_id: cookies?.user_data?.user_id,
+                        professioanl_token: cookies?.user_data?.user_token,
+                      }
+                    )
+                    .then((result) => {
+                      if (result?.data?.status === "Failed") {
+                        setShow(true);
+                      } else {
+                        // const formdata = new FormData();
+                        // formdata.set("client_id", cookies?.user_data?.user_id);
+                        // formdata.set("description ", description);
+                        // formdata.set("user_token", cookies?.user_data?.user_token);
+                        // formdata.set("attachment", attachement);
+                        // formdata.set(
+                        //   "professional_id",
+                        //   contextData?.professional_user_profile_data?.details?.professional_id
+                        // );
+                        // formdata.set("project_name", values?.name);
+                        // formdata.set("work_assigned ", values?.work_assigned);
+                        // formdata.set("project_cost", values?.budget);
+                        // formdata.set("area ", values?.area);
+                        // formdata.set("role ", cookies?.user_data?.role);
+                        // formdata.set(
+                        //   "estimate_date ",
+                        //   new Date(values?.time)?.toLocaleString("en-US").split(",")[0]
+                        // );
+                        console.log(location?.state?.clientDetails);
+                        axios
+                          .post(
+                            "http://13.52.16.160:8082/professional/project_details",
+                            {
+                              ...location?.state?.clientDetails,
+                              user_token: cookies?.user_data?.user_token,
+                              professional_id: cookies?.user_data?.user_id,
+                              role: "professional",
+                              client_id: location?.state?.client_id,
+                              client_project_id:
+                                location?.state?.client_project_id,
+                              ...values,
+                            }
+                          )
+                          .then((res) => {
+                            if (res?.data?.status === "Success") {
+                              handleProfessionalDecesion(
+                                "accepted",
+                                values?.professional_budget,
+                                values?.estimated_date
+                              );
+                            }
+                          });
+                      }
+                    });
                 }}
               >
                 {({ isSubmitting, setFieldValue }) => (
@@ -209,30 +286,83 @@ const ProfessionalProcess = ({ location }) => {
                       <h3 className="theme-text-color fs-24 mt-5 mb-4">
                         Milestone
                       </h3>
-                      <div className="milestoneBox row">
-                        <div className="col-10">
-                          <Field
-                            name="milestone_name_one"
-                            placeholder="Enter the name of the milestone "
-                          />
-                        </div>
 
-                        <div className="col-2 theme-bg-color">
-                          <DatePicker
-                            selected={dateOne}
-                            isClearable
-                            placeholderText="Enter Date"
-                            minDate={new Date()}
-                            name="milestone_date_one"
-                            dateFormat="yyyy-MM-dd"
-                            onChange={(date) => {
-                              setDateOne(date);
-                              setFieldValue(
-                                "milestone_date_one",
-                                new Date(date).toLocaleDateString("en-CA")
-                              );
-                            }}
-                          />
+                      <div className="milestoneBox row">
+                        <div className="row rowMilestone">
+                          <div className="col-3 colMilestone">
+                            <Field
+                              name="milestone_name_one"
+                              placeholder="Name of the milestone  "
+                            />
+                          </div>
+
+                          <div className="col-3 colMilestone">
+                            <Field
+                              name="cost"
+                              placeholder=" Cost % "
+                              className="milestone_input_des  "
+                            />
+                          </div>
+                          <div className="col-3 ">
+                            <input
+                              type="file"
+                              name="milestone_attachement"
+                              // placeholder="Milestone Descrption  "
+                              id="attachement1"
+                              className="mileStoneAttach"
+                              onChange={handleChange_File}
+                              style={{ display: "none" }}
+                            />
+                            <label
+                              htmlFor="attachement1"
+                              className="input-path-label mileStoneAttach_lablel mt-1 "
+                              style={{ background: "none" }}
+                            >
+                              <span>
+                                <MdCloudUpload
+                                  size={40}
+                                  color={"rgb(1, 167, 138)"}
+                                  margin-left={"10px"}
+                                  s
+                                />
+                              </span>
+                              {reportUpload ? (
+                                <p className="Report"> {fileReport}</p>
+                              ) : (
+                                <p className="Report">Upload Attachement</p>
+                              )}
+                            </label>
+                          </div>
+                          <div className="col-3 p-0">
+                            <div className="theme-bg-color milestonedatepicker">
+                              <DatePicker
+                                selected={dateOne}
+                                isClearable
+                                placeholderText="Enter Date"
+                                minDate={new Date()}
+                                name="milestone_date_one"
+                                dateFormat="yyyy-MM-dd"
+                                onChange={(date) => {
+                                  setDateOne(date);
+                                  setFieldValue(
+                                    "milestone_date_one",
+                                    new Date(date).toLocaleDateString("en-CA")
+                                  );
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-12 p-0 ">
+                            <Field
+                              as="textarea"
+                              row="6"
+                              name="milestone_decrip"
+                              placeholder=" Descrption  "
+                              className="milestone_input_des  "
+                            />
+                          </div>
                         </div>
                       </div>
 
@@ -477,8 +607,9 @@ const ProfessionalProcess = ({ location }) => {
                               display: "block",
                             }}
                             type="button"
-                            className={`theme-text-color bg-white   ${windowSize?.width > 576 ? "ms-auto" : "mx-auto"
-                              }`}
+                            className={`theme-text-color bg-white   ${
+                              windowSize?.width > 576 ? "ms-auto" : "mx-auto"
+                            }`}
                           >
                             Decline
                             <i className="fa-solid  fa-arrow-right-long me-3"></i>
@@ -487,8 +618,9 @@ const ProfessionalProcess = ({ location }) => {
                         <div className="col-sm">
                           <button
                             type="submit"
-                            className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"
-                              }`}
+                            className={`theme-bg-color text-white   ${
+                              windowSize?.width > 576 ? "me-auto" : "mx-auto"
+                            }`}
                           >
                             Accept
                             <i className="fa-solid  fa-arrow-right-long ms-3"></i>

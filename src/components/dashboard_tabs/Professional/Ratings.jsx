@@ -20,40 +20,42 @@ const Ratings = () => {
   });
   const [rating, setRating] = useState();
   const [search, setSearch] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data.role === "professional") {
-          axios.post("http://13.52.16.160:8082/identity/get-like-save", {
-            user_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            ...projectPageId,
-            search_for: "rating",
-          }).then((res) => {
-            if (res?.data?.status === "Success") {
-              setLoading(true);
-              setRating(res?.data?.data);
-            }
-          });
+          axios
+            .post("http://13.52.16.160:8082/identity/get-like-save", {
+              user_id: cookies?.user_data?.user_id,
+              user_token: cookies?.user_data?.user_token,
+              role: cookies?.user_data?.role,
+              ...projectPageId,
+              search_for: "rating",
+            })
+            .then((res) => {
+              if (res?.data?.status === "Success") {
+                setLoading(true);
+                setRating(res?.data?.data);
+              }
+            });
         } else {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         }
       } else {
         if (cookies?.user_data.role === "professional") {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [projectPageId])
+  }, [projectPageId]);
 
   const projectPaginationArray = [];
   for (let i = 0; i < rating?.total_data / projectPageId?.page_size; i++) {
@@ -63,42 +65,46 @@ const Ratings = () => {
   var searchAll = [];
   const handleSearch = (e) => {
     e.preventDefault();
-    axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      ...projectPageId,
-      search_for: "rating",
-      search_data: search,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setRating(res?.data?.data);
-        setSearchdata(rating);
+    axios
+      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        ...projectPageId,
+        search_for: "rating",
+        search_data: search,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setRating(res?.data?.data);
+          setSearchdata(rating);
 
-        searchAll = res?.data?.data;
-      } else {
-        setSearchdata("");
-      }
-    });
+          searchAll = res?.data?.data;
+        } else {
+          setSearchdata("");
+        }
+      });
   };
 
   const handleRating = (val) => {
     if (val == "") {
-      axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        ...searchPageId,
-        search_for: "rating",
-        search_data: "",
-      }).then((res) => {
-        if (res?.data?.status === "Success") {
-          setRating(res?.data?.data);
+      axios
+        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          ...searchPageId,
+          search_for: "rating",
+          search_data: "",
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setRating(res?.data?.data);
 
-          searchAll = res?.data?.data;
-          setSearchdata(searchAll);
-        }
-      });
+            searchAll = res?.data?.data;
+            setSearchdata(searchAll);
+          }
+        });
     }
   };
 
@@ -113,18 +119,20 @@ const Ratings = () => {
   }
 
   useEffect(() => {
-    axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      ...searchPageId,
-      search_for: "rating",
-      search_data: search,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setRating(res?.data?.data);
-      }
-    });
+    axios
+      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        ...searchPageId,
+        search_for: "rating",
+        search_data: search,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setRating(res?.data?.data);
+        }
+      });
   }, [searchPageId]);
 
   return (
@@ -132,17 +140,27 @@ const Ratings = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-2 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-2 col-lg-3 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-10 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-10 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              {!loading ? (<Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!loading} >
-                <CircularProgress color="inherit" />
-              </Backdrop>
+              {!loading ? (
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={!loading}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
               ) : (
                 <main className="dashboard-main">
-                  <div id="liked-save" className="container-fluid  myProjectTable">
+                  <div
+                    id="liked-save"
+                    className="container-fluid  myProjectTable"
+                  >
                     <h2 className="ps-5"> Clients Ratings </h2>
                     <div className="m-xl-5 mx-2 shadow">
                       {rating?.final_data?.length ? (
@@ -212,7 +230,8 @@ const Ratings = () => {
                         </div>
                       )}
                     </div>
-                    {!search && projectPageId?.page_size < rating?.total_data ? (
+                    {!search &&
+                    projectPageId?.page_size < rating?.total_data ? (
                       <Pagination className="ps-5 paginationBoxProfessionalDashboard">
                         <Pagination.First
                           onClick={() => {
@@ -226,7 +245,10 @@ const Ratings = () => {
                           onClick={() => {
                             setProjectPageId((prev) => ({
                               ...prev,
-                              page: projectPageId?.page !== 1 ? projectPageId?.page - 1 : 1,
+                              page:
+                                projectPageId?.page !== 1
+                                  ? projectPageId?.page - 1
+                                  : 1,
                             }));
                           }}
                         />
@@ -249,7 +271,8 @@ const Ratings = () => {
                             setProjectPageId((prev) => ({
                               ...prev,
                               page:
-                                projectPaginationArray?.length !== projectPageId?.page
+                                projectPaginationArray?.length !==
+                                projectPageId?.page
                                   ? projectPageId?.page + 1
                                   : projectPageId?.page,
                             }));
@@ -282,7 +305,10 @@ const Ratings = () => {
                           onClick={() => {
                             setSearchPageId((prev) => ({
                               ...prev,
-                              page: searchPageId?.page !== 1 ? searchPageId?.page - 1 : 1,
+                              page:
+                                searchPageId?.page !== 1
+                                  ? searchPageId?.page - 1
+                                  : 1,
                             }));
                             handleSearch();
                           }}
@@ -307,7 +333,8 @@ const Ratings = () => {
                             setSearchPageId((prev) => ({
                               ...prev,
                               page:
-                                searchPaginationArray?.length !== searchPageId?.page
+                                searchPaginationArray?.length !==
+                                searchPageId?.page
                                   ? searchPageId?.page + 1
                                   : searchPageId?.page,
                             }));
@@ -328,14 +355,14 @@ const Ratings = () => {
                       ""
                     )}
                   </div>
-                </main>)}
+                </main>
+              )}
             </div>
           </div>
         </div>
       </div>
       <Footer />
     </>
-
   );
 };
 

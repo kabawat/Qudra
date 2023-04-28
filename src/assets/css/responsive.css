@@ -1284,6 +1284,21 @@
 
   /* =============== 05 April  ================ */
 
+  .MyProjectDisplayRow .col-lg-3:first-child {
+    min-width: 100% !important;
+  }
+
+  .MyProjectDisplayRow .col-lg-3:last-child {
+    min-width: 50% !important;
+  }
+  .MyProjectDisplayRow .col-lg-3 {
+    min-width: 50% !important;
+  }
+
+  .myProjectTable div.row div {
+    padding: 10px;
+  }
+
   .logo {
     height: 60px !important;
   }
@@ -1596,6 +1611,21 @@
 }
 
 @media screen and (min-device-width: 1024px) and (max-device-width: 1279px) {
+  .MyProjectDisplayRow .col-lg-3:first-child {
+    min-width: 100% !important;
+  }
+
+  .MyProjectDisplayRow .col-lg-3:last-child {
+    min-width: 50% !important;
+  }
+  .MyProjectDisplayRow .col-lg-3 {
+    min-width: 50% !important;
+  }
+
+  .myProjectTable div.row div {
+    padding: 10px;
+  }
+
   .logo {
     height: 70px !important;
   }
@@ -1918,5 +1948,26 @@
   .view_report {
     display: grid;
     place-items: center;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .miniRateBox {
+    display: block !important;
+  }
+  .miniRate {
+    font-size: 18px !important;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .mainProfileBox {
+    margin-top: 22% !important;
+  }
+}
+
+@media screen and (min-width: 1355px) and (max-width: 1385px) {
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
+    font-size: 15px;
   }
 }

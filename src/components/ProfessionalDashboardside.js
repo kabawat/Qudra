@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
-import { MdOutlineLiveHelp } from "react-icons/md";
+import { MdOutlineLiveHelp, MdSubscriptions } from "react-icons/md";
 import Global from "../context/Global";
 import { TbMessageReport } from "react-icons/tb";
 
@@ -276,18 +276,20 @@ const Dashboardside = () => {
             </li>
             <li className="nav-item">
               <NavLink
-                className={`nav-link activity-btn`}
+                className={`nav-link liked-btn`}
                 to="/subscription-plans"
               >
-                <img
-                  src="/static/icon/Rating2.png"
-                  alt=""
-                  className="Activities-white-icon"
-                />
-                <img
-                  src="/static/icon/Rating1.png"
-                  alt=""
-                  className="Activities-green-icon"
+                <MdSubscriptions
+                  style={{
+                    color: `${
+                      contextData?.current_professional_tab ===
+                      "subscription-plans"
+                        ? "#00a78b"
+                        : "white"
+                    }`,
+                    fontSize: "27px",
+                    marginRight: "5px",
+                  }}
                 />
                 <span className="mob-hide">Subscription Plans</span>
               </NavLink>

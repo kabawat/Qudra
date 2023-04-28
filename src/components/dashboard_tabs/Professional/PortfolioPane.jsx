@@ -14,8 +14,11 @@ import Global from "../../../context/Global";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { GiCancel } from "react-icons/gi";
+import { IoMdClose } from "react-icons/io";
 
 import { AiFillDelete } from "react-icons/ai";
+import { RxCross2 } from "react-icons/rx";
+
 import Footer from "../../Footer";
 import InstructionModal from "../../Modals/InstructionModal";
 import { HeaderDashboard } from "../../Header";
@@ -306,10 +309,10 @@ const PortfolioPane = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-2 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-2 col-lg-3 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-10 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-10 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {loading ? (
                 <Backdrop
@@ -915,10 +918,12 @@ const PortfolioPane = () => {
                                               }}
                                               alt=""
                                             />
+
                                             <span
                                               style={{
                                                 margin: "auto",
                                                 paddingLeft: "20%",
+                                                cursor: "pointer",
                                               }}
                                               onClick={() => {
                                                 setFieldValue("image", "");
@@ -927,7 +932,7 @@ const PortfolioPane = () => {
                                                 fileclear(getevent);
                                               }}
                                             >
-                                              <AiFillDelete size={30} />
+                                              <RxCross2 size={30} />
                                             </span>
                                           </div>
                                           <button
@@ -1400,7 +1405,66 @@ const PortfolioPane = () => {
                         <LoadingModal loader={loader} />
                       </div>
                     )}
+
                     <Modal
+                      size="lg"
+                      // fullscreen={ true }
+                      animation={true}
+                      show={PortfolioData?.preview_data_modal}
+                      aria-labelledby="contained-modal-title-vcenter"
+                      centered
+                      className="modalProfessionalDashboard"
+                    >
+                      <button
+                        className="modal-closebtn"
+                        onClick={() => {
+                          dispatch({
+                            type: "PREVIEW_DATA_MODAL",
+                            value: false,
+                          });
+                        }}
+                      >
+                        <IoMdClose style={{ color: "#fff" }} />
+                      </button>
+
+                      {PortfolioData?.preview_catagory_data &&
+                        PortfolioData?.preview_catagory_data?.type ===
+                          "image" && (
+                          <img
+                            src={PortfolioData?.preview_catagory_data?.image}
+                            alt=""
+                            className="img-fluid object-fit-contain"
+                            style={{ maxHeight: "532px" }}
+                          />
+                        )}
+                      {PortfolioData?.preview_catagory_data &&
+                        PortfolioData?.preview_catagory_data?.type ===
+                          "video" &&
+                        PortfolioData?.preview_catagory_data?.video && (
+                          <video
+                            className="img-fluid h-100 object-fit-contain"
+                            controls
+                          >
+                            <source
+                              src={
+                                PortfolioData?.preview_catagory_data?.video &&
+                                PortfolioData?.preview_catagory_data?.video
+                              }
+                              type="video/mp4"
+                            />
+                            <source
+                              src={
+                                PortfolioData?.preview_catagory_data?.video &&
+                                PortfolioData?.preview_catagory_data?.video
+                              }
+                              type="video/ogg"
+                            />
+                            Your browser does not support HTML video.
+                          </video>
+                        )}
+                    </Modal>
+
+                    {/* <Modal
                       fullscreen={true}
                       animation={false}
                       show={PortfolioData?.preview_data_modal}
@@ -1455,7 +1519,7 @@ const PortfolioPane = () => {
                             Your browser does not support HTML video.
                           </video>
                         )}
-                    </Modal>
+                    </Modal> */}
                     <Modal
                       show={PortfolioData?.architecture_design_upload_modal}
                       size="lg"

@@ -17,7 +17,7 @@ const LikesShow = () => {
   const contextData = useContext(Global);
   const [likes, setLikes] = useState([]);
   const [search, setSearch] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [projectPageId, setProjectPageId] = useState({
     page: 1,
     page_size: 5,
@@ -32,37 +32,39 @@ const LikesShow = () => {
   for (let i = 0; i < likes?.total_data / searchPageId?.page_size; i++) {
     searchPaginationArray.push(i + 1);
   }
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data.role === "professional") {
-          axios.post("http://13.52.16.160:8082/identity/get-like-save", {
-            user_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            ...projectPageId,
-            search_for: "like",
-          }).then((res) => {
-            if (res?.data?.status === "Success") {
-              setLoading(true);
-              setLikes(res?.data?.data);
-            }
-          });
+          axios
+            .post("http://13.52.16.160:8082/identity/get-like-save", {
+              user_id: cookies?.user_data?.user_id,
+              user_token: cookies?.user_data?.user_token,
+              role: cookies?.user_data?.role,
+              ...projectPageId,
+              search_for: "like",
+            })
+            .then((res) => {
+              if (res?.data?.status === "Success") {
+                setLoading(true);
+                setLikes(res?.data?.data);
+              }
+            });
         } else {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         }
       } else {
         if (cookies?.user_data.role === "professional") {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [projectPageId])
+  }, [projectPageId]);
 
   const projectPaginationArray = [];
   for (let i = 0; i < likes?.total_data / projectPageId?.page_size; i++) {
@@ -71,57 +73,63 @@ const LikesShow = () => {
 
   var searchAll = [];
   const handleSearch = (e) => {
-    e.preventDefault()
-    axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      ...searchPageId,
-      search_for: "like",
-      search_data: search,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setLikes(res?.data?.data);
-        setSearchdata(likes);
-        searchAll = res?.data?.data;
-      } else {
-        setSearchdata("");
-      }
-    });
-  };
-
-  const handleLikes = (val) => {
-    if (val == "") {
-      axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+    e.preventDefault();
+    axios
+      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
         ...searchPageId,
         search_for: "like",
-        search_data: "",
-      }).then((res) => {
+        search_data: search,
+      })
+      .then((res) => {
         if (res?.data?.status === "Success") {
           setLikes(res?.data?.data);
+          setSearchdata(likes);
           searchAll = res?.data?.data;
-          setSearchdata(searchAll);
+        } else {
+          setSearchdata("");
         }
       });
+  };
+
+  const handleLikes = (val) => {
+    if (val == "") {
+      axios
+        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          ...searchPageId,
+          search_for: "like",
+          search_data: "",
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setLikes(res?.data?.data);
+            searchAll = res?.data?.data;
+            setSearchdata(searchAll);
+          }
+        });
     }
   };
   const [searchData, setSearchdata] = useState(searchAll);
   useEffect(() => {
-    axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      ...searchPageId,
-      search_for: "like",
-      search_data: search,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setLikes(res?.data?.data);
-      }
-    });
+    axios
+      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        ...searchPageId,
+        search_for: "like",
+        search_data: search,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setLikes(res?.data?.data);
+        }
+      });
   }, [searchPageId]);
 
   return (
@@ -129,17 +137,27 @@ const LikesShow = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-2 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-2 col-lg-3 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-10 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-10 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              {!loading ? (<Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!loading} >
-                <CircularProgress color="inherit" />
-              </Backdrop>
+              {!loading ? (
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={!loading}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
               ) : (
                 <main className="dashboard-main">
-                  <div id="liked-save" className="container-fluid  myProjectTable">
+                  <div
+                    id="liked-save"
+                    className="container-fluid  myProjectTable"
+                  >
                     <h2 className="ps-5"> Clients Likes</h2>
                     <div className="m-xl-5 mx-2 shadow">
                       {likes?.final_data?.length ? (
@@ -220,7 +238,10 @@ const LikesShow = () => {
                           onClick={() => {
                             setProjectPageId((prev) => ({
                               ...prev,
-                              page: projectPageId?.page !== 1 ? projectPageId?.page - 1 : 1,
+                              page:
+                                projectPageId?.page !== 1
+                                  ? projectPageId?.page - 1
+                                  : 1,
                             }));
                           }}
                         />
@@ -243,7 +264,8 @@ const LikesShow = () => {
                             setProjectPageId((prev) => ({
                               ...prev,
                               page:
-                                projectPaginationArray?.length !== projectPageId?.page
+                                projectPaginationArray?.length !==
+                                projectPageId?.page
                                   ? projectPageId?.page + 1
                                   : projectPageId?.page,
                             }));
@@ -279,7 +301,10 @@ const LikesShow = () => {
                           onClick={() => {
                             setSearchPageId((prev) => ({
                               ...prev,
-                              page: searchPageId?.page !== 1 ? searchPageId?.page - 1 : 1,
+                              page:
+                                searchPageId?.page !== 1
+                                  ? searchPageId?.page - 1
+                                  : 1,
                             }));
                             handleSearch();
                           }}
@@ -304,7 +329,8 @@ const LikesShow = () => {
                             setSearchPageId((prev) => ({
                               ...prev,
                               page:
-                                searchPaginationArray?.length !== searchPageId?.page
+                                searchPaginationArray?.length !==
+                                searchPageId?.page
                                   ? searchPageId?.page + 1
                                   : searchPageId?.page,
                             }));
@@ -325,7 +351,8 @@ const LikesShow = () => {
                       ""
                     )}
                   </div>
-                </main>)}
+                </main>
+              )}
             </div>
           </div>
         </div>

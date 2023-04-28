@@ -5,7 +5,7 @@ import CountrySelect from "react-bootstrap-country-select";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import axios from "axios";
 import $ from "jquery";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Modal from "react-bootstrap/Modal";
 import OtpInput from "react-otp-input";
@@ -1399,7 +1399,7 @@ const SignIn = () => {
   let navigate = useNavigate();
   const [imgcode, setimgcode] = useState("");
   const [emailExists, setEmailExists] = useState(false);
-
+  const [email_verifyErr, setemail_verifyErr] = useState(false);
   const [cookies, setCookie] = useCookies();
   const [isRender, setIsRender] = useState(false);
   useEffect(() => {
@@ -1461,12 +1461,13 @@ const SignIn = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           setOtpResponse("Verified");
+          setemail_verifyErr(false);
           handleOTP("");
           setShow(false);
           setoptdisplay("none");
         } else {
           setOtpResponse("Verify");
-          handleOTP("");
+          // handleOTP("");
           setValidateOTP(true);
         }
         if (res?.data?.message !== "Otp expired") {
@@ -1522,7 +1523,7 @@ const SignIn = () => {
 
   return (
     <>
-      {isLoading && !isRender ? (
+      {isLoading || !isRender ? (
         <Loader />
       ) : (
         <div className="create-account">
@@ -1543,73 +1544,82 @@ const SignIn = () => {
                 }}
                 validationSchema={SignUpSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  setLoading(true);
-                  axios
-                    .post(
-                      "http://13.52.16.160:8082/identity/signup_client",
-                      values
-                    )
-                    .then((res) => {
-                      if (res?.data?.status !== "Success") {
-                        setOtpResponse("Please try Again");
-                        navigate("/client-sign-up");
-                        setLoading(false);
-                        localStorage.clear();
-                      }
+                  if (OtpResponse !== "Verified") {
+                    setemail_verifyErr(true);
+                    return false;
+                  }
+                  if (!filePic) {
+                    seterrdisplay("block");
+                    return false;
+                  } else {
+                    setLoading(true);
+                    axios
+                      .post(
+                        "http://13.52.16.160:8082/identity/signup_client",
+                        values
+                      )
+                      .then((res) => {
+                        if (res?.data?.status !== "Success") {
+                          setOtpResponse("Please try Again");
+                          navigate("/client-sign-up");
+                          setLoading(false);
+                          localStorage.clear();
+                        }
 
-                      const signupuser = new FormData();
-                      signupuser.append("image", filePic);
-                      signupuser.append("user_id", res?.data?.data?.user_id);
-                      signupuser.append(
-                        "user_token",
-                        res?.data?.data.user_token
-                      );
-                      signupuser.append("role", res?.data?.data.role);
+                        const signupuser = new FormData();
+                        signupuser.append("image", filePic);
+                        signupuser.append("user_id", res?.data?.data?.user_id);
+                        signupuser.append(
+                          "user_token",
+                          res?.data?.data.user_token
+                        );
+                        signupuser.append("role", res?.data?.data.role);
 
-                      if (res?.data?.status === "Success") {
-                        axios
-                          .post(
-                            "http://13.52.16.160:8082/identity/client_profile",
-                            signupuser
-                          )
-                          .then((respo) => {
-                            if (respo.data?.status === "Success") {
-                              axios
-                                .post(
-                                  "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                  {
-                                    user_id: res?.data?.data?.user_id,
-                                    user_token: res?.data?.data?.user_token,
-                                    role: res?.data?.data?.role,
-                                  }
-                                )
-                                .then((response) => {
-                                  contextData?.dispatch({
-                                    type: "FETCH_PROFILE_DATA",
-                                    value: response?.data?.data,
+                        if (res?.data?.status === "Success") {
+                          axios
+                            .post(
+                              "http://13.52.16.160:8082/identity/client_profile",
+                              signupuser
+                            )
+                            .then((respo) => {
+                              if (respo.data?.status === "Success") {
+                                axios
+                                  .post(
+                                    "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                    {
+                                      user_id: res?.data?.data?.user_id,
+                                      user_token: res?.data?.data?.user_token,
+                                      role: res?.data?.data?.role,
+                                    }
+                                  )
+                                  .then((response) => {
+                                    contextData?.dispatch({
+                                      type: "FETCH_PROFILE_DATA",
+                                      value: response?.data?.data,
+                                    });
+                                    contextData?.setShowDisclamer(true);
                                   });
-                                  contextData?.setShowDisclamer(true);
+                                navigate("/client-architechture", {
+                                  replace: true,
                                 });
-                              navigate("/client-architechture", {
-                                replace: true,
-                              });
-                            } else {
-                              navigate("/client-sign-up");
-                              setLoading(false);
-                              localStorage.clear();
-                            }
+                              } else {
+                                navigate("/client-sign-up");
+                                setLoading(false);
+                                localStorage.clear();
+                              }
+                            });
+                          contextData?.dispatch({
+                            type: "FETCH_USER_DATA",
+                            value: res?.data?.data,
                           });
-                        contextData?.dispatch({
-                          type: "FETCH_USER_DATA",
-                          value: res?.data?.data,
-                        });
-                        setCookie("user_data", {
-                          ...res?.data?.data,
-                          category_selected: false,
-                        });
-                        setEmailExists(false);
-                      }
-                    });
+                          setCookie("user_data", {
+                            ...res?.data?.data,
+                            category_selected: false,
+                          });
+                          setEmailExists(false);
+                        }
+                      });
+                  }
                 }}
               >
                 {({ setFieldValue }) => (
@@ -1730,6 +1740,11 @@ const SignIn = () => {
                             component="div"
                             className="m-2 text-danger"
                           />
+                          {email_verifyErr ? (
+                            <span className="text-danger">
+                              Please Verify Email
+                            </span>
+                          ) : null}
                         </div>
                         {existingEmail ? (
                           <p className="text-danger">
@@ -1919,7 +1934,7 @@ const SignIn = () => {
                           />
                           <span className="mt-3">Profile Image</span>
                           <span className={`${errdisplay} text-danger mt-3`}>
-                            Profile picture required
+                            Profile image required
                           </span>
                         </div>
                       </div>
@@ -1948,14 +1963,14 @@ const SignIn = () => {
                           />
                           <label className="form-check-label ms-2">
                             Yes, I understand and agree to the
-                            <a
-                              href="#"
-                              className="theme-text-color text-decoration-none"
+                            <NavLink
+                              style={{ marginLeft: "5px" }}
+                              to="/terms-condition"
+                              className="theme-text-color text-decoration-none "
                             >
-                              {" "}
                               Quadra Terms of Service User Agreement Privacy
                               Policy
-                            </a>
+                            </NavLink>
                           </label>
                           <ErrorMessage
                             name="agreedTerms"
@@ -1974,41 +1989,20 @@ const SignIn = () => {
                       )}
                     </div>
                     <div className="d-md-flex align-items-center justify-content-center my-md-5 my-2">
-                      {OtpResponse === "Verified" ? (
-                        <button
-                          type="submit"
-                          className="create-account-btn"
-                          style={{ pointerEvents: "all" }}
-                          onClick={() => {
-                            if (!filePic) {
-                              seterrdisplay("block");
-                            }
-                          }}
-                        >
-                          Create My Account
-                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="create-account-btn"
-                          onClick={() => {
-                            toast.error("Must Email verify ", {
-                              position: "top-right",
-                              autoClose: 2000,
-                              hideProgressBar: true,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                              theme: "colored",
-                            });
-                          }}
-                        >
-                          Create My Account
-                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
-                        </button>
-                      )}
+                      <button
+                        type="submit"
+                        className="create-account-btn"
+                        style={{ pointerEvents: "all" }}
+                        onClick={() => {
+                          if (!filePic) {
+                            seterrdisplay("block");
+                          }
+                        }}
+                      >
+                        Create My Account
+                        <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                      </button>
+
                       {/* <button type="button" className="logInbtn">
                         <Link to="/login" style={style}>
                           Log In
@@ -2016,7 +2010,7 @@ const SignIn = () => {
                         </Link>
                       </button> */}
                     </div>
-                    <div className="d-flex align-items-center my-3 justify-content-center">
+                    {/* <div className="d-flex align-items-center my-3 justify-content-center">
                       <div className="horizontal-line"></div>
                       <p className="m-0 mx-2">Login With</p>
                       <div className="horizontal-line"></div>
@@ -2054,7 +2048,7 @@ const SignIn = () => {
                         )}
                         redirectURI="https://redirectUrl.com"
                       />
-                    </div>
+                    </div> */}
                   </Form>
                 )}
               </Formik>

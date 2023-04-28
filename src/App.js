@@ -60,6 +60,7 @@ import SubscriptionPlans from "./components/dashboard_tabs/Professional/subscrip
 import PurchaseDesign from "./components/dashboard_tabs/Client/purchase-design";
 import Report from "./components/dashboard_tabs/Professional/Report";
 import ReportTab from "./components/dashboard_tabs/Professional/ReportTab";
+import Checkout from "./components/dashboard_tabs/Client/checkout";
 
 function App() {
   const [cookies] = useCookies();
@@ -99,6 +100,7 @@ function App() {
           <Route path="/professional-Reject" element={<Reject />} />
           <Route path="/subscription-plans" element={<SubscriptionPlans />} />
           <Route path="/like" element={<LikesShow />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/ratings" element={<Showratings />} />
           <Route
             path="/professional-guidelines"

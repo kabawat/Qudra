@@ -208,11 +208,8 @@ const PurchaseDesign = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              <div
-                id="dashboard-menu-bar"
-                className="container  px-md-4 px-3 pt-5"
-              >
-                <div className="ReportDesign">
+              <div id="dashboard-menu-bar" className="px-md-4 px-3 pt-5">
+                <div className="ReportDesign ">
                   <h2 style={{ color: "#01a78a" }} className="text-center">
                     Purchase Designs
                   </h2>
@@ -229,50 +226,57 @@ const PurchaseDesign = () => {
                   </Backdrop>
                 ) : (
                   <div>
-                    <div className="row  pt-5 g-3">
+                    <div className="row  pt-5 g-3 ">
                       {purchaseDesigns?.final_data?.map((res, index, key) => {
                         return (
-                          <div className="col-xl-3 col-md-6   my-3" key={index}>
+                          <div
+                            className="container   "
+                            key={index}
+                            style={{ width: "90%" }}
+                          >
                             <div
-                              className="card border-0 flex-row bg-dark text-white visibleForEdit"
-                              style={{ height: "240px", borderRadius: "30px" }}
+                              className="row   p-3 my-2"
+                              style={{
+                                borderRadius: "8px",
+                                border: "1px solid #ccc6c6",
+                                backgroundColor: "#FFFFFF",
+                              }}
                             >
-                              <img
-                                src={`${res?.image}`}
-                                className="card-img w-100"
-                                style={{
-                                  borderRadius: "30px",
-                                  objectFit: "cover",
-                                  height: "100%",
-                                }}
-                                alt="..."
-                              />
-                              <div
-                                className="card-img-overlay"
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "flex-end",
-                                  flexDirection: "column",
-                                  borderRadius: "30px",
-                                  background:
-                                    "linear-gradient(20deg, #000000a1, transparent)",
-                                  padding: " 0 10px 20px 10px",
-                                }}
-                              >
-                                <h4 className="card-title cardTitleVisible">
-                                  ${res?.price}/ project
-                                </h4>
-
-                                <h4 className="card-title fs-20 visibleForEdit-cat">
-                                  {res?.sub_category_name}
-                                </h4>
-                                <div className="row g-2">
-                                  <div className="col-xxl-6 col-lg-12 col-6">
+                              <div className="col-lg-1 col-xl-2 ">
+                                <img
+                                  src={`${res?.image}`}
+                                  className="card-img w-100"
+                                  style={{
+                                    borderRadius: "10px",
+                                    objectFit: "cover",
+                                    height: "100%",
+                                  }}
+                                  alt="..."
+                                />
+                              </div>
+                              <div className="col-lg-11 col-xl-10 d-flex justify-content-center  flex-column">
+                                <div className="row">
+                                  <h5
+                                    className=" "
+                                    style={{ fontWeight: "bold" }}
+                                  >
+                                    ${res?.price}/project
+                                  </h5>
+                                  <h6
+                                    className=" my-2 "
+                                    style={{ fontWeight: "bold" }}
+                                  >
+                                    {res?.sub_category_name}
+                                  </h6>
+                                </div>
+                                <div className="row">
+                                  <div className="col">
                                     <button
                                       type="button"
                                       className="btn btn-primary border-0"
                                       style={{
                                         width: "100%",
+
                                         fontSize: "14px",
                                         backgroundColor: "rgb(0, 167, 139)",
                                       }}
@@ -288,7 +292,7 @@ const PurchaseDesign = () => {
                                       Preview Images
                                     </button>
                                   </div>
-                                  <div className="col-xxl-6 col-lg-12 col-6">
+                                  <div className="col">
                                     <button
                                       type="button"
                                       className="btn btn-primary border-0"
@@ -309,11 +313,12 @@ const PurchaseDesign = () => {
                                       Preview Videos
                                     </button>
                                   </div>
-                                  <div className="col-xxl-6 col-lg-12 col-6">
+                                  <div className="col">
                                     <button
                                       className="btn btn-primary border-0"
                                       style={{
                                         width: "100%",
+                                        height: "100%",
                                         fontSize: "14px",
                                         backgroundColor: "rgb(0, 167, 139)",
                                       }}
@@ -327,11 +332,12 @@ const PurchaseDesign = () => {
                                       Download
                                     </button>
                                   </div>
-                                  <div className="col-xxl-6 col-lg-12 col-6">
+                                  <div className="col">
                                     <button
                                       className="btn btn-primary border-0"
                                       style={{
                                         width: "100%",
+                                        height: "100%",
                                         fontSize: "14px",
                                         backgroundColor: "rgb(0, 167, 139)",
                                       }}
@@ -344,7 +350,7 @@ const PurchaseDesign = () => {
                                       Report
                                     </button>
                                   </div>
-                                  <div className="col-xxl-6 col-lg-12 col-6">
+                                  <div className="col ">
                                     <button
                                       className="btn btn-primary border-0"
                                       style={{
@@ -464,7 +470,7 @@ const PurchaseDesign = () => {
                               name="comment[text]"
                               id="comment_text"
                               cols="40"
-                              className="ui-autocomplete-input"
+                              class="ui-autocomplete-input"
                               autocomplete="off"
                               role="textbox"
                               aria-autocomplete="list"

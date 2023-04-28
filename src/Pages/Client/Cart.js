@@ -7,7 +7,7 @@ import { FaPaypal } from "react-icons/fa";
 import Select from "react-select";
 import Footer from "../../components/Footer";
 import { Button, Modal } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 const months = [
@@ -39,6 +39,7 @@ const Cart = () => {
   const [currentTab, setCurrentTab] = useState("dashboard");
   const location = useLocation();
   const [cookies] = useCookies();
+  const navigate = useNavigate()
 
   const [cartInfo, setCartInfo] = useState({
     card_number: "",
@@ -55,35 +56,24 @@ const Cart = () => {
   const [isPayment, setIsPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const [show, setShow] = useState(false);
-
   const handalSubmit = () => {
-    axios
-      .post("http://13.52.16.160:8082/client/purchase/buy-sell-design/", {
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-        role: "client",
-        professioanl_id: location?.state?.professional_id,
-        category_id: location?.state?.category_id,
-        sub_category_id: location?.state?.sub_category_id,
-        design_no: location?.state?.buysell_id,
-      })
-      .then((result) => {
-        if (
-          result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
-        ) {
-          setIsPayment(true);
-        } else {
-          const url = result?.data?.data?.project_url;
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", url.split("/")[5]); // you can set the filename here
-          document.body.appendChild(link);
-          link.click();
-          setShow(false);
-        }
-      });
-    setShow(false);
+    axios.post("http://13.52.16.160:8082/client/client_checkout_details/", {
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+      professional_id: location?.state?.professional_id,
+      amount_paid: location?.state?.project_cost
+    }).then((result) => {
+      if (result?.data?.error_code === 109 && result?.data?.status === "Failed") {
+        setIsPayment(true);
+      } else {
+        navigate("/checkout", {
+          state: {
+            ...result?.data?.data,
+            ...location?.state
+          }
+        });
+      }
+    });
   };
 
   const handalPurchase = (event) => {
@@ -101,6 +91,7 @@ const Cart = () => {
         } else {
           setIsPayment(false);
           setPaymentError("");
+          handalSubmit()
         }
       })
       .catch((error) => {
@@ -108,7 +99,13 @@ const Cart = () => {
       });
   };
 
-  // handalSubmit
+  // card number maxLength validation
+  document.querySelectorAll('input[type="number"]').forEach((input) => {
+    input.oninput = () => {
+      if (input.value.length > input.maxLength)
+        input.value = input.value.slice(0, input.maxLength);
+    };
+  });
   return (
     <>
       <div className="dashboard">
@@ -120,74 +117,48 @@ const Cart = () => {
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               <div className="cart_page_main mx-lg-5 px-lg-5 my-lg-5 py-lg-5 ">
-                <div className="shoppingCartMain px-2">
-                  <h3 className="border-bottom pb-4">Shopping Cart</h3>
-                  <div className="row justify-content-between m-0 pt-4">
-                    <div className="col-xl-7 leftShoppingCart">
-                      <h2 className="pb-4">
-                        {location?.state?.sub_category_name}
-                      </h2>
-                      <div className="row">
-                        <div className="col">
-                          <div className="ImgBox mb-4">
-                            <img
-                              src={location?.state?.image}
-                              alt=""
-                              className="img-fluid"
-                            />
-                          </div>
-                          <div className="ImgBox">
-                            <video width="100%" controls>
-                              <source
-                                src={location?.state?.video}
-                                type="video/ogg"
-                              />
-                              <source
-                                src={location?.state?.video}
-                                type="video/mp4"
-                              />
-                              Your browser does not support HTML video.
-                            </video>
-                          </div>
-                        </div>
-                      </div>
+                <div className="row leftShoppingCart">
+                  {" "}
+                  <h2 className="pb-4">{location?.state?.sub_category_name}</h2>
+                </div>
+                <div
+                  className="row p-3 bg-white"
+                  style={{ border: "1px solid #e3e2de", borderRadius: "12px" }}
+                >
+                  <div className="col-lg-2">
+                    <img
+                      style={{ height: "100%", borderRadius: "12px" }}
+                      src={location?.state?.image}
+                      alt=""
+                      className="img-fluid"
+                    />
+                  </div>
+                  <div className="col-lg-2 ">
+                    <video
+                      width="100%"
+                      style={{ height: "100%", borderRadius: "12px" }}
+                      controls
+                    >
+                      <source src={location?.state?.video} type="video/ogg" />
+                      <source src={location?.state?.video} type="video/mp4" />
+                      Your browser does not support HTML video.
+                    </video>
+                  </div>
+                  <div className="col-lg-8 d-flex flex-column justify-content-center">
+                    <div className="row">
+                      <h3>Price: ${location?.state?.project_cost}</h3>
                     </div>
-                    <div className="col-xl-4 rightShoppingCart">
-                      <div className="row">
-                        <div className="col-12">
-                          <div className="row">
-                            <div className="col">
-                              <h3>Cost: ${location?.state?.project_cost}</h3>
-                            </div>
-                          </div>
-                          <div className="row  pt-2 totalProductAmount">
-                            <div className="col">
-                              {/* <div className="row border-bottom">
-                                <div className="col-6">
-                                  <h5>Subtotal:</h5>
-                                </div>
-                                <div className="col-6">
-                                  <h4>${location?.state?.project_cost}</h4>
-                                </div>
-                              </div> */}
-                              <div className="row pt-3">
-                                <div className="col-6">
-                                  <h5>Total:</h5>
-                                </div>
-                                <div className="col-6">
-                                  <h4>${location?.state?.project_cost}</h4>
-                                </div>
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => setShow(true)}
-                                className="PaymentCardSubmitButton"
-                              >
-                                Purchase <BsArrowRight />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+                    <div className="row d-flex align-items-center">
+                      <div className="col-4">
+                        <h5>Total:</h5>
+                      </div>
+                      <div className="col-4">
+                        <h4>${location?.state?.project_cost}</h4>
+                      </div>
+                      <div className="col-4">
+                        <button type="button" onClick={handalSubmit} className="PaymentCardSubmitButton px-4" >
+                          Checkout <BsArrowRight />
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -238,9 +209,9 @@ const Cart = () => {
                   <h6>Card Number</h6>
                   <input
                     id="ccn"
-                    type="tel"
+                    type="number"
                     // inputMode="numeric"
-                    pattern="[0-9\s]+{13,16}"
+                    // pattern="[0-9\s]+{13,16}"
                     autoComplete="cc-number"
                     maxLength={16}
                     placeholder="xxxx xxxx xxxx xxxx"
@@ -289,7 +260,7 @@ const Cart = () => {
                       <div className="col d-flex flex-column justify-content-end">
                         <label htmlFor="CVV">CVV:</label>
                         <input
-                          type="text"
+                          type="number"
                           id="CVV"
                           placeholder="xxx"
                           className="border-bottom"

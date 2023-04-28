@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import Loader from "../../components/Loader";
 import { Header2 } from "../../components/Header";
+import { ImCross } from "react-icons/im";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -1156,10 +1157,25 @@ const SetUp = () => {
     }
   }, []);
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      // event.preventDefault();
+
+      console.log("Enter key pressed");
+    }
+  };
+
   const [certificate, setCertificate] = useState("");
   const certificateChange = (e) => {
     const file = e.target.files[0];
     setCertificate(file);
+  };
+
+  const fileref = useRef();
+  //  const [certificate, setCertificate] = useState("");
+  const removeCertificate = () => {
+    setCertificate("");
+    fileref.current.value = null;
   };
 
   const [disply, setdisply] = useState("none");
@@ -1225,7 +1241,12 @@ const SetUp = () => {
   };
 
   function onKeyDown(keyEvent) {
-    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+    if (
+      (keyEvent.charCode || keyEvent.keyCode) === 13 &&
+      keyEvent.target !==
+        document.getElementById("exampleFormControlTextarea1") &&
+      keyEvent.target !== document.getElementById("exampleFormControlTextarea2")
+    ) {
       keyEvent.preventDefault();
     }
   }
@@ -1309,7 +1330,7 @@ const SetUp = () => {
       });
   };
 
-  if (cookies?.user_data) {
+  if (cookies?.u0ser_data) {
     isCookies();
   } else {
     return (
@@ -1341,106 +1362,124 @@ const SetUp = () => {
                   }}
                   validationSchema={SetUpSchema}
                   onSubmit={(values, { setSubmitting }) => {
-                    setLoading(true);
+                    //
+                    if (!filePic) {
+                      setprofileerr("block");
+                      // return false;
+                    }
+                    if (!filePic2) {
+                      setBackImgErr("block");
+                      // return false;
+                    }
+                    if (!certificate) {
+                      setCerErr("block");
+                      // return false;
+                    } else if (!filePic || !filePic2 || !certificate) {
+                      return false;
+                    } else {
+                      setLoading(true);
+                      axios
+                        .post(
+                          "http://13.52.16.160:8082/identity/signup_professional",
+                          values
+                        )
+                        .then((res) => {
+                          if (res?.data?.status === "Success") {
+                            const signupuser = new FormData();
+                            signupuser.append("image", filePic);
+                            signupuser.append("background_image", filePic2);
+                            signupuser.append(
+                              "user_id",
+                              res?.data?.data.user_id
+                            );
+                            signupuser.append(
+                              "user_token",
+                              res?.data?.data.user_token
+                            );
+                            signupuser.append("role", res?.data?.data.role);
 
-                    axios
-                      .post(
-                        "http://13.52.16.160:8082/identity/signup_professional",
-                        values
-                      )
-                      .then((res) => {
-                        if (res?.data?.status === "Success") {
-                          const signupuser = new FormData();
-                          signupuser.append("image", filePic);
-                          signupuser.append("background_image", filePic2);
-                          signupuser.append("user_id", res?.data?.data.user_id);
-                          signupuser.append(
-                            "user_token",
-                            res?.data?.data.user_token
-                          );
-                          signupuser.append("role", res?.data?.data.role);
+                            signupuser &&
+                              axios
+                                .post(
+                                  "http://13.52.16.160:8082/identity/professional_profile",
+                                  signupuser
+                                )
+                                .then((respo) => {
+                                  const getcookies = {
+                                    user_id: res?.data?.data?.user_id,
+                                    user_token: res?.data?.data?.user_token,
+                                    role: res?.data?.data?.role,
+                                  };
 
-                          signupuser &&
-                            axios
-                              .post(
-                                "http://13.52.16.160:8082/identity/professional_profile",
-                                signupuser
-                              )
-                              .then((respo) => {
-                                const getcookies = {
-                                  user_id: res?.data?.data?.user_id,
-                                  user_token: res?.data?.data?.user_token,
-                                  role: res?.data?.data?.role,
-                                };
+                                  const userCertificate = new FormData();
+                                  userCertificate.append(
+                                    "user_id",
+                                    res?.data?.data.user_id
+                                  );
+                                  userCertificate.append(
+                                    "user_token",
+                                    res?.data?.data.user_token
+                                  );
+                                  userCertificate.append(
+                                    "role",
+                                    res?.data?.data.role
+                                  );
+                                  userCertificate.append(
+                                    "certificate",
+                                    certificate
+                                  );
 
-                                const userCertificate = new FormData();
-                                userCertificate.append(
-                                  "user_id",
-                                  res?.data?.data.user_id
-                                );
-                                userCertificate.append(
-                                  "user_token",
-                                  res?.data?.data.user_token
-                                );
-                                userCertificate.append(
-                                  "role",
-                                  res?.data?.data.role
-                                );
-                                userCertificate.append(
-                                  "certificate",
-                                  certificate
-                                );
+                                  axios
+                                    .post(
+                                      "http://13.52.16.160:8082/identity/professional_certificate",
+                                      userCertificate
+                                    )
+                                    .then((res) => console.log(""))
+                                    .catch((err) => console.log(err));
 
-                                axios
-                                  .post(
-                                    "http://13.52.16.160:8082/identity/professional_certificate",
-                                    userCertificate
-                                  )
-                                  .then((res) => console.log(""))
-                                  .catch((err) => console.log(err));
+                                  if (respo?.data?.status === "Success") {
+                                    contextData?.dispatch({
+                                      type: "FETCH_USER_DATA",
+                                      value: res?.data?.data,
+                                    });
+                                    setCookies("user_data", {
+                                      ...res?.data?.data,
+                                      category_selected: false,
+                                    });
 
-                                if (respo?.data?.status === "Success") {
-                                  contextData?.dispatch({
-                                    type: "FETCH_USER_DATA",
-                                    value: res?.data?.data,
-                                  });
-                                  setCookies("user_data", {
-                                    ...res?.data?.data,
-                                    category_selected: false,
-                                  });
-
-                                  setLoading(false);
-                                  navigate("/categoryArchitecture", {
-                                    replace: true,
-                                  });
-                                  contextData.setShowDisclamer(true);
-                                  if (!contextData?.profileData) {
-                                    axios
-                                      .post(
-                                        "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                        {
-                                          user_id: res?.data?.data?.user_id,
-                                          user_token:
-                                            res?.data?.data?.user_token,
-                                          role: res?.data?.data?.role,
-                                        }
-                                      )
-                                      .then((response) => {
-                                        contextData?.dispatch({
-                                          type: "FETCH_PROFILE_DATA",
-                                          value: response?.data?.data,
+                                    setLoading(false);
+                                    navigate("/categoryArchitecture", {
+                                      replace: true,
+                                    });
+                                    contextData.setShowDisclamer(true);
+                                    if (!contextData?.profileData) {
+                                      axios
+                                        .post(
+                                          "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                          {
+                                            user_id: res?.data?.data?.user_id,
+                                            user_token:
+                                              res?.data?.data?.user_token,
+                                            role: res?.data?.data?.role,
+                                          }
+                                        )
+                                        .then((response) => {
+                                          contextData?.dispatch({
+                                            type: "FETCH_PROFILE_DATA",
+                                            value: response?.data?.data,
+                                          });
                                         });
-                                      });
+                                    }
                                   }
-                                }
-                              });
-                        } else {
-                          localStorage.clear();
+                                });
+                          } else {
+                            localStorage.clear();
 
-                          navigate("/setup");
-                          setLoading(false);
-                        }
-                      });
+                            navigate("/setup");
+                            setLoading(false);
+                          }
+                        });
+                    }
                   }}
                 >
                   {({
@@ -1762,6 +1801,7 @@ const SetUp = () => {
                             rows="9"
                             name="bio"
                             placeholder="About"
+                            onKeyPress={handleKeyPress}
                           ></Field>
                           <div
                             style={{
@@ -1882,11 +1922,13 @@ const SetUp = () => {
                               value={educationSelect}
                               className="form-select form-education-select"
                               onChange={(e) => {
+                                setCertificate("");
                                 setEducationSelect(e.target.value);
                                 if (e.target.value !== "Other") {
                                   setFieldValue("education", e.target.value);
                                   setEducationInput("");
                                 }
+                                fileref.current.value = null;
                               }}
                             >
                               <option value="" disabled>
@@ -1937,6 +1979,7 @@ const SetUp = () => {
                                     </div>
                                     <input
                                       type="file"
+                                      ref={fileref}
                                       name="certificate"
                                       id="certificate"
                                       accept=".jpg, .jpeg, .png, .doc, .docx, .pdf"
@@ -1954,6 +1997,17 @@ const SetUp = () => {
                                   </div>
                                 ) : null}
                               </div>
+                              {certificate && (
+                                <span
+                                  className="d-flex justify-content-center align-items-center"
+                                  onClick={removeCertificate}
+                                  style={{
+                                    zIndex: "88888",
+                                  }}
+                                >
+                                  <ImCross className="text-danger" />
+                                </span>
+                              )}
                               <div className="other-education">
                                 {educationSelect === "Other" ? (
                                   <input
@@ -2043,7 +2097,7 @@ const SetUp = () => {
                               className="form-control"
                               placeholder="Enter Minimum Rate Per Square Meter in $"
                             />
-                            <i className="fa-solid fa-tag"></i>
+                            <i class="fa-solid fa-tag"></i>
                             <ErrorMessage
                               name="price_range"
                               component="div"
@@ -2075,21 +2129,7 @@ const SetUp = () => {
                             <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                           </button>
                         ) : (
-                          <button
-                            onClick={() => {
-                              if (!filePic) {
-                                setprofileerr("block");
-                              }
-                              if (!filePic2) {
-                                setBackImgErr("block");
-                              }
-                              if (!certificate) {
-                                setCerErr("block");
-                              }
-                            }}
-                            type="submit"
-                            className="create-account-btn"
-                          >
+                          <button type="submit" className="create-account-btn">
                             Continue
                             <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                           </button>

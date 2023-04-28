@@ -9,6 +9,7 @@ import { Header2 } from "../../components/Header";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate, useLocation, Link, redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { IoMdClose } from "react-icons/io";
 import "react-toastify/dist/ReactToastify.css";
 import $ from "jquery";
 import * as Yup from "yup";
@@ -178,17 +179,17 @@ const ProfessionalBuyAndSale = () => {
 
   const languagesArchitecture = [
     contextData?.static_buy_sale_design?.data?.length &&
-    contextData?.static_buy_sale_design?.data?.filter((ress) =>
-      ress !== "" ||
+      contextData?.static_buy_sale_design?.data?.filter((ress) =>
+        ress !== "" ||
         null ||
         (state?.selected_catagories &&
           state?.selected_catagories[3].includes(ress?.sub_category_id))
-        ? {
-          label: ress?.sub_category,
-          value: ress?.sub_category_id,
-        }
-        : ""
-    ),
+          ? {
+              label: ress?.sub_category,
+              value: ress?.sub_category_id,
+            }
+          : ""
+      ),
   ];
   const newCatagoriesArchitecture =
     languagesArchitecture[0] &&
@@ -210,6 +211,7 @@ const ProfessionalBuyAndSale = () => {
   const [modalSubCatagoryID, setModalSubCatagoryID] = useState("");
   const SetUpSchema = Yup.object().shape({
     price: Yup.string().required("Please enter a price"),
+    customize_price: Yup.string().required("Please Enter Customization Price"),
   });
   const [showImagesSection, setShowImagesSection] = useState(false);
 
@@ -282,30 +284,37 @@ const ProfessionalBuyAndSale = () => {
   };
 
   const handleSkipButton = () => {
-    const list = [...selectedCatagories?.sel_sub_cat['2'], ...selectedCatagories?.sel_sub_cat['1']]
+    const list = [
+      ...selectedCatagories?.sel_sub_cat["2"],
+      ...selectedCatagories?.sel_sub_cat["1"],
+    ];
     try {
       if (list.length && selectedCatagories) {
-        axios.post("http://13.52.16.160:8082/professional/sel_sub_category", {
-          user_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          category: {
-            cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
-          },
-          sel_sub_cat: {
-            ...selectedCatagories?.sel_sub_cat,
-            3: [],
-          },
-        }).then((res) => {
-          if (res?.data?.status === "Success") {
-            setCookies("user_data", {
-              ...cookies?.user_data,
-              category_selected: true,
-            });
-            localStorage.clear()
-            navigate("/professionaldashboard");
-          }
-        });
+        axios
+          .post("http://13.52.16.160:8082/professional/sel_sub_category", {
+            user_id: cookies?.user_data?.user_id,
+            user_token: cookies?.user_data?.user_token,
+            role: cookies?.user_data?.role,
+            category: {
+              cat_id: [
+                ...new Set([...selectedCatagories?.category?.cat_id, 3]),
+              ],
+            },
+            sel_sub_cat: {
+              ...selectedCatagories?.sel_sub_cat,
+              3: [],
+            },
+          })
+          .then((res) => {
+            if (res?.data?.status === "Success") {
+              setCookies("user_data", {
+                ...cookies?.user_data,
+                category_selected: true,
+              });
+              localStorage.clear();
+              navigate("/professionaldashboard");
+            }
+          });
       } else {
         throw new Error("Please select at least one category");
       }
@@ -528,7 +537,7 @@ const ProfessionalBuyAndSale = () => {
                                             </button>
                                           </div>
                                           {cookies?.user_data.role ===
-                                            "client" ? (
+                                          "client" ? (
                                             <div
                                               className="col-xxl-6 col-md-12 col-6"
                                               style={{ padding: "6px" }}
@@ -819,9 +828,9 @@ const ProfessionalBuyAndSale = () => {
                         .then((res) => {
                           return res?.data?.status === "Success"
                             ? (dispatch({
-                              type: "BUYSALE_DESIGN_UPLOAD_MODAL",
-                              value: false,
-                            }),
+                                type: "BUYSALE_DESIGN_UPLOAD_MODAL",
+                                value: false,
+                              }),
                               setCatagoriesDropdown([]))
                             : "";
                         });
@@ -894,6 +903,7 @@ const ProfessionalBuyAndSale = () => {
                       image: "",
                       video: "",
                       project: "",
+                      customize_price: "",
                     }}
                     validationSchema={SetUpSchema}
                     onSubmit={(values, { setSubmitting }) => {
@@ -924,6 +934,10 @@ const ProfessionalBuyAndSale = () => {
                         catagoryUpload.append("price", values?.price);
                         catagoryUpload.append("video", values?.video);
                         catagoryUpload.append("project", values?.project);
+                        catagoryUpload.append(
+                          "customize_price",
+                          values?.customize_price
+                        );
 
                         setLoader(true);
                         axios
@@ -1043,6 +1057,24 @@ const ProfessionalBuyAndSale = () => {
                                 Image required
                               </span>
                             </div>
+                            <div className="">
+                              <div className="col-md-12 mt-5">
+                                <div className="selectprice">
+                                  <BsCurrencyDollar />
+                                  <Field
+                                    type="number"
+                                    placeholder="Enter Your Customization Price "
+                                    className="priceInput"
+                                    name="customize_price"
+                                  />
+                                  <ErrorMessage
+                                    name="customize_price"
+                                    component="div"
+                                    className="m-2 text-danger"
+                                  />
+                                </div>
+                              </div>
+                            </div>
                             <div className="row">
                               <div className="col-md-6"></div>
                               <div className="col-md-6"></div>
@@ -1101,8 +1133,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                        "..." +
-                                        name.slice(-4)
+                                          "..." +
+                                          name.slice(-4)
                                         : name;
                                     setvidlbl(trimmedFileName);
                                     setvidstyle("block");
@@ -1138,8 +1170,8 @@ const ProfessionalBuyAndSale = () => {
                                     const trimmedFileName =
                                       name.length > maxLength
                                         ? name.slice(0, maxLength) +
-                                        "..." +
-                                        name.slice(-4)
+                                          "..." +
+                                          name.slice(-4)
                                         : name;
 
                                     setziplbl(trimmedFileName);
@@ -1202,6 +1234,7 @@ const ProfessionalBuyAndSale = () => {
               {/* loader */}
               <Modal
                 show={loader}
+                animation={false}
                 fullscreen={true}
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -1216,9 +1249,9 @@ const ProfessionalBuyAndSale = () => {
               <>
                 <Modal
                   show={state?.preview_data_modal}
-                  fullscreen={
-                    state?.preview_catagory_data?.type === "edit" ? false : true
-                  }
+                  // fullscreen={
+                  //   state?.preview_catagory_data?.type === "edit" ? false : false
+                  // }
                   size="xl"
                   aria-labelledby="contained-modal-title-vcenter"
                   centered
@@ -1228,12 +1261,12 @@ const ProfessionalBuyAndSale = () => {
                     ""
                   ) : (
                     <button
-                      className="closeModalPreviewData"
+                      className="modal-closebtn"
                       onClick={() => {
                         dispatch({ type: "PREVIEW_DATA_MODAL", value: false });
                       }}
                     >
-                      x
+                      <IoMdClose style={{ color: "#fff" }} />
                     </button>
                   )}
                   {state?.preview_catagory_data &&
@@ -1241,7 +1274,7 @@ const ProfessionalBuyAndSale = () => {
                       <img
                         src={state?.preview_catagory_data?.image}
                         alt=""
-                        style={{ width: "50%", margin: "auto" }}
+                        style={{ maxHeight: "532px" }}
                       />
                     )}
                   {state?.preview_catagory_data &&
@@ -1251,11 +1284,15 @@ const ProfessionalBuyAndSale = () => {
                           ...cookies?.user_data,
                           price:
                             state?.preview_catagory_designs?.price[
-                            state?.preview_catagory_data?.index
+                              state?.preview_catagory_data?.index
                             ],
                           image: "",
                           video: "",
                           project: "",
+                          customize_price:
+                            state?.preview_catagory_designs?.customize_price[
+                              state?.preview_catagory_data?.index
+                            ],
                         }}
                         validationSchema={SetUpSchema}
                         onSubmit={(values, { setSubmitting }) => {
@@ -1282,6 +1319,10 @@ const ProfessionalBuyAndSale = () => {
                           catagoryUpload.append("video", values?.video);
                           catagoryUpload.append("project", values?.project);
                           catagoryUpload.append(
+                            "customize_price",
+                            values?.customize_price
+                          );
+                          catagoryUpload.append(
                             "index_no",
                             state?.preview_catagory_data?.index
                           );
@@ -1299,7 +1340,7 @@ const ProfessionalBuyAndSale = () => {
                                   <div className="selectprice">
                                     <BsCurrencyDollar />
                                     <Field
-                                      type="text"
+                                      type="number"
                                       placeholder="Enter Your project Price "
                                       className="priceInput"
                                       name="price"
@@ -1342,28 +1383,28 @@ const ProfessionalBuyAndSale = () => {
                                           imgPreview
                                             ? imgPreview
                                             : state?.preview_catagory_designs
-                                              ?.image_url +
-                                            state?.preview_catagory_designs
-                                              ?.image[
-                                            state?.preview_catagory_data
-                                              ?.index
-                                            ]
+                                                ?.image_url +
+                                              state?.preview_catagory_designs
+                                                ?.image[
+                                                state?.preview_catagory_data
+                                                  ?.index
+                                              ]
                                         }
                                         alt="preview"
                                       />
-                                      {/* <span
-                                      style={{
-                                        position: "absolute",
-                                        right: "10%",
-                                        top: "1%",
-                                      }}
-                                    >
-                                      <GiCancel
-                                        onClick={() => {
-                                          setclsstyle("none");
+                                      <span
+                                        style={{
+                                          position: "absolute",
+                                          right: "10%",
+                                          top: "1%",
                                         }}
-                                      />
-                                    </span> */}
+                                      >
+                                        <GiCancel
+                                          onClick={() => {
+                                            setclsstyle("none");
+                                          }}
+                                        />
+                                      </span>
                                     </div>
                                     <input
                                       type="file"
@@ -1382,6 +1423,31 @@ const ProfessionalBuyAndSale = () => {
                                       }}
                                       accept="image/*"
                                     />
+                                  </div>
+                                </div>
+                                <div className="">
+                                  <div className="col-md-12 mt-5 mb-3">
+                                    <div className="selectprice">
+                                      <BsCurrencyDollar />
+                                      <Field
+                                        type="number"
+                                        placeholder="Enter Your Customization Price "
+                                        className="priceInput"
+                                        name="customize_price"
+                                        value={values.customize_price}
+                                        onChange={(e) => {
+                                          setFieldValue(
+                                            "customize_price",
+                                            e.target.value
+                                          );
+                                        }}
+                                      />
+                                      <ErrorMessage
+                                        name="customize_price"
+                                        component="div"
+                                        className="m-2 text-danger"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                                 <div className="row">
@@ -1406,27 +1472,27 @@ const ProfessionalBuyAndSale = () => {
                                         {vidlbl
                                           ? vidlbl
                                           : state?.preview_catagory_designs
-                                            ?.video[
-                                          state?.preview_catagory_data
-                                            ?.index
-                                          ]}
+                                              ?.video[
+                                              state?.preview_catagory_data
+                                                ?.index
+                                            ]}
                                       </span>
-                                      {/* <span
-                                      style={{
-                                        position: "absolute",
-                                        right: "10%",
-                                        bottom: "5%",
-                                      }}
-                                    >
-                                      <GiCancel
-                                        size={25}
-                                        color="grey"
-                                        onClick={() => {
-                                          setvidstyle("none");
-                                          setvidlbl("");
+                                      <span
+                                        style={{
+                                          position: "absolute",
+                                          right: "10%",
+                                          bottom: "5%",
                                         }}
-                                      />
-                                    </span> */}
+                                      >
+                                        <GiCancel
+                                          size={25}
+                                          color="grey"
+                                          onClick={() => {
+                                            setvidstyle("none");
+                                            setvidlbl("");
+                                          }}
+                                        />
+                                      </span>
                                     </div>
                                     <p className="ps-4"></p>
                                     <input
@@ -1439,8 +1505,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                            "..." +
-                                            name.slice(-4)
+                                              "..." +
+                                              name.slice(-4)
                                             : name;
                                         setFieldValue(
                                           "video",
@@ -1478,8 +1544,8 @@ const ProfessionalBuyAndSale = () => {
                                         const trimmedFileName =
                                           name.length > maxLength
                                             ? name.slice(0, maxLength) +
-                                            "..." +
-                                            name.slice(-4)
+                                              "..." +
+                                              name.slice(-4)
                                             : name;
                                         setzipstyle("block");
                                         setziplbl(trimmedFileName);
@@ -1490,27 +1556,27 @@ const ProfessionalBuyAndSale = () => {
                                         {ziplbl
                                           ? ziplbl
                                           : state?.preview_catagory_designs
-                                            ?.project[
-                                          state?.preview_catagory_data
-                                            ?.index
-                                          ]}
+                                              ?.project[
+                                              state?.preview_catagory_data
+                                                ?.index
+                                            ]}
                                       </span>
-                                      {/* <span
-                                      style={{
-                                        position: "absolute",
-                                        right: "10%",
-                                        bottom: "5%",
-                                      }}
-                                    >
-                                      <GiCancel
-                                        size={25}
-                                        color="grey"
-                                        onClick={() => {
-                                          setzipstyle("none");
-                                          setziplbl("");
+                                      <span
+                                        style={{
+                                          position: "absolute",
+                                          right: "10%",
+                                          bottom: "5%",
                                         }}
-                                      />
-                                    </span> */}
+                                      >
+                                        <GiCancel
+                                          size={25}
+                                          color="grey"
+                                          onClick={() => {
+                                            setzipstyle("none");
+                                            setziplbl("");
+                                          }}
+                                        />
+                                      </span>
                                     </div>
                                   </div>
                                 </div>
@@ -1554,6 +1620,7 @@ const ProfessionalBuyAndSale = () => {
                         }
                         controls="true"
                         autoplay="true"
+                        style={{ maxHeight: "532px" }}
                       ></video>
                     )}
                   {state?.preview_catagory_data &&
