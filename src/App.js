@@ -6,6 +6,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
+import Checkout from "./components/dashboard_tabs/Client/checkout";
 import Login from "./Pages/Login";
 import SignIn from "./Pages/Client/SignUp";
 import Join from "./Pages/Join";
@@ -60,7 +61,7 @@ import SubscriptionPlans from "./components/dashboard_tabs/Professional/subscrip
 import PurchaseDesign from "./components/dashboard_tabs/Client/purchase-design";
 import Report from "./components/dashboard_tabs/Professional/Report";
 import ReportTab from "./components/dashboard_tabs/Professional/ReportTab";
-import Checkout from "./components/dashboard_tabs/Client/checkout";
+import CheckoutMilstone from "./components/dashboard_tabs/Client/checkoutMilstone";
 
 function App() {
   const [cookies] = useCookies();
@@ -100,7 +101,6 @@ function App() {
           <Route path="/professional-Reject" element={<Reject />} />
           <Route path="/subscription-plans" element={<SubscriptionPlans />} />
           <Route path="/like" element={<LikesShow />} />
-          <Route path="/checkout" element={<Checkout />} />
           <Route path="/ratings" element={<Showratings />} />
           <Route
             path="/professional-guidelines"
@@ -122,6 +122,7 @@ function App() {
           />
 
           {/* Client Routes */}
+
           <Route path="/clientdashboard" element={<ClientDashboard />} />
           <Route path="/browse-professionals" element={<BrowsePane />} />
           <Route path="/ongoing-projects" element={<OngoingPane />} />
@@ -138,6 +139,8 @@ function App() {
           <Route path="/client-rating" element={<Ratings />} />
           <Route path="/client-guidlines" element={<ClientGuidlines />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/check-out" element={<CheckoutMilstone />} />
 
           <Route
             path="/client-architechture"

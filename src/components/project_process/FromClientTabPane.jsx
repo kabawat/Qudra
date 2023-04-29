@@ -6,7 +6,7 @@ import axios from "axios";
 import Global from "../../context/Global";
 import { Button, Modal } from "react-bootstrap";
 import FileViewer from "react-file-viewer";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import { useLocation } from "react-router-dom";
 import { BiCreditCardAlt } from "react-icons/bi";
@@ -16,6 +16,7 @@ import { BsArrowRight } from "react-icons/bs";
 import Select from "react-select";
 const FromClientTabPane = ({ location }) => {
   const [locations, setLoctions] = useState(location);
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
@@ -179,7 +180,32 @@ const FromClientTabPane = ({ location }) => {
       });
   };
 
-  const handalDownload = () => {
+  const handalDownload = (curProject) => {
+    axios
+      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+        professional_id: location?.state?.projectData?.professional_id,
+        amount_paid: location?.state?.projectData?.project_cost,
+      })
+      .then((result) => {
+        if (
+          result?.data?.error_code === 109 &&
+          result?.data?.status === "Failed"
+        ) {
+          setIsPayment(true);
+        } else {
+          navigate("/check-out", {
+            state: {
+              ...result?.data?.data,
+              ...location?.state,
+              curProject,
+            },
+          });
+        }
+      });
+  };
+  const handalDownload1 = (curProject) => {
     axios
       .put("http://13.52.16.160:8082/client/update_status_view_file", {
         user_id: cookies?.user_data?.user_id,
@@ -189,63 +215,15 @@ const FromClientTabPane = ({ location }) => {
         milestone_id: curProject?.milestone_id,
       })
       .then((response) => {
-        setShow(false);
-        if (
-          response?.data?.error_code === 109 &&
-          response?.data?.status === "Failed"
-        ) {
-          setIsPayment(true);
-        } else {
-          axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_milestones",
-              {
-                client_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                professional_id: locations?.state?.projectDetails?.id,
-                project_id: locations?.state?.projectDetails?.project_id,
-              }
-            )
-            .then((res) => {
-              if (res?.data?.status === "Success") {
-                axios
-                  .post(
-                    "http://13.52.16.160:8082/client/particular_project_details",
-                    {
-                      client_id: cookies?.user_data?.user_id,
-                      user_token: cookies?.user_data?.user_token,
-                      role: cookies?.user_data?.role,
-                      project_id: locations?.state?.projectDetails?.project_id,
-                    }
-                  )
-                  .then((respo) => {
-                    if (respo?.data?.status === "Success") {
-                      if (locations?.state?.projectDetails?.id !== undefined) {
-                        const state = {
-                          projectDetails: locations?.state?.projectDetails,
-                          projectData: respo?.data?.data,
-                          milesStoneData: res?.data?.data,
-                          project_cost: locations?.state?.project_cost,
-                        };
-                        setLoctions({
-                          ...locations,
-                          state: state,
-                        });
-                      }
-                    }
-                  });
-              }
-            });
-          const url = response.data?.data?.file;
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", url.split("/")[5]); // you can set the filename here
-          document.body.appendChild(link);
-          link.click();
-        }
+        const url = response?.data?.data?.file;
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", url.split("/")[5]); // you can set the filename here
+        document.body.appendChild(link);
+        link.click();
       });
   };
+
   const handalDownloadInvoice = (payload) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
@@ -537,8 +515,7 @@ const FromClientTabPane = ({ location }) => {
                           <button
                             className="prewviewButton"
                             onClick={() => {
-                              SetCurProject({ ...res });
-                              setShow(true);
+                              handalDownload({ ...res });
                             }}
                             type="button"
                           >
@@ -568,8 +545,9 @@ const FromClientTabPane = ({ location }) => {
                           <button
                             className="prewviewButton"
                             onClick={() => {
-                              SetCurProject({ ...res });
-                              setShow(true);
+                              res?.invoice
+                                ? handalDownload1({ ...res })
+                                : handalDownload({ ...res });
                             }}
                             type="button"
                           >

@@ -22,41 +22,41 @@ const buttonStyle = {
   outline: "none",
   background: "none",
 };
-const Header2 = ({ link }) => {
+const Header2 = ( { link } ) => {
   const navigate = useNavigate();
-  const [cookies, , removeCookie] = useCookies();
-  const [show, setShow] = useState(false);
-  const contextData = useContext(Global);
+  const [ cookies, , removeCookie ] = useCookies();
+  const [ show, setShow ] = useState( false );
+  const contextData = useContext( Global );
   const logoutHandle = () => {
-    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+    axios.post( `http://13.52.16.160:8082/identity/logout`, {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
-    });
-    setShow(false);
+    } );
+    setShow( false );
     localStorage.clear();
-    removeCookie("user_data");
-    contextData?.dispatch({ type: "LOG_OUT" });
-    navigate("/");
+    removeCookie( "user_data" );
+    contextData?.dispatch( { type: "LOG_OUT" } );
+    navigate( "/" );
   };
   // Dropdown button Function
   const profileDropdown = () => {
-    $(".profile-edit-dropdown").slideToggle();
-    $(".profileEdit-button i").toggleClass("i-rotate");
+    $( ".profile-edit-dropdown" ).slideToggle();
+    $( ".profileEdit-button i" ).toggleClass( "i-rotate" );
   };
   //Edit-Profile button function
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", {
+      .put( "http://13.52.16.160:8082/identity/update_account", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/edit-profile", { state: res?.data?.data });
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          navigate( "/edit-profile", { state: res?.data?.data } );
         }
-      });
+      } );
   };
 
   return (
@@ -65,30 +65,30 @@ const Header2 = ({ link }) => {
         <div className="container">
           <div className="row py-4 ">
             <div className="col d-flex align-items-center">
-              <Link to={link ? "/categoryArchitecture" : "/"}>
+              <Link to={ link ? "/categoryArchitecture" : "/" }>
                 <img
                   src="/static/images/Quadra-transparrent-logo.png"
                   alt="logo"
-                  style={{ height: "100px" }}
+                  style={ { height: "100px" } }
                 />
               </Link>
               <ul className="ms-auto d-flex p-0 mb-0">
                 <li>
-                  {window.location.pathname === "/kickassform" && (
+                  { window.location.pathname === "/kickassform" && (
                     <Link to="/select-sign-in">Sign in</Link>
-                  )}
-                  {window.location.pathname === "/quadroterms" && (
+                  ) }
+                  { window.location.pathname === "/quadroterms" && (
                     <Link to="/select-sign-in">Sign in</Link>
-                  )}
-                  {window.location.pathname === "/setup" && (
+                  ) }
+                  { window.location.pathname === "/setup" && (
                     <Link to="/select-sign-in">Sign in</Link>
-                  )}
-                  {window.location.pathname === "/login" && (
+                  ) }
+                  { window.location.pathname === "/login" && (
                     <Link to="/join">Sign up</Link>
-                  )}
-                  {window.location.pathname === "/categoryArchitecture" && (
-                    <div className="d-flex align-items-center flex-wrap profileinfo">
-                      {cookies?.user_data?.role === "professional" ? (
+                  ) }
+                  { window.location.pathname === "/categoryArchitecture" && (
+                    <div className="d-flex align-items-center flex-wrap profileinfo" onClick={ profileDropdown }>
+                      { cookies?.user_data?.role === "professional" ? (
                         <div>
                           <img
                             src={
@@ -96,12 +96,12 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt="profilepic"
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
                       ) : (
@@ -112,23 +112,23 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt=""
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
-                      )}
+                      ) }
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                          onClick={profileDropdown}
+                        // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.name}
+                            { contextData?.profileData &&
+                              contextData?.profileData?.name }
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -139,7 +139,7 @@ const Header2 = ({ link }) => {
                               to=""
                               className="d-flex justify-content-center rounded-top"
                             >
-                              <button onClick={handleEditProfileButton}>
+                              <button onClick={ handleEditProfileButton }>
                                 Edit Profile
                               </button>
                             </Link>
@@ -148,9 +148,9 @@ const Header2 = ({ link }) => {
                               className="d-flex justify-content-center rounded-bottom"
                             >
                               <button
-                                onClick={() => {
-                                  setShow(true);
-                                }}
+                                onClick={ () => {
+                                  setShow( true );
+                                } }
                               >
                                 Log Out
                               </button>
@@ -158,15 +158,15 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData &&
-                            contextData?.profileData?.email}
+                          { contextData?.profileData &&
+                            contextData?.profileData?.email }
                         </h6>
                       </div>
                     </div>
-                  )}
-                  {window.location.pathname === "/categoryvisualization" && (
-                    <div className=" d-flex align-items-center flex-wrap profileinfo">
-                      {cookies?.user_data?.role === "professional" ? (
+                  ) }
+                  { window.location.pathname === "/categoryvisualization" && (
+                    <div className=" d-flex align-items-center flex-wrap profileinfo" onClick={ profileDropdown }>
+                      { cookies?.user_data?.role === "professional" ? (
                         <div>
                           <img
                             src={
@@ -174,12 +174,12 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt="profilepic"
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
                       ) : (
@@ -190,23 +190,23 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt=""
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
-                      )}
+                      ) }
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                          onClick={profileDropdown}
+                        // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.name}
+                            { contextData?.profileData &&
+                              contextData?.profileData?.name }
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -217,7 +217,7 @@ const Header2 = ({ link }) => {
                               to=""
                               className="d-flex justify-content-center rounded-top"
                             >
-                              <button onClick={handleEditProfileButton}>
+                              <button onClick={ handleEditProfileButton }>
                                 Edit Profile
                               </button>
                             </Link>
@@ -226,9 +226,9 @@ const Header2 = ({ link }) => {
                               className="d-flex justify-content-center rounded-bottom"
                             >
                               <button
-                                onClick={() => {
-                                  setShow(true);
-                                }}
+                                onClick={ () => {
+                                  setShow( true );
+                                } }
                               >
                                 Log Out
                               </button>
@@ -236,16 +236,94 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData &&
-                            contextData?.profileData?.email}
+                          { contextData?.profileData &&
+                            contextData?.profileData?.email }
                         </h6>
                       </div>
                     </div>
-                  )}
-                  {window.location.pathname ===
+                  ) }
+                  { window.location.pathname ===
                     "/professional-buy-and-sale" && (
-                    <div className="d-flex align-items-center flex-wrap profileinfo">
-                      {cookies?.user_data?.role === "professional" ? (
+                      <div className="d-flex align-items-center flex-wrap profileinfo" onClick={ profileDropdown }>
+                        { cookies?.user_data?.role === "professional" ? (
+                          <div>
+                            <img
+                              src={
+                                contextData?.profileData &&
+                                contextData?.profileData?.user_image_url
+                              }
+                              alt="profilepic"
+                              style={ {
+                                width: "50px",
+                                height: "50px",
+                                cursor: "pointer",
+                                borderRadius: "50%",
+                              } }
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <img
+                              src={
+                                contextData?.profileData &&
+                                contextData?.profileData?.user_image_url
+                              }
+                              alt=""
+                              style={ {
+                                width: "50px",
+                                height: "50px",
+                                cursor: "pointer",
+                                borderRadius: "50%",
+                              } }
+                            />
+                          </div>
+                        ) }
+                        <div className="ps-3">
+                          <button
+                            className="d-flex align-items-center profileEdit-button"
+                          // onClick={ profileDropdown }
+                          >
+                            <h4 className="userName">
+                              { contextData?.profileData &&
+                                contextData?.profileData?.name }
+                            </h4>
+                            <i className="fa-solid fa-caret-down"></i>
+                            <div id="Edit_toggle"></div>
+                          </button>
+                          <div className="profile-edit-dropdown">
+                            <div className=" d-flex flex-column ">
+                              <Link
+                                to=""
+                                className="d-flex justify-content-center rounded-top"
+                              >
+                                <button onClick={ handleEditProfileButton }>
+                                  Edit Profile
+                                </button>
+                              </Link>
+                              <Link
+                                to=""
+                                className="d-flex justify-content-center rounded-bottom"
+                              >
+                                <button
+                                  onClick={ () => {
+                                    setShow( true );
+                                  } }
+                                >
+                                  Log Out
+                                </button>
+                              </Link>
+                            </div>
+                          </div>
+                          <h6 className="m-0 email">
+                            { contextData?.profileData &&
+                              contextData?.profileData?.email }
+                          </h6>
+                        </div>
+                      </div>
+                    ) }
+                  { window.location.pathname === "/client-architechture" && (
+                    <div className="d-flex align-items-center flex-wrap profileinfo" onClick={ profileDropdown }>
+                      { cookies?.user_data?.role === "professional" ? (
                         <div>
                           <img
                             src={
@@ -253,12 +331,12 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt="profilepic"
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
                       ) : (
@@ -269,23 +347,23 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt=""
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
-                      )}
+                      ) }
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                          onClick={profileDropdown}
+                        // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.name}
+                            { contextData?.profileData &&
+                              contextData?.profileData?.name }
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -296,7 +374,7 @@ const Header2 = ({ link }) => {
                               to=""
                               className="d-flex justify-content-center rounded-top"
                             >
-                              <button onClick={handleEditProfileButton}>
+                              <button onClick={ handleEditProfileButton }>
                                 Edit Profile
                               </button>
                             </Link>
@@ -305,9 +383,9 @@ const Header2 = ({ link }) => {
                               className="d-flex justify-content-center rounded-bottom"
                             >
                               <button
-                                onClick={() => {
-                                  setShow(true);
-                                }}
+                                onClick={ () => {
+                                  setShow( true );
+                                } }
                               >
                                 Log Out
                               </button>
@@ -315,93 +393,15 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData &&
-                            contextData?.profileData?.email}
+                          { contextData?.profileData &&
+                            contextData?.profileData?.email }
                         </h6>
                       </div>
                     </div>
-                  )}
-                  {window.location.pathname === "/client-architechture" && (
-                    <div className="d-flex align-items-center flex-wrap profileinfo">
-                      {cookies?.user_data?.role === "professional" ? (
-                        <div>
-                          <img
-                            src={
-                              contextData?.profileData &&
-                              contextData?.profileData?.user_image_url
-                            }
-                            alt="profilepic"
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              cursor: "pointer",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          <img
-                            src={
-                              contextData?.profileData &&
-                              contextData?.profileData?.user_image_url
-                            }
-                            alt=""
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              cursor: "pointer",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        </div>
-                      )}
-                      <div className="ps-3">
-                        <button
-                          className="d-flex align-items-center profileEdit-button"
-                          onClick={profileDropdown}
-                        >
-                          <h4 className="userName">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.name}
-                          </h4>
-                          <i className="fa-solid fa-caret-down"></i>
-                          <div id="Edit_toggle"></div>
-                        </button>
-                        <div className="profile-edit-dropdown">
-                          <div className=" d-flex flex-column ">
-                            <Link
-                              to=""
-                              className="d-flex justify-content-center rounded-top"
-                            >
-                              <button onClick={handleEditProfileButton}>
-                                Edit Profile
-                              </button>
-                            </Link>
-                            <Link
-                              to=""
-                              className="d-flex justify-content-center rounded-bottom"
-                            >
-                              <button
-                                onClick={() => {
-                                  setShow(true);
-                                }}
-                              >
-                                Log Out
-                              </button>
-                            </Link>
-                          </div>
-                        </div>
-                        <h6 className="m-0 email">
-                          {contextData?.profileData &&
-                            contextData?.profileData?.email}
-                        </h6>
-                      </div>
-                    </div>
-                  )}
-                  {window.location.pathname === "/client-visualisation" && (
+                  ) }
+                  { window.location.pathname === "/client-visualisation" && (
                     <div className=" d-flex align-items-center flex-wrap profileinfo">
-                      {cookies?.user_data?.role === "professional" ? (
+                      { cookies?.user_data?.role === "professional" ? (
                         <div>
                           <img
                             src={
@@ -409,12 +409,12 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt="profilepic"
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
                       ) : (
@@ -425,23 +425,23 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt=""
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
-                      )}
+                      ) }
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                          onClick={profileDropdown}
+                        // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.name}
+                            { contextData?.profileData &&
+                              contextData?.profileData?.name }
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -452,7 +452,7 @@ const Header2 = ({ link }) => {
                               to=""
                               className="d-flex justify-content-center rounded-top"
                             >
-                              <button onClick={handleEditProfileButton}>
+                              <button onClick={ handleEditProfileButton }>
                                 Edit Profile
                               </button>
                             </Link>
@@ -461,9 +461,9 @@ const Header2 = ({ link }) => {
                               className="d-flex justify-content-center rounded-bottom"
                             >
                               <button
-                                onClick={() => {
-                                  setShow(true);
-                                }}
+                                onClick={ () => {
+                                  setShow( true );
+                                } }
                               >
                                 Log Out
                               </button>
@@ -471,15 +471,15 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData &&
-                            contextData?.profileData?.email}
+                          { contextData?.profileData &&
+                            contextData?.profileData?.email }
                         </h6>
                       </div>
                     </div>
-                  )}
-                  {window.location.pathname === "/client-buy-sell" && (
-                    <div className="d-flex align-items-center flex-wrap profileinfo">
-                      {cookies?.user_data?.role === "professional" ? (
+                  ) }
+                  { window.location.pathname === "/client-buy-sell" && (
+                    <div className="d-flex align-items-center flex-wrap profileinfo" onClick={ profileDropdown }>
+                      { cookies?.user_data?.role === "professional" ? (
                         <div>
                           <img
                             src={
@@ -487,12 +487,12 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt="profilepic"
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
                       ) : (
@@ -503,23 +503,23 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt=""
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
-                      )}
+                      ) }
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                          onClick={profileDropdown}
+                        // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.name}
+                            { contextData?.profileData &&
+                              contextData?.profileData?.name }
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -530,7 +530,7 @@ const Header2 = ({ link }) => {
                               to=""
                               className="d-flex justify-content-center rounded-top"
                             >
-                              <button onClick={handleEditProfileButton}>
+                              <button onClick={ handleEditProfileButton }>
                                 Edit Profile
                               </button>
                             </Link>
@@ -539,9 +539,9 @@ const Header2 = ({ link }) => {
                               className="d-flex justify-content-center rounded-bottom"
                             >
                               <button
-                                onClick={() => {
-                                  setShow(true);
-                                }}
+                                onClick={ () => {
+                                  setShow( true );
+                                } }
                               >
                                 Log Out
                               </button>
@@ -549,15 +549,15 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData &&
-                            contextData?.profileData?.email}
+                          { contextData?.profileData &&
+                            contextData?.profileData?.email }
                         </h6>
                       </div>
                     </div>
-                  )}
-                  {window.location.pathname === "/edit-profile" && (
-                    <div className=" d-flex align-items-center flex-wrap profileinfo">
-                      {cookies?.user_data?.role === "professional" ? (
+                  ) }
+                  { window.location.pathname === "/edit-profile" && (
+                    <div className=" d-flex align-items-center flex-wrap profileinfo" onClick={ profileDropdown }>
+                      { cookies?.user_data?.role === "professional" ? (
                         <div>
                           <img
                             src={
@@ -565,12 +565,12 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt="profilepic"
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
                       ) : (
@@ -581,23 +581,23 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt=""
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
-                      )}
+                      ) }
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                          onClick={profileDropdown}
+                        // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.name}
+                            { contextData?.profileData &&
+                              contextData?.profileData?.name }
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -619,9 +619,9 @@ const Header2 = ({ link }) => {
                               className="d-flex justify-content-center rounded-bottom"
                             >
                               <button
-                                onClick={() => {
-                                  setShow(true);
-                                }}
+                                onClick={ () => {
+                                  setShow( true );
+                                } }
                               >
                                 Log Out
                               </button>
@@ -629,15 +629,15 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData &&
-                            contextData?.profileData?.email}
+                          { contextData?.profileData &&
+                            contextData?.profileData?.email }
                         </h6>
                       </div>
                     </div>
-                  )}
-                  {window.location.pathname === "/project-details" && (
-                    <div className=" d-flex align-items-center flex-wrap profileinfo">
-                      {cookies?.user_data?.role === "professional" ? (
+                  ) }
+                  { window.location.pathname === "/project-details" && (
+                    <div className=" d-flex align-items-center flex-wrap profileinfo" onClick={ profileDropdown }>
+                      { cookies?.user_data?.role === "professional" ? (
                         <div>
                           <img
                             src={
@@ -645,12 +645,12 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt="profilepic"
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
                       ) : (
@@ -661,23 +661,23 @@ const Header2 = ({ link }) => {
                               contextData?.profileData?.user_image_url
                             }
                             alt=""
-                            style={{
+                            style={ {
                               width: "50px",
                               height: "50px",
                               cursor: "pointer",
                               borderRadius: "50%",
-                            }}
+                            } }
                           />
                         </div>
-                      )}
+                      ) }
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                          onClick={profileDropdown}
+                        // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.name}
+                            { contextData?.profileData &&
+                              contextData?.profileData?.name }
                           </h4>
                           <i className="fa-solid fa-caret-down"></i>
                           <div id="Edit_toggle"></div>
@@ -688,7 +688,7 @@ const Header2 = ({ link }) => {
                               to=""
                               className="d-flex justify-content-center rounded-top"
                             >
-                              <button onClick={handleEditProfileButton}>
+                              <button onClick={ handleEditProfileButton }>
                                 Edit Profile
                               </button>
                             </Link>
@@ -697,9 +697,9 @@ const Header2 = ({ link }) => {
                               className="d-flex justify-content-center rounded-bottom"
                             >
                               <button
-                                onClick={() => {
-                                  setShow(true);
-                                }}
+                                onClick={ () => {
+                                  setShow( true );
+                                } }
                               >
                                 Log Out
                               </button>
@@ -707,30 +707,30 @@ const Header2 = ({ link }) => {
                           </div>
                         </div>
                         <h6 className="m-0 email">
-                          {contextData?.profileData &&
-                            contextData?.profileData?.email}
+                          { contextData?.profileData &&
+                            contextData?.profileData?.email }
                         </h6>
                       </div>
                     </div>
-                  )}
+                  ) }
                 </li>
               </ul>
               <Modal
                 centered
-                show={show}
-                onHide={() => setShow(false)}
-                style={{ zIndex: 10000000 }}
+                show={ show }
+                onHide={ () => setShow( false ) }
+                style={ { zIndex: 10000000 } }
               >
                 <Modal.Header closeButton>
                   <Modal.Title>Are you sure you want to Log out?</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={() => setShow(false)}>
+                  <Button variant="secondary" onClick={ () => setShow( false ) }>
                     Not Now
                   </Button>
                   <Button
                     className="theme-bg-color border-0"
-                    onClick={logoutHandle}
+                    onClick={ logoutHandle }
                   >
                     Sign Out
                   </Button>
@@ -745,25 +745,25 @@ const Header2 = ({ link }) => {
 };
 
 const HeaderHome = () => {
-  const [cookies, , removeCookie] = useCookies();
-  const [userData, setUserData] = useState(cookies?.user_data);
+  const [ cookies, , removeCookie ] = useCookies();
+  const [ userData, setUserData ] = useState( cookies?.user_data );
   const navigate = useNavigate();
   const profileDropdown = () => {
-    $(".profile-edit-dropdown").slideToggle();
-    $(".profileEdit-button i").toggleClass("i-rotate");
+    $( ".profile-edit-dropdown" ).slideToggle();
+    $( ".profileEdit-button i" ).toggleClass( "i-rotate" );
   };
   const textClick = () => {
-    $(".mobile-menu").css("top", "0");
+    $( ".mobile-menu" ).css( "top", "0" );
   };
 
   const closeBtnClick = () => {
-    $(".mobile-menu").css("top", "-100%");
+    $( ".mobile-menu" ).css( "top", "-100%" );
   };
-  const [businessClick, setBusinessClick] = useState(
-    localStorage.getItem("Business")
+  const [ businessClick, setBusinessClick ] = useState(
+    localStorage.getItem( "Business" )
   );
-  const [show, setShow] = useState(false);
-  const contextData = useContext(Global);
+  const [ show, setShow ] = useState( false );
+  const contextData = useContext( Global );
   const googleTranslateElementInit = () => {
     new window.google.translate.TranslateElement(
       { pageLanguage: "en" },
@@ -772,23 +772,23 @@ const HeaderHome = () => {
   };
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", {
+      .put( "http://13.52.16.160:8082/identity/update_account", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/edit-profile", { state: res?.data?.data });
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          navigate( "/edit-profile", { state: res?.data?.data } );
         }
-      });
+      } );
   };
   const logoutapi = () => {
-    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+    axios.post( `http://13.52.16.160:8082/identity/logout`, {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
-    });
+    } );
   };
   return (
     <div>
@@ -801,31 +801,31 @@ const HeaderHome = () => {
                   <img
                     src="/static/images/Quadra-transparrent-logo.png"
                     alt="logo"
-                    style={{ height: "100px" }}
+                    style={ { height: "100px" } }
                   />
                 </Link>
               </div>
               <div className="col-lg-9 col-md-8 col-5 d-flex align-items-center">
                 <div className="w-100 d-flex align-items-center justify-content-end">
                   <ul className="  align-items-center m-0 ps-0">
-                    {!cookies?.user_data && (
+                    { !cookies?.user_data && (
                       <li>
                         <Link
                           to="/join"
-                          onClick={() => localStorage.removeItem("Business")}
+                          onClick={ () => localStorage.removeItem( "Business" ) }
                         >
                           Join
                         </Link>
                       </li>
-                    )}
-                    {cookies?.user_data && (
-                      <div className="row align-item-center homepage-user-profile ">
-                        {cookies?.user_data?.role === "professional" ? (
+                    ) }
+                    { cookies?.user_data && (
+                      <div className="row align-item-center homepage-user-profile " onClick={ profileDropdown }>
+                        { cookies?.user_data?.role === "professional" ? (
                           <div
                             className="user-profile-img col"
-                            style={{
+                            style={ {
                               padding: "0",
-                            }}
+                            } }
                           >
                             <img
                               src={
@@ -833,20 +833,20 @@ const HeaderHome = () => {
                                 contextData?.profileData?.user_image_url
                               }
                               alt=""
-                              style={{
+                              style={ {
                                 width: "50px",
                                 height: "50px",
                                 cursor: "pointer",
                                 borderRadius: "50%",
-                              }}
+                              } }
                             />
                           </div>
                         ) : (
                           <div
                             className="user-profile-img col"
-                            style={{
+                            style={ {
                               padding: "0",
-                            }}
+                            } }
                           >
                             <img
                               src={
@@ -854,23 +854,23 @@ const HeaderHome = () => {
                                 contextData?.profileData?.user_image_url
                               }
                               alt=""
-                              style={{
+                              style={ {
                                 width: "50px",
                                 height: "50px",
                                 cursor: "pointer",
                                 borderRadius: "50%",
-                              }}
+                              } }
                             />
                           </div>
-                        )}
+                        ) }
                         <div className="ps-3 col">
                           <button
                             className="d-flex align-items-center profileEdit-button"
-                            onClick={profileDropdown}
+                          // onClick={profileDropdown}
                           >
                             <h4>
-                              {contextData?.profileData &&
-                                contextData?.profileData?.name}
+                              { contextData?.profileData &&
+                                contextData?.profileData?.name }
                             </h4>
                             <i className="fa-solid fa-caret-down i-rotate text-white"></i>
                             <div id="Edit_toggle"></div>
@@ -881,7 +881,7 @@ const HeaderHome = () => {
                                 to=""
                                 className="d-flex justify-content-center rounded-top"
                               >
-                                <button onClick={handleEditProfileButton}>
+                                <button onClick={ handleEditProfileButton }>
                                   Edit Profile
                                 </button>
                               </Link>
@@ -900,9 +900,9 @@ const HeaderHome = () => {
                                 className="d-flex justify-content-center rounded-bottom"
                               >
                                 <button
-                                  onClick={() => {
-                                    setShow(true);
-                                  }}
+                                  onClick={ () => {
+                                    setShow( true );
+                                  } }
                                 >
                                   Log Out
                                 </button>
@@ -910,8 +910,8 @@ const HeaderHome = () => {
                             </div>
                           </div>
                           <h6 className="m-0">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.email}
+                            { contextData?.profileData &&
+                              contextData?.profileData?.email }
                           </h6>
                         </div>
                       </div>
@@ -936,7 +936,7 @@ const HeaderHome = () => {
                       //     />
                       //   </Link>
                       // </li>
-                    )}
+                    ) }
                     {/* {cookies?.user_data && (
                       <li>
                         <Link
@@ -960,13 +960,13 @@ const HeaderHome = () => {
                         </Link>
                       </li>
                     )} */}
-                    {!cookies?.user_data && (
+                    { !cookies?.user_data && (
                       <li>
                         <Link to="/select-sign-in">Sign In</Link>
                       </li>
-                    )}
+                    ) }
 
-                    <Modal centered show={show} onHide={() => setShow(false)}>
+                    <Modal centered show={ show } onHide={ () => setShow( false ) }>
                       <Modal.Header closeButton>
                         <Modal.Title>
                           Are you sure you want to Log out?
@@ -975,48 +975,48 @@ const HeaderHome = () => {
                       <Modal.Footer>
                         <Button
                           variant="secondary"
-                          onClick={() => setShow(false)}
+                          onClick={ () => setShow( false ) }
                         >
                           Not Now
                         </Button>
                         <Button
                           className="theme-bg-color border-0"
-                          onClick={() => {
+                          onClick={ () => {
                             logoutapi();
-                            removeCookie("user_data");
+                            removeCookie( "user_data" );
                             closeBtnClick();
-                            setShow(false);
+                            setShow( false );
                             localStorage.clear();
-                            contextData?.dispatch({ type: "LOG_OUT" });
-                          }}
+                            contextData?.dispatch( { type: "LOG_OUT" } );
+                          } }
                         >
                           Sign Out
                         </Button>
                       </Modal.Footer>
                     </Modal>
-                    {cookies?.user_data?.role === "client" && (
+                    { cookies?.user_data?.role === "client" && (
                       <li>
                         <Link
-                          to={!cookies?.user_data ? "/join" : "clientdashboard"}
+                          to={ !cookies?.user_data ? "/join" : "clientdashboard" }
                         >
                           Business
                         </Link>
                       </li>
-                    )}
-                    {cookies?.user_data?.role !== "professional" &&
+                    ) }
+                    { cookies?.user_data?.role !== "professional" &&
                       cookies?.user_data?.role !== "client" && (
                         <li>
                           <Link to="/client-sign-up">Business</Link>
                         </li>
-                      )}
+                      ) }
 
                     <div className="LanguageSelectBox">
                       <li
                         className="LanguageShow text-white"
-                        onClick={googleTranslateElementInit}
+                        onClick={ googleTranslateElementInit }
                       >
                         <MdLanguage
-                          style={{ color: "white", fontSize: "27px" }}
+                          style={ { color: "white", fontSize: "27px" } }
                         />
                       </li>
                       <li className="googleTranslateLanguageDropdown">
@@ -1025,7 +1025,7 @@ const HeaderHome = () => {
                     </div>
                   </ul>
                   <div
-                    onClick={textClick}
+                    onClick={ textClick }
                     id="text1"
                     className="hamburger-button justify-content-between flex-column align-items-end "
                   >
@@ -1037,7 +1037,7 @@ const HeaderHome = () => {
                   <div id="myNav" className="mobile-menu">
                     <Link
                       to=""
-                      onClick={closeBtnClick}
+                      onClick={ closeBtnClick }
                       className="closebtn text-end"
                     >
                       &times;
@@ -1049,7 +1049,7 @@ const HeaderHome = () => {
                                     <Link to="#">Contact</Link>  */}
 
                       <ul className="  align-items-center m-0 ps-0">
-                        {cookies?.user_data && (
+                        { cookies?.user_data && (
                           <>
                             <li>
                               <Link
@@ -1058,19 +1058,19 @@ const HeaderHome = () => {
                                     ? "/clientdashboard"
                                     : "/professionaldashboard"
                                 }
-                                state={{ fromHomePage: true }}
+                                state={ { fromHomePage: true } }
                               >
                                 Dashboard
                               </Link>
                             </li>
                             <li>
-                              <Link to="/" onClick={() => setShow(true)}>
+                              <Link to="/" onClick={ () => setShow( true ) }>
                                 Sign Out
                               </Link>
                             </li>
                           </>
-                        )}
-                        {!cookies?.user_data && (
+                        ) }
+                        { !cookies?.user_data && (
                           <>
                             <li>
                               <Link to="/join">Join</Link>
@@ -1079,24 +1079,24 @@ const HeaderHome = () => {
                               <Link to="/select-sign-in">Sign In</Link>
                             </li>
                           </>
-                        )}
+                        ) }
 
                         <li>
                           <Link
                             to="/join"
-                            onClick={() =>
+                            onClick={ () =>
                               setBusinessClick(
-                                localStorage.setItem("Business", true)
+                                localStorage.setItem( "Business", true )
                               )
                             }
                           >
                             Business
                           </Link>
                         </li>
-                        <li onClick={googleTranslateElementInit}>
+                        <li onClick={ googleTranslateElementInit }>
                           <div id="google_translate_element">
                             <MdLanguage
-                              style={{ color: "white", fontSize: "27px" }}
+                              style={ { color: "white", fontSize: "27px" } }
                             />
                           </div>
                         </li>
@@ -1133,17 +1133,17 @@ const Header3 = () => {
 
               <ul className="ms-auto d-flex p-0 mb-0 ">
                 <li>
-                  {window.location.pathname === "/select-sign-in" ? (
+                  { window.location.pathname === "/select-sign-in" ? (
                     ""
                   ) : (
                     <Link
                       to="/select-sign-in"
                       className="text-black"
-                      style={{ color: "#fff !important" }}
+                      style={ { color: "#fff !important" } }
                     >
                       Sign In
                     </Link>
-                  )}
+                  ) }
                 </li>
               </ul>
             </div>
@@ -1156,50 +1156,50 @@ const Header3 = () => {
 
 const ChatHeader = () => {
   const navigate = useNavigate();
-  const [cookies, , removeCookie] = useCookies();
+  const [ cookies, , removeCookie ] = useCookies();
   const profileDropdown = () => {
-    $(".profile-edit-dropdown").slideToggle();
-    $(".profileEdit-button i").toggleClass("i-rotate");
+    $( ".profile-edit-dropdown" ).slideToggle();
+    $( ".profileEdit-button i" ).toggleClass( "i-rotate" );
   };
-  const contextData = useContext(Global);
-  const [show, setShow] = useState(false);
+  const contextData = useContext( Global );
+  const [ show, setShow ] = useState( false );
 
-  const [showNotificationBox, setShowNotificationBox] = useState(false);
-  const [acceptProject, setAcceptProject] = useState(false);
-  const [clientDetails, setClientDetails] = useState();
-  const handleNotification = (res) => {
+  const [ showNotificationBox, setShowNotificationBox ] = useState( false );
+  const [ acceptProject, setAcceptProject ] = useState( false );
+  const [ clientDetails, setClientDetails ] = useState();
+  const handleNotification = ( res ) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_details", {
+      .post( "http://13.52.16.160:8082/client/particular_project_details", {
         professional_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
         project_id: res?.detail?.project_id,
-      })
-      .then((respo) => {
-        if (respo?.data?.status === "Success") {
-          if (clientDetails !== undefined) {
-            navigate("/project-details", {
+      } )
+      .then( ( respo ) => {
+        if ( respo?.data?.status === "Success" ) {
+          if ( clientDetails !== undefined ) {
+            navigate( "/project-details", {
               state: {
                 projectData: respo?.data?.data,
                 clientDetails: clientDetails,
                 isFromProfessionalNotification: true,
               },
-            });
+            } );
           }
         }
-      });
+      } );
   };
-  const handleClientAcceptation = (client_id, client_project_id) => {
+  const handleClientAcceptation = ( client_id, client_project_id ) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      .post( "http://13.52.16.160:8082/client/particular_project_milestones", {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
         professional_id: client_id,
         project_id: client_project_id,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
           axios
             .post(
               "http://13.52.16.160:8082/client/particular_project_details",
@@ -1210,66 +1210,66 @@ const ChatHeader = () => {
                 project_id: client_project_id,
               }
             )
-            .then((respo) => {
-              if (respo?.data?.status === "Success") {
-                if (clientDetails !== undefined) {
-                  navigate("/project-details", {
+            .then( ( respo ) => {
+              if ( respo?.data?.status === "Success" ) {
+                if ( clientDetails !== undefined ) {
+                  navigate( "/project-details", {
                     state: {
                       projectDetails: { client_id, client_project_id },
                       projectData: respo?.data?.data,
                       milesStoneData: res?.data?.data,
                       isFromClientNotification: true,
                     },
-                  });
+                  } );
                 }
               }
-            });
+            } );
         }
-      });
+      } );
   };
   const widowSize = useWindowSize();
-  const [notificationPageId, setNotificationPageId] = useState({
+  const [ notificationPageId, setNotificationPageId ] = useState( {
     page: 1,
     page_size: 10,
-  });
-  const [notificationArray, setNotificationArray] = useState();
+  } );
+  const [ notificationArray, setNotificationArray ] = useState();
   const handleNotificationBox = () => {
     cookies?.user_data &&
       axios
-        .post("http://13.52.16.160:8082/identity/get-notifications", {
+        .post( "http://13.52.16.160:8082/identity/get-notifications", {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
           ...notificationPageId,
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            contextData?.setNotification(res?.data?.data);
-            setNotificationArray(res?.data?.data?.final_data?.reverse());
-            setShowNotificationBox(!showNotificationBox);
+        } )
+        .then( ( res ) => {
+          if ( res?.data?.status === "Success" ) {
+            contextData?.setNotification( res?.data?.data );
+            setNotificationArray( res?.data?.data?.final_data?.reverse() );
+            setShowNotificationBox( !showNotificationBox );
           }
-        });
+        } );
   };
 
   const handleEditProfileButton = () => {
-    axios.put("http://13.52.16.160:8082/identity/update_account", {
+    axios.put( "http://13.52.16.160:8082/identity/update_account", {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
-    });
+    } );
   };
   const bringnotificationCount = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/unread_notification_count", {
+      .post( "http://13.52.16.160:8082/identity/unread_notification_count", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          contextData?.setUnreadNotification(res?.data?.data?.unread_count);
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          contextData?.setUnreadNotification( res?.data?.data?.unread_count );
         }
-      });
+      } );
   };
   return (
     <>
@@ -1287,38 +1287,37 @@ const ChatHeader = () => {
               >
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
-                  style={{ color: "#01a78a" }}
-                ></i>{" "}
+                  style={ { color: "#01a78a" } }
+                ></i>{ " " }
                 Dashboard
               </Link>
               <div
-                className={`d-flex align-items-center ${
-                  widowSize.width > 992 ? "border-end" : ""
-                }  py-4`}
+                className={ `d-flex align-items-center ${ widowSize.width > 992 ? "border-end" : ""
+                  }  py-4` }
               >
                 <div
                   className="dashboard-user-notification me-md-3 me-2"
-                  onClick={() => {
+                  onClick={ () => {
                     showNotificationBox
-                      ? setShowNotificationBox(false)
+                      ? setShowNotificationBox( false )
                       : handleNotificationBox();
                     bringnotificationCount();
-                  }}
+                  } }
                 >
                   <i className="fa-solid fa-bell"></i>
-                  {contextData?.unreadNotification === 0 ? (
+                  { contextData?.unreadNotification === 0 ? (
                     ""
                   ) : (
                     <div className="dashboard-user-notification-number">
-                      {contextData?.unreadNotification}
+                      { contextData?.unreadNotification }
                     </div>
-                  )}
+                  ) }
                   <div className="notificationDropdownBox"></div>
-                  {showNotificationBox ? (
+                  { showNotificationBox ? (
                     <div className="notificationDropdownBox">
                       <div
                         className="scroll-width-zero"
-                        style={{
+                        style={ {
                           position: "relative",
                           maxHeight: "400px",
                           background: "#01a78a",
@@ -1326,62 +1325,62 @@ const ChatHeader = () => {
                           overflowY: "auto",
                           borderTop: " 4px solid #01a78a",
                           borderBottom: " 4px solid #01a78a",
-                        }}
+                        } }
                       >
-                        {contextData?.notification.length === 0 ? (
+                        { contextData?.notification.length === 0 ? (
                           <div className="text-white text-center">
                             No Messages To Display
                           </div>
                         ) : (
                           notificationArray &&
-                          notificationArray.map((res, keys) => (
+                          notificationArray.map( ( res, keys ) => (
                             <div
-                              key={keys}
+                              key={ keys }
                               className="message"
-                              onClick={async () => {
-                                setClientDetails({
+                              onClick={ async () => {
+                                setClientDetails( {
                                   client_id: res?.detail?.client_id,
                                   client_project_id: res?.detail?.project_id,
-                                });
+                                } );
                                 if (
                                   res?.notification.includes(
                                     "You have received a Project request by the"
                                   )
                                 ) {
-                                  await handleNotification(res);
+                                  await handleNotification( res );
                                 }
                                 if (
-                                  res?.notification.includes("accepted by the")
+                                  res?.notification.includes( "accepted by the" )
                                 ) {
                                   await handleClientAcceptation(
                                     res?.detail?.professional_id,
                                     res?.detail?.project_id
                                   );
                                 }
-                              }}
+                              } }
                             >
-                              <p>{new Date(res?.timestamp).toUTCString()}</p>
-                              {res?.notification}
+                              <p>{ new Date( res?.timestamp ).toUTCString() }</p>
+                              { res?.notification }
                             </div>
-                          ))
-                        )}
+                          ) )
+                        ) }
                         <div className="bg-white">
-                          {contextData?.notification?.total_data > 10 && (
+                          { contextData?.notification?.total_data > 10 && (
                             <button className="seeAllNotificationButton">
                               See All
                             </button>
-                          )}
+                          ) }
                         </div>
-                        {contextData?.notification.length === 0 ? (
+                        { contextData?.notification.length === 0 ? (
                           ""
                         ) : (
                           <div className="arrowMessageBox"></div>
-                        )}
+                        ) }
                       </div>
                     </div>
                   ) : (
                     ""
-                  )}
+                  ) }
                 </div>
                 <Link
                   to="/chat"
@@ -1392,20 +1391,20 @@ const ChatHeader = () => {
                     alt=""
                     className=""
                   />
-                  {contextData?.unreadChatCount ? (
+                  { contextData?.unreadChatCount ? (
                     <div className="dashboard-user-notification-number">
-                      {contextData?.unreadChatCount}
+                      { contextData?.unreadChatCount }
                     </div>
                   ) : (
                     ""
-                  )}
+                  ) }
                 </Link>
               </div>
             </div>
-            <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap">
-              {cookies?.user_data?.role === "professional" ? (
+            <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap" onClick={ profileDropdown }>
+              { cookies?.user_data?.role === "professional" ? (
                 <div
-                  onClick={() => {
+                  onClick={ () => {
                     axios
                       .post(
                         "http://13.52.16.160:8082/professional/professional_profile",
@@ -1415,12 +1414,12 @@ const ChatHeader = () => {
                           role: "professional",
                         }
                       )
-                      .then((respo) => {
+                      .then( ( respo ) => {
                         navigate(
-                          `/professionalprofile/${cookies?.user_data?.user_id}`
+                          `/professionalprofile/${ cookies?.user_data?.user_id }`
                         );
-                      });
-                  }}
+                      } );
+                  } }
                 >
                   <img
                     src={
@@ -1428,13 +1427,13 @@ const ChatHeader = () => {
                       contextData?.profileData.user_image_url
                     }
                     alt=""
-                    style={{
+                    style={ {
                       width: "50px",
                       height: "50px",
                       cursor: "pointer",
 
                       borderRadius: "50%",
-                    }}
+                    } }
                   />
                 </div>
               ) : (
@@ -1445,30 +1444,30 @@ const ChatHeader = () => {
                       contextData?.profileData?.user_image_url
                     }
                     alt=""
-                    style={{
+                    style={ {
                       width: "50px",
                       height: "50px",
                       cursor: "pointer",
 
                       borderRadius: "50%",
-                    }}
+                    } }
                   />
                 </div>
-              )}
+              ) }
               <div className="ps-3">
                 <button
                   className="d-flex align-items-center profileEdit-button"
-                  onClick={profileDropdown}
+                // onClick={ profileDropdown }
                 >
                   <h4>
-                    {contextData?.profileData && contextData?.profileData?.name}
+                    { contextData?.profileData && contextData?.profileData?.name }
                   </h4>
                   <i className="fa-solid fa-caret-down"></i>
                 </button>
                 <div className="profile-edit-dropdown">
                   <div className=" d-flex flex-column ">
                     <Link className="d-flex justify-content-center rounded-top">
-                      <button onClick={handleEditProfileButton}>
+                      <button onClick={ handleEditProfileButton }>
                         Edit Profile
                       </button>
                     </Link>
@@ -1478,9 +1477,9 @@ const ChatHeader = () => {
                       className="d-flex justify-content-center rounded-bottom"
                     >
                       <button
-                        onClick={() => {
-                          setShow(true);
-                        }}
+                        onClick={ () => {
+                          setShow( true );
+                        } }
                       >
                         Log Out
                       </button>
@@ -1488,7 +1487,7 @@ const ChatHeader = () => {
                   </div>
                 </div>
                 <h6 className="m-0">
-                  {contextData?.profileData && contextData?.profileData?.email}
+                  { contextData?.profileData && contextData?.profileData?.email }
                 </h6>
               </div>
             </div>
@@ -1497,43 +1496,43 @@ const ChatHeader = () => {
       </header>
       <Modal
         centered
-        show={acceptProject}
-        onHide={() => setAcceptProject(false)}
+        show={ acceptProject }
+        onHide={ () => setAcceptProject( false ) }
       >
         <Modal.Header closeButton>
           <Modal.Title>Do You Want To Confirm The Project Request?</Modal.Title>
         </Modal.Header>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setAcceptProject(false)}>
+          <Button variant="secondary" onClick={ () => setAcceptProject( false ) }>
             Not Now
           </Button>
           <Button
             className="theme-bg-color border-0"
-            onClick={() => {
-              setAcceptProject(false);
-            }}
+            onClick={ () => {
+              setAcceptProject( false );
+            } }
           >
             Sign Out
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal centered show={show} onHide={() => setShow(false)}>
+      <Modal centered show={ show } onHide={ () => setShow( false ) }>
         <Modal.Header closeButton>
           <Modal.Title>Are you sure you want to Log out?</Modal.Title>
         </Modal.Header>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
+          <Button variant="secondary" onClick={ () => setShow( false ) }>
             Not Now
           </Button>
           <Button
             className="theme-bg-color border-0"
-            onClick={() => {
-              setShow(false);
+            onClick={ () => {
+              setShow( false );
               localStorage.clear();
-              removeCookie("user_data");
-              contextData?.dispatch({ type: "LOG_OUT" });
-              navigate("/");
-            }}
+              removeCookie( "user_data" );
+              contextData?.dispatch( { type: "LOG_OUT" } );
+              navigate( "/" );
+            } }
           >
             Sign Out
           </Button>
@@ -1545,33 +1544,33 @@ const ChatHeader = () => {
 
 const HeaderDashboard = () => {
   const navigate = useNavigate();
-  const contextData = useContext(Global);
-  const [show, setShow] = useState(false);
-  const [showNotificationBox, setShowNotificationBox] = useState(false);
-  const [acceptProject, setAcceptProject] = useState(false);
-  const [clientDetails, setClientDetails] = useState();
-  const [cookies, , removeCookie] = useCookies();
+  const contextData = useContext( Global );
+  const [ show, setShow ] = useState( false );
+  const [ showNotificationBox, setShowNotificationBox ] = useState( false );
+  const [ acceptProject, setAcceptProject ] = useState( false );
+  const [ clientDetails, setClientDetails ] = useState();
+  const [ cookies, , removeCookie ] = useCookies();
   const profileDropdown = () => {
-    $(".profile-edit-dropdown").slideToggle();
-    $(".profileEdit-button i").toggleClass("i-rotate");
+    $( ".profile-edit-dropdown" ).slideToggle();
+    $( ".profileEdit-button i" ).toggleClass( "i-rotate" );
   };
-  window.addEventListener("click", (event) => {
-    if (event.target.id !== "Edit_toggle") {
-      $(".profile-edit-dropdown").hide();
+  window.addEventListener( "click", ( event ) => {
+    if ( event.target.id !== "Edit_toggle" ) {
+      $( ".profile-edit-dropdown" ).hide();
     }
-  });
+  } );
 
-  const handleNotification = (res) => {
+  const handleNotification = ( res ) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_details", {
+      .post( "http://13.52.16.160:8082/client/particular_project_details", {
         professional_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
         project_id: res?.detail?.project_id,
-      })
-      .then((respo) => {
-        if (respo?.data?.status === "Success") {
-          navigate("/project-details", {
+      } )
+      .then( ( respo ) => {
+        if ( respo?.data?.status === "Success" ) {
+          navigate( "/project-details", {
             // state: {
             //   projectData: respo?.data?.data,
             //   clientDetails: clientDetails,
@@ -1583,22 +1582,22 @@ const HeaderDashboard = () => {
               client_project_id: res?.detail?.project_id,
               isFromProfessionalNotification: true,
             },
-          });
+          } );
         }
-      });
+      } );
   };
 
-  const handleClientAcceptation = (id, project_id) => {
+  const handleClientAcceptation = ( id, project_id ) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      .post( "http://13.52.16.160:8082/client/particular_project_milestones", {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
         professional_id: id,
         project_id: project_id,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
           axios
             .post(
               "http://13.52.16.160:8082/client/particular_project_details",
@@ -1609,9 +1608,9 @@ const HeaderDashboard = () => {
                 project_id: project_id,
               }
             )
-            .then((respo) => {
-              if (respo?.data?.status === "Success") {
-                navigate("/project-details", {
+            .then( ( respo ) => {
+              if ( respo?.data?.status === "Success" ) {
+                navigate( "/project-details", {
                   state: {
                     // projectDetails: { id, },
                     projectData: respo?.data?.data,
@@ -1620,22 +1619,22 @@ const HeaderDashboard = () => {
                     professional_id: id,
                     project_id: project_id,
                   },
-                });
+                } );
               }
-            });
+            } );
         }
-      });
+      } );
   };
-  const handleClientProccess = (payload) => {
-    navigate(payload);
+  const handleClientProccess = ( payload ) => {
+    navigate( payload );
   };
 
   const widowSize = useWindowSize();
-  const [notificationPageId, setNotificationPageId] = useState({
+  const [ notificationPageId, setNotificationPageId ] = useState( {
     page: 1,
     page_size: 10,
-  });
-  const [notificationArray, setNotificationArray] = useState();
+  } );
+  const [ notificationArray, setNotificationArray ] = useState();
   // const handleNotificationBox = () => {
   //   cookies?.user_data &&
   //     axios.post("http://13.52.16.160:8082/identity/get-notifications", {
@@ -1651,47 +1650,47 @@ const HeaderDashboard = () => {
   //       }
   //     });
   // };
-  useEffect(() => {
+  useEffect( () => {
     cookies?.user_data &&
       axios
-        .post("http://13.52.16.160:8082/identity/get-notifications", {
+        .post( "http://13.52.16.160:8082/identity/get-notifications", {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
           ...notificationPageId,
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            contextData?.setNotification(res?.data?.data);
-            setNotificationArray(res?.data?.data?.final_data);
+        } )
+        .then( ( res ) => {
+          if ( res?.data?.status === "Success" ) {
+            contextData?.setNotification( res?.data?.data );
+            setNotificationArray( res?.data?.data?.final_data );
           }
-        });
+        } );
 
     axios
-      .post("http://13.52.16.160:8082/identity/unread_notification_count", {
+      .post( "http://13.52.16.160:8082/identity/unread_notification_count", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          contextData?.setUnreadNotification(res?.data?.data?.unread_count);
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          contextData?.setUnreadNotification( res?.data?.data?.unread_count );
         }
-      });
-  }, [showNotificationBox]);
+      } );
+  }, [ showNotificationBox ] );
 
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", {
+      .put( "http://13.52.16.160:8082/identity/update_account", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/edit-profile", { state: res?.data?.data });
+      } )
+      .then( ( res ) => {
+        if ( res?.data?.status === "Success" ) {
+          navigate( "/edit-profile", { state: res?.data?.data } );
         }
-      });
+      } );
   };
 
   // const bringnotificationCount = () => {
@@ -1705,34 +1704,34 @@ const HeaderDashboard = () => {
   //     }
   //   });
   // };
-  window.addEventListener("click", (event) => {
-    if (event.target.id !== "toggleNoti") {
-      setShowNotificationBox(false);
+  window.addEventListener( "click", ( event ) => {
+    if ( event.target.id !== "toggleNoti" ) {
+      setShowNotificationBox( false );
     }
-    if (event.target.id === "SeeAll") {
-      setShowNotificationBox(true);
+    if ( event.target.id === "SeeAll" ) {
+      setShowNotificationBox( true );
     }
-  });
+  } );
 
   const handalVerify = () => {
     axios
-      .post("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+      .post( "http://13.52.16.160:8082/stripe/professionl/verify-account/", {
         professioanl_id: cookies?.user_data?.user_id,
         professioanl_token: cookies?.user_data?.user_token,
-      })
-      .then((result) => {
+      } )
+      .then( ( result ) => {
         const url = result?.data?.data?.link;
-        const link = document.createElement("a");
+        const link = document.createElement( "a" );
         link.href = url;
-        document.body.appendChild(link);
+        document.body.appendChild( link );
         link.click();
-      });
+      } );
   };
 
-  const reportHandle = (payload) => {
-    navigate("/Report", {
+  const reportHandle = ( payload ) => {
+    navigate( "/Report", {
       state: { ...payload },
-    });
+    } );
   };
 
   // const reportHandle = (payload) => {
@@ -1741,13 +1740,13 @@ const HeaderDashboard = () => {
   //     });
 
   // condition on this state is inverted //
-  const [seeAllNotification, setSeeAllNotification] = useState(true);
+  const [ seeAllNotification, setSeeAllNotification ] = useState( true );
   const logoutapi = () => {
-    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+    axios.post( `http://13.52.16.160:8082/identity/logout`, {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
-    });
+    } );
   };
   return (
     <>
@@ -1766,13 +1765,12 @@ const HeaderDashboard = () => {
                 Dashboard
               </Link>
               <div
-                className={`d-flex align-items-center ${
-                  widowSize?.width > 992 ? "border-end" : ""
-                }  py-4`}
+                className={ `d-flex align-items-center ${ widowSize?.width > 992 ? "border-end" : ""
+                  }  py-4` }
               >
-                {cookies?.user_data?.role !== "client" ? (
+                { cookies?.user_data?.role !== "client" ? (
                   <>
-                    {contextData?.verified ? (
+                    { contextData?.verified ? (
                       <button className="verified-btn" title="verifed">
                         <GoVerified />
                         <span className="verify-text"> Account Verified</span>
@@ -1781,37 +1779,37 @@ const HeaderDashboard = () => {
                       <button
                         className="verify-btn"
                         title="verify Account"
-                        onClick={handalVerify}
+                        onClick={ handalVerify }
                       >
                         <GoUnverified />
                         <span className="verify-text">Verify your Account</span>
                       </button>
-                    )}
+                    ) }
                   </>
                 ) : (
                   ""
-                )}
+                ) }
                 <div className="dashboard-user-notification me-md-3 me-2">
                   <i className="fa-solid fa-bell"></i>
                   <div
                     id="toggleNoti"
-                    onClick={() => {
-                      setShowNotificationBox(!showNotificationBox);
-                    }}
+                    onClick={ () => {
+                      setShowNotificationBox( !showNotificationBox );
+                    } }
                   ></div>
-                  {contextData?.unreadNotification === 0 ? (
+                  { contextData?.unreadNotification === 0 ? (
                     ""
                   ) : (
                     <div className="dashboard-user-notification-number">
-                      {contextData?.unreadNotification}
+                      { contextData?.unreadNotification }
                     </div>
-                  )}
+                  ) }
                   <div className="notificationDropdownBox"></div>
-                  {showNotificationBox ? (
+                  { showNotificationBox ? (
                     <div className="notificationDropdownBox">
                       <div
                         className="scroll-width-zero"
-                        style={{
+                        style={ {
                           position: "relative",
                           maxHeight: "400px",
                           background: "#01a78a",
@@ -1819,31 +1817,31 @@ const HeaderDashboard = () => {
                           overflowY: "auto",
                           borderTop: " 4px solid #01a78a",
                           borderBottom: " 4px solid #01a78a",
-                        }}
+                        } }
                       >
-                        {notificationArray.length === 0 ? (
+                        { notificationArray.length === 0 ? (
                           <div className="text-white text-center">
                             No Messages To Display
                           </div>
                         ) : seeAllNotification ? (
-                          notificationArray.map((res, keys) => {
-                            if (keys < 7) {
+                          notificationArray.map( ( res, keys ) => {
+                            if ( keys < 7 ) {
                               return (
                                 <div
-                                  key={keys}
+                                  key={ keys }
                                   className="message"
-                                  onClick={() => {
-                                    setClientDetails({
+                                  onClick={ () => {
+                                    setClientDetails( {
                                       client_id: res?.detail?.client_id,
                                       client_project_id:
                                         res?.detail?.project_id,
-                                    });
+                                    } );
                                     if (
                                       res?.notification.includes(
                                         "You have received a Project request by the"
                                       )
                                     ) {
-                                      handleNotification(res);
+                                      handleNotification( res );
                                     }
                                     if (
                                       res?.notification.includes(
@@ -1860,51 +1858,51 @@ const HeaderDashboard = () => {
                                         "is approved by the"
                                       )
                                     ) {
-                                      handleClientProccess("/myactivity");
+                                      handleClientProccess( "/myactivity" );
                                     }
                                     if (
                                       res?.notification.includes(
                                         "updated the file of"
                                       )
                                     ) {
-                                      handleClientProccess("/ongoing-projects");
+                                      handleClientProccess( "/ongoing-projects" );
                                     }
                                     if (
                                       res?.notification.includes(
                                         "reported your"
                                       )
                                     ) {
-                                      reportHandle(res?.detail);
+                                      reportHandle( res?.detail );
                                     }
-                                  }}
+                                  } }
                                 >
                                   <p>
-                                    {new Date(res?.timestamp).toUTCString()}
+                                    { new Date( res?.timestamp ).toUTCString() }
                                   </p>
-                                  {res?.notification}
+                                  { res?.notification }
                                 </div>
                               );
                             }
-                          })
+                          } )
                         ) : (
-                          notificationArray.map((res, keys) => (
+                          notificationArray.map( ( res, keys ) => (
                             <div
-                              key={keys}
+                              key={ keys }
                               className="message"
-                              onClick={() => {
-                                setClientDetails({
+                              onClick={ () => {
+                                setClientDetails( {
                                   client_id: res?.detail?.client_id,
                                   client_project_id: res?.detail?.project_id,
-                                });
+                                } );
                                 if (
                                   res?.notification.includes(
                                     "You have received a Project request by the"
                                   )
                                 ) {
-                                  handleNotification(res);
+                                  handleNotification( res );
                                 }
                                 if (
-                                  res?.notification.includes("accepted by the")
+                                  res?.notification.includes( "accepted by the" )
                                 ) {
                                   handleClientAcceptation(
                                     res?.detail?.professional_id,
@@ -1916,45 +1914,45 @@ const HeaderDashboard = () => {
                                     "is approved by the"
                                   )
                                 ) {
-                                  handleClientProccess("/myactivity");
+                                  handleClientProccess( "/myactivity" );
                                 }
                                 if (
                                   res?.notification.includes(
                                     "updated the file of"
                                   )
                                 ) {
-                                  handleClientProccess("/ongoing-projects");
+                                  handleClientProccess( "/ongoing-projects" );
                                 }
-                              }}
+                              } }
                             >
-                              <p>{new Date(res?.timestamp).toUTCString()}</p>
-                              {res?.notification}
+                              <p>{ new Date( res?.timestamp ).toUTCString() }</p>
+                              { res?.notification }
                             </div>
-                          ))
-                        )}
+                          ) )
+                        ) }
                         <div className="bg-white">
-                          {contextData?.notification?.total_data > 7 && (
+                          { contextData?.notification?.total_data > 7 && (
                             <button
                               className="seeAllNotificationButton"
                               id="SeeAll"
-                              onClick={() => {
-                                setSeeAllNotification(!seeAllNotification);
-                              }}
+                              onClick={ () => {
+                                setSeeAllNotification( !seeAllNotification );
+                              } }
                             >
-                              {seeAllNotification ? "See All" : "See Less"}
+                              { seeAllNotification ? "See All" : "See Less" }
                             </button>
-                          )}
+                          ) }
                         </div>
-                        {contextData?.notification.length === 0 ? (
+                        { contextData?.notification.length === 0 ? (
                           ""
                         ) : (
                           <div className="arrowMessageBox"></div>
-                        )}
+                        ) }
                       </div>
                     </div>
                   ) : (
                     ""
-                  )}
+                  ) }
                 </div>
                 <Link
                   to="/chat"
@@ -1965,18 +1963,18 @@ const HeaderDashboard = () => {
                     alt=""
                     className=""
                   />
-                  {contextData?.unreadChatCount ? (
+                  { contextData?.unreadChatCount ? (
                     <div className="dashboard-user-notification-number">
-                      {contextData?.unreadChatCount}
+                      { contextData?.unreadChatCount }
                     </div>
                   ) : (
                     ""
-                  )}
+                  ) }
                 </Link>
               </div>
             </div>
-            <div className="col-xxl-3 col-xl-4 col-lg-4 col-2 profile-mob d-flex align-items-center justify-content-md-end justify-content-center">
-              {cookies?.user_data?.role === "professional" ? (
+            <div className="col-xxl-3 col-xl-4 col-lg-4 col-2 profile-mob d-flex align-items-center justify-content-md-end justify-content-center" onClick={ profileDropdown }>
+              { cookies?.user_data?.role === "professional" ? (
                 <div className="user-profile-img">
                   <img
                     src={
@@ -1984,12 +1982,12 @@ const HeaderDashboard = () => {
                       contextData?.profileData?.user_image_url
                     }
                     alt=""
-                    style={{
+                    style={ {
                       width: "50px",
                       height: "50px",
                       cursor: "pointer",
                       borderRadius: "50%",
-                    }}
+                    } }
                   />
                 </div>
               ) : (
@@ -2000,22 +1998,22 @@ const HeaderDashboard = () => {
                       contextData?.profileData?.user_image_url
                     }
                     alt=""
-                    style={{
+                    style={ {
                       width: "50px",
                       height: "50px",
                       cursor: "pointer",
                       borderRadius: "50%",
-                    }}
+                    } }
                   />
                 </div>
-              )}
+              ) }
               <div className="ps-3">
                 <button
                   className="d-flex align-items-center profileEdit-button"
-                  onClick={profileDropdown}
+                // onClick={ profileDropdown }
                 >
                   <h4>
-                    {contextData?.profileData && contextData?.profileData?.name}
+                    { contextData?.profileData && contextData?.profileData?.name }
                   </h4>
                   <i className="fa-solid fa-caret-down"></i>
                   <div id="Edit_toggle"></div>
@@ -2026,7 +2024,7 @@ const HeaderDashboard = () => {
                       to=""
                       className="d-flex justify-content-center rounded-top"
                     >
-                      <button onClick={handleEditProfileButton}>
+                      <button onClick={ handleEditProfileButton }>
                         Edit Profile
                       </button>
                     </Link>
@@ -2035,9 +2033,9 @@ const HeaderDashboard = () => {
                       className="d-flex justify-content-center rounded-bottom"
                     >
                       <button
-                        onClick={() => {
-                          setShow(true);
-                        }}
+                        onClick={ () => {
+                          setShow( true );
+                        } }
                       >
                         Log Out
                       </button>
@@ -2045,7 +2043,7 @@ const HeaderDashboard = () => {
                   </div>
                 </div>
                 <h6 className="m-0">
-                  {contextData?.profileData && contextData?.profileData?.email}
+                  { contextData?.profileData && contextData?.profileData?.email }
                 </h6>
               </div>
             </div>
@@ -2055,44 +2053,44 @@ const HeaderDashboard = () => {
 
       <Modal
         centered
-        show={acceptProject}
-        onHide={() => setAcceptProject(false)}
+        show={ acceptProject }
+        onHide={ () => setAcceptProject( false ) }
       >
         <Modal.Header closeButton>
           <Modal.Title>Do You Want To Confirm The Project Request?</Modal.Title>
         </Modal.Header>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setAcceptProject(false)}>
+          <Button variant="secondary" onClick={ () => setAcceptProject( false ) }>
             Not Now
           </Button>
           <Button
             className="theme-bg-color border-0"
-            onClick={() => {
-              setAcceptProject(false);
-            }}
+            onClick={ () => {
+              setAcceptProject( false );
+            } }
           >
             Sign Out
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal centered show={show} onHide={() => setShow(false)}>
+      <Modal centered show={ show } onHide={ () => setShow( false ) }>
         <Modal.Header closeButton>
           <Modal.Title>Are you sure you want to Log out?</Modal.Title>
         </Modal.Header>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
+          <Button variant="secondary" onClick={ () => setShow( false ) }>
             Not Now
           </Button>
           <Button
             className="theme-bg-color border-0"
-            onClick={() => {
+            onClick={ () => {
               logoutapi();
-              setShow(false);
+              setShow( false );
               localStorage.clear();
-              removeCookie("user_data");
-              contextData?.dispatch({ type: "LOG_OUT" });
-              navigate("/");
-            }}
+              removeCookie( "user_data" );
+              contextData?.dispatch( { type: "LOG_OUT" } );
+              navigate( "/" );
+            } }
           >
             Sign Out
           </Button>

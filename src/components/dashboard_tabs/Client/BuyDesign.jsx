@@ -192,6 +192,31 @@ const BuyDesign = ({ setBuyDesigns }) => {
                                 Purchase Project
                               </NavLink>
                             </div>
+                            <div className="col-xxl-6 col-lg-12 col-6">
+                              <NavLink
+                                to={`/professionalprofile/${res?.professional_id}`}
+                                state={{
+                                  buysell_id: index,
+                                  category_id: res?.category_id,
+                                  professional_id: res?.professional_id,
+                                  sub_category_id: res?.sub_category_id,
+                                  sub_category_name: res?.sub_category_name,
+
+                                  project_cost: res?.price[index],
+                                  video: `${purchaseDesigns?.video_url}${res?.video[index]}`,
+                                  image: `${purchaseDesigns?.image_url}${it}`,
+                                }}
+                                type="button"
+                                className="btn btn-primary border-0"
+                                style={{
+                                  width: "100%",
+                                  fontSize: "14px",
+                                  backgroundColor: "rgb(0, 167, 139)",
+                                }}
+                              >
+                                Customize
+                              </NavLink>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -269,7 +294,9 @@ const BuyDesign = ({ setBuyDesigns }) => {
       <Modal
         className="clientProductDiplayModal"
         centered
-        fullscreen={true}
+        // fullscreen={ true }
+        size="xl"
+        animation={true}
         show={showPurchaseDesignModal}
         onHide={() => {
           setShowPurchaseDesignModal(false);
@@ -292,9 +319,14 @@ const BuyDesign = ({ setBuyDesigns }) => {
               specificProductData.map((res) => (
                 <SwiperSlide>
                   {specificProductDataType === "image" ? (
-                    <img src={res} alt={res} />
+                    <img src={res} alt={res} style={{ maxHeight: "532px" }} />
                   ) : (
-                    <video width="400" controls>
+                    <video
+                      width="400"
+                      controls
+                      style={{ maxHeight: "532px" }}
+                      autoplay="true"
+                    >
                       <source src={res} type="video/mp4" />
                       <source src={res} type="video/ogg" />
                       Your browser does not support HTML video.

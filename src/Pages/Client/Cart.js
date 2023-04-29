@@ -39,7 +39,7 @@ const Cart = () => {
   const [currentTab, setCurrentTab] = useState("dashboard");
   const location = useLocation();
   const [cookies] = useCookies();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [cartInfo, setCartInfo] = useState({
     card_number: "",
@@ -53,6 +53,7 @@ const Cart = () => {
       [name]: value,
     });
   };
+  console.log(location?.state?.project_cost, "heae")
   const [isPayment, setIsPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const [show, setShow] = useState(false);
@@ -61,16 +62,19 @@ const Cart = () => {
       client_id: cookies?.user_data?.user_id,
       client_token: cookies?.user_data?.user_token,
       professional_id: location?.state?.professional_id,
-      amount_paid: location?.state?.project_cost
+      amount_paid: location?.state?.project_cost,
     }).then((result) => {
-      if (result?.data?.error_code === 109 && result?.data?.status === "Failed") {
+      if (
+        result?.data?.error_code === 109 &&
+        result?.data?.status === "Failed"
+      ) {
         setIsPayment(true);
       } else {
         navigate("/checkout", {
           state: {
             ...result?.data?.data,
-            ...location?.state
-          }
+            ...location?.state,
+          },
         });
       }
     });
@@ -91,7 +95,7 @@ const Cart = () => {
         } else {
           setIsPayment(false);
           setPaymentError("");
-          handalSubmit()
+          handalSubmit();
         }
       })
       .catch((error) => {
@@ -156,7 +160,11 @@ const Cart = () => {
                         <h4>${location?.state?.project_cost}</h4>
                       </div>
                       <div className="col-4">
-                        <button type="button" onClick={handalSubmit} className="PaymentCardSubmitButton px-4" >
+                        <button
+                          type="button"
+                          onClick={handalSubmit}
+                          className="PaymentCardSubmitButton px-4"
+                        >
                           Checkout <BsArrowRight />
                         </button>
                       </div>

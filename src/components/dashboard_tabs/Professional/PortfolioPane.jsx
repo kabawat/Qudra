@@ -28,6 +28,7 @@ import Loader from "../../Loader";
 import { useNavigate } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import ReactLotti3 from "../../../loader/ReactLottie3";
 const PortfolioPane = () => {
   const [canUploadVideo, setCanUploadVideo] = useState("False");
   const contextData = useContext(Global);
@@ -52,8 +53,10 @@ const PortfolioPane = () => {
     delete_project_modal: false,
   };
   const navigate = useNavigate();
+
   const [isRender, setIsRender] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [lottie_loader, setlottiLoader] = useState(false);
 
   const [cookies] = useCookies();
   useEffect(() => {
@@ -139,6 +142,7 @@ const PortfolioPane = () => {
     price: Yup.string().required("Please enter a price"),
   });
   const deleteProject = () => {
+    setlottiLoader(true);
     axios
       .post("http://13.52.16.160:8082/professional/delete_designs", {
         user_id: cookies?.user_data?.user_id,
@@ -151,7 +155,7 @@ const PortfolioPane = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           setLoading(false);
-
+          setlottiLoader(false);
           fetchUserSubCata();
         }
         dispatch({ type: "DELETE_PROJECT", value: false });
@@ -1737,13 +1741,15 @@ const PortfolioPane = () => {
                           </Button>
                           <Button
                             className="theme-bg-color border-0 mx-2"
+                            disabled={lottie_loader ? true : false}
                             onClick={() =>
                               deleteProject(
                                 PortfolioData?.delete_project_modal?.index
                               )
                             }
                           >
-                            Delete Project
+                            {lottie_loader ? <ReactLotti3 /> : "Delete Project"}
+                            {/* Delete Project */}
                           </Button>
                         </div>
                       </Modal.Body>

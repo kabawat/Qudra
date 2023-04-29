@@ -25,81 +25,80 @@ import { MdCloudUpload } from "react-icons/md";
 import * as Yup from "yup";
 import { useCookies } from "react-cookie";
 import Loader from "../components/Loader";
-import ReactLottie3 from "../loader/ReactLottie3"
+import ReactLottie3 from "../loader/ReactLottie3";
 
 const ProfessionalProfile = () => {
-  const validationSchema =
-    Yup.object().shape( {
-      name: Yup.string().required( "Name is required" ),
-      description: Yup.string().required( "Description is required" ),
-      time: Yup.string().required( "Time is required" ),
-      area: Yup.string().required( "Area is required" ),
-      budget: Yup.number()
-        .positive( "Budget must be a positive number" )
-        .required( "Budget is required" ),
-    } );
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    work_assigned: Yup.string().required("This field is required"),
+    description: Yup.string().required("Description is required"),
+    time: Yup.string().required("Time is required"),
+    area: Yup.string().required("Area is required"),
+    budget: Yup.number()
+      .positive("Budget must be a positive number")
+      .required("Budget is required"),
+  });
 
-
-  const contextData = useContext( Global );
+  const contextData = useContext(Global);
   const params = useParams();
-  const [ loader, setLoader ] = useState( false );
-  const [ likepro, setLikepro ] = useState( false );
+  const [loader, setLoader] = useState(false);
+  const [likepro, setLikepro] = useState(false);
 
-  const [ showRating, setShowRating ] = useState( false );
-  const [ submitRevieRating, setSubmitReviewRating ] = useState( false );
-  const [ sucessReview, setSucessreview ] = useState( false );
-  const [ ratingreview, setRating ] = useState( {
+  const [showRating, setShowRating] = useState(false);
+  const [submitRevieRating, setSubmitReviewRating] = useState(false);
+  const [sucessReview, setSucessreview] = useState(false);
+  const [ratingreview, setRating] = useState({
     rating: 1,
     review: "",
-  } );
-  const [ reviewHeading, setReviewHeading ] = useState( false );
-  const [ showRatingReview, setShowRatingReview ] = useState( false );
-  const [ cookies ] = useCookies();
-  const [ isRender, setIsRender ] = useState( false );
-  const [ isRender1, setIsRender1 ] = useState( false );
+  });
+  const [reviewHeading, setReviewHeading] = useState(false);
+  const [showRatingReview, setShowRatingReview] = useState(false);
+  const [cookies] = useCookies();
+  const [isRender, setIsRender] = useState(false);
+  const [isRender1, setIsRender1] = useState(false);
 
-  const [ fileErr, setFileErr ] = useState( 'none' );
-  const [ islotti, setIslotti ] = useState( false );
+  const [fileErr, setFileErr] = useState("none");
+  const [islotti, setIslotti] = useState(false);
 
-  useEffect( () => {
-    if ( cookies?.user_data ) {
-      if ( cookies?.user_data?.category_selected ) {
-        if ( cookies.user_data.role === "client" ) {
-          setIsRender( true );
+  useEffect(() => {
+    if (cookies?.user_data) {
+      if (cookies?.user_data?.category_selected) {
+        if (cookies.user_data.role === "client") {
+          setIsRender(true);
         } else {
-          navigate( "/professionaldashboard" );
+          navigate("/professionaldashboard");
         }
       } else {
-        if ( cookies.user_data.role === "professional" ) {
-          navigate( "/categoryArchitecture" );
+        if (cookies.user_data.role === "professional") {
+          navigate("/categoryArchitecture");
         } else {
-          navigate( "/client-architechture" );
+          navigate("/client-architechture");
         }
       }
     } else {
-      navigate( "/select-sign-in" );
+      navigate("/select-sign-in");
     }
-  }, [] );
+  }, []);
 
   const handleShowRatingReview = () => {
-    setShowRatingReview( true );
+    setShowRatingReview(true);
   };
   const handleCloseRating = () => {
-    setShowRatingReview( false );
+    setShowRatingReview(false);
   };
 
-  useEffect( () => {
-    setLoader( true );
+  useEffect(() => {
+    setLoader(true);
     axios
-      .post( "http://13.52.16.160:8082/professional/professional_profile", {
+      .post("http://13.52.16.160:8082/professional/professional_profile", {
         client_id: cookies?.user_data?.user_id,
         role: cookies?.user_data?.role,
         user_token: cookies?.user_data?.user_token,
         professional_id: params?.professional_id,
-      } )
-      .then( ( respo ) => {
-        setLikepro( respo?.data?.data?.liked );
-        setRating( {
+      })
+      .then((respo) => {
+        setLikepro(respo?.data?.data?.liked);
+        setRating({
           ...ratingreview,
           rating: !respo?.data?.data?.rating_given
             ? 0
@@ -107,14 +106,14 @@ const ProfessionalProfile = () => {
           review: respo?.data?.data?.review_given
             ? respo?.data?.data?.review_given
             : "",
-        } );
-        if ( respo?.data?.data?.rating_given === false ) {
-          setReviewHeading( false );
+        });
+        if (respo?.data?.data?.rating_given === false) {
+          setReviewHeading(false);
         } else {
-          setReviewHeading( true );
+          setReviewHeading(true);
         }
-        if ( respo?.data?.status === "Success" ) {
-          if ( cookies?.user_data?.role === "client" ) {
+        if (respo?.data?.status === "Success") {
+          if (cookies?.user_data?.role === "client") {
             axios
               .post(
                 "http://13.52.16.160:8082/professional/professional_sub_cat",
@@ -125,19 +124,19 @@ const ProfessionalProfile = () => {
                   user_token: cookies?.user_data?.user_token,
                 }
               )
-              .then( ( res ) => {
-                if ( res?.data?.status === "Success" ) {
-                  contextData?.dispatch( {
+              .then((res) => {
+                if (res?.data?.status === "Success") {
+                  contextData?.dispatch({
                     type: "PROFESSIONAL_USER_PROFILE_DATA",
                     value: {
                       details: respo?.data?.data,
                       selected_catagories: res?.data?.response,
                     },
-                  } );
+                  });
 
-                  setLoader( false );
+                  setLoader(false);
                 } else {
-                  contextData?.dispatch( {
+                  contextData?.dispatch({
                     type: "PROFESSIONAL_USER_PROFILE_DATA",
                     value: {
                       details: respo?.data?.data,
@@ -147,11 +146,11 @@ const ProfessionalProfile = () => {
                         3: [],
                       },
                     },
-                  } );
-                  navigate( -1 );
-                  setLoader( false );
+                  });
+                  navigate(-1);
+                  setLoader(false);
                 }
-              } );
+              });
           } else {
             axios
               .post(
@@ -162,49 +161,49 @@ const ProfessionalProfile = () => {
                   user_token: cookies?.user_data?.user_token,
                 }
               )
-              .then( ( response ) => {
-                if ( response?.data?.status === "Success" ) {
-                  contextData?.dispatch( {
+              .then((response) => {
+                if (response?.data?.status === "Success") {
+                  contextData?.dispatch({
                     type: "PROFESSIONAL_USER_PROFILE_DATA",
                     value: {
                       details: respo?.data?.data,
                       selected_catagories: response?.data?.response,
                     },
-                  } );
-                  setLoader( false );
+                  });
+                  setLoader(false);
                 } else {
-                  navigate( -1 );
+                  navigate(-1);
                 }
-              } );
+              });
           }
         } else {
-          navigate( "/clientdashboard" );
+          navigate("/clientdashboard");
         }
-      } );
-  }, [ cookies?.user_data ] );
+      });
+  }, [cookies?.user_data]);
 
-  useEffect( () => {
-    if ( !contextData?.static_architecture_design?.length ) {
+  useEffect(() => {
+    if (!contextData?.static_architecture_design?.length) {
       axios
-        .get( "http://13.52.16.160:8082/quadra/sub_categories?category_id=1" )
-        .then( ( res ) => {
-          contextData?.dispatch( {
+        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
+        .then((res) => {
+          contextData?.dispatch({
             type: "STATIC_ARCHITECTURE_DESIGN",
             value: res?.data,
-          } );
-        } );
+          });
+        });
     }
-    if ( !contextData?.static_visualization_design?.length ) {
+    if (!contextData?.static_visualization_design?.length) {
       axios
-        .get( "http://13.52.16.160:8082/quadra/sub_categories?category_id=2" )
-        .then( ( res ) => {
-          contextData?.dispatch( {
+        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=2")
+        .then((res) => {
+          contextData?.dispatch({
             type: "STATIC_VISUALIZATION_DESIGN",
             value: res?.data,
-          } );
-        } );
+          });
+        });
     }
-  }, [] );
+  }, []);
 
   const windowSize = useWindowSize();
   const navigate = useNavigate();
@@ -232,22 +231,22 @@ const ProfessionalProfile = () => {
   const customStyleTwo = {
     margin: "50px 0 10px 0",
   };
-  const [ showModal, setShowModal ] = useState( false );
+  const [showModal, setShowModal] = useState(false);
 
-  const [ date, setDate ] = useState( null );
+  const [date, setDate] = useState(null);
 
   const handleLikeButton = () => {
-    setLikepro( !likepro );
+    setLikepro(!likepro);
     axios
-      .post( "http://13.52.16.160:8082/identity/like-save", {
+      .post("http://13.52.16.160:8082/identity/like-save", {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         professional_id:
           contextData?.professional_user_profile_data?.details?.professional_id,
         role: cookies?.user_data?.role,
-      } )
-      .then( ( res ) => {
-        if ( res?.data?.status === "Success" ) {
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
           toast(
             !likepro
               ? " You Liked This Profile !  ❤️ "
@@ -264,15 +263,15 @@ const ProfessionalProfile = () => {
             }
           );
         }
-      } );
+      });
   };
 
-  const onSetRating = ( val ) => {
-    setIslotti( true );
+  const onSetRating = (val) => {
+    setIslotti(true);
     // setRating(val);
     // setReviewHeading(!reviewHeading);
     axios
-      .post( "http://13.52.16.160:8082/client/client_rating", {
+      .post("http://13.52.16.160:8082/client/client_rating", {
         professional_id:
           contextData?.professional_user_profile_data?.details?.professional_id,
         client_id: cookies?.user_data?.user_id,
@@ -280,89 +279,89 @@ const ProfessionalProfile = () => {
         review: ratingreview.review,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-      } )
-      .then( ( res ) => {
-        if ( res?.data?.status === "Success" ) {
-          setIslotti( false )
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setIslotti(false);
           // setShowRating(false);
-          setSucessreview( true );
-          setShowRatingReview( false );
-          setSubmitReviewRating( true );
-          setReviewHeading( "Reviewed" );
+          setSucessreview(true);
+          setShowRatingReview(false);
+          setSubmitReviewRating(true);
+          setReviewHeading("Reviewed");
         }
-      } );
+      });
   };
 
   const bothDataArchitecture =
     contextData?.static_architecture_design?.data?.length &&
-    contextData?.static_architecture_design?.data?.map( ( res ) => {
+    contextData?.static_architecture_design?.data?.map((res) => {
       return {
-        label: res?.sub_category?.replace( "-", " " ),
-        value: res?.sub_category?.replace( "-", " " ),
+        label: res?.sub_category?.replace("-", " "),
+        value: res?.sub_category?.replace("-", " "),
         id: res?.sub_category_id,
       };
-    } );
+    });
 
   const bothDataVisualization =
     contextData?.static_visualization_design?.data?.length &&
-    contextData?.static_visualization_design?.data?.map( ( res ) => {
+    contextData?.static_visualization_design?.data?.map((res) => {
       return {
-        label: res?.sub_category?.replace( "-", " " ),
-        value: res?.sub_category?.replace( "-", " " ),
+        label: res?.sub_category?.replace("-", " "),
+        value: res?.sub_category?.replace("-", " "),
         id: res?.sub_category_id,
       };
-    } );
-  const ark = bothDataArchitecture?.filter( ( res ) => {
+    });
+  const ark = bothDataArchitecture?.filter((res) => {
     return (
-      contextData?.professional_user_profile_data?.selected_catagories[ 1 ]?.includes(
+      contextData?.professional_user_profile_data?.selected_catagories[1]?.includes(
         res?.id
       ) && {
         label: res?.label,
         value: res?.label,
       }
     );
-  } );
-  const viz = bothDataVisualization?.filter( ( res ) => {
+  });
+  const viz = bothDataVisualization?.filter((res) => {
     return (
-      contextData?.professional_user_profile_data?.selected_catagories[ 2 ]?.includes(
+      contextData?.professional_user_profile_data?.selected_catagories[2]?.includes(
         res?.id
       ) && {
         label: res?.label,
         value: res?.label,
       }
     );
-  } );
+  });
 
   const [
     newBothArchiteactureAndVisualization,
     setNewBothArchiteactureAndVisualization,
   ] = useState();
-  useEffect( () => {
-    ark && viz && setNewBothArchiteactureAndVisualization( [ ...ark, ...viz ] );
-  }, [ showModal ] );
+  useEffect(() => {
+    ark && viz && setNewBothArchiteactureAndVisualization([...ark, ...viz]);
+  }, [showModal]);
 
-  const [ show, setShow ] = useState( false );
+  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow( false );
-  const handleShow = () => setShow( true );
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-  const [ verified, setVerified ] = useState( false );
-  const [ attachement, setAttachement ] = useState( "" );
-  const [ fileReport, setFileReport ] = useState();
-  const [ reportUpload, setreportUpload ] = useState( false );
-  const [ description, setDescription ] = useState( "" );
-  function handleChange_File( e ) {
-    setFileErr( "none" );
-    const file = URL.createObjectURL( e.target.files[ 0 ] );
-    let pdfFile = e.target.files[ 0 ].name;
-    setAttachement( e.target.files[ 0 ] );
-    setFileReport( pdfFile );
-    setreportUpload( true );
+  const [verified, setVerified] = useState(false);
+  const [attachement, setAttachement] = useState("");
+  const [fileReport, setFileReport] = useState();
+  const [reportUpload, setreportUpload] = useState(false);
+  const [description, setDescription] = useState("");
+  function handleChange_File(e) {
+    setFileErr("none");
+    const file = URL.createObjectURL(e.target.files[0]);
+    let pdfFile = e.target.files[0].name;
+    setAttachement(e.target.files[0]);
+    setFileReport(pdfFile);
+    setreportUpload(true);
     // setreportUpload(true);
     // setAttachementError("");
   }
-  const handleKeyPress = ( event ) => {
-    if ( event.key === "Enter" ) {
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
       event.preventDefault();
       // console.log( "Enter key pressed" );
     }
@@ -373,7 +372,7 @@ const ProfessionalProfile = () => {
       <section className="profile-page-sec-one">
         <div className="container-fluid">
           <button
-            style={ {
+            style={{
               position: "absolute",
               top: "10%",
               left: "10%",
@@ -381,26 +380,26 @@ const ProfessionalProfile = () => {
               background: "transparent",
               width: "30px",
               zIndex: "9999",
-            } }
+            }}
           >
-            { cookies?.user_data?.role === "client" && (
-              <NavLink to="/clientdashboard" style={ { color: "white" } }>
-                { console.log( "hello" ) }
+            {cookies?.user_data?.role === "client" && (
+              <NavLink to="/clientdashboard" style={{ color: "white" }}>
+                {console.log("hello")}
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
-                  style={ { fontSize: "30px" } }
+                  style={{ fontSize: "30px" }}
                 ></i>
               </NavLink>
-            ) }
+            )}
 
-            { cookies?.user_data?.role === "professional" && (
-              <NavLink to="/professionaldashboard" style={ { color: "white" } }>
+            {cookies?.user_data?.role === "professional" && (
+              <NavLink to="/professionaldashboard" style={{ color: "white" }}>
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
-                  style={ { fontSize: "30px" } }
+                  style={{ fontSize: "30px" }}
                 ></i>
               </NavLink>
-            ) }
+            )}
           </button>
           <div className="row">
             <div className="col-lg-2 px-0 d-lg-block d-none">
@@ -439,10 +438,10 @@ const ProfessionalProfile = () => {
                   className="rounded-circle w-100"
                 />
                 <div className="user-experience-box d-flex align-items-center">
-                  <h2 style={ { padding: "0 5px" } }>
-                    { contextData?.professional_user_profile_data &&
+                  <h2 style={{ padding: "0 5px" }}>
+                    {contextData?.professional_user_profile_data &&
                       contextData?.professional_user_profile_data?.details
-                        ?.experience }
+                        ?.experience}
                   </h2>
                   <div>
                     <h4>Years</h4>
@@ -453,41 +452,41 @@ const ProfessionalProfile = () => {
             </div>
             <div
               className="col-lg-8 d-flex align-items-end bg-white mainProfileBox"
-              style={ {
+              style={{
                 zIndex: 999,
                 borderRadius: "14px",
-                height: `${ parseInt( $( ".user-profile-info" ).height() + 20 ) }px`,
-              } }
+                height: `${parseInt($(".user-profile-info").height() + 20)}px`,
+              }}
             >
               <div className="user-profile-info w-100">
                 <div className="row pt-md-0 pt-5">
                   <div className="row m-auto">
                     <div className="col-md d-flex">
                       <h2>
-                        { contextData?.professional_user_profile_data &&
+                        {contextData?.professional_user_profile_data &&
                           contextData?.professional_user_profile_data?.details
-                            ?.name }
+                            ?.name}
                       </h2>
                     </div>
                     <div
                       className="col  miniRateBox"
-                      style={ { display: "grid", placeItems: "center" } }
+                      style={{ display: "grid", placeItems: "center" }}
                     >
                       <p
                         className="m-auto miniRate"
-                        style={ { fontWeight: "bold", fontSize: "19px" } }
+                        style={{ fontWeight: "bold", fontSize: "19px" }}
                       >
                         Minimum Rate Per sq.mtr :
-                        { contextData?.professional_user_profile_data &&
+                        {contextData?.professional_user_profile_data &&
                           contextData?.professional_user_profile_data?.details
-                            ?.price_range }
+                            ?.price_range}
                       </p>
                     </div>
                   </div>
                   <h4>
-                    { contextData?.professional_user_profile_data &&
+                    {contextData?.professional_user_profile_data &&
                       contextData?.professional_user_profile_data?.details
-                        ?.about }
+                        ?.about}
                   </h4>
                 </div>
                 <div className="row pt-md-0 pt-4">
@@ -495,11 +494,11 @@ const ProfessionalProfile = () => {
                     <div className="d-flex">
                       <Rating
                         name="read-only"
-                        value={ parseInt(
+                        value={parseInt(
                           contextData?.professional_user_profile_data &&
-                          contextData?.professional_user_profile_data?.details
-                            ?.ratings
-                        ) }
+                            contextData?.professional_user_profile_data?.details
+                              ?.ratings
+                        )}
                         readOnly
                       />
                     </div>
@@ -511,15 +510,15 @@ const ProfessionalProfile = () => {
                         className="object-fit"
                         alt="project"
                       />
-                      <span style={ { padding: "0 5px" } }>
-                        { contextData?.professional_user_profile_data &&
+                      <span style={{ padding: "0 5px" }}>
+                        {contextData?.professional_user_profile_data &&
                           contextData?.professional_user_profile_data?.details
-                            ?.project_count }
+                            ?.project_count}
                         &nbsp;
-                        { contextData?.professional_user_profile_data?.details
+                        {contextData?.professional_user_profile_data?.details
                           ?.project_count > 1000
                           ? "+"
-                          : "" }
+                          : ""}
                       </span>
                       <span> Projects Done </span>
                     </span>
@@ -528,15 +527,15 @@ const ProfessionalProfile = () => {
                     <img src="/static/images/reviewIcon.png" alt="review" />
                     &nbsp;
                     <span>
-                      <span style={ { padding: "0 5px" } }>
-                        { contextData?.professional_user_profile_data &&
+                      <span style={{ padding: "0 5px" }}>
+                        {contextData?.professional_user_profile_data &&
                           contextData?.professional_user_profile_data?.details
-                            ?.reviews }
+                            ?.reviews}
                       </span>
-                      { contextData?.professional_user_profile_data?.details
+                      {contextData?.professional_user_profile_data?.details
                         ?.reviews > 1000
                         ? "+"
-                        : "" }
+                        : ""}
                       Reviews
                     </span>
                   </div>
@@ -549,12 +548,12 @@ const ProfessionalProfile = () => {
       <section className="profile-page-sec-three theme-bg-color">
         <div className="container">
           <div className="row">
-            { cookies?.user_data?.role === "client" && (
+            {cookies?.user_data?.role === "client" && (
               <div className="col d-md-flex justify-content-between p-lg-5 p-4 border-radius bg-white text-center button-group-profile-page">
                 <div
-                  onClick={ () => {
-                    setShowModal( true );
-                  } }
+                  onClick={() => {
+                    setShowModal(true);
+                  }}
                   className="text-decoration-none text-black"
                 >
                   <div className="py-md-0 py-2 Cur_proFes">
@@ -564,22 +563,22 @@ const ProfessionalProfile = () => {
                 </div>
                 <div
                   // to="/chat"
-                  onClick={ () => {
+                  onClick={() => {
                     axios
-                      .post( "http://13.52.16.160:8082/chat/get_room_id/", {
+                      .post("http://13.52.16.160:8082/chat/get_room_id/", {
                         client_id: cookies?.user_data.user_id,
                         role: cookies?.user_data.role,
                         user_token: cookies?.user_data.user_token,
                         professional_id:
                           contextData?.professional_user_profile_data?.details
                             ?.professional_id,
-                      } )
-                      .then( ( respo ) => {
-                        if ( respo?.data?.status === "Success" ) {
-                          navigate( "/chat" );
+                      })
+                      .then((respo) => {
+                        if (respo?.data?.status === "Success") {
+                          navigate("/chat");
                         }
-                      } );
-                  } }
+                      });
+                  }}
                   className="text-decoration-none text-black"
                 >
                   <div className="py-md-0 py-2 Cur_proFes">
@@ -590,109 +589,113 @@ const ProfessionalProfile = () => {
                 <div className="text-decoration-none text-black ratingMainBoxProfessionalProfile">
                   <div
                     className="py-md-0 py-2 Cur_proFes"
-                    onClick={ handleShowRatingReview }
+                    onClick={handleShowRatingReview}
                   >
                     <img
                       src="/static/images/addareview.png"
                       alt=""
-                      onClick={ () => {
-                        setShowRating( true );
-                      } }
+                      onClick={() => {
+                        setShowRating(true);
+                      }}
                     />
-                    <h4>{ reviewHeading ? "Reviewed" : "Add a review" }</h4>
+                    <h4>{reviewHeading ? "Reviewed" : "Add a review"}</h4>
                   </div>
                 </div>
 
-                <Modal show={ showRatingReview } onHide={ handleCloseRating }>
+                <Modal show={showRatingReview} onHide={handleCloseRating}>
                   <Modal.Header closeButton>
                     <h4 className="m-auto">Add review and raating</h4>
                   </Modal.Header>
 
                   <Modal.Body>
-                    { showRating && (
+                    {showRating && (
                       <div className="ratingBox">
                         <div
-                          style={ {
+                          style={{
                             position: "relative",
                             padding: "7px 12px 0 0",
-                          } }
+                          }}
                         >
                           <div className="forRatingArrow">
                             <h4 className="my-2"> Rating</h4>
                             <StarRating
                               className="ratingBoxProfessionalProfile"
-                              size={ 5 }
-                              value={ ratingreview.rating }
-                              style={ { color: "red" } }
-                              onChange={ ( val ) => {
-                                setRating( {
+                              size={5}
+                              value={ratingreview.rating}
+                              style={{ color: "red" }}
+                              onChange={(val) => {
+                                setRating({
                                   ...ratingreview,
                                   rating: val,
-                                } );
-                              } }
+                                });
+                              }}
                             />
                           </div>
                         </div>
                         <h4 className="my-2"> Review</h4>
 
                         <textarea
-                          maxLength={ 100 }
+                          maxLength={100}
                           type="text"
-                          rows={ 3 }
-                          value={ ratingreview.review }
-                          onChange={ ( val ) => {
-                            setRating( {
+                          rows={3}
+                          value={ratingreview.review}
+                          onChange={(val) => {
+                            setRating({
                               ...ratingreview,
                               review: val.target.value,
-                            } );
-                          } }
+                            });
+                          }}
                           placeholder="Add a review"
-                          style={ { width: "90%", padding: "10px 20px" } }
+                          style={{ width: "90%", padding: "10px 20px" }}
                         />
-                        <p>{ ratingreview.review.length }/ 100</p>
+                        <p>{ratingreview.review.length}/ 100</p>
 
                         <Button
                           className="my-2"
-                          style={ { background: "#01a78a", border: "0" } }
+                          style={{
+                            background: "#01a78a",
+                            border: "0",
+                            width: "21%",
+                          }}
                           type="submit"
-                          onClick={ onSetRating }
+                          onClick={onSetRating}
                         >
-                          { islotti ? <ReactLottie3 /> : "Submit" }
+                          {islotti ? <ReactLottie3 /> : "Submit"}
                         </Button>
                       </div>
-                    ) }
+                    )}
                   </Modal.Body>
                 </Modal>
                 <div className="text-decoration-none text-black">
                   <div className="py-md-0 py-2 Cur_proFes">
-                    { verified ? (
+                    {verified ? (
                       <div>
-                        { " " }
+                        {" "}
                         <img
                           src="/static/images/verifiedvisualiser.png"
                           alt=""
-                        />{ " " }
+                        />{" "}
                         <h4>Unverified Freelancer</h4>
                       </div>
                     ) : (
                       <div>
                         <GoUnverified
-                          size={ 86 }
-                          style={ {
+                          size={86}
+                          style={{
                             color: "#00d566",
                             border: " 1px solid #bfbfbf",
                             borderRadius: "50%",
                             padding: "10px",
-                          } }
+                          }}
                         />
                         <h4>Unverified Freelancer</h4>
                       </div>
-                    ) }
+                    )}
                   </div>
                 </div>
                 <div
                   className="text-decoration-none text-black"
-                  onClick={ handleShow }
+                  onClick={handleShow}
                 >
                   <div className="py-md-0 py-2 Cur_proFes">
                     <img src="/static/images/sharethisprofile.png" alt="" />
@@ -701,134 +704,134 @@ const ProfessionalProfile = () => {
                 </div>
                 <div className="text-decoration-none text-black">
                   <Modal
-                    show={ show }
-                    onHide={ handleClose }
+                    show={show}
+                    onHide={handleClose}
                     backdrop="static"
-                    keyboard={ false }
+                    keyboard={false}
                   >
                     <Modal.Header closeButton></Modal.Header>
                     <Modal.Body>
                       <ShareSocial
-                        url={ window.location.href }
-                        socialTypes={ [
+                        url={window.location.href}
+                        socialTypes={[
                           "facebook",
                           "twitter",
                           "reddit",
                           "linkedin",
                           "whatsapp",
-                        ] }
+                        ]}
                       />
                     </Modal.Body>
                   </Modal>
                   <div
-                    onClick={ () => {
+                    onClick={() => {
                       handleLikeButton();
-                    } }
+                    }}
                     className="text-decoration-none text-black"
                   >
                     <div className="py-md-0 py-2 Cur_proFes">
-                      { likepro ? (
+                      {likepro ? (
                         <img src="/static/images/likethisprofile.png" alt="" />
                       ) : (
                         <TbHeart
-                          size={ 86 }
-                          style={ {
+                          size={86}
+                          style={{
                             color: "red",
                             border: " 1px solid #bfbfbf",
                             borderRadius: "50%",
                             padding: "10px",
-                          } }
+                          }}
                         />
-                      ) }
-                      <h4>{ likepro ? "Liked" : "Like" }</h4>
+                      )}
+                      <h4>{likepro ? "Liked" : "Like"}</h4>
                     </div>
                   </div>
                 </div>
               </div>
-            ) }
+            )}
           </div>
           <div className="row">
             <div className="col">
               <h3>About</h3>
               <p>
-                { contextData?.professional_user_profile_data &&
+                {contextData?.professional_user_profile_data &&
                   contextData?.professional_user_profile_data?.details
-                    ?.job_description }
+                    ?.job_description}
               </p>
             </div>
           </div>
         </div>
       </section>
-      { contextData?.professional_user_profile_data?.selected_catagories[ 1 ]
+      {contextData?.professional_user_profile_data?.selected_catagories[1]
         ?.length && (
-          <section
-            className="Top_Earners  profile-page-sec-four"
-            style={ windowSize?.width > 768 ? customStyleOne : customStyleTwo }
-          >
-            <div className="container">
-              <div className="Top_Earners_Ineer">
-                <h2>Architecture Designs Portfolio </h2>
-              </div>
-              <OwlCarousel
-                className="owl-carousel portfolio-slider owl-theme"
-                { ...options }
-              >
-                { contextData?.static_architecture_design?.data?.length &&
-                  contextData?.static_architecture_design?.data?.map(
-                    ( res, key ) => {
-                      return contextData?.professional_user_profile_data &&
-                        contextData?.professional_user_profile_data?.selected_catagories[ 1 ].includes(
-                          res.sub_category_id
-                        ) ? (
-                        <CatagoryResultCard
-                          key={ key }
-                          res={ res }
-                          catagoryId={ 1 }
-                          subCatagoryId={ res.sub_category_id }
-                        />
-                      ) : (
-                        ""
-                      );
-                    }
-                  ) }
-              </OwlCarousel>
+        <section
+          className="Top_Earners  profile-page-sec-four"
+          style={windowSize?.width > 768 ? customStyleOne : customStyleTwo}
+        >
+          <div className="container">
+            <div className="Top_Earners_Ineer">
+              <h2>Architecture Designs Portfolio </h2>
             </div>
-          </section>
-        ) }
+            <OwlCarousel
+              className="owl-carousel portfolio-slider owl-theme"
+              {...options}
+            >
+              {contextData?.static_architecture_design?.data?.length &&
+                contextData?.static_architecture_design?.data?.map(
+                  (res, key) => {
+                    return contextData?.professional_user_profile_data &&
+                      contextData?.professional_user_profile_data?.selected_catagories[1].includes(
+                        res.sub_category_id
+                      ) ? (
+                      <CatagoryResultCard
+                        key={key}
+                        res={res}
+                        catagoryId={1}
+                        subCatagoryId={res.sub_category_id}
+                      />
+                    ) : (
+                      ""
+                    );
+                  }
+                )}
+            </OwlCarousel>
+          </div>
+        </section>
+      )}
 
-      { contextData?.professional_user_profile_data?.selected_catagories[ 2 ]
+      {contextData?.professional_user_profile_data?.selected_catagories[2]
         ?.length && (
-          <section className="Top_Earners Recent_Earners profile-page-sec-four">
-            <div className="container">
-              <div className="Top_Earners_Ineer">
-                <h2>3D Visualization Designs Portfolio</h2>
-              </div>
-              <OwlCarousel
-                className="owl-carousel portfolio-slider owl-theme"
-                { ...options }
-              >
-                { contextData?.static_visualization_design?.data?.length &&
-                  contextData?.static_visualization_design?.data?.map(
-                    ( res, key ) => {
-                      return contextData?.professional_user_profile_data &&
-                        contextData?.professional_user_profile_data?.selected_catagories[ 2 ].includes(
-                          res.sub_category_id
-                        ) ? (
-                        <CatagoryResultCard
-                          key={ key }
-                          res={ res }
-                          catagoryId={ 2 }
-                          subCatagoryId={ res.sub_category_id }
-                        />
-                      ) : (
-                        ""
-                      );
-                    }
-                  ) }
-              </OwlCarousel>
+        <section className="Top_Earners Recent_Earners profile-page-sec-four">
+          <div className="container">
+            <div className="Top_Earners_Ineer">
+              <h2>3D Visualization Designs Portfolio</h2>
             </div>
-          </section>
-        ) }
+            <OwlCarousel
+              className="owl-carousel portfolio-slider owl-theme"
+              {...options}
+            >
+              {contextData?.static_visualization_design?.data?.length &&
+                contextData?.static_visualization_design?.data?.map(
+                  (res, key) => {
+                    return contextData?.professional_user_profile_data &&
+                      contextData?.professional_user_profile_data?.selected_catagories[2].includes(
+                        res.sub_category_id
+                      ) ? (
+                      <CatagoryResultCard
+                        key={key}
+                        res={res}
+                        catagoryId={2}
+                        subCatagoryId={res.sub_category_id}
+                      />
+                    ) : (
+                      ""
+                    );
+                  }
+                )}
+            </OwlCarousel>
+          </div>
+        </section>
+      )}
 
       <section className="profile-page-sec-five">
         <div className="container">
@@ -836,14 +839,14 @@ const ProfessionalProfile = () => {
             <div className="col">
               <h3>Skills</h3>
               <div className="flex-wrap text-md-center text-start row">
-                { contextData?.professional_user_profile_data &&
+                {contextData?.professional_user_profile_data &&
                   contextData?.professional_user_profile_data?.details?.skills.map(
-                    ( res, key ) => (
-                      <div className="pe-md-5 col-auto" key={ key }>
-                        <p>{ res }</p>
+                    (res, key) => (
+                      <div className="pe-md-5 col-auto" key={key}>
+                        <p>{res}</p>
                       </div>
                     )
-                  ) }
+                  )}
               </div>
             </div>
           </div>
@@ -863,9 +866,9 @@ const ProfessionalProfile = () => {
                 />
                 <div className="ps-3">
                   <h5>
-                    { contextData?.professional_user_profile_data &&
+                    {contextData?.professional_user_profile_data &&
                       contextData?.professional_user_profile_data?.details
-                        ?.education }
+                        ?.education}
                   </h5>
                 </div>
               </div>
@@ -874,22 +877,22 @@ const ProfessionalProfile = () => {
         </div>
       </section>
       <Modal
-        show={ showModal }
+        show={showModal}
         className="productDetailsUploadModalProfilePage "
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        style={ { zIndex: "9888" } }
+        style={{ zIndex: "9888" }}
       >
         <Modal.Header
           closeButton
           className="border-0"
-          onClick={ () => {
-            setShowModal( false );
-            setAttachement( "" );
-            setFileReport( "" );
-            setreportUpload( false );
-          } }
+          onClick={() => {
+            setShowModal(false);
+            setAttachement("");
+            setFileReport("");
+            setreportUpload(false);
+          }}
         >
           <Modal.Title id="contained-modal-title-vcenter">
             Enter Your Details
@@ -897,81 +900,85 @@ const ProfessionalProfile = () => {
         </Modal.Header>
         <Modal.Body>
           <Formik
-            initialValues={ {
+            initialValues={{
               name: "",
               time: "",
               area: "",
               budget: "",
               work_assigned: "",
-              description: ""
-            } }
-            validationSchema={ validationSchema }
-            onSubmit={
-              ( values, { setSubmitting }, errors ) => {
-                console.log( attachement )
-                if ( !attachement ) {
-                  setFileErr( "block" )
-                  return false
-                }
-                setIslotti( true );
-                const formdata = new FormData();
-                formdata.set( "client_id", cookies?.user_data?.user_id );
-                formdata.set( "description ", description );
-                formdata.set( "user_token", cookies?.user_data?.user_token );
-                formdata.set( "attachment", attachement );
-                formdata.set(
-                  "professional_id",
-                  contextData?.professional_user_profile_data?.details
-                    ?.professional_id
-                );
-                formdata.set( "project_name", values?.name );
-                formdata.set( "work_assigned ", values?.work_assigned );
-                formdata.set( "project_cost", values?.budget );
-                formdata.set( "area ", values?.area );
-                formdata.set( "role ", cookies?.user_data?.role );
-                formdata.set(
-                  "estimate_date ",
-                  new Date( values?.time )?.toLocaleString( "en-US" ).split( "," )[ 0 ]
-                );
-
-                if ( !values.name ) {
-                  alert( "put the name" );
-                } else {
-                  axios
-                    .post(
-                      "http://13.52.16.160:8082/client/start_project",
-                      formdata
-                    )
-                    .then( ( res ) => {
-                      if ( res?.data?.status === "Success" ) {
-                        setShowModal( false );
-                        setIslotti( false );
-                        setDate( null );
-                        setAttachement( "" );
-                        setFileReport( "" );
-                        setreportUpload( false );
-                        setFileErr( "none" )
-                      }
-                    } );
-                }
+              description: "",
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(values, { setSubmitting }, errors) => {
+              console.log(attachement);
+              if (!attachement) {
+                setFileErr("block");
+                return false;
               }
-            }
+
+              const formdata = new FormData();
+              formdata.set("client_id", cookies?.user_data?.user_id);
+              formdata.set("description ", values?.description);
+              formdata.set("user_token", cookies?.user_data?.user_token);
+              formdata.set("attachment", attachement);
+              formdata.set(
+                "professional_id",
+                contextData?.professional_user_profile_data?.details
+                  ?.professional_id
+              );
+              formdata.set("project_name", values?.name);
+              formdata.set("work_assigned ", values?.work_assigned);
+              formdata.set("project_cost", values?.budget);
+              formdata.set("area ", values?.area);
+              formdata.set("role ", cookies?.user_data?.role);
+              formdata.set(
+                "estimate_date ",
+                new Date(values?.time)?.toLocaleString("en-US").split(",")[0]
+              );
+
+              if (!values?.work_assigned) {
+                // alert( "put the alert" );
+                // return false
+              } else {
+                setIslotti(true);
+                axios
+                  .post(
+                    "http://13.52.16.160:8082/client/start_project",
+                    formdata
+                  )
+                  .then((res) => {
+                    if (res?.data?.status === "Success") {
+                      setShowModal(false);
+                      setIslotti(false);
+                      setDate(null);
+                      setAttachement("");
+                      setFileReport("");
+                      setreportUpload(false);
+                      setFileErr("none");
+                    }
+                  });
+              }
+            }}
           >
-            { ( { isSubmitting, setFieldValue, errors } ) => (
+            {({ isSubmitting, setFieldValue, errors }) => (
               <Form>
                 <div className="row g-3">
                   <div className="col-12">
                     <Field name="work_assigned" as="select">
-                      <option selected="true" disabled="disabled">
-                        { " " }
-                        Select The Catagory{ " " }
+                      <option selected="true" value={""} disabled="disabled">
+                        Select The Catagory
                       </option>
-                      { newBothArchiteactureAndVisualization?.map( ( res, key ) => (
-                        <option key={ key } value={ res?.value }>
-                          { res?.label }
+                      {newBothArchiteactureAndVisualization?.map((res, key) => (
+                        <option key={key} value={res?.value}>
+                          {res?.label}
                         </option>
-                      ) ) }
+                      ))}
                     </Field>
+                    <ErrorMessage
+                      name="work_assigned"
+                      component="div"
+                      className="mt-2 text-danger"
+                    />
                   </div>
                   <div className=" col-md-6 ">
                     <Field name="name" type="text" placeholder="Project Name" />
@@ -990,17 +997,17 @@ const ProfessionalProfile = () => {
                     <DatePicker
                       isClearable
                       placeholderText="Estimated Date for Completion"
-                      minDate={ new Date() }
-                      selected={ date }
+                      minDate={new Date()}
+                      selected={date}
                       name="date"
                       dateFormat="yyyy-MM-dd"
-                      onChange={ ( date ) => {
-                        setDate( date );
+                      onChange={(date) => {
+                        setDate(date);
                         setFieldValue(
                           "time",
-                          new Date( date ).toLocaleDateString( "en-CA" )
+                          new Date(date).toLocaleDateString("en-CA")
                         );
-                      } }
+                      }}
                     />
                     <ErrorMessage
                       name="time"
@@ -1021,13 +1028,13 @@ const ProfessionalProfile = () => {
                       className="mt-2 text-danger"
                     />
                   </div>
-                  <div className="col-md-6 " style={ { position: "relative" } }>
+                  <div className="col-md-6 " style={{ position: "relative" }}>
                     <Field
                       name="budget"
                       type="number"
                       placeholder="Estimated Budget in $"
                       min="0"
-                      style={ { paddingLeft: "7%" } }
+                      style={{ paddingLeft: "7%" }}
                     />
 
                     <ErrorMessage
@@ -1044,8 +1051,6 @@ const ProfessionalProfile = () => {
                       placeholder="Project Description"
                       className="form-control "
                       rows="7"
-                      onKeyPress={ handleKeyPress }
-
                     />
                     <ErrorMessage
                       name="description"
@@ -1056,12 +1061,10 @@ const ProfessionalProfile = () => {
                   <div className="col-12">
                     <input
                       name="attachment"
-                      style={ { display: "none" } }
+                      style={{ display: "none" }}
                       type="file"
                       className="queryBox"
-                      onChange={
-                        handleChange_File
-                      }
+                      onChange={handleChange_File}
                       id="attachement1"
                     />
                     <label
@@ -1070,42 +1073,41 @@ const ProfessionalProfile = () => {
                     >
                       <span>
                         <MdCloudUpload
-                          size={ 40 }
-                          color={ "rgb(1, 167, 138)" }
-                          margin-left={ "10px" }
+                          size={40}
+                          color={"rgb(1, 167, 138)"}
+                          margin-left={"10px"}
                           s
                         />
                       </span>
-                      { reportUpload ? (
-                        <p className="Report"> { fileReport }</p>
+                      {reportUpload ? (
+                        <p className="Report"> {fileReport}</p>
                       ) : (
                         <p className="Report">Upload Project File</p>
-                      ) }
+                      )}
                     </label>
-
                   </div>
                   <span
-                    style={ { marginTop: "10px" } }
-                    className={ `${ fileErr } text-danger ` }
+                    style={{ marginTop: "10px" }}
+                    className={`${fileErr} text-danger `}
                   >
                     file required
                   </span>
                 </div>
-                <button type="submit">{
-                  islotti ? <ReactLottie3 />
-                    : "submit" }</button>
+                <button type="submit">
+                  {islotti ? <ReactLottie3 /> : "submit"}
+                </button>
               </Form>
-            ) }
+            )}
           </Formik>
         </Modal.Body>
       </Modal>
       <ToastContainer
         position="top-right"
-        autoClose={ 1500 }
-        hideProgressBar={ true }
-        newestOnTop={ false }
+        autoClose={1500}
+        hideProgressBar={true}
+        newestOnTop={false}
         closeOnClick
-        rtl={ false }
+        rtl={false}
         pauseOnFocusLoss
         draggable
         theme="light"

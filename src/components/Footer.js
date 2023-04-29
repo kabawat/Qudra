@@ -71,21 +71,18 @@ const Footer = () => {
       <footer>
         <div className="container">
           <div className="row">
-            <div className="col-lg-3 py-lg-0 pb-4">
+            <div className="col12 py-lg-0 pb-4 ">
               <img alt="" src="/static/images/logoQuadra.png" />
-              <p className="pb-md-0 pt-4 pb-3">
-                Reference site about Lorem Ipsum, giving information on its
-                origins, as well as a random Lipsum generator.
-              </p>
-              <div className="d-flex social-icons-box d-flex justify-content-between align-items-center">
+              
+              <div className="d-flex social-icons-box d-flex justify-content-between align-items-center mt-3">
                 {contextData?.footer_icons?.map((res) => (
-                  <Link to={res?.media_link} key={res?.id}>
+                  <a href={res?.media_link} key={res?.id} target="_blank">
                     <img alt={res?.media_name} src={res?.icon} />
-                  </Link>
+                  </a>
                 ))}
               </div>
             </div>
-            <div className="col-lg-9">
+            {/* <div className="col-lg-9">
               <div className="row">
                 <div className="col-md col-6 my-3">
                   <h3>Categories</h3>
@@ -128,7 +125,7 @@ const Footer = () => {
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="quadra-copyright w-100 theme-bg-color">

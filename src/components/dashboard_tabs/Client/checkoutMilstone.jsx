@@ -8,7 +8,7 @@ import { HeaderDashboard } from "../../Header";
 import { useCookies } from "react-cookie";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { Button, Container, Modal } from "react-bootstrap";
-const CheckOut = () => {
+const CheckoutMilstone = () => {
   const [show, setShow] = useState(false)
   const [cookies] = useCookies()
   const location = useLocation()
@@ -43,37 +43,39 @@ const CheckOut = () => {
   useEffect(() => {
     handleCard()
   }, [])
-
   const handalSubmit = (show) => {
     try {
       if (curCart === '') {
         throw new Error('please select a card')
       }
-      axios.post("http://13.52.16.160:8082/client/purchase/buy-sell-design/", {
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
+      axios.put("http://13.52.16.160:8082/client/update_status_view_file", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
         role: "client",
-        professioanl_id: location?.state?.professional_id,
-        category_id: location?.state?.category_id,
-        sub_category_id: location?.state?.sub_category_id,
-        design_no: location?.state?.buysell_id,
+        project_id: location?.state?.curProject?.project_id,
+        milestone_id: location?.state?.curProject?.milestone_id,
         payment_card_id: curCart
-      }).then((result) => {
+      }).then((response) => {
+        setShow(false);
         if (
-          result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
+          response?.data?.error_code === 109 &&
+          response?.data?.status === "Failed"
         ) {
-
+          setIsPayment(true);
         } else {
-          setProject(result?.data?.data?.project_url)
+          setProject(response.data?.data?.file)
           setShow(show)
         }
       });
+
     } catch (error) {
       setError(error.message)
     }
   };
 
+  const handalBack = () => {
+    navigate(-1)
+  }
   const downloadProject = () => {
     const url = project
     const link = document.createElement("a");
@@ -82,10 +84,9 @@ const CheckOut = () => {
     document.body.appendChild(link);
     link.click();
     setShow(false)
+    handalBack()
   }
-  const handalBack = () => {
-    navigate(-1)
-  }
+
 
   // payment card
   const months = [
@@ -351,4 +352,4 @@ const CheckOut = () => {
   );
 };
 
-export default React.memo(CheckOut);
+export default React.memo(CheckoutMilstone);

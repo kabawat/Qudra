@@ -229,6 +229,139 @@ const PurchaseDesign = () => {
                     <div className="row  pt-5 g-3 ">
                       {purchaseDesigns?.final_data?.map((res, index, key) => {
                         return (
+                          // <div className="col-xl-3 col-md-6   my-3" key={index}>
+                          //   <div
+                          //     className="card border-0 flex-row bg-dark text-white visibleForEdit"
+                          //     style={{ height: "240px", borderRadius: "30px" }}
+                          //   >
+                          //     <img
+                          //       src={`${res?.image}`}
+                          //       className="card-img w-100"
+                          //       style={{
+                          //         borderRadius: "30px",
+                          //         objectFit: "cover",
+                          //         height: "100%",
+                          //       }}
+                          //       alt="..."
+                          //     />
+                          //     <div
+                          //       className="card-img-overlay"
+                          //       style={{
+                          //         display: "flex",
+                          //         justifyContent: "flex-end",
+                          //         flexDirection: "column",
+                          //         borderRadius: "30px",
+                          //         background:
+                          //           "linear-gradient(20deg, #000000a1, transparent)",
+                          //         padding: " 0 10px 20px 10px",
+                          //       }}
+                          //     >
+                          //       <h4 className="card-title cardTitleVisible">
+                          //         ${res?.price}/ project
+                          //       </h4>
+
+                          //       <h4 className="card-title fs-20 visibleForEdit-cat">
+                          //         {res?.sub_category_name}
+                          //       </h4>
+                          //       <div className="row g-2">
+                          //         <div className="col-xxl-6 col-lg-12 col-6">
+                          //           <button
+                          //             type="button"
+                          //             className="btn btn-primary border-0"
+                          //             style={{
+                          //               width: "100%",
+                          //               fontSize: "14px",
+                          //               backgroundColor: "rgb(0, 167, 139)",
+                          //             }}
+                          //             onClick={() => {
+                          //               setShowPurchaseDesignModal(true);
+                          //               handleImageAndVideoClick(
+                          //                 [res],
+                          //                 purchaseDesigns?.image,
+                          //                 "image"
+                          //               );
+                          //             }}
+                          //           >
+                          //             Preview Images
+                          //           </button>
+                          //         </div>
+                          //         <div className="col-xxl-6 col-lg-12 col-6">
+                          //           <button
+                          //             type="button"
+                          //             className="btn btn-primary border-0"
+                          //             style={{
+                          //               width: "100%",
+                          //               fontSize: "14px",
+                          //               backgroundColor: "rgb(0, 167, 139)",
+                          //             }}
+                          //             onClick={() => {
+                          //               setShowPurchaseDesignModal(true);
+                          //               handleImageAndVideoClick(
+                          //                 [res],
+                          //                 purchaseDesigns?.video,
+                          //                 "video"
+                          //               );
+                          //             }}
+                          //           >
+                          //             Preview Videos
+                          //           </button>
+                          //         </div>
+                          //         <div className="col-xxl-6 col-lg-12 col-6">
+                          //           <button
+                          //             className="btn btn-primary border-0"
+                          //             style={{
+                          //               width: "100%",
+                          //               fontSize: "14px",
+                          //               backgroundColor: "rgb(0, 167, 139)",
+                          //             }}
+                          //             type="button"
+                          //             onClick={() => {
+                          //               setShow(true);
+                          //               setDesignInfo(res);
+                          //               setDesignindex(index);
+                          //             }}
+                          //           >
+                          //             Download
+                          //           </button>
+                          //         </div>
+                          //         <div className="col-xxl-6 col-lg-12 col-6">
+                          //           <button
+                          //             className="btn btn-primary border-0"
+                          //             style={{
+                          //               width: "100%",
+                          //               fontSize: "14px",
+                          //               backgroundColor: "rgb(0, 167, 139)",
+                          //             }}
+                          //             type="button"
+                          //             onClick={() => {
+                          //               setShowReport(true);
+                          //               setbuysell_id(res.id);
+                          //             }}
+                          //           >
+                          //             Report
+                          //           </button>
+                          //         </div>
+                          //         <div className="col-xxl-6 col-lg-12 col-6">
+                          //           <button
+                          //             className="btn btn-primary border-0"
+                          //             style={{
+                          //               width: "100%",
+                          //               fontSize: "13px",
+                          //               backgroundColor: "rgb(0, 167, 139)",
+                          //             }}
+                          //             type="button"
+                          //             onClick={() => {
+                          //               downloadInvoice(res);
+                          //             }}
+                          //           >
+                          //             Download invoice
+                          //           </button>
+                          //         </div>
+                          //       </div>
+                          //     </div>
+                          //   </div>
+
+                          // </div>
                           <div
                             className="container   "
                             key={index}

@@ -1,66 +1,63 @@
 .checkout_data .checkout-listing h2 {
     color: #04b094;
     font-size: 35px;
-}
-
-/* / .checkout_data .card-image, / */
-.choose-payment-button,
-.amount-listing,
-.checkout_data .profile_data {
+  }
+  
+  /* .checkout_data .card-image, */
+  .choose-payment-button,
+  .amount-listing,
+  .checkout_data .profile_data {
     display: flex;
     align-items: center;
-}
-
-.checkout_data .right-profile-description h4 {
+  }
+  
+  .checkout_data .right-profile-description h4 {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 0;
     margin-top: 0;
-}
-
-
-.checkout_data .right-profile-description p {
+  }
+  
+  .checkout_data .right-profile-description p {
     margin-top: 7px;
     font-size: 17px;
-}
-
-.checkout_data .right-profile-description {
+  }
+  
+  .checkout_data .right-profile-description {
     padding-left: 20px;
-}
-
-.checkout_data .amount-listing ul {
+  }
+  
+  .checkout_data .amount-listing ul {
     list-style: none;
-}
-
-.checkout_data .amount-listing ul li {
+  }
+  
+  .checkout_data .amount-listing ul li {
     line-height: 32px;
     font-size: 18px;
-}
-
-.checkout_data .amount-listing ul.listing {
+  }
+  
+  .checkout_data .amount-listing ul.listing {
     padding: 0;
-}
-
-.checkout_data .choose-card h4 {
+  }
+  
+  .checkout_data .choose-card h4 {
     font-size: 20px;
     font-weight: 700;
-}
-
-.choose-payment-button button:last-child {
+  }
+  .choose-payment-button button:last-child {
     margin-left: 10px;
-}
-
-.checkout_data .checkout-listing {
+  }
+  
+  .checkout_data .checkout-listing {
     max-width: 1140px;
     margin: 0 auto;
-}
-
-.checkout_data .amount-listing ul.amount-list {
+  }
+  
+  .checkout_data .amount-listing ul.amount-list {
     padding-left: 80px;
-}
-
-
-.checkout_data .left-button {
+  }
+  
+  .checkout_data .left-button {
     background-color: transparent;
     border: 1px solid #00a78b;
     border-radius: 50px;
@@ -68,207 +65,197 @@
     text-decoration: none;
     color: #00a78b;
     font-size: 18px;
-}
-
-.checkout_data .right-button {
+  }
+  
+  .checkout_data .right-button {
     margin-left: 20px;
-}
-
-.checkout_data .right-button:hover,
-.checkout_data .left-button:hover {
+  }
+  
+  .checkout_data .right-button:hover,
+  .checkout_data .left-button:hover {
     background-color: #00a78b;
     color: #fff;
-}
-
-.checkout_data .amount-listing ul.amount-list li {
+  }
+  
+  .checkout_data .amount-listing ul.amount-list li {
     font-weight: 800;
-}
-
-.checkout_data .card-image {
+  }
+  
+  .checkout_data .card-image {
     margin-bottom: 45px;
-}
-
-.checkout_data .first-card {
+  }
+  
+  .checkout_data .first-card {
     color: #fff;
     border-radius: 10px;
-    width: 28%;
+    width: 31%;
     padding: 23px;
-    background-image: url(./card.png);
+    background-image: url(http://localhost:3000/static/media/card.424fdc4e8c68c7c3ee25.png);
     background-repeat: no-repeat;
     background-size: 100%;
     display: inline-block;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    border: 2px solid #fff;
+    border-radius: 15px;
     cursor: pointer;
-}
-
-.checkout_data .first-card.active {
-    border: 2px solid #000;
-}
-
-.checkout_data .first-card h5 {
+  }
+  .first-card.active {
+    border-color: #f4be4f;
+   
+  }
+  .checkout_data .first-card h5 {
     text-align: center;
     padding-top: 50px;
     margin-bottom: 0;
     font-size: 15px;
     padding-bottom: 50px;
-}
-
-.checkout_data .first-card .card-details {
+  }
+  
+  .checkout_data .first-card .card-details {
     display: flex;
     justify-content: space-between;
     font-size: 10px;
-
-}
-
-.checkout_data .first-card.sec-card {
+  }
+  
+  .checkout_data .first-card.sec-card {
     margin-left: 20px;
-}
-
-.checkout_data .left-image-data img {
+  }
+  .checkout_data .left-image-data img {
     border-radius: 50%;
-}
-
-.choose-payment-button {
+  }
+  .choose-payment-button {
     display: block;
-}
-
-.checkout_data .card-image {
+  }
+  /* .checkout_data .card-image {
     display: inline-block;
     width: 100%;
-}
-
-.checkout_data .add-card-button .left-button {
+  } */
+  .checkout_data .add-card-button .left-button {
     margin-bottom: 20px;
     padding: 10px 15px;
     font-size: 15px;
-}
-
-.error-box span {
+  }
+  .error-box span {
     padding-left: 20px;
     color: red;
     font-size: 14px;
-}
-
-.error-box {
+  }
+  .error-box {
     padding-top: 5px;
-}
-
-/* .checkout_data .first-card:first-child {
-    margin-right: 5px;
-} */
-
-@media only screen and (max-width: 767px) and (min-width: 320px) {
+  }
+  /* .checkout_data .first-card:first-child {
+      margin-right: 5px;
+  } */
+  
+  @media only screen and (max-width: 767px) and (min-width: 320px) {
     .checkout_data .checkout-listing h2 {
-        font-size: 24px;
+      font-size: 24px;
     }
-
     .checkout_data .card-image {
-        display: block;
+      display: block;
     }
-
+  
     .checkout_data .first-card {
-        width: calc(100% - 46px);
-        background-size: 100%;
+      width: calc(100% - 23px);
+      background-size: cover;
     }
-
+  
     .checkout_data .first-card.sec-card {
-        margin-left: 0;
-        margin-top: 15px;
-
+      margin-left: 0;
+      margin-top: 15px;
     }
-
     .checkout_data .amount-listing ul li {
-        line-height: 38px;
-        font-size: 17px;
+      line-height: 38px;
+      font-size: 17px;
     }
-
     .checkout_data .amount-listing {
-        margin-bottom: 25px;
+      margin-bottom: 25px;
     }
-
     .checkout_data .choose-card h4 {
-        padding-bottom: 15px;
+      padding-bottom: 15px;
     }
-
     .checkout_data .right-button a,
     .checkout_data .left-button a {
-        padding: 12px 30px;
-        font-size: 16px;
+      padding: 12px 30px;
+      font-size: 16px;
     }
-
+  
     .checkout_data .first-card h5 {
-        padding-top: 45px;
-        font-size: 12px;
-        margin-bottom: 0;
-        padding-bottom: 0px;
+      padding-top: 45px;
+      font-size: 12px;
+      margin-bottom: 0;
+      padding-bottom: 0px;
     }
-
+  
     .checkout_data .card-image {
-        margin-bottom: 30px;
+      margin-bottom: 30px;
     }
-
+  
     /* .checkout_data .first-card .card-details {
-        position: unset;
-        align-items: flex-end;
-        margin: auto;
-        height: calc(100% - 55px);
-    } */
-
+          position: unset;
+          align-items: flex-end;
+          margin: auto;
+          height: calc(100% - 55px);
+      } */
+  
     .choose-payment-button {
-        display: block;
+      display: block;
     }
-
     .checkout_data .choose-payment-button button:last-child {
-        margin-left: 0;
-        margin-top: 10px;
+      margin-left: 0;
+      margin-top: 10px;
     }
-
     .checkout_data .left-button {
-        display: block;
-
+      display: block;
     }
-
     .checkout_data .first-card h5 {
-        padding-top: 30px;
-        padding-bottom: 34px;
+      padding-top: 30px;
+      padding-bottom: 34px;
     }
-
-}
-
-@media only screen and (max-width: 767px) and (min-width: 521px) {
-
+  }
+  
+  @media only screen and (max-width: 767px) and (min-width: 521px) {
     .checkout_data .first-card {
-        width: calc(100% - 217px) !important;
+      width: calc(100% - 217px) !important;
     }
-
+  
+  
+  }
+  
+  @media only screen and (max-width: 1366px) and (min-width: 768px) {
     .checkout_data .first-card {
-        width: calc(50% - 46px);
+      width: calc(50% - 0px) !important;
+      background-size: 100%;
     }
-
-
-}
-
-
-
-
-
-@media only screen and (max-width: 1366px) and (min-width: 768px) {
-
-    .checkout_data .first-card {
-        width: calc(50% - 0px) !important;
-        background-size: 100%;
-    }
-
     .checkout_data .first-card h5 {
-        font-size: 12px;
-        padding-bottom: 35px;
-        padding-top: 30px;
+      font-size: 12px;
+      padding-bottom: 35px;
+      padding-top: 30px;
     }
-
-
+  
     .checkout_data .choose-card h4 {
-        padding-bottom: 15px;
+      padding-bottom: 15px;
     }
-
-
-
-}
+    .checkout_data .first-card {
+      width: calc(50% - 10px) !important;
+      background-size: cover;
+    }
+  }
+  
+  
+  @media only screen and (max-width: 1366px) and (min-width: 1200px) {
+    .checkout_data .first-card {
+      background-size: cover;
+      width: calc(33% - 20px) !important;
+  }
+    }
+  
+  
+    @media only screen and (max-width: 1400px) and (min-width: 1367px) {
+      .checkout_data .first-card {
+        background-size: 100% 100% !important;
+        width: calc(33% - 10px) !important;
+    }
+      }
+  
