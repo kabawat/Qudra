@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Header2 } from "../Header";
 import styled from "styled-components";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
-import { GiCancel } from "react-icons/gi";
 import { useCookies } from "react-cookie";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useEffect } from "react";
+import ReactLotti3 from "../../loader/ReactLottie3";
 const Wrapper = styled.div`
   .mileStoneDate {
     padding: 10px 10px;
@@ -88,10 +88,19 @@ const Wrapper = styled.div`
 `;
 
 const FromProfessionalTabPane = ({ location }) => {
+  const [submitLoader, setsubmitLoader] = useState(false);
   const [locations, setLocation] = useState(location);
   const [show, setShow] = useState(false);
   const [cookies] = useCookies();
   const navigate = useNavigate();
+  const [showText, setShowText] = useState(false);
+  const handleShowMore = () => {
+    setShowText(true);
+  };
+
+  const handleShowLess = () => {
+    setShowText(false);
+  };
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
@@ -99,7 +108,6 @@ const FromProfessionalTabPane = ({ location }) => {
   };
 
   useEffect(() => {
-    // console.log(location.state?.projectDetails?.project_id);
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
         client_id: locations.state.projectDetails?.id,
@@ -194,6 +202,7 @@ const FromProfessionalTabPane = ({ location }) => {
 
   const handleMilestoneUpdate = async (event) => {
     event.preventDefault();
+    setsubmitLoader(true);
     const data = new FormData();
     data.append("user_id", cookies?.user_data?.user_id);
     data.append("user_token", cookies?.user_data?.user_token);
@@ -205,11 +214,14 @@ const FromProfessionalTabPane = ({ location }) => {
       await axios
         .post("http://13.52.16.160:8082/client/milestone_file", data)
         .then((res) => {
+          setsubmitLoader(false);
           if (res?.data?.status === "Success") {
             handalClose();
           }
         });
     } else {
+      setsubmitLoader(false);
+
       setError("file required");
     }
   };
@@ -246,7 +258,7 @@ const FromProfessionalTabPane = ({ location }) => {
       <main>
         <div className="container mb-5 bg-white" style={customStyleOne}>
           <div className="row m-0">
-            <div className=" col-xxl-8 col-xl-9 col-lg-10 col-md-11 col-sm mx-auto">
+            <div className=" col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm mx-auto">
               <section className="ProjectDetailsPageProjectDetailsSection">
                 <div className="row">
                   <div className="col ">
@@ -291,7 +303,7 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">4</div>
                         <h5>Estimated Budget:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.project_cost}
+                          $ {locations?.state?.projectData?.project_cost}
                         </p>
                       </div>
                     </div>
@@ -305,9 +317,40 @@ const FromProfessionalTabPane = ({ location }) => {
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">6</div>
-                        <h5>Estimated Deadline:</h5>
+                        <h5>Estimated Deadline: </h5>
                         <p className="m-0 ms-3">
                           {locations?.state?.projectData?.estimated_time}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">7</div>
+                        <h5>Project File: </h5>
+                        <a
+                          href={locations?.state?.projectData?.attachment}
+                          download
+                        >
+                          View File
+                        </a>
+                      </div>
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">8</div>
+                        <h5>Work Assigned: </h5>
+                        <p className="m-0 ms-3">
+                          {locations?.state?.projectData?.work_assigned}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-xxl  my-3 align-items-center">
+                        <div className="d-flex align-items-center">
+                          <div className="project-details">9</div>
+                          <h5>Project Description: </h5>
+                        </div>
+                        <br />
+                        <p className="m-0 ms-3">
+                          {locations?.state?.projectData?.description}
                         </p>
                       </div>
                     </div>
@@ -317,61 +360,103 @@ const FromProfessionalTabPane = ({ location }) => {
               <section className="projectMilestoneInfo">
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
                 {locations?.state?.milesStoneData?.map((res, index) => (
-                  <Wrapper className="milestoneBox" key={index}>
-                    <p>{res?.milestone_name}</p>
-                    <div className="buttonAndDateMain">
-                      <div className="mileStoneDate">{res?.milestone_date}</div>
-                      {res?.status === "pending" && (
-                        <div
-                          className="uploadMileStone"
-                          onClick={() => {
-                            handalshow(res);
-                          }}
-                        >
-                          Upload
+                  <div className="milestoneBox row" key={index}>
+                    <div className=" d-block  ">
+                      <div className="row">
+                        <div className="col-4 col-xl-2">
+                          <p className="headingMile">Name</p>
+                          <p>{res?.milestone_name}</p>
                         </div>
-                      )}
-                      {(res?.status === "updated" ||
-                        res?.status === "downloaded" ||
-                        res?.status === "uploaded") && (
-                        <div className="pendingMileStone">pending</div>
-                      )}
-
-                      {(res?.status === "accepted" ||
-                        res?.status === "completed") && (
-                        <div className="Milestone">Milestone completed</div>
-                      )}
-
-                      {res?.status === "decline" && (
-                        <>
-                          <button
-                            title="Decline Reason"
-                            className="mileStoneDate decline"
-                            onClick={() => handalViewReason(res)}
-                          >
-                            <AiOutlineInfoCircle />
-                          </button>
-                          <div
-                            className="update"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handalshow(res)}
-                          >
-                            Update
-                          </div>
-                        </>
-                      )}
-                      {res?.status !== "pending" && (
-                        <div
-                          className="uploadMileStone"
-                          onClick={() => {
-                            handalDownload(res);
-                          }}
-                        >
-                          Download
+                        <div className="col-4 col-xl-2 ">
+                          <p className="headingMile">Date</p>
+                          <div className="mileStoneDate ">
+                            {res?.milestone_date}
+                          </div>{" "}
                         </div>
-                      )}
+                        <div className="col-4 col-xl-2">
+                          <p className="headingMile">Cost %</p>
+                          <p>{res?.milestone_amount_percent}</p>
+                        </div>
+                        <div className="uploadMileStoneof col-xl-6 resMile">
+                          {res?.status === "pending" && (
+                            <div
+                              className="uploadMileStonefo"
+                              onClick={() => {
+                                handalshow(res);
+                              }}
+                            >
+                              Upload
+                            </div>
+                          )}
+                          {(res?.status === "updated" ||
+                            res?.status === "downloaded" ||
+                            res?.status === "uploaded") && (
+                            <div className="pendingMileStone">Pending</div>
+                          )}
+
+                          {(res?.status === "accepted" ||
+                            res?.status === "completed") && (
+                            <div className="pendingMileStone pendingMileStone1">
+                              Completed
+                            </div>
+                          )}
+
+                          {res?.status === "decline" && (
+                            <>
+                              <button
+                                title="Decline Reason"
+                                className="mileStoneDate decline"
+                                onClick={() => handalViewReason(res)}
+                              >
+                                <AiOutlineInfoCircle />
+                              </button>
+                              <div
+                                className="update"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handalshow(res)}
+                              >
+                                Update
+                              </div>
+                            </>
+                          )}
+                          {res?.status !== "pending" && (
+                            <div
+                              className="uploadMileStonefo"
+                              onClick={() => {
+                                handalDownload(res);
+                              }}
+                            >
+                              Download
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </Wrapper>
+                    <div style={{ marginTop: "20px" }} className="row">
+                      <div className="col-10">
+                        <p className="headingMile">MileStone Description:</p>
+                        <div className="milestonedes row">
+                          <div>{res?.milestone_description}</div>
+
+                          {/* {res?.milestone_descriptio > 200?<p>{res?.milestone_description}</p>:null}
+                        {showText?<button>Read more</button>:
+                        <button>Read less</button>} */}
+                        </div>
+                      </div>
+                      <div className="col-lg-2">
+                        <p>
+                          <a
+                            className="viewFile"
+                            target="new"
+                            href={res?.milestone_attachment}
+                            download
+                          >
+                            View File{" "}
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 ))}
                 {/* <BackButton customclassName="mx-auto d-block mt-4" text="Back" /> */}
               </section>
@@ -418,8 +503,12 @@ const FromProfessionalTabPane = ({ location }) => {
                 <div style={{ color: "red" }}> {error}</div>
 
                 <div className="text-center">
-                  <button type="submit" className="ModalCategorySubmit">
-                    Upload
+                  <button
+                    type={submitLoader ? "button" : "submit"}
+                    disabled={submitLoader ? true : false}
+                    className="ModalCategorySubmit text-center"
+                  >
+                    {submitLoader ? <ReactLotti3 /> : "Upload"}
                   </button>
                 </div>
               </div>

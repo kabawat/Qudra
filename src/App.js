@@ -31,7 +31,7 @@ import ClientCatagoryVisualization from "./Pages/Client/ClientCatagoryVisualizat
 import ClientBuySellDesign from "./Pages/Client/ClientBuySellDesign";
 import ProfessionalBuyAndSale from "./Pages/Professional/ProfessionalBuyAndSale";
 import Loader from "./components/Loader";
-
+import CheckoutMilstone from "./components/dashboard_tabs/Client/checkoutMilstone";
 import ProjectDetails from "./components/ProjectDetails";
 import ScrollToTop from "./Hooks/ScrollToTop";
 import EditProfile from "./Pages/EditProfile";
@@ -61,7 +61,7 @@ import SubscriptionPlans from "./components/dashboard_tabs/Professional/subscrip
 import PurchaseDesign from "./components/dashboard_tabs/Client/purchase-design";
 import Report from "./components/dashboard_tabs/Professional/Report";
 import ReportTab from "./components/dashboard_tabs/Professional/ReportTab";
-import CheckoutMilstone from "./components/dashboard_tabs/Client/checkoutMilstone";
+import LastStep from "./components/dashboard_tabs/Professional/LastStep";
 
 function App() {
   const [cookies] = useCookies();
@@ -91,7 +91,7 @@ function App() {
           />
           <Route path="/Portfolio" element={<PortfolioPane />} />
           <Route path="/Report" element={<Report />} />
-          <Route path="/reports-tab" element={<ReportTab />} />
+          <Route path="/sold-design" element={<ReportTab />} />
 
           <Route path="/request-projects" element={<RequestProjects />} />
           <Route path="/pending-activity" element={<PendingActivity />} />
@@ -101,6 +101,7 @@ function App() {
           <Route path="/professional-Reject" element={<Reject />} />
           <Route path="/subscription-plans" element={<SubscriptionPlans />} />
           <Route path="/like" element={<LikesShow />} />
+          <Route path="/last-step" element={<LastStep />} />
           <Route path="/ratings" element={<Showratings />} />
           <Route
             path="/professional-guidelines"
@@ -141,7 +142,6 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/check-out" element={<CheckoutMilstone />} />
-
           <Route
             path="/client-architechture"
             element={<ClientCategoriesArchitectural />}

@@ -48,39 +48,52 @@ const DashboardPane = () => {
   ) {
     projectPaginationArray.push(i + 1);
   }
-  const [cookies] = useCookies()
-  const [show, setShow] = useState(false)
+  const [cookies] = useCookies();
+  const [show, setShow] = useState(false);
   const sellDesignHandal = () => {
-    axios.put("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
-      professioanl_id: cookies?.user_data?.user_id,
-      professioanl_token: cookies?.user_data?.user_token,
-    }).then((result) => {
-      if (result?.data?.status === "Failed") {
-        setShow(true);
-      } else {
-        navigate("/professional-buy-and-sale", {
-          state: true,
-        })
-      }
-    })
-  }
+    axios
+      .put("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+        professioanl_id: cookies?.user_data?.user_id,
+        professioanl_token: cookies?.user_data?.user_token,
+      })
+      .then((result) => {
+        if (result?.data?.status === "Failed") {
+          setShow(true);
+        } else {
+          navigate("/professional-buy-and-sale", {
+            state: true,
+          });
+        }
+      });
+  };
+  const handle_last_step = () => {
+    navigate("/last-step");
+  };
   return (
-    <div id="dashboard-menu-bar" className="container-fluid px-lg-5 px-md-4 px-3">
+    <div
+      id="dashboard-menu-bar"
+      className="container-fluid px-lg-5 px-md-4 px-3"
+    >
       <div className="row total-earning-row pt-xxl-5 pt-4 pb-xxl-5 pb-4">
         <div className="col-xl-9 ">
           <h3 className="">
-            Welcome &nbsp;
+            Welcome&nbsp;
             {contextData?.profileData?.name?.split(" ")[0]}
           </h3>
-          <h5 className="">
+          {/* <h5 className="">
             Reference site about lorem ipsum gives us information of its origin
-          </h5>
+          </h5> */}
 
           <div className="my-3 gx-0 my-lg-1 px-2 py-1 purchase_dialog row align-items-center">
             <div className="col-lg-8 text-center text-lg-start col-12  fs-21 ps-3">
               You Can Sell Designs Here
             </div>
-            <div className="col-lg-4 col-12 puchase_box" onClick={sellDesignHandal}>Sell Designs <BsArrowRight /></div>
+            <div
+              className="col-lg-4 col-12 puchase_box"
+              onClick={sellDesignHandal}
+            >
+              Sell Designs <BsArrowRight />
+            </div>
           </div>
         </div>
         <div className="col-xl-3 mt-lg-3">
@@ -100,11 +113,8 @@ const DashboardPane = () => {
           <div className="Become-professional h-100">
             <h4>How To Become</h4>
             <h3>A Top Professional</h3>
-            <p>
-              Reference site about Lorem Ipsum, giving information on its
-              origins, as well as a random Lipsum generator.
-            </p>
-            <button>
+            <p>Here is a step by step guide to become a top professional</p>
+            <button onClick={handle_last_step}>
               <span className="me-3">Last Step</span>
               <span>
                 <i className="fa-solid fa-arrow-right-long"></i>
@@ -269,9 +279,7 @@ const DashboardPane = () => {
 
       <Modal centered show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Please Verify your Account Details.{" "}
-          </Modal.Title>
+          <Modal.Title>Please Verify your Account Details. </Modal.Title>
         </Modal.Header>
         <Modal.Footer>
           <Button

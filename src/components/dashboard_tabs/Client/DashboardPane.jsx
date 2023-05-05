@@ -2,14 +2,12 @@ import React, { useState, useContext, useEffect } from "react";
 import Chart from "react-apexcharts";
 import { BsArrowRight } from "react-icons/bs";
 import axios from "axios";
-// import { Chart } from "react-charts";
 import BuyDesign from "./BuyDesign";
 import Pagination from "react-bootstrap/Pagination";
 import Global from "../../../context/Global";
 import { useCookies } from "react-cookie";
 import useDemoConfig from "../../../components/Graph/Client/useDemoConfig";
-import { Link } from "react-router-dom";
-import { Bar } from "react-chartjs-2";
+import { Link, useLocation } from "react-router-dom";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -29,10 +27,11 @@ ChartJS.register(
 );
 const DashboardPane = () => {
   const contextData = useContext(Global);
+  const location = useLocation();
   const [cookies] = useCookies();
   const [profData, setProfData] = useState([]);
   const [payData, setPayData] = useState([]);
-  const [buyDesigns, setBuyDesigns] = useState(false);
+  const [buyDesigns, setBuyDesigns] = useState(location?.state ? true : false);
   const [onGoingProject, setOnGoingProject] = useState([]);
   const [onGoingProjectPageId, setOnGoingProjectPageId] = useState({
     page: 1,
@@ -67,7 +66,6 @@ const DashboardPane = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           setProfData(res?.data?.data);
-          // console.log("proooooo", res?.data?.data);
         }
       });
   }, [onGoingProjectPageId]);
@@ -80,11 +78,7 @@ const DashboardPane = () => {
           client_token: cookies?.user_data?.user_token,
         })
         .then((res) => {
-          // if (res?.data?.status === "Success") {
           setPayData(res?.data?.data);
-          // console.log(res.data?.data);s
-          // console.log("proooooo", res?.data?.data);
-          // }
         });
   }, []);
 
@@ -107,18 +101,6 @@ const DashboardPane = () => {
         setuserdata(response.data.data);
       });
   }, []);
-  const { data } = useDemoConfig({
-    series: 2,
-    datums: 12,
-    dataType: "ordinal",
-  });
-
-  const series = React.useMemo(
-    () => ({
-      type: "bar",
-    }),
-    []
-  );
 
   const axes = React.useMemo(
     () => [
@@ -206,92 +188,117 @@ const DashboardPane = () => {
           </div>
         </div>
         <div className="row  mb-xxl-5 mb-4 client-project-main-row">
-          <div className="col-xxl-4 col-md-12 my-3">
-            {/* <ResizableBox> */}
-            <div className="container-fluid mb-5">
-              <Chart
-                className="chart"
-                type="bar"
-                // width={500}
-                height={450}
-                // height={"150%"}
-                series={[
-                  {
-                    name: "Projects",
-                    data: [
-                      0,
-                      0,
-                      0,
-                      userdata && userdata.graph_data.April,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                    ],
-                  },
-                ]}
-                options={{
-                  colors: ["#01a78a"],
-                  theme: { mode: "light" },
+          {userdata?.yearly_project > 0 && (
+            <div className="col-xxl-4 col-md-12 my-3">
+              {/* <ResizableBox> */}
 
-                  xaxis: {
-                    tickPlacement: "on",
-                    categories: [
-                      "Jan",
-                      "Feb",
-                      "Mar",
-                      "Apr",
-                      "May",
-                      "Jun",
-                      "Jul",
-                      "Aug",
-                      "Sep",
-                      "Oct",
-                      "Nov",
-                      "Dec",
-                    ],
-                    title: {
-                      text: userdata && `Year ${userdata?.graph_year}`,
-                      style: { color: "#212529", fontSize: 30 },
+              <div className="container-fluid mb-5">
+                <Chart
+                  className="chart"
+                  type="bar"
+                  // width={500}
+                  height={450}
+                  // height={"150%"}
+                  series={[
+                    {
+                      name: "Projects",
+                      data: [
+                        userdata && userdata?.graph_data?.January === undefined
+                          ? 0
+                          : userdata?.graph_data?.january,
+                        userdata && userdata?.graph_data?.February === undefined
+                          ? 0
+                          : userdata?.graph_data?.february,
+                        userdata && userdata?.graph_data?.March === undefined
+                          ? 0
+                          : userdata?.graph_data?.March,
+                        userdata && userdata?.graph_data?.April === undefined
+                          ? 0
+                          : userdata?.graph_data?.April,
+                        userdata && userdata?.graph_data?.May === undefined
+                          ? 0
+                          : userdata?.graph_data?.May,
+                        userdata && userdata?.graph_data?.June === undefined
+                          ? 0
+                          : userdata?.graph_data?.June,
+                        userdata && userdata?.graph_data?.July === undefined
+                          ? 0
+                          : userdata?.graph_data?.July,
+                        userdata && userdata?.graph_data?.August === undefined
+                          ? 0
+                          : userdata?.graph_data?.August,
+                        userdata &&
+                        userdata?.graph_data?.September === undefined
+                          ? 0
+                          : userdata?.graph_data?.September,
+                        userdata && userdata?.graph_data?.October === undefined
+                          ? 0
+                          : userdata?.graph_data?.October,
+                        userdata && userdata?.graph_data?.November === undefined
+                          ? 0
+                          : userdata?.graph_data?.November,
+                        userdata && userdata?.graph_data?.December === undefined
+                          ? 0
+                          : userdata?.graph_data?.December,
+                      ],
                     },
-                  },
+                  ]}
+                  options={{
+                    colors: ["#01a78a"],
+                    theme: { mode: "light" },
 
-                  yaxis: {
-                    labels: {
+                    xaxis: {
+                      tickPlacement: "on",
+                      categories: [
+                        "Jan",
+                        "Feb",
+                        "Mar",
+                        "Apr",
+                        "May",
+                        "Jun",
+                        "Jul",
+                        "Aug",
+                        "Sep",
+                        "Oct",
+                        "Nov",
+                        "Dec",
+                      ],
+                    },
+
+                    yaxis: {
+                      labels: {
+                        formatter: (val) => {
+                          return `${val}`;
+                        },
+                        style: { fontSize: "15", colors: ["#212529"] },
+                      },
+                      title: {
+                        text: "Projects",
+                        style: { color: "#212529", fontSize: 20 },
+                      },
+                    },
+
+                    legend: {
+                      show: true,
+                      position: "right",
+                    },
+
+                    dataLabels: {
                       formatter: (val) => {
                         return `${val}`;
                       },
-                      style: { fontSize: "15", colors: ["#212529"] },
+                      style: {
+                        colors: ["#f4f4f4"],
+                        fontSize: 15,
+                      },
                     },
-                    title: {
-                      text: "Projects",
-                      style: { color: "#212529", fontSize: 20 },
-                    },
-                  },
+                  }}
+                ></Chart>
+              </div>
 
-                  legend: {
-                    show: true,
-                    position: "right",
-                  },
-
-                  dataLabels: {
-                    formatter: (val) => {
-                      return `${val}`;
-                    },
-                    style: {
-                      colors: ["#f4f4f4"],
-                      fontSize: 15,
-                    },
-                  },
-                }}
-              ></Chart>
+              {/* </ResizableBox> */}
             </div>
-            {/* </ResizableBox> */}
-          </div>
+          )}
 
           <div className="col-xxl-4 col-md-12 my-3">
             <div className="bg-white chat-to-professional-client-page d-flex flex-column justify-content-between h-100 p-md-4 p-3 border">
@@ -343,7 +350,7 @@ const DashboardPane = () => {
           </div>
 
           <div className="col-xxl-4 col-md-12 my-3">
-            <div className="bg-white recent-payments-client-page d-flex justify-content-between flex-column h-100 p-md-4 p-3 border">
+            <div className="bg-white recent-payments-client-page d-flex  flex-column h-100 p-md-4 p-3 border">
               <div className="d-flex align-items-center justify-content-between">
                 <h3>Recent Payment</h3>
               </div>
@@ -353,7 +360,7 @@ const DashboardPane = () => {
                   if (index < 3) {
                     return (
                       <>
-                        <div className="row py-4">
+                        <div className="row py-5">
                           <div className="col-md-2 ">
                             <img
                               src={item.image}
@@ -365,11 +372,14 @@ const DashboardPane = () => {
                           <div className="d-md-flex align-items-center justify-content-between col-md-10 flex-wrap">
                             <div className="ps-md-4">
                               <h5>{item.professional_name} </h5>
-                              <h6>{item.email}</h6>
-                            </div>
-                            <div>
+                              <h6 style={{ wordBreak: "break-word" }}>
+                                {item.email}
+                              </h6>
                               <h4>${item.price}</h4>
                             </div>
+                            {/* <div>
+                              <h4>${ item.price }</h4>
+                            </div> */}
                           </div>
                         </div>
                       </>

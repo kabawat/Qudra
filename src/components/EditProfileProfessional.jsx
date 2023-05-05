@@ -176,7 +176,12 @@ const EditProfileProfessional = ({ location }) => {
   };
 
   function onKeyDown(keyEvent) {
-    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+    if (
+      (keyEvent.charCode || keyEvent.keyCode) === 13 &&
+      keyEvent.target !==
+        document.getElementById("exampleFormControlTextarea1") &&
+      keyEvent.target !== document.getElementById("exampleFormControlTextarea2")
+    ) {
       keyEvent.preventDefault();
     }
   }
@@ -586,7 +591,7 @@ const EditProfileProfessional = ({ location }) => {
                           as="textarea"
                           className="form-control"
                           name="job_description"
-                          id="exampleFormControlTextarea1"
+                          id="exampleFormControlTextarea2"
                           rows="9"
                           placeholder="Job Description"
                         ></Field>

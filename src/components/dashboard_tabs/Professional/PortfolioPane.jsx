@@ -157,8 +157,11 @@ const PortfolioPane = () => {
           setLoading(false);
           setlottiLoader(false);
           fetchUserSubCata();
+          dispatch({ type: "DELETE_PROJECT", value: false });
+        } else {
+          // dispatch( { type: "DELETE_PROJECT", value: false } );
+          setlottiLoader(false);
         }
-        dispatch({ type: "DELETE_PROJECT", value: false });
       });
   };
 
@@ -313,10 +316,10 @@ const PortfolioPane = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-2 col-lg-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-10 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {loading ? (
                 <Backdrop
@@ -338,9 +341,9 @@ const PortfolioPane = () => {
                       <br />
                       {!showUploadDesign?.uploadCatagory && (
                         <>
-                          <h3 className="pt-xxl-5 pt-4">Choose Catagory</h3>
+                          <h3 className="pt-xxl-5 pt-4">Choose Category</h3>
                           <h4 className="pb-xxl-5 pb-4">
-                            Choose the catagories given below whether you want
+                            Choose the categories given below whether you want
                             to processed with Architecture Designs or 3D
                             Visualization.
                           </h4>
@@ -1361,7 +1364,7 @@ const PortfolioPane = () => {
                             {/* upload design modal */}
                           </div>
 
-                          {PortfolioData?.sub_catagory_data &&
+                          {/* {PortfolioData?.sub_catagory_data &&
                           PortfolioData?.sub_catagory_data.CataId == 1 ? (
                             <button
                               className="dashboard-theme-color mb-5"
@@ -1404,7 +1407,7 @@ const PortfolioPane = () => {
                               </span>
                               <span className="pe-4">Back</span>
                             </button>
-                          )}
+                          )} */}
                         </div>
                         <LoadingModal loader={loader} />
                       </div>
@@ -1716,11 +1719,14 @@ const PortfolioPane = () => {
                       </Modal.Body>
                     </Modal>
                     <Modal
+                      backdrop="static"
+                      keyboard={false}
                       show={PortfolioData?.delete_project_modal?.show}
                       centered
                       onHide={() => {
                         dispatch({ type: "DELETE_PROJECT", value: false });
                         setCatErr(false);
+                        setlottiLoader(false);
                       }}
                     >
                       <Modal.Header closeButton>
@@ -1733,9 +1739,13 @@ const PortfolioPane = () => {
                           <Button
                             className="theme-text-color bg-white mx-2"
                             style={{ border: "2px solid" }}
-                            onClick={() =>
-                              dispatch({ type: "DELETE_PROJECT", value: false })
-                            }
+                            onClick={() => {
+                              dispatch({
+                                type: "DELETE_PROJECT",
+                                value: false,
+                              });
+                              setlottiLoader(false);
+                            }}
                           >
                             Close
                           </Button>

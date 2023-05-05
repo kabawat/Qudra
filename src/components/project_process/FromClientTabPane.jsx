@@ -14,8 +14,12 @@ import { FaPaypal } from "react-icons/fa";
 import { useCookies } from "react-cookie";
 import { BsArrowRight } from "react-icons/bs";
 import Select from "react-select";
+import ReactLotti3 from "../../loader/ReactLottie3";
 const FromClientTabPane = ({ location }) => {
+  const [submitLoader, setsubmitLoader] = useState(false);
   const [locations, setLoctions] = useState(location);
+  const [projectDetaile, setProjectDetaile] = useState({});
+  // console.log(location);
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -23,8 +27,8 @@ const FromClientTabPane = ({ location }) => {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-        professional_id: locations?.state?.projectDetails?.id,
-        project_id: locations?.state?.projectDetails?.project_id,
+        professional_id: locations?.state?.projectData?.projectData,
+        project_id: locations?.state?.projectData?.project_id,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
@@ -35,11 +39,12 @@ const FromClientTabPane = ({ location }) => {
                 client_id: cookies?.user_data?.user_id,
                 user_token: cookies?.user_data?.user_token,
                 role: cookies?.user_data?.role,
-                project_id: locations?.state?.projectDetails?.project_id,
+                project_id: locations?.state?.projectData?.project_id,
               }
             )
             .then((respo) => {
               if (respo?.data?.status === "Success") {
+                setProjectDetaile({ ...respo?.data?.data });
                 if (locations?.state?.projectDetails?.id !== undefined) {
                   const state = {
                     projectDetails: locations?.state?.projectDetails,
@@ -76,7 +81,7 @@ const FromClientTabPane = ({ location }) => {
         width: 115px;
         text-align: center;
       }
-      .prewviewButton {
+      .btn btn-success {
         position: static !important;
         pointer-events: all !important;
       }
@@ -259,6 +264,7 @@ const FromClientTabPane = ({ location }) => {
 
   const [acceptShow, setAcceptShow] = useState(false);
   const AcceptHandal = () => {
+    setsubmitLoader(true);
     axios
       .post("http://13.52.16.160:8082/client/update_status_view_file", {
         user_id: cookies?.user_data?.user_id,
@@ -270,6 +276,7 @@ const FromClientTabPane = ({ location }) => {
       })
       .then((result) => {
         if (result?.data?.status === "Success") {
+          setsubmitLoader(false);
           axios
             .post(
               "http://13.52.16.160:8082/client/particular_project_milestones",
@@ -323,6 +330,7 @@ const FromClientTabPane = ({ location }) => {
   const [reasonError, SetReasonError] = useState("");
   const [DeclineShow, setDeclineShow] = useState(false);
   const declineHandal = () => {
+    setsubmitLoader(true);
     if (reason) {
       axios
         .post("http://13.52.16.160:8082/client/update_status_view_file", {
@@ -365,6 +373,7 @@ const FromClientTabPane = ({ location }) => {
                       }
                     )
                     .then((respo) => {
+                      setsubmitLoader(false);
                       if (respo?.data?.status === "Success") {
                         if (
                           locations?.state?.projectDetails?.id !== undefined
@@ -392,31 +401,31 @@ const FromClientTabPane = ({ location }) => {
       SetReasonError("Reason Required");
     }
   };
+  window.addEventListener("click", (event) => {});
+
   return (
     <div className="create-account">
       <Header2 />
       <main>
         <div className="container mb-5 bg-white" style={customStyleOne}>
           <div className="row m-0">
-            <div className=" col-xxl-9 col-xl-9 col-lg-10 col-md-11 col-sm mx-auto">
+            <div className=" col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm mx-auto">
               <section className="ProjectDetailsPageProjectDetailsSection">
                 <div className="row">
                   <div className="col ">
                     <h3 className="theme-text-color fs-24 mb-5">
-                      <span>
-                        <Link
-                          to={
-                            contextData?.userData?.role === "client"
-                              ? "/ongoing-projects"
-                              : "/myactivity"
-                          }
-                          className="text-decoration-none text-dark m-0 h2"
-                        >
-                          <i
-                            className="fa-solid fa-arrow-left-long pe-3"
-                            style={{ color: "#01a78a" }}
-                          ></i>
-                        </Link>
+                      <span
+                        className="text-decoration-none text-dark m-0 h2"
+                        onClick={() => {
+                          contextData?.userData?.role === "client"
+                            ? navigate(-1)
+                            : navigate("/myactivity");
+                        }}
+                      >
+                        <i
+                          className="fa-solid fa-arrow-left-long pe-3"
+                          style={{ color: "#01a78a" }}
+                        ></i>
                       </span>
                       Project Details
                     </h3>
@@ -426,14 +435,14 @@ const FromClientTabPane = ({ location }) => {
                         <div className="project-details">1</div>
                         <h5>Project Name:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.project_name}
+                          {projectDetaile?.project_name}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">2</div>
                         <h5>Professional Name :</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.professional_name}
+                          {projectDetaile?.professional_name}
                         </p>
                       </div>
                     </div>
@@ -442,14 +451,14 @@ const FromClientTabPane = ({ location }) => {
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.area}
+                          {projectDetaile?.area} sq meter
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">4</div>
                         <h5>Estimated Budget:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.project_cost}
+                          $ {projectDetaile?.project_cost}
                         </p>
                       </div>
                     </div>
@@ -458,16 +467,43 @@ const FromClientTabPane = ({ location }) => {
                         <div className="project-details">5</div>
                         <h5>Project Status:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.project_status}
+                          {projectDetaile?.project_status}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">6</div>
                         <h5>Estimated Deadline:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.estimated_time}
+                          {projectDetaile?.estimated_time}
                         </p>
                       </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">7</div>
+                        <h5>Project File:</h5>
+                        <a
+                          href={projectDetaile?.attachment}
+                          download={projectDetaile?.attachment}
+                          target="_new"
+                        >
+                          View File
+                        </a>
+                      </div>
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">8</div>
+                        <h5> Work Assigned:</h5>
+                        <p className="m-0 ms-3">
+                          {projectDetaile?.work_assigned}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                      <div className="project-details">9</div>
+                      <h5> Project Description: </h5>
+                      <p className="m-0 ms-3">{projectDetaile?.description}</p>
                     </div>
                   </div>
                 </div>
@@ -475,108 +511,167 @@ const FromClientTabPane = ({ location }) => {
               <section className="projectMilestoneInfo">
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
                 {locations?.state?.milesStoneData?.map((res, index) => (
-                  <Wrapper className="milestoneBox">
-                    <p style={{ textTransform: "capitalize" }}>
-                      {res?.milestone_name}
-                    </p>
-                    <div className="preview">
-                      <div className="date"> {res?.milestone_date}</div>
-                      {(res?.status === "pending" ||
-                        res?.status === "decline") && (
-                        <button
-                          className="prewviewButton default-cursor"
-                          type="button"
-                        >
-                          Pending
-                        </button>
-                      )}
-                      {(res?.status === "downloaded" ||
-                        res?.status === "updated" ||
-                        res?.status === "uploaded") && (
-                        <>
-                          <div className="accept_btn_group">
-                            <button
-                              onClick={() => {
-                                setAcceptShow(true);
-                                SetCurProject({ ...res });
-                              }}
-                            >
-                              Accept
-                            </button>
-                            <button
-                              onClick={() => {
-                                setDeclineShow(true);
-                                SetCurProject({ ...res });
-                              }}
-                            >
-                              Decline
-                            </button>
-                          </div>
-                          <button
-                            className="prewviewButton"
-                            onClick={() => {
-                              handalDownload({ ...res });
-                            }}
-                            type="button"
-                          >
-                            Download
-                          </button>
-                        </>
-                      )}
-                      {res?.status === "accepted" && (
-                        <>
-                          <div
-                            className="accept_btn_group"
-                            style={{ margin: "auto" }}
-                          >
-                            <div className="Milestone">Milestone Completed</div>
-                          </div>
-                          {res?.invoice && (
-                            <div className="accept_btn_group">
+                  <>
+                    <div className="row milestoneBox" key={index}>
+                      <div className="row">
+                        <div className="milestoneBox1 col-4 col-xl-3">
+                          <p className="headingMile">Name</p>
+                          <p style={{ textTransform: "capitalize" }}>
+                            {res?.milestone_name}
+                          </p>
+                        </div>
+                        <div className="col-4 col-xl-2">
+                          <p className="headingMile">Cost %</p>
+                          <p style={{ textTransform: "capitalize" }}>
+                            {res?.milestone_amount_percent}
+                          </p>
+                        </div>
+                        <div className="col-4 col-xl-2">
+                          <p className="headingMile">Date</p>
+                          <div className="date"> {res?.milestone_date}</div>
+                        </div>
+
+                        {(res?.status === "pending" ||
+                          res?.status === "decline") && (
+                          <>
+                            <div className="col-xl-5 statusBtnMilecol resMile">
                               <button
-                                className="Milestone"
-                                onClick={() => handalDownloadInvoice(res)}
+                                className="btn default-cursor pendingBtnMile"
+                                type="button"
                               >
-                                Download Invoice
+                                Pending
                               </button>
                             </div>
-                          )}
+                          </>
+                        )}
 
-                          <button
-                            className="prewviewButton"
-                            onClick={() => {
-                              res?.invoice
-                                ? handalDownload1({ ...res })
-                                : handalDownload({ ...res });
-                            }}
-                            type="button"
-                          >
-                            Download
-                          </button>
-                        </>
-                      )}
-                      {res?.status === "completed" && (
-                        <>
-                          <div
-                            className="accept_btn_group"
-                            // style={{ margin: "auto" }}
-                          >
-                            <button>Milestone Completed</button>
-                          </div>
-                          <button
-                            className="prewviewButton"
-                            onClick={() => {
-                              SetCurProject({ ...res });
-                              setShow(true);
-                            }}
-                            type="button"
-                          >
-                            Download
-                          </button>
-                        </>
-                      )}
+                        {(res?.status === "downloaded" ||
+                          res?.status === "updated" ||
+                          res?.status === "uploaded") && (
+                          <>
+                            <div className="col-xl-5 d-flex  colAccDec resMile">
+                              <div className="row">
+                                <div className="col-6 colAccDecpar">
+                                  <div className="accept_btn_group ">
+                                    <button
+                                      className="pendingBtnMileAll colAccDecchl"
+                                      onClick={() => {
+                                        setAcceptShow(true);
+                                        SetCurProject({ ...res });
+                                      }}
+                                    >
+                                      Accept
+                                    </button>
+                                    <button
+                                      className="pendingBtnMileAll"
+                                      onClick={() => {
+                                        setDeclineShow(true);
+                                        SetCurProject({ ...res });
+                                      }}
+                                    >
+                                      Decline
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className="col-6">
+                                  <button
+                                    className="btn DownloadbtnMile"
+                                    onClick={() => {
+                                      handalDownload({ ...res });
+                                    }}
+                                    type="button"
+                                  >
+                                    Download
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                        {res?.status === "accepted" && (
+                          <>
+                            <div className="col-xl-5  d-flex resMile">
+                              <div
+                                className="accept_btn_group"
+                                style={{ margin: "auto" }}
+                              >
+                                <div className="Milestone btnBoeMile1">
+                                  Completed
+                                </div>
+                              </div>
+                              {res?.invoice && (
+                                <div className="accept_btn_group btnBoeMile">
+                                  <button
+                                    className="Milestone"
+                                    onClick={() => handalDownloadInvoice(res)}
+                                  >
+                                    Invoice
+                                  </button>
+                                </div>
+                              )}
+
+                              <button
+                                className="btn DownloadbtnMile"
+                                onClick={() => {
+                                  res?.invoice
+                                    ? handalDownload1({ ...res })
+                                    : handalDownload({ ...res });
+                                }}
+                                type="button"
+                              >
+                                Download
+                              </button>
+                            </div>
+                          </>
+                        )}
+                        {res?.status === "completed" && (
+                          <>
+                            <div
+                              className="accept_btn_group btnBoeMile"
+                              // style={{ margin: "auto" }}
+                            >
+                              <button> Completed</button>
+                            </div>
+                            <button
+                              className="btn DownloadbtnMile "
+                              onClick={() => {
+                                // console.log("here");
+                                SetCurProject({ ...res });
+                                setShow(true);
+                              }}
+                              type="button"
+                            >
+                              Download
+                            </button>
+                            <p style={{ textTransform: "capitalize" }}>
+                              {res?.milestone_description}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                      <div className="row milerow-2">
+                        <div className="col-xl-10">
+                          <p className="headingMile">Milestone Description</p>
+                          <p style={{ textTransform: "capitalize" }}>
+                            {res?.milestone_description}
+                          </p>
+                        </div>
+                        <div className="col-xl-2 ">
+                          <p className="mileFile">
+                            <a
+                              href={res?.milestone_attachment}
+                              download={res?.milestone_attachment}
+                              target="_new"
+                            >
+                              View File
+                            </a>
+                          </p>
+                        </div>
+                        <br />
+                      </div>
                     </div>
-                  </Wrapper>
+                  </>
                 ))}
                 <BackButton
                   customclassName="mx-auto d-block mt-4"
@@ -734,10 +829,13 @@ const FromClientTabPane = ({ location }) => {
               SetCurProject({});
             }}
           >
-            cancel
+            Cancel
           </Button>
-          <Button className="theme-bg-color border-0" onClick={AcceptHandal}>
-            sure
+          <Button
+            className="theme-bg-color border-0"
+            onClick={!submitLoader ? AcceptHandal : null}
+          >
+            {submitLoader ? <ReactLotti3 /> : "Sure"}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -772,8 +870,11 @@ const FromClientTabPane = ({ location }) => {
           >
             cancel
           </Button>
-          <Button className="theme-bg-color border-0" onClick={declineHandal}>
-            sure
+          <Button
+            className="theme-bg-color border-0"
+            onClick={!submitLoader ? declineHandal : null}
+          >
+            {submitLoader ? <ReactLotti3 /> : "Sure"}
           </Button>
         </Modal.Footer>
       </Modal>

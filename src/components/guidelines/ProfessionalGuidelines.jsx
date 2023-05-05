@@ -46,10 +46,10 @@ const ProfessionalGuidelines = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-2 px-0 col-lg-3  dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-10  col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               <main className="dashboard-main">
                 <div className="professional-guidelines-wrapper">

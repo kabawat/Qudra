@@ -251,20 +251,13 @@ const Chat = () => {
   return (
     isRender ? <>
       <ChatHeader />
-      <section className="chatbox">
+      <section className="chatbox mb-2">
         <div className="container">
-          <div
-            className="row chats-header theme-bg-color"
-            style={{ maxHeight: "inherit" }}
-          >
+          <div className="row chats-header theme-bg-color" style={{ maxHeight: "inherit" }}>
             <div className="col-3 d-flex align-items-center justify-content-between border-end">
               <h5 className="m-0">Chats</h5>
-              <form
-                onSubmit={(e) => e.preventDefault()}
-                className="search d-flex align-items-center"
-              >
-                <input
-                  className="search__input"
+              <form onSubmit={(e) => e.preventDefault()} className="search d-flex align-items-center" >
+                <input className="search__input"
                   type="search"
                   placeholder="Search"
                   value={searchPara}
@@ -274,45 +267,24 @@ const Chat = () => {
                     setSearchPara(e.target.value);
                   }}
                 />
-                <button
-                  className="search__submit d-flex justify-content-center align-items-center"
-                  type="button"
-                  aria-label="Search"
-                  onClick={chatUserSearchSubmit}
-                >
+                <button className="search__submit d-flex justify-content-center align-items-center" type="button" aria-label="Search" onClick={chatUserSearchSubmit} >
                   <i className="fa fa-search" aria-hidden="true"></i>
                 </button>
               </form>
             </div>
-            <div
-              className="col-9 d-flex align-items-center p-2"
-              style={{ minHeight: "61px" }}
-            >
-              <Avatar
-                src={chatsUserTitle.userPic}
-                alt={"avatar"}
-                size="large"
-                type="rounded-circle"
-              />
+            <div className="col-9 d-flex align-items-center p-2" style={{ minHeight: "61px" }}>
+              <Avatar src={chatsUserTitle.userPic} alt={"avatar"} size="large" type="rounded-circle" />
 
               <div className="ms-3">{chatsUserTitle.userSelected}</div>
             </div>
           </div>
-          <Tab.Container
-            id="left-tabs-example"
-            activeKey={currentActiveChatPane}
-          >
+          <Tab.Container id="left-tabs-example" activeKey={currentActiveChatPane} >
             <Row className="chats-main" style={{ maxHeight: "100% " }}>
-              <Col
-                sm={3}
-                id="chatusersdisplaybox"
-                className="px-0"
-                style={{
-                  height: `${parseInt($(".chatbox").height()) - 61}px`,
-                  overflowY: "auto",
-                  backgroundColor: " gainsboro",
-                }}
-              >
+              <Col sm={3} id="chatusersdisplaybox" className="px-0" style={{
+                height: `${parseInt($(".chatbox").height()) - 61}px`,
+                overflowY: "auto",
+                backgroundColor: " gainsboro",
+              }}>
                 {!searchState ? (
                   <Nav variant="pills" className="flex-column">
                     {allChatUser &&
@@ -493,7 +465,7 @@ const Chat = () => {
                             </a>
                           )
                         )}
-                      <div className="row mx-0" ref={messageEndRef}>
+                      <div className="row mx-0 mb-2" ref={messageEndRef}>
                         <div className="col-10 d-flex">
                           <input
                             className="chatMessageInputText"

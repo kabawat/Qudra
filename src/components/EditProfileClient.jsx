@@ -56,9 +56,6 @@ const EditProfileClient = () => {
     // ioc: "usa",
     name: location?.state?.nation,
   });
-
-  console.log(value);
-
   const [imgcode, setimgcode] = useState(getCode(location?.state?.nation));
 
   let navigate = useNavigate();

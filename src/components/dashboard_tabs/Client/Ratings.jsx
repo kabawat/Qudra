@@ -19,37 +19,39 @@ const Ratings = () => {
   const navigate = useNavigate();
   const [rating, setRating] = useState();
   const [search, setSearch] = useState("");
-  const [cookies] = useCookies()
-  const [isRender, setIsReander] = useState(false)
+  const [cookies] = useCookies();
+  const [isRender, setIsReander] = useState(false);
 
   const fetchRatingData = () => {
     if (cookies?.user_data) {
-      axios.post("http://13.52.16.160:8082/identity/get-like-save", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        ...projectPageId,
-        search_for: "rating",
-      }).then((res) => {
-        if (res?.data?.status === "Success") {
-          setRating(res?.data?.data);
-          if (cookies?.user_data?.category_selected) {
-            if (cookies?.user_data?.role === "client") {
-              setIsReander(true)
+      axios
+        .post("http://13.52.16.160:8082/identity/get-like-save", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          ...projectPageId,
+          search_for: "rating",
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setRating(res?.data?.data);
+            if (cookies?.user_data?.category_selected) {
+              if (cookies?.user_data?.role === "client") {
+                setIsReander(true);
+              } else {
+                navigate("/professionaldashboard");
+              }
             } else {
-              navigate('/professionaldashboard')
-            }
-          } else {
-            if (cookies?.user_data?.role === "client") {
-              navigate('/client-architechture')
-            } else {
-              navigate('/categoryArchitecture')
+              if (cookies?.user_data?.role === "client") {
+                navigate("/client-architechture");
+              } else {
+                navigate("/categoryArchitecture");
+              }
             }
           }
-        }
-      });
+        });
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
   };
   useEffect(() => {
@@ -64,22 +66,24 @@ const Ratings = () => {
   var searchAll = [];
   const handleSearch = (e) => {
     e.preventDefault();
-    axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      ...projectPageId,
-      search_for: "rating",
-      search_data: search,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setRating(res?.data?.data);
-        setSearchdata(rating);
-        searchAll = res?.data?.data;
-      } else {
-        setSearchdata("");
-      }
-    });
+    axios
+      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        ...projectPageId,
+        search_for: "rating",
+        search_data: search,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          setRating(res?.data?.data);
+          setSearchdata(rating);
+          searchAll = res?.data?.data;
+        } else {
+          setSearchdata("");
+        }
+      });
   };
 
   const [searchData, setSearchdata] = useState(searchAll);
@@ -95,37 +99,41 @@ const Ratings = () => {
 
   const handleRating = (val) => {
     if (val == "") {
-      axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      axios
+        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          ...searchPageId,
+          search_for: "rating",
+          search_data: "",
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setRating(res?.data?.data);
+
+            searchAll = res?.data?.data;
+            setSearchdata(searchAll);
+          }
+        });
+    }
+  };
+
+  useEffect(() => {
+    axios
+      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
         ...searchPageId,
         search_for: "rating",
-        search_data: "",
-      }).then((res) => {
+        search_data: search,
+      })
+      .then((res) => {
         if (res?.data?.status === "Success") {
           setRating(res?.data?.data);
-
-          searchAll = res?.data?.data;
-          setSearchdata(searchAll);
         }
       });
-    }
-  };
-
-  useEffect(() => {
-    axios.post("http://13.52.16.160:8082/identity/search_like_rate_user", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      ...searchPageId,
-      search_for: "rating",
-      search_data: search,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setRating(res?.data?.data);
-      }
-    });
   }, [searchPageId]);
 
   return (
@@ -133,15 +141,26 @@ const Ratings = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <ClientDashboardAside />
             </div>
-            <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              {
-                !isRender ? <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!isRender}>
+              {!isRender ? (
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={!isRender}
+                >
                   <CircularProgress color="inherit" />
-                </Backdrop> : <div id="liked-save" className="container-fluid  myProjectTable">
+                </Backdrop>
+              ) : (
+                <div
+                  id="liked-save"
+                  className="container-fluid  myProjectTable"
+                >
                   <h2 className="ps-5"> Ratings </h2>
                   <div className="m-lg-5 mx-2 shadow">
                     {rating?.final_data?.length ? (
@@ -161,7 +180,6 @@ const Ratings = () => {
                               <BsSearch />
                             </button>
                           </form>
-
                         </div>
                       </div>
                     ) : (
@@ -178,18 +196,26 @@ const Ratings = () => {
                           <div className="col-md-4  d-flex align-items-center ">
                             <img
                               onClick={() => {
-                                navigate(`/professionalprofile/${res?.professional_id}`);
+                                navigate(
+                                  `/professionalprofile/${res?.professional_id}`
+                                );
                               }}
                               src={res?.professional_image}
                               className="img-fluid rounded-circle"
-                              style={{ width: "70px", height: "70px", cursor: "pointer" }}
+                              style={{
+                                width: "70px",
+                                height: "70px",
+                                cursor: "pointer",
+                              }}
                               alt=""
                             />
                             <div className="ps-3">
                               <h4
                                 className="underline_hover"
                                 onClick={() => {
-                                  navigate(`/professionalprofile/${res?.professional_id}`);
+                                  navigate(
+                                    `/professionalprofile/${res?.professional_id}`
+                                  );
                                 }}
                               >
                                 {res?.professional_name}
@@ -200,7 +226,10 @@ const Ratings = () => {
                               </h6>
                             </div>
                           </div>
-                          <div className="col-md-4 d-flex align-items-center">
+                          <div
+                            className="col-md-4 d-flex align-items-center"
+                            style={{ wordBreak: "break-word" }}
+                          >
                             {res.review}
                           </div>
                           <div className="col-md-4  d-flex  align-items-center justify-content-end">
@@ -236,7 +265,10 @@ const Ratings = () => {
                         onClick={() => {
                           setProjectPageId((prev) => ({
                             ...prev,
-                            page: projectPageId?.page !== 1 ? projectPageId?.page - 1 : 1,
+                            page:
+                              projectPageId?.page !== 1
+                                ? projectPageId?.page - 1
+                                : 1,
                           }));
                         }}
                       />
@@ -259,7 +291,8 @@ const Ratings = () => {
                           setProjectPageId((prev) => ({
                             ...prev,
                             page:
-                              projectPaginationArray?.length !== projectPageId?.page
+                              projectPaginationArray?.length !==
+                              projectPageId?.page
                                 ? projectPageId?.page + 1
                                 : projectPageId?.page,
                           }));
@@ -292,7 +325,10 @@ const Ratings = () => {
                         onClick={() => {
                           setSearchPageId((prev) => ({
                             ...prev,
-                            page: searchPageId?.page !== 1 ? searchPageId?.page - 1 : 1,
+                            page:
+                              searchPageId?.page !== 1
+                                ? searchPageId?.page - 1
+                                : 1,
                           }));
                           handleSearch();
                         }}
@@ -317,7 +353,8 @@ const Ratings = () => {
                           setSearchPageId((prev) => ({
                             ...prev,
                             page:
-                              searchPaginationArray?.length !== searchPageId?.page
+                              searchPaginationArray?.length !==
+                              searchPageId?.page
                                 ? searchPageId?.page + 1
                                 : searchPageId?.page,
                           }));
@@ -338,8 +375,7 @@ const Ratings = () => {
                     ""
                   )}
                 </div>
-              }
-
+              )}
             </div>
           </div>
         </div>

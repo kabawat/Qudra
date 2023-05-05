@@ -10,5 +10,7 @@ export default function ReactLotti2() {
     });
   }, []);
 
-  return <div id="loading2" style={{ width: 69, height: 28 }} />;
+  return (
+    <div id="loading2" style={{ width: 69, height: 28, margin: "auto" }} />
+  );
 }

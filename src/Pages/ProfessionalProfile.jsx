@@ -267,29 +267,34 @@ const ProfessionalProfile = () => {
   };
 
   const onSetRating = (val) => {
-    setIslotti(true);
-    // setRating(val);
-    // setReviewHeading(!reviewHeading);
-    axios
-      .post("http://13.52.16.160:8082/client/client_rating", {
-        professional_id:
-          contextData?.professional_user_profile_data?.details?.professional_id,
-        client_id: cookies?.user_data?.user_id,
-        rating: ratingreview.rating,
-        review: ratingreview.review,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setIslotti(false);
-          // setShowRating(false);
-          setSucessreview(true);
-          setShowRatingReview(false);
-          setSubmitReviewRating(true);
-          setReviewHeading("Reviewed");
-        }
-      });
+    if (ratingreview.rating && ratingreview.review) {
+      setIslotti(true);
+      // setRating(val);
+      // setReviewHeading(!reviewHeading);
+      axios
+        .post("http://13.52.16.160:8082/client/client_rating", {
+          professional_id:
+            contextData?.professional_user_profile_data?.details
+              ?.professional_id,
+          client_id: cookies?.user_data?.user_id,
+          rating: ratingreview.rating,
+          review: ratingreview.review,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setIslotti(false);
+            // setShowRating(false);
+            setSucessreview(true);
+            setShowRatingReview(false);
+            setSubmitReviewRating(true);
+            setReviewHeading("Reviewed");
+          }
+        });
+    } else {
+      return false;
+    }
   };
 
   const bothDataArchitecture =
@@ -345,7 +350,9 @@ const ProfessionalProfile = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [verified, setVerified] = useState(false);
+  const [verified, setVerified] = useState(
+    contextData?.professional_user_profile_data?.details?.verified
+  );
   const [attachement, setAttachement] = useState("");
   const [fileReport, setFileReport] = useState();
   const [reportUpload, setreportUpload] = useState(false);
@@ -363,7 +370,6 @@ const ProfessionalProfile = () => {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      // console.log( "Enter key pressed" );
     }
   };
 
@@ -384,7 +390,6 @@ const ProfessionalProfile = () => {
           >
             {cookies?.user_data?.role === "client" && (
               <NavLink to="/clientdashboard" style={{ color: "white" }}>
-                {console.log("hello")}
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
                   style={{ fontSize: "30px" }}
@@ -462,25 +467,31 @@ const ProfessionalProfile = () => {
                 <div className="row pt-md-0 pt-5">
                   <div className="row m-auto">
                     <div className="col-md d-flex">
-                      <h2>
+                      <h2 style={{ marginLeft: "-3%" }}>
                         {contextData?.professional_user_profile_data &&
                           contextData?.professional_user_profile_data?.details
                             ?.name}
                       </h2>
                     </div>
-                    <div
-                      className="col  miniRateBox"
-                      style={{ display: "grid", placeItems: "center" }}
-                    >
-                      <p
-                        className="m-auto miniRate"
-                        style={{ fontWeight: "bold", fontSize: "19px" }}
+                    <div className="col  ">
+                      <div
+                        style={{
+                          // display: "grid",
+                          // placeItems: "center",
+                          padding: "5px 10px",
+                          boxShadow: "4px 4px 4px #dddddd",
+                          borderRadius: "10px",
+                          display: "inline-block",
+                        }}
                       >
-                        Minimum Rate Per sq.mtr :
-                        {contextData?.professional_user_profile_data &&
-                          contextData?.professional_user_profile_data?.details
-                            ?.price_range}
-                      </p>
+                        <h2 className="m-auto miniRate">Minimum Rate</h2>
+                        <h2 className="">
+                          {contextData?.professional_user_profile_data &&
+                            contextData?.professional_user_profile_data?.details
+                              ?.price_range}{" "}
+                          <span>/sq.mtr</span>
+                        </h2>
+                      </div>
                     </div>
                   </div>
                   <h4>
@@ -604,7 +615,7 @@ const ProfessionalProfile = () => {
 
                 <Modal show={showRatingReview} onHide={handleCloseRating}>
                   <Modal.Header closeButton>
-                    <h4 className="m-auto">Add review and raating</h4>
+                    <h4 className="m-auto">Add Review & Rating</h4>
                   </Modal.Header>
 
                   <Modal.Body>
@@ -648,7 +659,7 @@ const ProfessionalProfile = () => {
                           placeholder="Add a review"
                           style={{ width: "90%", padding: "10px 20px" }}
                         />
-                        <p>{ratingreview.review.length}/ 100</p>
+                        {/* <p>{ratingreview.review.length}/ 100</p> */}
 
                         <Button
                           className="my-2"
@@ -668,14 +679,16 @@ const ProfessionalProfile = () => {
                 </Modal>
                 <div className="text-decoration-none text-black">
                   <div className="py-md-0 py-2 Cur_proFes">
-                    {verified ? (
+                    {contextData?.professional_user_profile_data &&
+                    contextData?.professional_user_profile_data?.details
+                      ?.verified ? (
                       <div>
                         {" "}
                         <img
                           src="/static/images/verifiedvisualiser.png"
                           alt=""
                         />{" "}
-                        <h4>Unverified Freelancer</h4>
+                        <h4>Verified Freelancer</h4>
                       </div>
                     ) : (
                       <div>
@@ -910,7 +923,6 @@ const ProfessionalProfile = () => {
             }}
             validationSchema={validationSchema}
             onSubmit={(values, { setSubmitting }, errors) => {
-              console.log(attachement);
               if (!attachement) {
                 setFileErr("block");
                 return false;
@@ -1090,10 +1102,10 @@ const ProfessionalProfile = () => {
                     style={{ marginTop: "10px" }}
                     className={`${fileErr} text-danger `}
                   >
-                    file required
+                    File required
                   </span>
                 </div>
-                <button type="submit">
+                <button type="submit" disabled={islotti ? true : false}>
                   {islotti ? <ReactLottie3 /> : "submit"}
                 </button>
               </Form>

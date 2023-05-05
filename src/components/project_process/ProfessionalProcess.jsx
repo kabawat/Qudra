@@ -3,14 +3,19 @@ import axios from "axios";
 import { Header2 } from "../Header";
 import Global from "../../context/Global";
 import { useNavigate, Link } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { Formik, Form, Field } from "formik";
+// import * as Yup from "yup";
 import { MdCloudUpload } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import useWindowSize from "../../Hooks/useWindowSize";
 import { useCookies } from "react-cookie";
 import { Button, Modal } from "react-bootstrap";
 import Loader from "../Loader";
+import ReactLottie3 from "../../loader/ReactLottie3";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ReactLotti from "../../loader/ReactLotti";
+
 const ProfessionalProcess = ({ location }) => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
@@ -21,29 +26,57 @@ const ProfessionalProcess = ({ location }) => {
   const [dateThree, setDateThree] = useState(null);
   const [dateFour, setDateFour] = useState(null);
   const [dateFive, setDateFive] = useState(null);
-  const [professionalEstimatedDate, setProfessionalEstimatedDate] =
-    useState(null);
+  const [showText, setShowText] = useState(false);
+  const [submit_loader, setsubmit_loader] = useState(false);
+  const [decline_loader, setdecline_loader] = useState(false);
+  // const [professionalEstimatedDate, setProfessionalEstimatedDate] =useState(null);
   const handleProfessionalDecesion = (
     req,
     professional_budget,
     estimated_date
   ) => {
-    axios
-      .post("http://13.52.16.160:8082/professional/project_requests", {
-        client_id: location?.state?.client_id,
-        user_token: cookies?.user_data?.user_token,
-        professional_id: cookies?.user_data?.user_id,
-        role: "professional",
-        client_project_id: location?.state?.client_project_id,
-        project_approval_status: req,
-        project_cost: professional_budget,
-        estimate_date: estimated_date,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/request-projects");
-        }
-      });
+    if (req === "declined") {
+      setdecline_loader(true);
+      axios
+        .post("http://13.52.16.160:8082/professional/project_requests", {
+          client_id: location?.state?.client_id,
+          user_token: cookies?.user_data?.user_token,
+          professional_id: cookies?.user_data?.user_id,
+          role: "professional",
+          client_project_id: location?.state?.client_project_id,
+          project_approval_status: req,
+          project_cost: professional_budget,
+          estimate_date: estimated_date,
+        })
+        .then((res) => {
+          setdecline_loader(false);
+
+          if (res?.data?.status === "Success") {
+            navigate("/request-projects");
+          }
+        });
+    } else {
+      setsubmit_loader(true);
+      axios
+        .post("http://13.52.16.160:8082/professional/project_requests", {
+          client_id: location?.state?.client_id,
+          user_token: cookies?.user_data?.user_token,
+          professional_id: cookies?.user_data?.user_id,
+          role: "professional",
+          client_project_id: location?.state?.client_project_id,
+          project_approval_status: req,
+          project_cost: professional_budget,
+          estimate_date: estimated_date,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            navigate("/request-projects");
+            setsubmit_loader(false);
+          } else {
+            setsubmit_loader(false);
+          }
+        });
+    }
   };
   const initialValues = {
     milestone_name_one: "",
@@ -72,38 +105,9 @@ const ProfessionalProcess = ({ location }) => {
     milestone_fifth_description: "",
 
     professional_budget: "",
-    estimated_date: "",
+    estimated_date: null,
   };
-  const FILE_SIZE = 900 * 1024;
-  const SignUpSchema = Yup.object().shape({
-    // milestone_name_one: Yup.string().required("Required"),
-    // milestone_date_one: Yup.string().required("Required"),
-    // milestone_one_percent: Yup.string().required("Required"),
-    // milestone_one_description: Yup.string().required("Required"),
 
-    // milestone_name_two: Yup.string().required("Required"),
-    // milestone_date_two: Yup.string().required("Required"),
-    // milestone_two_percent: Yup.string().required("Required"),
-    // milestone_two_description: Yup.string().required("Required"),
-
-    // milestone_name_third: Yup.string().required("Required"),
-    // milestone_date_third: Yup.string().required("Required"),
-    // milestone_third_percent: Yup.string().required("Required"),
-    // milestone_third_description: Yup.string().required("Required"),
-
-    // milestone_name_four: Yup.string().required("Required"),
-    // milestone_date_four: Yup.string().required("Required"),
-    // milestone_four_percent: Yup.string().required("Required"),
-    // milestone_four_description: Yup.string().required("Required"),
-
-    // milestone_name_fifth: Yup.string().required("Required"),
-    // milestone_date_fifth: Yup.string().required("Required"),
-    // milestone_fifth_percent: Yup.string().required("Required"),
-    // milestone_fifth_description: Yup.string().required("Required"),
-
-    professional_budget: Yup.string().required("Required"),
-    estimated_date: Yup.string().required("Required"),
-  });
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
@@ -139,11 +143,11 @@ const ProfessionalProcess = ({ location }) => {
   const [errlblattach3, seterrlblattach3] = useState(false);
   const [errlblattach4, seterrlblattach4] = useState(false);
   const [errlblattach5, seterrlblattach5] = useState(false);
+
   const [errlblprofessional_budget, seterrlblprofessional_budget] =
     useState(false);
   const [errlblestimated_date, seterrlblestimated_date] = useState(false);
   const handlechange = (e) => {
-    console.log(e.target);
     setattch({ ...attch, [e.target.name]: e.target.files[0] });
     setreqportlbl({ ...reqportlbl, [e.target.name]: e.target.files[0].name });
   };
@@ -157,6 +161,13 @@ const ProfessionalProcess = ({ location }) => {
     // setreportUpload(true);
     // setAttachementError("");
   }
+  const handleShowMore = () => {
+    setShowText(true);
+  };
+
+  const handleShowLess = () => {
+    setShowText(false);
+  };
 
   return loading ? (
     <Loader />
@@ -172,7 +183,6 @@ const ProfessionalProcess = ({ location }) => {
                   <div className="col ">
                     <h3 className="theme-text-color fs-24 mb-5 d-flex">
                       <span>
-                        {" "}
                         <Link
                           to={
                             contextData?.userData?.role === "client"
@@ -268,8 +278,52 @@ const ProfessionalProcess = ({ location }) => {
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">9</div>
                         <h5>Project Description:</h5>
-                        <p className="m-0 ms-3">
-                          {location?.state?.projectData?.description}
+                      </div>
+                      <div className="row">
+                        <p className="m-0 ms-3 ">
+                          {showText ? (
+                            <div>
+                              {location?.state?.projectData?.description}
+                            </div>
+                          ) : (
+                            <div>
+                              {location?.state?.projectData?.description.substring(
+                                0,
+                                212
+                              )}
+                            </div>
+                          )}
+                          {location?.state?.projectData?.description.length >
+                          100 ? (
+                            !showText ? (
+                              <span
+                                onClick={handleShowMore}
+                                style={{
+                                  color: "#01a78a",
+                                  marginTop: "10px",
+                                  textDecoration: "underline",
+                                  cursor: "pointer",
+                                  // backgroundColor: "#0F9E83",
+                                }}
+                              >
+                                Show More
+                              </span>
+                            ) : (
+                              <span
+                                onClick={handleShowLess}
+                                style={{
+                                  marginTop: "10px",
+                                  cursor: "pointer",
+                                  textDecoration: "underline",
+
+                                  color: "#01a78a",
+                                  // backgroundColor: "#0F9E83",
+                                }}
+                              >
+                                Show Less
+                              </span>
+                            )
+                          ) : null}
                         </p>
                       </div>
                     </div>
@@ -278,15 +332,13 @@ const ProfessionalProcess = ({ location }) => {
               </section>
               <Formik
                 initialValues={initialValues}
-                // validationSchema={SignUpSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  // setLoading(true);
                   if (
                     !attch.attach1 ||
                     !values.milestone_date_one ||
                     !values.milestone_one_description ||
                     !values.milestone_one_percent ||
-                    !values.milestone_date_one
+                    !values.milestone_name_one
                   ) {
                     seterrlblattach1(true);
                   }
@@ -295,7 +347,7 @@ const ProfessionalProcess = ({ location }) => {
                     !values.milestone_date_two ||
                     !values.milestone_two_description ||
                     !values.milestone_two_percent ||
-                    !values.milestone_date_two
+                    !values.milestone_name_two
                   ) {
                     seterrlblattach2(true);
                   }
@@ -304,7 +356,7 @@ const ProfessionalProcess = ({ location }) => {
                     !values.milestone_date_third ||
                     !values.milestone_third_description ||
                     !values.milestone_third_percent ||
-                    !values.milestone_date_third
+                    !values.milestone_name_third
                   ) {
                     seterrlblattach3(true);
                   }
@@ -313,7 +365,7 @@ const ProfessionalProcess = ({ location }) => {
                     !values.milestone_date_four ||
                     !values.milestone_four_description ||
                     !values.milestone_four_percent ||
-                    !values.milestone_date_four
+                    !values.milestone_name_four
                   ) {
                     seterrlblattach4(true);
                   }
@@ -322,7 +374,7 @@ const ProfessionalProcess = ({ location }) => {
                     !values.milestone_date_fifth ||
                     !values.milestone_fifth_description ||
                     !values.milestone_fifth_percent ||
-                    !values.milestone_date_fifth
+                    !values.milestone_name_fifth
                   ) {
                     seterrlblattach5(true);
                   }
@@ -360,7 +412,26 @@ const ProfessionalProcess = ({ location }) => {
                     !values.milestone_date_fifth
                   ) {
                     return false;
+                  } else if (
+                    dateOne > dateTwo ||
+                    dateTwo > dateThree ||
+                    dateThree > dateFour ||
+                    dateFour > dateFive ||
+                    dateFive > values.estimated_date
+                  ) {
+                    toast.error("Dates should be sequential", {
+                      position: "top-right",
+                      autoClose: 2000,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "colored",
+                    });
+                    return false;
                   } else {
+                    setsubmit_loader(true);
                     axios
                       .put(
                         "http://13.52.16.160:8082/stripe/professionl/verify-account/",
@@ -393,8 +464,10 @@ const ProfessionalProcess = ({ location }) => {
                             values.professional_budget
                           );
                           formdata.set(
-                            "estimate_date ",
-                            values?.estimated_date
+                            "estimated_date ",
+                            new Date(values?.estimated_date).toLocaleDateString(
+                              "en-CA"
+                            )
                           );
                           formdata.set(
                             "milestone_name_one ",
@@ -447,15 +520,15 @@ const ProfessionalProcess = ({ location }) => {
                             values.milestone_two_description
                           );
                           formdata.set(
-                            "milestone_third_attachment ",
+                            "milestone_third_description ",
                             values.milestone_third_description
                           );
                           formdata.set(
-                            "milestone_four_attachment ",
+                            "milestone_four_description ",
                             values.milestone_four_description
                           );
                           formdata.set(
-                            "milestone_fifth_attachment ",
+                            "milestone_fifth_description ",
                             values.milestone_fifth_description
                           );
                           formdata.set(
@@ -498,27 +571,45 @@ const ProfessionalProcess = ({ location }) => {
                             "milestone_fifth_percent",
                             values?.milestone_fifth_percent
                           );
-                          // formdata.set(
-                          //   "professional_budget ",
-                          //   values?.professional_budget
-                          // );
-                          // formdata.set("project_cost", values?.budget);
-                          // formdata.set("area ", values?.area);
-                          console.log(location?.state?.clientDetails);
-                          axios
-                            .post(
-                              "http://13.52.16.160:8082/professional/project_details",
-                              formdata
-                            )
-                            .then((res) => {
-                              if (res?.data?.status === "Success") {
-                                handleProfessionalDecesion(
-                                  "accepted",
-                                  values?.professional_budget,
-                                  values?.estimated_date
-                                );
-                              }
+
+                          setsubmit_loader(true);
+                          if (
+                            Number(values?.milestone_fifth_percent) +
+                              Number(values?.milestone_four_percent) +
+                              Number(values?.milestone_one_percent) +
+                              Number(values?.milestone_third_percent) +
+                              Number(values?.milestone_two_percent) ===
+                            100
+                          ) {
+                            axios
+                              .post(
+                                "http://13.52.16.160:8082/professional/project_details",
+                                formdata
+                              )
+                              .then((res) => {
+                                setsubmit_loader(false);
+                                if (res?.data?.status === "Success") {
+                                  handleProfessionalDecesion(
+                                    "accepted",
+                                    values?.professional_budget,
+                                    values?.estimated_date
+                                  );
+                                }
+                              });
+                          } else {
+                            setsubmit_loader(false);
+                            toast.error("Total cost should be 100%", {
+                              position: "top-right",
+                              autoClose: 2000,
+                              hideProgressBar: true,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              progress: undefined,
+                              theme: "colored",
                             });
+                            return false;
+                          }
                         }
                       });
                   }
@@ -526,881 +617,982 @@ const ProfessionalProcess = ({ location }) => {
               >
                 {({ values, isSubmitting, setFieldValue }) => (
                   <Form>
-                    <section className="ProjectDetailsPageMilestoneSectionForm">
-                      <h3 className="theme-text-color fs-24 mt-5 mb-4">
-                        Milestone
-                      </h3>
-                      <div className="milestoneBox row">
-                        <div className="row rowMilestone">
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_name_one"
-                              placeholder="Name of the milestone  "
-                              value={values.milestone_name_one}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_name_one",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_one_percent"
-                              placeholder=" Cost % "
-                              className="milestone_input_des"
-                              value={values.milestone_one_percent}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_one_percent",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                          <div className="col-3 ">
-                            <input
-                              type="file"
-                              name="attach1"
-                              // placeholder="Milestone Descrption  "
-                              id="attachement1"
-                              className="mileStoneAttach"
-                              onChange={handlechange}
-                              style={{ display: "none" }}
-                            />
-                            <label
-                              name="attach1"
-                              htmlFor="attachement1"
-                              className="input-path-label mileStoneAttach_lablel mt-1 "
-                              style={{ background: "none" }}
-                            >
-                              <span>
-                                <MdCloudUpload
-                                  size={40}
-                                  color={"rgb(1, 167, 138)"}
-                                  margin-left={"10px"}
-                                  s
+                    <section className="form_data ">
+                      <div className="container">
+                        <div className="main_heading my-3">
+                          <h3>Milestone Details</h3>
+                        </div>
+                        <form>
+                          <div className="common-data">
+                            <div className="half-cullom">
+                              <div className="field-data">
+                                <label htmlFor="milestone_name_one">
+                                  Milestone Name
+                                </label>
+                                <Field
+                                  name="milestone_name_one"
+                                  placeholder="Enter name"
+                                  value={values.milestone_name_one}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_name_one",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach1 &&
+                                      values.milestone_date_one &&
+                                      values.milestone_one_description &&
+                                      values.milestone_one_percent &&
+                                      values.milestone_name_one
+                                    ) {
+                                      seterrlblattach1(false);
+                                    }
+                                  }}
                                 />
-                              </span>
-                              {reqportlbl.attach1 ? (
-                                <p className="Report">
-                                  {" "}
-                                  {reqportlbl.attach1.slice(0, 10) + "...."}
-                                </p>
-                              ) : (
-                                <p className="Report">Upload Attachement</p>
-                              )}
-                            </label>
-                          </div>
-                          <div className="col-3 p-0">
-                            <div className="theme-bg-color milestonedatepicker">
-                              <DatePicker
-                                selected={dateOne}
-                                isClearable
-                                placeholderText="Enter Date"
-                                minDate={new Date()}
-                                name="milestone_date_one"
-                                dateFormat="yyyy-MM-dd"
-                                onChange={(date) => {
-                                  setDateOne(date);
-                                  setFieldValue(
-                                    "milestone_date_one",
-                                    new Date(date).toLocaleDateString("en-CA")
-                                  );
-                                }}
-                              />
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
+                              </div>
+                              <div className="field-data">
+                                <label htmlFor="fname">Cost Percentage</label>
+                                <Field
+                                  type="number"
+                                  name="milestone_one_percent"
+                                  placeholder=" Cost % "
+                                  className="milestone_input_des"
+                                  value={values.milestone_one_percent}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_one_percent",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach1 &&
+                                      values.milestone_date_one &&
+                                      values.milestone_one_description &&
+                                      values.milestone_one_percent &&
+                                      values.milestone_name_one
+                                    ) {
+                                      seterrlblattach1(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  type="number"
+                                 
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                  max="100"
+                                  min="0"
+                                /> */}
+                              </div>
+                              <div className="field-custom ">
+                                <label htmlFor="fname">Enter Date</label>
+                                <DatePicker
+                                  className="form-control "
+                                  selected={dateOne}
+                                  isClearable
+                                  placeholderText="Enter Date"
+                                  autoComplete="off"
+                                  minDate={new Date()}
+                                  name="milestone_date_one"
+                                  dateFormat="yyyy-MM-dd"
+                                  onChange={(date) => {
+                                    setDateOne(date);
+                                    setFieldValue(
+                                      "milestone_date_one",
+                                      new Date(date).toLocaleDateString("en-CA")
+                                    );
+                                    if (
+                                      attch.attach1 &&
+                                      values.milestone_one_description &&
+                                      values.milestone_one_percent &&
+                                      values.milestone_name_one
+                                    ) {
+                                      seterrlblattach1(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  className="form-control"
+                                  type="date"
+                                  required=""
+                                /> */}
+                              </div>
+                              <div className="field-custom_image">
+                                <input
+                                  type="file"
+                                  name="attach1"
+                                  id="attachement1"
+                                  className="mileStoneAttach cursor-pointer"
+                                  onChange={(e) => {
+                                    handlechange(e);
+                                    if (
+                                      values.milestone_date_one &&
+                                      values.milestone_one_description &&
+                                      values.milestone_one_percent &&
+                                      values.milestone_name_one
+                                    ) {
+                                      seterrlblattach1(false);
+                                    }
+                                  }}
+                                  style={{ display: "none" }}
+                                />
+                                <label
+                                  name="attach1"
+                                  htmlFor="attachement1"
+                                  className="input-path-label mileStoneAttach_lablel mt-1 "
+                                  style={{
+                                    background: "none",
+                                    display: "flex",
+                                    padding: "0px",
+                                  }}
+                                >
+                                  {reqportlbl.attach1 ? (
+                                    <p className="Report">
+                                      {" "}
+                                      {reqportlbl.attach1.slice(0, 10) + "...."}
+                                    </p>
+                                  ) : (
+                                    <p className="Report">Upload File</p>
+                                  )}
+                                  <span>
+                                    <MdCloudUpload
+                                      size={28}
+                                      color={"rgb(1, 167, 138)"}
+                                    />
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                            <div className="full_cullomn">
+                              <div className="field_data">
+                                <label htmlFor="fname">Description</label>
+                                <Field
+                                  as="textarea"
+                                  row="2"
+                                  name="milestone_one_description"
+                                  placeholder=" Descrption  "
+                                  className="milestone_input_des  "
+                                  value={values.milestone_one_description}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_one_description",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach1 &&
+                                      values.milestone_date_one &&
+                                      values.milestone_one_description &&
+                                      values.milestone_one_percent &&
+                                      values.milestone_name_one
+                                    ) {
+                                      seterrlblattach1(false);
+                                    }
+                                  }}
+                                />
+                                {/* <textarea
+                                  id="subject"
+                                  name="subject"
+                                  placeholder="Descrption"
+                                  rows={2}
+                                  defaultValue={""}
+                                /> */}
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col text-danger">
+                                {errlblattach1 && (
+                                  <span>All fields required</span>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-12 p-0 ">
-                            <Field
-                              as="textarea"
-                              row="6"
-                              name="milestone_one_description"
-                              placeholder=" Descrption  "
-                              className="milestone_input_des  "
-                              value={values.milestone_one_description}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_one_description",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        {/* <div className="col">
-                          <ErrorMessage
-                            name="milestone_name_one"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_one"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_one_percent"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_one_description"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div> */}
-                        <div className="col">
-                          {errlblattach1 === true ? (
-                            <span>require image</span>
-                          ) : null}
-                        </div>
-                      </div>
-                      <div className="milestoneBox row">
-                        <div className="row rowMilestone">
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_name_two"
-                              placeholder="Enter the name of the milestone "
-                              value={values.milestone_name_two}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_name_two",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_two_percent"
-                              placeholder=" Cost % "
-                              className="milestone_input_des"
-                              value={values.milestone_two_percent}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_two_percent",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                          <div className="col-3 ">
-                            <input
-                              type="file"
-                              name="attach2"
-                              // placeholder="Milestone Descrption  "
-                              title="suraj"
-                              id="attachement2"
-                              className="mileStoneAttach"
-                              onChange={handlechange}
-                              style={{ display: "none" }}
-                            />
-                            <label
-                              name="attach2"
-                              htmlFor="attachement2"
-                              className="input-path-label mileStoneAttach_lablel mt-1 "
-                              style={{ background: "none" }}
-                            >
-                              <span>
-                                <MdCloudUpload
-                                  size={40}
-                                  color={"rgb(1, 167, 138)"}
-                                  margin-left={"10px"}
-                                  s
+                          <div className="common-data">
+                            <div className="half-cullom">
+                              <div className="field-data">
+                                <label htmlFor="milestone_name_two">
+                                  Milestone Name
+                                </label>
+                                <Field
+                                  name="milestone_name_two"
+                                  placeholder="Enter name"
+                                  value={values.milestone_name_two}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_name_two",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach2 &&
+                                      values.milestone_date_two &&
+                                      values.milestone_two_description &&
+                                      values.milestone_two_percent &&
+                                      values.milestone_name_two
+                                    ) {
+                                      seterrlblattach2(false);
+                                    }
+                                  }}
                                 />
-                              </span>
-                              {reqportlbl.attach2 ? (
-                                <p className="Report">
-                                  {" "}
-                                  {reqportlbl.attach2.slice(0, 10) + "...."}
-                                </p>
-                              ) : (
-                                <p className="Report">Upload Attachement</p>
-                              )}
-                            </label>
-                          </div>
-                          <div className="col-3 p-0">
-                            <div className="theme-bg-color milestonedatepicker">
-                              <DatePicker
-                                selected={dateTwo}
-                                isClearable
-                                placeholderText="Enter Date"
-                                minDate={new Date()}
-                                name="milestone_date_two"
-                                dateFormat="yyyy-MM-dd"
-                                onChange={(date) => {
-                                  setDateTwo(date);
-                                  setFieldValue(
-                                    "milestone_date_two",
-                                    new Date(date).toLocaleDateString("en-CA")
-                                  );
-                                }}
-                              />
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
+                              </div>
+                              <div className="field-data">
+                                <label htmlFor="milestone_two_percent">
+                                  Cost Percentage
+                                </label>
+                                <Field
+                                  name="milestone_two_percent"
+                                  type="number"
+                                  placeholder=" Cost % "
+                                  className="milestone_input_des"
+                                  value={values.milestone_two_percent}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_two_percent",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach2 &&
+                                      values.milestone_two_description &&
+                                      values.milestone_two_percent &&
+                                      values.milestone_name_two
+                                    ) {
+                                      seterrlblattach2(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  type="number"
+                                 
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                /> */}
+                              </div>
+                              <div className="field-custom">
+                                <label htmlFor="milestone_date_two">
+                                  Enter Date
+                                </label>
+                                <DatePicker
+                                  selected={dateTwo}
+                                  isClearable
+                                  placeholderText="Enter Date"
+                                  autoComplete="off"
+                                  minDate={new Date()}
+                                  name="milestone_date_two"
+                                  dateFormat="yyyy-MM-dd"
+                                  onChange={(date) => {
+                                    setDateTwo(date);
+                                    setFieldValue(
+                                      "milestone_date_two",
+                                      new Date(date).toLocaleDateString("en-CA")
+                                    );
+                                    if (
+                                      attch.attach2 &&
+                                      values.milestone_two_description &&
+                                      values.milestone_two_percent &&
+                                      values.milestone_name_two
+                                    ) {
+                                      seterrlblattach2(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  className="form-control"
+                                  type="date"
+                                  required=""
+                                /> */}
+                              </div>
+                              <div className="field-custom_image">
+                                <input
+                                  type="file"
+                                  name="attach2"
+                                  id="attachement2"
+                                  className="mileStoneAttach"
+                                  onChange={(e) => {
+                                    handlechange(e);
+                                    if (
+                                      values.milestone_date_two &&
+                                      values.milestone_two_description &&
+                                      values.milestone_two_percent &&
+                                      values.milestone_name_two
+                                    ) {
+                                      seterrlblattach2(false);
+                                    }
+                                  }}
+                                  style={{ display: "none" }}
+                                />
+                                <label
+                                  name="attach2"
+                                  htmlFor="attachement2"
+                                  className="input-path-label mileStoneAttach_lablel mt-1 "
+                                  style={{
+                                    background: "none",
+                                    display: "flex",
+                                    padding: "0px",
+                                  }}
+                                >
+                                  {reqportlbl.attach2 ? (
+                                    <p className="Report">
+                                      {" "}
+                                      {reqportlbl.attach2.slice(0, 10) + "...."}
+                                    </p>
+                                  ) : (
+                                    <p className="Report">Upload File</p>
+                                  )}
+                                  <span>
+                                    <MdCloudUpload
+                                      size={28}
+                                      color={"rgb(1, 167, 138)"}
+                                      margin-left={"10px"}
+                                      s
+                                    />
+                                  </span>
+                                </label>
+                                {/* <input type="file" name="file" id="file" /> */}
+                              </div>
+                            </div>
+                            <div className="full_cullomn">
+                              <div className="field_data">
+                                <label htmlFor="milestone_two_description">
+                                  Description
+                                </label>
+                                <Field
+                                  as="textarea"
+                                  row="6"
+                                  id="subject"
+                                  name="milestone_two_description"
+                                  placeholder=" Descrption  "
+                                  className="milestone_input_des  "
+                                  value={values.milestone_two_description}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_two_description",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach2 &&
+                                      values.milestone_date_two &&
+                                      values.milestone_two_description &&
+                                      values.milestone_two_percent &&
+                                      values.milestone_name_two
+                                    ) {
+                                      seterrlblattach2(false);
+                                    }
+                                  }}
+                                />
+                                {/* <textarea
+                                  id="subject"
+                                  name="subject"
+                                  placeholder="Descrption"
+                                  rows={2}
+                                  defaultValue={""}
+                                /> */}
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col"></div>
+
+                              <div className=" text-danger ">
+                                {errlblattach2 === true ? (
+                                  <span>All fields required </span>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-12 p-0 ">
-                            <Field
-                              as="textarea"
-                              row="6"
-                              name="milestone_two_description"
-                              placeholder=" Descrption  "
-                              className="milestone_input_des  "
-                              value={values.milestone_two_description}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_two_description",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">
-                          {/* <ErrorMessage
-                            name="milestone_name_two"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_two"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_two_percent"
-                            component="div"
-                            className="m-2 text-danger"
-                          /> */}
-                        </div>
-                        {/* <div className="col">
-                          <ErrorMessage
-                            name="milestone_two_description"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div> */}
-                        <div className="col">
-                          {errlblattach2 === true ? (
-                            <span>require image</span>
-                          ) : null}
-                        </div>
-                      </div>
-
-                      <div className="milestoneBox row">
-                        <div className="row rowMilestone">
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_name_third"
-                              placeholder="Enter the name of the milestone "
-                              value={values.milestone_name_third}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_name_third",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_third_percent"
-                              placeholder=" Cost % "
-                              className="milestone_input_des  "
-                              value={values.milestone_third_percent}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_third_percent",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                          <div className="col-3 ">
-                            <input
-                              type="file"
-                              name="attach3"
-                              // placeholder="Milestone Descrption  "
-                              title="suraj"
-                              id="attachement3"
-                              className="mileStoneAttach"
-                              onChange={handlechange}
-                              style={{ display: "none" }}
-                            />
-                            <label
-                              name="attach2"
-                              htmlFor="attachement3"
-                              className="input-path-label mileStoneAttach_lablel mt-1 "
-                              style={{ background: "none" }}
-                            >
-                              <span>
-                                <MdCloudUpload
-                                  size={40}
-                                  color={"rgb(1, 167, 138)"}
-                                  margin-left={"10px"}
-                                  s
+                          <div className="common-data">
+                            <div className="half-cullom">
+                              <div className="field-data">
+                                <label htmlFor="milestone_name_third">
+                                  Milestone Name
+                                </label>
+                                <Field
+                                  name="milestone_name_third"
+                                  placeholder="Enter name"
+                                  value={values.milestone_name_third}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_name_third",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach3 &&
+                                      values.milestone_date_third &&
+                                      values.milestone_third_description &&
+                                      values.milestone_third_percent &&
+                                      values.milestone_name_third
+                                    ) {
+                                      seterrlblattach3(false);
+                                    }
+                                  }}
                                 />
-                              </span>
-                              {reqportlbl.attach3 ? (
-                                <p className="Report">
-                                  {" "}
-                                  {reqportlbl.attach3.slice(0, 10) + "...."}
-                                </p>
-                              ) : (
-                                <p className="Report">Upload Attachement</p>
-                              )}
-                            </label>
-                          </div>
-                          <div className="col-3 p-0">
-                            <div className="theme-bg-color milestonedatepicker">
-                              <DatePicker
-                                selected={dateThree}
-                                isClearable
-                                placeholderText="Enter Date"
-                                minDate={new Date()}
-                                name="milestone_date_third"
-                                dateFormat="yyyy-MM-dd"
-                                onChange={(date) => {
-                                  setDateThree(date);
-                                  setFieldValue(
-                                    "milestone_date_third",
-                                    new Date(date).toLocaleDateString("en-CA")
-                                  );
-                                }}
-                              />
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
+                              </div>
+                              <div className="field-data">
+                                <label htmlFor="milestone_third_percent">
+                                  Cost Percentage
+                                </label>
+                                <Field
+                                  name="milestone_third_percent"
+                                  type="number"
+                                  placeholder=" Cost % "
+                                  className="milestone_input_des  "
+                                  value={values.milestone_third_percent}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_third_percent",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach3 &&
+                                      values.milestone_date_third &&
+                                      values.milestone_third_description &&
+                                      values.milestone_third_percent &&
+                                      values.milestone_name_third
+                                    ) {
+                                      seterrlblattach3(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  type="number"
+                                 
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                /> */}
+                              </div>
+                              <div className="field-custom">
+                                <label htmlFor="milestone_date_third">
+                                  Enter Date
+                                </label>
+                                <DatePicker
+                                  selected={dateThree}
+                                  isClearable
+                                  placeholderText="Enter Date"
+                                  autoComplete="off"
+                                  minDate={new Date()}
+                                  name="milestone_date_third"
+                                  dateFormat="yyyy-MM-dd"
+                                  onChange={(date) => {
+                                    setDateThree(date);
+                                    setFieldValue(
+                                      "milestone_date_third",
+                                      new Date(date).toLocaleDateString("en-CA")
+                                    );
+                                    if (
+                                      attch.attach3 &&
+                                      values.milestone_third_description &&
+                                      values.milestone_third_percent &&
+                                      values.milestone_name_third
+                                    ) {
+                                      seterrlblattach3(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  className="form-control"
+                                  type="date"
+                                  required=""
+                                /> */}
+                              </div>
+                              <div className="field-custom_image">
+                                <input
+                                  type="file"
+                                  name="attach3"
+                                  id="attachement3"
+                                  className="mileStoneAttach"
+                                  onChange={(e) => {
+                                    handlechange(e);
+                                    if (
+                                      values.milestone_date_third &&
+                                      values.milestone_third_description &&
+                                      values.milestone_third_percent &&
+                                      values.milestone_name_third
+                                    ) {
+                                      seterrlblattach3(false);
+                                    }
+                                  }}
+                                  style={{ display: "none" }}
+                                />
+                                <label
+                                  name="attach2"
+                                  htmlFor="attachement3"
+                                  className="input-path-label mileStoneAttach_lablel mt-1 "
+                                  style={{
+                                    background: "none",
+                                    display: "flex",
+                                    padding: "0px",
+                                  }}
+                                >
+                                  {reqportlbl.attach3 ? (
+                                    <p className="Report">
+                                      {" "}
+                                      {reqportlbl.attach3.slice(0, 10) + "...."}
+                                    </p>
+                                  ) : (
+                                    <p className="Report">Upload File</p>
+                                  )}
+                                  <span>
+                                    <MdCloudUpload
+                                      size={28}
+                                      color={"rgb(1, 167, 138)"}
+                                      margin-left={"10px"}
+                                    />
+                                  </span>
+                                </label>
+                                {/* <input type="file" name="file" id="file" />
+                                <span>Upload Attachement</span> */}
+                              </div>
+                            </div>
+                            <div className="full_cullomn">
+                              <div className="field_data">
+                                <label htmlFor="milestone_third_description">
+                                  Description
+                                </label>
+                                <Field
+                                  as="textarea"
+                                  id="subject"
+                                  row="6"
+                                  name="milestone_third_description"
+                                  placeholder=" Descrption"
+                                  className="milestone_input_des"
+                                  value={values.milestone_third_description}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_third_description",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach3 &&
+                                      values.milestone_date_third &&
+                                      values.milestone_third_description &&
+                                      values.milestone_third_percent &&
+                                      values.milestone_name_third
+                                    ) {
+                                      seterrlblattach3(false);
+                                    }
+                                  }}
+                                />
+                                {/* <textarea
+                                  id="subject"
+                                  name="subject"
+                                  placeholder="Descrption"
+                                  rows={2}
+                                  defaultValue={""}
+                                /> */}
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col text-danger">
+                                {errlblattach3 === true ? (
+                                  <span>All fields required</span>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-12 p-0 ">
-                            <Field
-                              as="textarea"
-                              row="6"
-                              name="milestone_third_description"
-                              placeholder=" Descrption"
-                              className="milestone_input_des"
-                              value={values.milestone_third_description}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_third_description",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        {/* <div className="col">
-                          <ErrorMessage
-                            name="milestone_name_third"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_third"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_third_percent"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_third_description"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div> */}
-                        <div className="col">
-                          {errlblattach3 === true ? (
-                            <span>require image</span>
-                          ) : null}
-                        </div>
-                      </div>
-
-                      <div className="milestoneBox row">
-                        <div className="row rowMilestone">
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_name_four"
-                              placeholder="Enter the name of the milestone "
-                              value={values.milestone_name_four}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_name_four",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_four_percent"
-                              placeholder=" Cost % "
-                              className="milestone_input_des  "
-                              value={values.milestone_four_percent}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_four_percent",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                          <div className="col-3 ">
-                            <input
-                              type="file"
-                              name="attach4"
-                              // placeholder="Milestone Descrption  "
-                              title="suraj"
-                              id="attachement4"
-                              className="mileStoneAttach"
-                              onChange={handlechange}
-                              style={{ display: "none" }}
-                            />
-                            <label
-                              name="attach4"
-                              htmlFor="attachement4"
-                              className="input-path-label mileStoneAttach_lablel mt-1 "
-                              style={{ background: "none" }}
-                            >
-                              <span>
-                                <MdCloudUpload
-                                  size={40}
-                                  color={"rgb(1, 167, 138)"}
-                                  margin-left={"10px"}
-                                  s
+                          <div className="common-data">
+                            <div className="half-cullom">
+                              <div className="field-data">
+                                <label htmlFor="milestone_name_four">
+                                  Milestone Name
+                                </label>
+                                <Field
+                                  name="milestone_name_four"
+                                  placeholder="Enter name"
+                                  value={values.milestone_name_four}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_name_four",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach4 &&
+                                      values.milestone_date_four &&
+                                      values.milestone_four_description &&
+                                      values.milestone_four_percent &&
+                                      values.milestone_name_four
+                                    ) {
+                                      seterrlblattach4(false);
+                                    }
+                                  }}
                                 />
-                              </span>
-                              {reqportlbl.attach4 ? (
-                                <p className="Report">
-                                  {" "}
-                                  {reqportlbl.attach4.slice(0, 10) + "...."}
-                                </p>
-                              ) : (
-                                <p className="Report">Upload Attachement</p>
-                              )}
-                            </label>
-                          </div>
-                          <div className="col-3 p-0">
-                            <div className="theme-bg-color milestonedatepicker">
-                              <DatePicker
-                                selected={dateFour}
-                                isClearable
-                                placeholderText="Enter Date"
-                                minDate={new Date()}
-                                name="milestone_date_four"
-                                dateFormat="yyyy-MM-dd"
-                                onChange={(date) => {
-                                  setDateFour(date);
-                                  setFieldValue(
-                                    "milestone_date_four",
-                                    new Date(date).toLocaleDateString("en-CA")
-                                  );
-                                }}
-                              />
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
+                              </div>
+                              <div className="field-data">
+                                <label htmlFor="milestone_four_percent">
+                                  Cost Percentage
+                                </label>
+                                <Field
+                                  name="milestone_four_percent"
+                                  type="number"
+                                  placeholder=" Cost % "
+                                  className="milestone_input_des  "
+                                  value={values.milestone_four_percent}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_four_percent",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach4 &&
+                                      values.milestone_date_four &&
+                                      values.milestone_four_description &&
+                                      values.milestone_four_percent &&
+                                      values.milestone_name_four
+                                    ) {
+                                      seterrlblattach4(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  type="number"
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                /> */}
+                              </div>
+                              <div className="field-custom">
+                                <label htmlFor="fname">Enter Date</label>
+                                <DatePicker
+                                  selected={dateFour}
+                                  isClearable
+                                  placeholderText="Enter Date"
+                                  autoComplete="off"
+                                  minDate={new Date()}
+                                  name="milestone_date_four"
+                                  dateFormat="yyyy-MM-dd"
+                                  onChange={(date) => {
+                                    setDateFour(date);
+                                    setFieldValue(
+                                      "milestone_date_four",
+                                      new Date(date).toLocaleDateString("en-CA")
+                                    );
+                                    if (
+                                      attch.attach4 &&
+                                      values.milestone_four_description &&
+                                      values.milestone_four_percent &&
+                                      values.milestone_name_four
+                                    ) {
+                                      seterrlblattach4(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  className="form-control"
+                                  type="date"
+                                  required=""
+                                /> */}
+                              </div>
+                              <div className="field-custom_image">
+                                <input
+                                  type="file"
+                                  name="attach4"
+                                  // placeholder="Milestone Descrption  "
+                                  title="suraj"
+                                  id="attachement4"
+                                  className="mileStoneAttach"
+                                  onChange={(e) => {
+                                    handlechange(e);
+                                    if (
+                                      values.milestone_date_four &&
+                                      values.milestone_four_description &&
+                                      values.milestone_four_percent &&
+                                      values.milestone_name_four
+                                    ) {
+                                      seterrlblattach4(false);
+                                    }
+                                  }}
+                                  style={{ display: "none" }}
+                                />
+                                <label
+                                  name="attach4"
+                                  htmlFor="attachement4"
+                                  className="input-path-label mileStoneAttach_lablel mt-1 "
+                                  style={{
+                                    background: "none",
+                                    display: "flex",
+                                    padding: "0px",
+                                  }}
+                                >
+                                  {reqportlbl.attach4 ? (
+                                    <p className="Report">
+                                      {" "}
+                                      {reqportlbl.attach4.slice(0, 10) + "...."}
+                                    </p>
+                                  ) : (
+                                    <p className="Report">Upload File</p>
+                                  )}
+                                  <span>
+                                    <MdCloudUpload
+                                      size={28}
+                                      color={"rgb(1, 167, 138)"}
+                                      margin-left={"10px"}
+                                      s
+                                    />
+                                  </span>
+                                </label>
+                                {/* <input type="file" name="file" id="file" />
+                                <span>Upload Attachement</span> */}
+                              </div>
+                            </div>
+                            <div className="full_cullomn">
+                              <div className="field_data">
+                                <label htmlFor="milestone_four_description">
+                                  Description
+                                </label>
+                                <Field
+                                  as="textarea"
+                                  row="6"
+                                  name="milestone_four_description"
+                                  placeholder=" Descrption  "
+                                  className="milestone_input_des  "
+                                  value={values.milestone_four_description}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_four_description",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach4 &&
+                                      values.milestone_date_four &&
+                                      values.milestone_four_description &&
+                                      values.milestone_four_percent &&
+                                      values.milestone_name_four
+                                    ) {
+                                      seterrlblattach4(false);
+                                    }
+                                  }}
+                                />
+                                {/* <textarea
+                                  id="subject"
+                                  name="subject"
+                                  placeholder="Descrption"
+                                  rows={2}
+                                  defaultValue={""}
+                                /> */}
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col text-danger">
+                                {errlblattach4 === true ? (
+                                  <span>All fields required</span>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-12 p-0 ">
-                            <Field
-                              as="textarea"
-                              row="6"
-                              name="milestone_four_description"
-                              placeholder=" Descrption  "
-                              className="milestone_input_des  "
-                              value={values.milestone_four_description}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_four_description",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        {/* <div className="col">
-                          <ErrorMessage
-                            name="milestone_name_four"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_four"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_four_percent"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_four_description"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div> */}
-                        <div className="col">
-                          {errlblattach4 === true ? (
-                            <span>require image</span>
-                          ) : null}
-                        </div>
-                      </div>
-
-                      <div className="milestoneBox row">
-                        <div className="row rowMilestone">
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_name_fifth"
-                              placeholder="Enter the name of the milestone "
-                              value={values.milestone_name_fifth}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_name_fifth",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-
-                          <div className="col-3 colMilestone">
-                            <Field
-                              name="milestone_fifth_percent"
-                              placeholder=" Cost % "
-                              className="milestone_input_des  "
-                              value={values.milestone_fifth_percent}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_fifth_percent",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                          <div className="col-3 ">
-                            <input
-                              type="file"
-                              name="attach5"
-                              // placeholder="Milestone Descrption  "
-                              title="suraj"
-                              id="attachement5"
-                              className="mileStoneAttach"
-                              onChange={handlechange}
-                              style={{ display: "none" }}
-                            />
-                            <label
-                              name="attach2"
-                              htmlFor="attachement5"
-                              className="input-path-label mileStoneAttach_lablel mt-1 "
-                              style={{ background: "none" }}
-                            >
-                              <span>
-                                <MdCloudUpload
-                                  size={40}
-                                  color={"rgb(1, 167, 138)"}
-                                  margin-left={"10px"}
-                                  s
+                          <div class="common-data">
+                            <div class="half-cullom">
+                              <div class="field-data">
+                                <label for="fname">Milestone Name</label>
+                                <Field
+                                  name="milestone_name_fifth"
+                                  placeholder="Enter name"
+                                  value={values.milestone_name_fifth}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_name_fifth",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach5 &&
+                                      values.milestone_date_fifth &&
+                                      values.milestone_fifth_description &&
+                                      values.milestone_fifth_percent &&
+                                      values.milestone_name_fifth
+                                    ) {
+                                      seterrlblattach5(false);
+                                    }
+                                  }}
                                 />
-                              </span>
-                              {reqportlbl.attach5 ? (
-                                <p className="Report">
-                                  {" "}
-                                  {reqportlbl.attach5.slice(0, 10) + "...."}
-                                </p>
-                              ) : (
-                                <p className="Report">Upload Attachement</p>
-                              )}
-                            </label>
-                          </div>
-                          <div className="col-3 p-0">
-                            <div className="theme-bg-color milestonedatepicker">
-                              <DatePicker
-                                selected={dateFive}
-                                isClearable
-                                placeholderText="Enter Date"
-                                minDate={new Date()}
-                                name="milestone_date_fifth"
-                                dateFormat="yyyy-MM-dd"
-                                onChange={(date) => {
-                                  setDateFive(date);
-                                  setFieldValue(
-                                    "milestone_date_fifth",
-                                    new Date(date).toLocaleDateString("en-CA")
-                                  );
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-12 p-0 ">
-                            <Field
-                              as="textarea"
-                              row="6"
-                              name="milestone_fifth_description"
-                              placeholder=" Descrption  "
-                              className="milestone_input_des  "
-                              value={values.milestone_fifth_description}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "milestone_fifth_description",
-                                  e.target.value
-                                );
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        {/* <div className="col">
-                          <ErrorMessage
-                            name="milestone_name_fifth"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_fifth"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_fifth_percent"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_fifth_description"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div> */}
-                        <div className="col">
-                          {errlblattach5 === true ? (
-                            <span style={{ color: "red" }}>
-                              All Field is Rquired
-                            </span>
-                          ) : null}
-                        </div>
-                      </div>
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
+                              </div>
 
-                      {/* <div className="milestoneBox row">
-                        <div className="col-10">
-                          <Field
-                            name="milestone_name_two"
-                            placeholder="Enter the name of the milestone "
-                          />
-                        </div>
+                              <div class="field-data">
+                                <label for="milestone_fifth_percent">
+                                  Cost Percentage
+                                </label>
+                                <Field
+                                  name="milestone_fifth_percent"
+                                  type="number"
+                                  placeholder=" Cost % "
+                                  className="milestone_input_des  "
+                                  value={values.milestone_fifth_percent}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_fifth_percent",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach5 &&
+                                      values.milestone_date_fifth &&
+                                      values.milestone_fifth_description &&
+                                      values.milestone_fifth_percent &&
+                                      values.milestone_name_fifth
+                                    ) {
+                                      seterrlblattach5(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  type="number"
+                                 
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                /> */}
+                              </div>
 
-                        <div className="col-2 theme-bg-color">
-                          <DatePicker
-                            selected={dateTwo}
-                            isClearable
+                              <div class="field-custom">
+                                <label for="milestone_date_fifth">
+                                  Enter Date
+                                </label>
+                                {/* isClearable
+                            autoComplete="off"
                             placeholderText="Enter Date"
                             minDate={new Date()}
-                            name="milestone_date_two"
-                            dateFormat="yyyy-MM-dd"
-                            onChange={(date) => {
-                              setDateTwo(date);
-                              setFieldValue(
-                                "milestone_date_two",
-                                new Date(date).toLocaleDateString("en-CA")
-                              );
-                            }}
-                          />
-                        </div>
-                      </div>
+                            name="estimated_date"
+                             */}
 
-                      <div className="row">
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_name_two"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_two"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
-                      </div>
-                      <div className="milestoneBox row">
-                        <div className="col-10">
-                          <Field
-                            name="milestone_name_third"
-                            placeholder="Enter the name of the milestone "
-                          />
-                        </div>
+                                <DatePicker
+                                  selected={dateFive}
+                                  placeholderText="Enter Date"
+                                  autoComplete="off"
+                                  minDate={new Date()}
+                                  name="milestone_date_fifth"
+                                  dateFormat="yyyy-MM-dd"
+                                  onChange={(date) => {
+                                    setDateFive(date);
+                                    setFieldValue(
+                                      "milestone_date_fifth",
+                                      new Date(date).toLocaleDateString("en-CA")
+                                    );
+                                    if (
+                                      attch.attach5 &&
+                                      values.milestone_fifth_description &&
+                                      values.milestone_fifth_percent &&
+                                      values.milestone_name_fifth
+                                    ) {
+                                      seterrlblattach5(false);
+                                    }
+                                  }}
+                                />
+                                {/* <input
+                                  class="form-control"
+                                  type="date"
+                                  required
+                                /> */}
+                              </div>
 
-                        <div className="col-2 theme-bg-color">
-                          <DatePicker
-                            selected={dateThree}
-                            isClearable
-                            placeholderText="Enter Date"
-                            minDate={new Date()}
-                            name="milestone_date_third"
-                            dateFormat="yyyy-MM-dd"
-                            onChange={(date) => {
-                              setDateThree(date);
-                              setFieldValue(
-                                "milestone_date_third",
-                                new Date(date).toLocaleDateString("en-CA")
-                              );
-                            }}
-                          />
-                        </div>
-                      </div>
+                              <div class="field-custom_image">
+                                <input
+                                  type="file"
+                                  name="attach5"
+                                  id="attachement5"
+                                  className="mileStoneAttach"
+                                  onChange={(e) => {
+                                    handlechange(e);
+                                    if (
+                                      values.milestone_date_fifth &&
+                                      values.milestone_fifth_description &&
+                                      values.milestone_fifth_percent &&
+                                      values.milestone_name_fifth
+                                    ) {
+                                      seterrlblattach5(false);
+                                    }
+                                  }}
+                                  style={{ display: "none" }}
+                                />
+                                <label
+                                  name="attach2"
+                                  htmlFor="attachement5"
+                                  className="input-path-label mileStoneAttach_lablel mt-1 "
+                                  style={{
+                                    background: "none",
+                                    display: "flex",
+                                    padding: "0px",
+                                  }}
+                                >
+                                  {reqportlbl.attach5 ? (
+                                    <p className="Report">
+                                      {" "}
+                                      {reqportlbl.attach5.slice(0, 10) + "...."}
+                                    </p>
+                                  ) : (
+                                    <p className="Report">Upload File</p>
+                                  )}
+                                  <span>
+                                    <MdCloudUpload
+                                      size={28}
+                                      color={"rgb(1, 167, 138)"}
+                                      margin-left={"10px"}
+                                    />
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
 
-                      <div className="row">
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_name_third"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_third"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
+                            <div class="full_cullomn">
+                              <div class="field_data">
+                                <label for="milestone_fifth_description">
+                                  Description
+                                </label>
+                                <Field
+                                  as="textarea"
+                                  row="6"
+                                  name="milestone_fifth_description"
+                                  placeholder=" Descrption  "
+                                  className="milestone_input_des  "
+                                  value={values.milestone_fifth_description}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      "milestone_fifth_description",
+                                      e.target.value
+                                    );
+                                    if (
+                                      attch.attach5 &&
+                                      values.milestone_date_fifth &&
+                                      values.milestone_fifth_description &&
+                                      values.milestone_fifth_percent &&
+                                      values.milestone_name_fifth
+                                    ) {
+                                      seterrlblattach5(false);
+                                    }
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col">
+                                {errlblattach5 === true ? (
+                                  <span className="text-danger">
+                                    All fields required
+                                  </span>
+                                ) : null}
+                              </div>
+                            </div>
+                          </div>
+                        </form>
                       </div>
-                      <div className="milestoneBox row">
-                        <div className="col-10">
-                          <Field
-                            name="milestone_name_four"
-                            placeholder="Enter the name of the milestone "
-                          />
-                        </div>
-
-                        <div className="col-2 theme-bg-color">
-                          <DatePicker
-                            selected={dateFour}
-                            isClearable
-                            placeholderText="Enter Date"
-                            minDate={new Date()}
-                            name="milestone_date_four"
-                            dateFormat="yyyy-MM-dd"
-                            onChange={(date) => {
-                              setDateFour(date);
-                              setFieldValue(
-                                "milestone_date_four",
-                                new Date(date).toLocaleDateString("en-CA")
-                              );
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_name_four"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_four"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
-                      </div>
-                      <div className="milestoneBox row">
-                        <div className="col-10">
-                          <Field
-                            name="milestone_name_fifth"
-                            placeholder="Enter the name of the milestone "
-                          />
-                        </div>
-
-                        <div className="col-2 theme-bg-color">
-                          <DatePicker
-                            selected={dateFive}
-                            isClearable
-                            placeholderText="Enter Date"
-                            minDate={new Date()}
-                            name="milestone_date_fifth"
-                            dateFormat="yyyy-MM-dd"
-                            onChange={(date) => {
-                              setDateFive(date);
-                              setFieldValue(
-                                "milestone_date_fifth",
-                                new Date(date).toLocaleDateString("en-CA")
-                              );
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_name_fifth"
-                            component="div"
-                            className="m-2 text-danger"
-                          />
-                        </div>
-                        <div className="col">
-                          <ErrorMessage
-                            name="milestone_date_fifth"
-                            component="div"
-                            className="m-2 text-danger text-end"
-                          />
-                        </div>
-                      </div> */}
                     </section>
                     <section className="product-details-submit-form mt-5 pt-4">
                       <div className="row  g-4">
@@ -1416,10 +1608,13 @@ const ProfessionalProcess = ({ location }) => {
                                 "professional_budget",
                                 e.target.value
                               );
+                              if (values.professional_budget) {
+                                seterrlblprofessional_budget(false);
+                              }
                             }}
                           />
                           {errlblprofessional_budget ? (
-                            <div>
+                            <div className="text-danger p-2">
                               <span>Professional Budget is Required</span>
                             </div>
                           ) : null}
@@ -1427,22 +1622,21 @@ const ProfessionalProcess = ({ location }) => {
                         <div className="col-sm">
                           <h6 className="pb-sm-3">Estimated Timeline</h6>
                           <DatePicker
-                            selected={professionalEstimatedDate}
+                            selected={values.estimated_date}
                             isClearable
+                            autoComplete="off"
                             placeholderText="Enter Date"
                             minDate={new Date()}
                             name="estimated_date"
                             dateFormat="yyyy-MM-dd"
                             onChange={(date) => {
-                              setProfessionalEstimatedDate(date);
-                              setFieldValue(
-                                "estimated_date",
-                                new Date(date).toLocaleDateString("en-CA")
-                              );
+                              setFieldValue("estimated_date", date);
+
+                              seterrlblestimated_date(false);
                             }}
                           />
                           {errlblestimated_date ? (
-                            <div>
+                            <div className="text-danger p-2">
                               <span>Estimate Date is Required</span>
                             </div>
                           ) : null}
@@ -1451,6 +1645,7 @@ const ProfessionalProcess = ({ location }) => {
                       <div className="row mt-sm-5 mt-3 g-sm-3 g-3">
                         <div className="col-sm">
                           <button
+                            disabled={decline_loader ? true : false}
                             onClick={() => {
                               handleProfessionalDecesion("declined");
                             }}
@@ -1466,19 +1661,19 @@ const ProfessionalProcess = ({ location }) => {
                               windowSize?.width > 576 ? "ms-auto" : "mx-auto"
                             }`}
                           >
-                            Decline
-                            <i className="fa-solid  fa-arrow-right-long me-3"></i>
+                            {decline_loader ? <ReactLotti /> : "Decline"}
                           </button>
                         </div>
+
                         <div className="col-sm">
                           <button
+                            disabled={submit_loader ? true : false}
                             type="submit"
                             className={`theme-bg-color text-white   ${
                               windowSize?.width > 576 ? "me-auto" : "mx-auto"
                             }`}
                           >
-                            Accept
-                            <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                            {submit_loader ? <ReactLottie3 /> : "Accept"}
                           </button>
                         </div>
                       </div>
@@ -1508,6 +1703,18 @@ const ProfessionalProcess = ({ location }) => {
           </div>
         </div>
       </main>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 };

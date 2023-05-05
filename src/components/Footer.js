@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Global from "../context/Global";
+import QueryForm from "./QueryForm";
 const Footer = () => {
   const contextData = useContext(Global);
   useEffect(() => {
@@ -71,9 +72,12 @@ const Footer = () => {
       <footer>
         <div className="container">
           <div className="row">
-            <div className="col12 py-lg-0 pb-4 ">
+            <div
+              className="col-md-6 py-lg-0 pb-4 "
+              style={{ display: "grid", placeContent: "center" }}
+            >
               <img alt="" src="/static/images/logoQuadra.png" />
-              
+
               <div className="d-flex social-icons-box d-flex justify-content-between align-items-center mt-3">
                 {contextData?.footer_icons?.map((res) => (
                   <a href={res?.media_link} key={res?.id} target="_blank">
@@ -82,6 +86,11 @@ const Footer = () => {
                 ))}
               </div>
             </div>
+            <div className="col-md-6">
+              <QueryForm />
+            </div>
+
+            {/* <div className="col-6"></div> */}
             {/* <div className="col-lg-9">
               <div className="row">
                 <div className="col-md col-6 my-3">

@@ -1,21 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import Global from "../../../context/Global";
 import axios from "axios";
-import { BsSearch, BsFillSuitHeartFill } from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Pagination from "react-bootstrap/Pagination";
 import Footer from "../../Footer";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
-import Loader from "../../Loader";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 const DeclinedActivity = () => {
-  const contextData = useContext(Global);
   const navigate = useNavigate();
   const [myProject, setMyProject] = useState([]);
   const [noResult, setNoResult] = useState(false);
@@ -108,10 +105,10 @@ const DeclinedActivity = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-2 col-lg-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-10 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {!loading ? (
                 <Backdrop

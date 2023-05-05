@@ -2,6 +2,15 @@
   section.earners-review-carousel {
     background-position: 12% 0% !important;
   }
+  .colAccDec {
+    justify-content: center !important;
+  }
+  .statusBtnMilecol {
+    place-content: center !important;
+  }
+  .resMile {
+    margin: 5% 0 !important ;
+  }
   .form-image-input img {
     width: 30%;
   }
@@ -31,6 +40,18 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 575px) {
+  .colAccDec {
+    justify-content: center !important;
+  }
+  .DownloadbtnMile {
+    padding: 5px 10px;
+  }
+  .resMile {
+    margin: 5% 0 !important ;
+  }
+  .statusBtnMilecol {
+    place-content: center !important;
+  }
   .MyProjectDisplayRow .col-lg-3:first-child {
     min-width: 100% !important;
   }
@@ -50,6 +71,15 @@
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .searchActiveProject.col-lg-8.ms-auto form input {
     padding-right: 67px;
+  }
+  .colAccDec {
+    justify-content: center !important;
+  }
+  .statusBtnMilecol {
+    place-content: center !important;
+  }
+  .resMile {
+    margin: 5% 0 !important ;
   }
   section.projectMilestoneInfo {
     display: flex;
@@ -770,10 +800,18 @@
 
 @media screen and (min-device-width: 768px) and (max-device-width: 991px) {
   /* =============== 05 April  ================ */
+  .colAccDec {
+    justify-content: center !important;
+  }
   .logo {
     height: 60px !important;
   }
-
+  .resMile {
+    margin: 5% 0 !important ;
+  }
+  .statusBtnMilecol {
+    place-content: center !important;
+  }
   .milestoneBox .preview {
     position: unset !important;
     flex-direction: column;
@@ -781,9 +819,9 @@
     justify-content: center;
   }
   .projectMilestoneInfo .milestoneBox {
-    flex-direction: column;
+    /* flex-direction: column;
     width: 45%;
-    margin: 2%;
+    margin: 2%; */
     border-radius: 20px;
   }
 
@@ -1281,7 +1319,9 @@
   .myProjectTable h2 {
     font-size: 20px;
   }
-
+  .colAccDec {
+    justify-content: center !important;
+  }
   /* =============== 05 April  ================ */
 
   .MyProjectDisplayRow .col-lg-3:first-child {
@@ -1582,9 +1622,24 @@
 }
 
 @media screen and (min-device-width: 992px) and (max-device-width: 1199px) {
+  .newJoin {
+    top: 30%;
+  }
   .let-get-started .join-us-now-main .join-us-now-text a:nth-child(1) button,
   .let-get-started .join-us-now-main .join-us-now-text a:nth-child(2) button {
     font-size: 14px;
+  }
+  .pendingBtnMile {
+    padding: 5px 20px !important;
+  }
+  .colAccDec {
+    justify-content: center !important;
+  }
+  .statusBtnMilecol {
+    place-content: center !important;
+  }
+  .resMile {
+    margin: 5% 0 !important ;
   }
   .verified-btn {
     padding: 6px;
@@ -1610,7 +1665,16 @@
   }
 }
 
+@media screen and (min-device-width: 1200px) and (max-device-width: 1279px) {
+  .pendingBtnMile {
+    padding: 5px 37px !important;
+  }
+}
+
 @media screen and (min-device-width: 1024px) and (max-device-width: 1279px) {
+  .newJoin {
+    top: 30%;
+  }
   .MyProjectDisplayRow .col-lg-3:first-child {
     min-width: 100% !important;
   }
@@ -1831,10 +1895,15 @@
 }
 
 @media screen and (min-device-width: 1280px) and (max-device-width: 1365px) {
+  .newJoin {
+    top: 25%;
+  }
   .logo {
     height: 80px !important;
   }
-
+  .pendingBtnMile {
+    padding: 5px 37px !important;
+  }
   section.earners-review-carousel {
     padding: 50px 0px;
     background-size: 120% 100%;
@@ -1879,6 +1948,9 @@
   .create-account {
     background-position: 100%;
     background-size: 105% 100%;
+  }
+  .newJoin {
+    top: 20%;
   }
 }
 
@@ -1932,6 +2004,9 @@
 } */
 
 @media screen and (max-width: 767px) {
+  .card-box-our-top-clients-row {
+    max-height: 0 !important;
+  }
   .image_report {
     width: 50px !important;
     height: 50px !important;
@@ -1958,16 +2033,89 @@
   .miniRate {
     font-size: 18px !important;
   }
+  .newJoin {
+    top: 30%;
+  }
 }
 
 @media screen and (min-width: 992px) {
   .mainProfileBox {
     margin-top: 22% !important;
   }
+  .helpactive {
+    width: 300px !important;
+  }
 }
 
 @media screen and (min-width: 1355px) and (max-width: 1385px) {
   .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
     font-size: 15px;
+  }
+  .newJoin {
+    top: 25%;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .headerMail {
+    display: block !important;
+  }
+  .headerMailInner {
+    margin-top: 7%;
+  }
+}
+@media screen and (max-width: 1199px) {
+  .uploadMileStoneof {
+    justify-content: center;
+  }
+}
+
+@media screen and (min-device-width: 1400px) and (max-device-width: 1600px) {
+  .fetures ul li {
+    width: 30%;
+  }
+  .buy-now-btn,
+  .buy-now-btn-active,
+  .buy-now-btn-cancel {
+    padding: 15px 10px;
+  }
+}
+
+@media screen and (min-device-width: 1300px) and (max-device-width: 1399px) {
+  .fetures ul li {
+    width: 27%;
+  }
+  .buy-now-btn,
+  .buy-now-btn-active,
+  .buy-now-btn-cancel {
+    padding: 10px;
+  }
+}
+
+@media screen and (min-device-width: 1150px) and (max-device-width: 1299px) {
+  .fetures ul li {
+    width: 26%;
+  }
+  .buy-now-btn,
+  .buy-now-btn-active,
+  .buy-now-btn-cancel {
+    padding: 10px;
+  }
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1199px) {
+  .fetures ul li {
+    width: 39%;
+  }
+  .buy-now-btn,
+  .buy-now-btn-active,
+  .buy-now-btn-cancel {
+    padding: 10px;
+  }
+  .listSkS {
+    justify-content: space-around;
+  }
+  .dashboardMob {
+    justify-content: start I !important;
   }
 }

@@ -16,7 +16,7 @@ import { Backdrop, CircularProgress } from "@mui/material";
 
 const CompletedPane = () => {
   const navigate = useNavigate();
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   const contextData = useContext(Global);
   const [completedProject, setCompletedProject] = useState([]);
   const [noResult, setNoResult] = useState(false);
@@ -27,48 +27,52 @@ const CompletedPane = () => {
   });
 
   const searchData = () => {
-    axios.post("http://13.52.16.160:8082/identity/filter_projects", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      project_status: "completed",
-      ...completedProjectPageId,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        setCompletedProject(res?.data?.data);
-      }
-    });
-  }
-  const [isRender, setIsReander] = useState(false)
-
-  useEffect(() => {
-    if (cookies?.user_data) {
-      axios.post("http://13.52.16.160:8082/identity/filter_projects", {
+    axios
+      .post("http://13.52.16.160:8082/identity/filter_projects", {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
         project_status: "completed",
         ...completedProjectPageId,
-      }).then((res) => {
+      })
+      .then((res) => {
         if (res?.data?.status === "Success") {
           setCompletedProject(res?.data?.data);
-          if (cookies?.user_data?.category_selected) {
-            if (cookies?.user_data?.role === "client") {
-              setIsReander(true)
-            } else {
-              navigate('/professionaldashboard')
-            }
-          } else {
-            if (cookies?.user_data?.role === "client") {
-              navigate('/client-architechture')
-            } else {
-              navigate('/categoryArchitecture')
-            }
-          }
         }
       });
+  };
+  const [isRender, setIsReander] = useState(false);
+
+  useEffect(() => {
+    if (cookies?.user_data) {
+      axios
+        .post("http://13.52.16.160:8082/identity/filter_projects", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          project_status: "completed",
+          ...completedProjectPageId,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setCompletedProject(res?.data?.data);
+            if (cookies?.user_data?.category_selected) {
+              if (cookies?.user_data?.role === "client") {
+                setIsReander(true);
+              } else {
+                navigate("/professionaldashboard");
+              }
+            } else {
+              if (cookies?.user_data?.role === "client") {
+                navigate("/client-architechture");
+              } else {
+                navigate("/categoryArchitecture");
+              }
+            }
+          }
+        });
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
   }, [completedProjectPageId]);
 
@@ -80,71 +84,90 @@ const CompletedPane = () => {
   ) {
     completedProjectArray.push(i + 1);
   }
-  const handleProjectNameClick = (client_id, project_id) => {
-    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      client_id: cookies?.user_data?.user_id,
-      project_id: project_id,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        navigate("/project-details", {
-          state: { isFromClientTab: true, milesStoneData: res?.data?.data },
-        });
-      }
-    });
+  const handleProjectNameClick = (payload) => {
+    axios
+      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        client_id: cookies?.user_data?.user_id,
+        project_id: payload?.project_id,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          navigate("/project-details", {
+            state: {
+              projectData: payload,
+              milesStoneData: res?.data?.data,
+              isFromClientTab: true,
+            },
+          });
+        }
+      });
   };
-  const handleFilterProject = (e) => {
-    e.preventDefault()
-    axios.post("http://13.52.16.160:8082/identity/search_projects", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      search_status: "completed",
-      search: searchActiveProject || "",
-      ...completedProjectPageId,
-    }).then((res) => {
-      if (res?.data?.status === "Failed") {
-        setNoResult(true)
 
-      } else {
-        setCompletedProject(res?.data?.data);
-      }
-    });
+  const handleFilterProject = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://13.52.16.160:8082/identity/search_projects", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        search_status: "completed",
+        search: searchActiveProject || "",
+        ...completedProjectPageId,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Failed") {
+          setNoResult(true);
+        } else {
+          setCompletedProject(res?.data?.data);
+        }
+      });
   };
   return (
     <>
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <ClientDashboardAside />
             </div>
-            <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              {
-                !isRender ? <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!isRender}>
+              {!isRender ? (
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={!isRender}
+                >
                   <CircularProgress color="inherit" />
-                </Backdrop> : <main className="dashboard-main">
-                  <div id="myactivity" className="container-fluid  myProjectTable">
+                </Backdrop>
+              ) : (
+                <main className="dashboard-main">
+                  <div
+                    id="myactivity"
+                    className="container-fluid  myProjectTable"
+                  >
                     <h2 className="ps-5">Completed Projects</h2>
 
                     <div className="m-5 shadow">
                       {completedProject?.final_data?.length ? (
                         <div className="row align-items-center MyProjectDisplayRow">
                           <div className="searchActiveProject col-8 ms-auto">
-                            <form onSubmit={handleFilterProject} >
+                            <form onSubmit={handleFilterProject}>
                               <input
                                 type="text"
                                 value={searchActiveProject}
                                 onChange={(e) => {
-                                  setSearchActiveProject(e?.target?.value)
+                                  setSearchActiveProject(e?.target?.value);
                                   setNoResult(false);
                                   if (e.target.value === "") {
-                                    searchData()
+                                    searchData();
                                   }
                                 }}
-                                placeholder="Search..."
+                                placeholder="Search via rofessional name"
                               />
                               <button type="submit">
                                 <BsSearch />
@@ -153,26 +176,35 @@ const CompletedPane = () => {
                           </div>
                         </div>
                       ) : (
-                        ''
+                        ""
                       )}
                       {noResult ? (
                         <div
-                          style={{ minHeight: "600px" }}
-                          className="d-flex "
+                          style={{
+                            minHeight: "600px",
+                            display: "grid",
+                            placeContent: "center",
+                          }}
                         >
                           <span className="h4">No Result Found</span>
                         </div>
-                      ) : (completedProject?.final_data?.length ? (
+                      ) : completedProject?.final_data?.length ? (
                         completedProject?.final_data.map((res, index) => (
                           <div className="row MyProjectDisplayRow" key={index}>
                             <div className="col-lg-3 col-md-6 d-flex align-items-center">
                               <img
                                 onClick={() => {
-                                  navigate(`/professionalprofile/${res?.professional_id}`);
+                                  navigate(
+                                    `/professionalprofile/${res?.professional_id}`
+                                  );
                                 }}
                                 src={res?.professional_image}
                                 className="img-fluid rounded-circle"
-                                style={{ width: "70px", height: "70px", cursor: "pointer" }}
+                                style={{
+                                  width: "70px",
+                                  height: "70px",
+                                  cursor: "pointer",
+                                }}
                                 alt={res?.professional_name}
                               />
                               <div className="ps-3">
@@ -196,14 +228,14 @@ const CompletedPane = () => {
                               <div>
                                 <h5>Project Name</h5>
                                 <h4
-                                style={{textTransform: 'capitalize'}}
+                                  style={{ textTransform: "capitalize" }}
                                   className="underline_hover"
                                   onClick={() => {
-                                    if (res?.project_status === "accepted" || res?.project_status === "completed") {
-                                      handleProjectNameClick(
-                                        res?.professional_id,
-                                        res?.project_id
-                                      );
+                                    if (
+                                      res?.project_status === "accepted" ||
+                                      res?.project_status === "completed"
+                                    ) {
+                                      handleProjectNameClick(res);
                                     }
                                     if (res?.project_status === "pending") {
                                       toast(
@@ -227,17 +259,19 @@ const CompletedPane = () => {
                               </div>
                             </div>
                             <div className="col-lg-3 col-md-6 d-flex align-items-center">
-                                  <div>
-                                    <h5>Status</h5>
-                                    <h4 style={{textTransform: 'capitalize'}}>{res?.project_status}</h4>
-                                  </div>
-                                </div>
-                                <div className="col-lg-3 col-md-6 d-flex align-items-center">
-                                  <div>
-                                    <h5>Total Budget</h5>
-                                    <h4>${res?.project_cost}</h4>
-                                  </div>
-                                </div>
+                              <div>
+                                <h5>Status</h5>
+                                <h4 style={{ textTransform: "capitalize" }}>
+                                  {res?.project_status}
+                                </h4>
+                              </div>
+                            </div>
+                            <div className="col-lg-3 col-md-6 d-flex align-items-center">
+                              <div>
+                                <h5>Total Budget</h5>
+                                <h4>${res?.project_cost}</h4>
+                              </div>
+                            </div>
                             <div className="col-lg-3 col-md-6 d-flex align-items-center">
                               <div>
                                 <h5>Area</h5>
@@ -251,13 +285,15 @@ const CompletedPane = () => {
                           style={{ minHeight: "600px" }}
                           className="d-grid align-items-center"
                         >
-                          <span className="h4 text-center">No Completed Projects To Show</span>
+                          <span className="h4 text-center">
+                            No Completed Projects To Show
+                          </span>
                         </div>
-                      ))}
+                      )}
                     </div>
                     {completedProject?.final_data?.length ? (
-                      completedProject?.total_data > 5 ?
-                        (<Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                      completedProject?.total_data > 5 ? (
+                        <Pagination className="ps-5 paginationBoxProfessionalDashboard">
                           <Pagination.First
                             onClick={() => {
                               setCompletedProjectPageId({
@@ -297,7 +333,7 @@ const CompletedPane = () => {
                                 ...prev,
                                 page:
                                   completedProjectArray?.length !==
-                                    completedProjectPageId?.page
+                                  completedProjectPageId?.page
                                     ? completedProjectPageId?.page + 1
                                     : completedProjectPageId?.page,
                               }));
@@ -311,7 +347,8 @@ const CompletedPane = () => {
                               }));
                             }}
                           />
-                        </Pagination>) : null
+                        </Pagination>
+                      ) : null
                     ) : (
                       ""
                     )}
@@ -330,7 +367,7 @@ const CompletedPane = () => {
                     toastStyle={{ backgroundColor: "red", color: "white" }}
                   />
                 </main>
-              }
+              )}
             </div>
           </div>
         </div>

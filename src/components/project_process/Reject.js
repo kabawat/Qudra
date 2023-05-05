@@ -1,8 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Header2 } from "../Header";
 import styled from "styled-components";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 const Wrapper = styled.div`
   .mileStoneDate {
@@ -60,7 +59,7 @@ const Reject = ({ location }) => {
     } else {
       navigate("/select-sign-in");
     }
-  }, []);
+  }, [cookies, navigate]);
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
@@ -120,14 +119,14 @@ const Reject = ({ location }) => {
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.area}
+                          {location?.state?.projectData?.area} sq meter
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">4</div>
                         <h5>Estimated Budget:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_cost}
+                          $ {location?.state?.projectData?.project_cost}
                         </p>
                       </div>
                     </div>
@@ -135,7 +134,10 @@ const Reject = ({ location }) => {
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">5</div>
                         <h5>Project Status:</h5>
-                        <p className="m-0 ms-3">
+                        <p
+                          className="m-0 ms-3"
+                          style={{ textTransform: "capitalize" }}
+                        >
                           {location?.state?.projectData?.project_status}
                         </p>
                       </div>

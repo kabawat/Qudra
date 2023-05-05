@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Pagination from "react-bootstrap/Pagination";
 import Rating from "@mui/material/Rating";
 import { IoFilterOutline } from "react-icons/io5";
+import { FaSearch } from "react-icons/fa";
 import { MultiSelect } from "react-multi-select-component";
 import { Formik, Form } from "formik";
 import "swiper/css/thumbs";
@@ -277,10 +278,10 @@ const BrowsePane = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <ClientDashboardAside />
             </div>
-            <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {isRender ? (
                 <main className="dashboard-main">
@@ -318,7 +319,11 @@ const BrowsePane = () => {
                           <div className="col-lg-8 px-0">
                             <div className="d-flex">
                               <input
-                                type="text"
+                                type={
+                                  filterProject === "price_range"
+                                    ? "number"
+                                    : "text"
+                                }
                                 value={browserProfessionalSearchInput}
                                 onInput={(e) => {
                                   setBrowserProfessionalSearchInput(
@@ -343,6 +348,10 @@ const BrowsePane = () => {
                                 }...`}
                                 className="form-control my-4"
                               />
+
+                              <button type="submit" className="mx-2 my-4">
+                                <FaSearch color="#fff" />
+                              </button>
                               <div className="position-relative d-flex justify-content-center align-items-center ms-5">
                                 <IoFilterOutline style={{ fontSize: "30px" }} />
                                 <select
@@ -360,20 +369,18 @@ const BrowsePane = () => {
                                     left: "0",
                                   }}
                                 >
-                                  <option value="sub_category">Category</option>
-                                  <option value="nation">Country</option>
-                                  <option value="price_range">Price</option>
+                                  <option value="sub_category" className="my-2">
+                                    Category
+                                  </option>
+                                  <option value="nation" className="my-2">
+                                    Country
+                                  </option>
+                                  <option value="price_range" className="my-2">
+                                    Price
+                                  </option>
                                 </select>
                               </div>
                             </div>
-
-                            <button type="submit">
-                              Search{" "}
-                              <img
-                                src="./static/images/arrow-white.png"
-                                alt=""
-                              />
-                            </button>
                           </div>
                           <div className="col-lg-4">
                             <button
@@ -421,6 +428,18 @@ const BrowsePane = () => {
                                           alt={res?.projects}
                                         />
                                         {res?.projects}+ Projects Done
+                                      </span>
+                                      <span style={{ fontWeight: "600" }}>
+                                        Minimum Rate Per sq.mtr :
+                                        <b
+                                          style={{
+                                            fontSize: "18px",
+                                            marginLeft: "4px",
+                                          }}
+                                        >
+                                          {" "}
+                                          $ {res?.price_range}
+                                        </b>
                                       </span>
                                     </div>
                                   </div>

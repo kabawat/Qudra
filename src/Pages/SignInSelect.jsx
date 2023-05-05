@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
@@ -6,20 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Header3 } from "../components/Header";
 import { welcomeImg } from "../components/images";
 import Loader from "../components/Loader";
-import Global from "../context/Global";
-const aStyle = {
-  color: "white",
-  textDecoration: "none",
-};
-const bStyle = {
-  color: "#01a78a",
-  backgroundColor: "",
-  textDecoration: "none",
-};
-
+import HeroesSection1 from "../components/HeroesSection1";
 const SignInSelect = () => {
   const navigate = useNavigate();
-  const contextData = useContext(Global);
   const [cookies] = useCookies();
   const [isRender, setIsRender] = useState(false);
   useEffect(() => {
@@ -40,45 +28,22 @@ const SignInSelect = () => {
     } else {
       setIsRender(true);
     }
+  }, [cookies]);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/heroes.js";
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
-
-  // useEffect(() => {
-  //   const user_data = cookies?.user_data;
-  //   if (user_data) {
-  //     axios
-  //       .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-  //         ...user_data,
-  //       })
-  //       .then((res) => {
-  //         contextData?.dispatch({
-  //           type: "FETCH_PROFILE_DATA",
-  //           value: res?.data?.data,
-  //         });
-
-  //         contextData?.dispatch({
-  //           type: "FETCH_USER_DATA",
-  //           value: user_data,
-  //         });
-  //         if (res?.data?.data?.category_selected === false) {
-  //           navigate("/categoryArchitecture");
-  //         } else {
-  //           if (res?.data?.data?.role === "client") {
-  //             contextData.setShowDisclamer(true);
-  //             navigate("/", { replace: true });
-  //           } else {
-  //             contextData.setShowDisclamer(true);
-  //             navigate("/", { replace: true });
-  //           }
-  //         }
-  //       });
-  //   }
-  // }, []);
 
   return isRender ? (
     <>
       <div className="create-account let-get-started">
-        <Header3 />
-        <div className="join-us-now-main d-md-flex align-items-center">
+        <Header3 navColor="black" />
+        <HeroesSection1 />
+        <div className="join-us-now-main d-md-flex align-items-center newJoin">
           <div className="join-us-now-text ms-auto d-flex justify-content-center align-items-center flex-column">
             <h3>Let's Get Started</h3>
             <h1 className="py-md-4">Sign In</h1>

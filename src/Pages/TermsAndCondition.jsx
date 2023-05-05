@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 
   .term_content h5 {
     font-size: 22px;
-    font-weight: 100;
+    font-weight: 700;
     color: black;
     padding-left: 12px;
   }

@@ -35,7 +35,6 @@ const BuyDesign = ({ setBuyDesigns }) => {
         })
         .then((res) => {
           if (res?.data?.status === "Success") {
-            console.log(res?.data);
             setPurchaseDesigns(res?.data?.data);
             setLoading(false);
           } else {
@@ -87,7 +86,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
         <div>
           <div className="row  pt-5 g-3">
             {purchaseDesigns?.final_data?.length &&
-              purchaseDesigns?.final_data?.map((res, index, key) => {
+              purchaseDesigns?.final_data?.map((res, i, key) => {
                 return res.image?.map((it, index) => {
                   return (
                     <div className="col-xl-3 col-md-6   my-3" key={index}>
@@ -176,7 +175,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                                   professional_id: res?.professional_id,
                                   sub_category_id: res?.sub_category_id,
                                   sub_category_name: res?.sub_category_name,
-
+                                  customize_price: res?.customize_price[i],
                                   project_cost: res?.price[index],
                                   video: `${purchaseDesigns?.video_url}${res?.video[index]}`,
                                   image: `${purchaseDesigns?.image_url}${it}`,

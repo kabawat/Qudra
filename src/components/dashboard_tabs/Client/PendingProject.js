@@ -4,12 +4,11 @@ import Global from "../../../context/Global";
 import { useNavigate } from "react-router-dom";
 import { CiLocationOn } from "react-icons/ci";
 import Pagination from "react-bootstrap/Pagination";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "../../Footer";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
-import Loader from "../../Loader";
 import { useCookies } from "react-cookie";
 import { BsSearch } from "react-icons/bs";
 import { Backdrop, CircularProgress } from "@mui/material";
@@ -168,10 +167,10 @@ const PendingProject = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <ClientDashboardAside />
             </div>
-            <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {!isRender ? (
                 <Backdrop
@@ -207,7 +206,7 @@ const PendingProject = () => {
                                     searchData();
                                   }
                                 }}
-                                placeholder="Search..."
+                                placeholder="Search via project name and professional name"
                               />
                               <button type="submit">
                                 <BsSearch />
@@ -217,8 +216,11 @@ const PendingProject = () => {
                         </div>
                       ) : (
                         <div
-                          style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center align-items-center"
+                          style={{
+                            minHeight: "600px",
+                            display: "grid",
+                            placeItems: "center",
+                          }}
                         >
                           <span className="h4">
                             No Pending Projects To Show
@@ -265,7 +267,6 @@ const PendingProject = () => {
                                     });
                                   }}
                                 >
-                                  {console.log(res?.professional_id)}
                                   {res?.professional_name}
                                 </h4>
                                 <h6>

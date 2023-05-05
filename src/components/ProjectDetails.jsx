@@ -8,35 +8,35 @@ import FromClientTabPane from "./project_process/FromClientTabPane";
 import FromProfessionalTabPane from "./project_process/FromProfessionalTabPane";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
-import Loader from '../components/Loader'
+import Loader from "../components/Loader";
 const ProjectDetails = () => {
-  const [cookies] = useCookies()
+  const [cookies] = useCookies();
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [isRender, setIsRender] = useState(false)
+  const [isRender, setIsRender] = useState(false);
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (location.state !== null) {
-          setIsRender(true)
+          setIsRender(true);
         } else {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         }
       } else {
-        if (cookies?.user_data?.role === 'professional') {
-          navigate('/categoryArchitecture')
+        if (cookies?.user_data?.role === "professional") {
+          navigate("/categoryArchitecture");
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [])
+  }, []);
 
-  return (
-    isRender ? <>
+  return isRender ? (
+    <>
       {location?.state?.isFromDashboard && (
         <ViewMilestones location={location} />
       )}
@@ -49,13 +49,16 @@ const ProjectDetails = () => {
       )}
       {location?.state?.isFromClientTab && (
         <FromClientTabPane location={location} />
+
         // <ClientProcess location={location} />
       )}
       {location?.state?.isFromProfessionalTab && (
         <FromProfessionalTabPane location={location} />
       )}
-    </> : <Loader />
-  )
+    </>
+  ) : (
+    <Loader />
+  );
 };
 
 export default ProjectDetails;

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import Loader from "../../components/Loader";
 import { Header2 } from "../../components/Header";
-import { ImCross } from "react-icons/im";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -1160,8 +1160,6 @@ const SetUp = () => {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       // event.preventDefault();
-
-      console.log("Enter key pressed");
     }
   };
 
@@ -1362,7 +1360,6 @@ const SetUp = () => {
                   }}
                   validationSchema={SetUpSchema}
                   onSubmit={(values, { setSubmitting }) => {
-                    //
                     if (!filePic) {
                       setprofileerr("block");
                       // return false;
@@ -1429,13 +1426,12 @@ const SetUp = () => {
                                     certificate
                                   );
 
-                                  axios
-                                    .post(
-                                      "http://13.52.16.160:8082/identity/professional_certificate",
-                                      userCertificate
-                                    )
-                                    .then((res) => console.log(""))
-                                    .catch((err) => console.log(err));
+                                  axios.post(
+                                    "http://13.52.16.160:8082/identity/professional_certificate",
+                                    userCertificate
+                                  );
+                                  // .then((res) => console.log(""))
+                                  // .catch((err) => console.log(err));
 
                                   if (respo?.data?.status === "Success") {
                                     contextData?.dispatch({
@@ -1620,6 +1616,11 @@ const SetUp = () => {
                             ) : (
                               ""
                             )}
+                            {verifyButtonText === "Verify" ? (
+                              <span style={{ color: "red" }}>
+                                Please verify Email
+                              </span>
+                            ) : null}
                           </div>
                           <div className={otpdisplay}>
                             <span style={{ color: "red" }}>
@@ -1704,7 +1705,7 @@ const SetUp = () => {
                               setdisply("block");
                             }}
                             flags={false}
-                            placeholder="select country"
+                            placeholder="Select country"
                             name="nation"
                           />
                           <ErrorMessage
@@ -2005,7 +2006,7 @@ const SetUp = () => {
                                     zIndex: "88888",
                                   }}
                                 >
-                                  <ImCross className="text-danger" />
+                                  <AiOutlineCloseCircle />
                                 </span>
                               )}
                               <div className="other-education">
@@ -2108,32 +2109,27 @@ const SetUp = () => {
                       </div>
 
                       <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
-                        {verifyButtonText === "Verify" ? (
-                          <button
-                            type="button"
-                            className="create-account-btn"
-                            onClick={() => {
-                              toast.error("Must Verify Email First !", {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "colored",
-                              });
-                            }}
-                          >
-                            Continue
-                            <i className="fa-solid  fa-arrow-right-long ms-3"></i>
-                          </button>
-                        ) : (
-                          <button type="submit" className="create-account-btn">
-                            Continue
-                            <i className="fa-solid  fa-arrow-right-long ms-3"></i>
-                          </button>
-                        )}
+                        <button
+                          type="submit"
+                          className="create-account-btn"
+                          onClick={() => {
+                            if (!filePic) {
+                              setprofileerr("block");
+                              // return false;
+                            }
+                            if (!filePic2) {
+                              setBackImgErr("block");
+                              // return false;
+                            }
+                            if (!certificate) {
+                              setCerErr("block");
+                              // return false;
+                            }
+                          }}
+                        >
+                          Continue
+                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                        </button>
                       </div>
                     </Form>
                   )}

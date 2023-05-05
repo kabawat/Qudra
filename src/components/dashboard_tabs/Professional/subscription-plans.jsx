@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import Global from "../../../context/Global";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
@@ -241,10 +240,10 @@ const SubscriptionPlane = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-2 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-10 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {!loading ? (
                 <Backdrop
@@ -265,8 +264,8 @@ const SubscriptionPlane = () => {
                     <h2 className="ps-5">Subscription Plans</h2>
                     <div className="m-0 m-md-5 shadow">
                       <div className="row mx-0">
-                        <div className="col-md-5 plan-bg">
-                          <ul className="plan-box-tab d-flex mb-0 list-unstyled">
+                        <div className="col-xl-5 plan-bg">
+                          <ul className="plan-box-tab d-flex mb-0 list-unstyled listSkS">
                             <li>
                               <button
                                 className={
@@ -294,7 +293,7 @@ const SubscriptionPlane = () => {
                           </ul>
                           {/* <p className="mb-0">*Save up to 27% when you pay annually</p> */}
                         </div>
-                        <div className="col-md-7 px-0">
+                        <div className="col-xl-7 px-0">
                           <div className="heading border-bottom">
                             <ul className="list-unstyled pl-0 mb-0 d-flex">
                               <li>Basic</li>
@@ -324,11 +323,11 @@ const SubscriptionPlane = () => {
                         </div>
                       </div>
                       <div className="row fetures align-items-center mx-0">
-                        <div className="col-md-5">
+                        <div className="col-xl-5">
                           <p>Feature</p>
                         </div>
-                        <div className="col-md-7 px-0">
-                          <ul className="d-flex mb-0 list-unstyled">
+                        <div className="col-xl-7 px-0">
+                          <ul className="d-flex mb-0 list-unstyled listSkS">
                             <li>
                               {plansList[0].id === currentPlans ? (
                                 <div className="d-flex">
@@ -338,12 +337,12 @@ const SubscriptionPlane = () => {
                                 </div>
                               ) : (
                                 <button
-                                  className="buy-now-btn"
+                                  className="buy-now-btn-active"
                                   onClick={() => {
                                     handlePayment(plansList[0]);
                                   }}
                                 >
-                                  Buy
+                                  Active
                                 </button>
                               )}
                             </li>
@@ -382,7 +381,6 @@ const SubscriptionPlane = () => {
                                 </button>
                               )}
                             </li>
-                            {console.log(currentPlans)}
                             <li>
                               {plansList[2].id === currentPlans ? (
                                 <div className="d-flex">
@@ -400,7 +398,8 @@ const SubscriptionPlane = () => {
                                     <button
                                       className="buy-now-btn-cancel"
                                       style={{ marginLeft: "3px" }}
-                                      onClick={handalCencel}
+                                      // onClick={handalCencel}
+                                      onClick={cancel_subscription}
                                     >
                                       Cancel
                                     </button>
@@ -422,14 +421,14 @@ const SubscriptionPlane = () => {
                       </div>
 
                       <div className="row fetures2 py-3 align-items-center mx-0">
-                        <div className="col-md-5 d-flex flex-column">
+                        <div className="col-xl-5 d-flex flex-column">
                           <p>Storage</p>
                           <small>
                             User can upload their works upto specified storage
                           </small>
                         </div>
-                        <div className="col-md-7 px-0">
-                          <ul className="d-flex mb-0 list-unstyled">
+                        <div className="col-xl-7 px-0">
+                          <ul className="d-flex mb-0 list-unstyled listSkS">
                             <li>
                               <p className="ms-0">{plansList[0]?.storage} GB</p>
                             </li>
@@ -444,15 +443,15 @@ const SubscriptionPlane = () => {
                       </div>
 
                       <div className="row fetures py-3 align-items-center mx-0">
-                        <div className="col-md-5 d-flex flex-column">
+                        <div className="col-xl-5 d-flex flex-column">
                           <p>Services Charges</p>
                           <small>
                             We charge a nominal fee for our services on every
                             paid invoice
                           </small>
                         </div>
-                        <div className="col-md-7 px-0">
-                          <ul className="d-flex mb-0 list-unstyled">
+                        <div className="col-xl-7 px-0">
+                          <ul className="d-flex mb-0 list-unstyled listSkS">
                             <li>
                               <p className="ms-0">
                                 {plansList[0]?.service_charge}%
@@ -473,15 +472,15 @@ const SubscriptionPlane = () => {
                       </div>
 
                       <div className="row fetures2 py-3 align-items-center mx-0">
-                        <div className="col-md-5 d-flex flex-column">
+                        <div className="col-xl-5 d-flex flex-column">
                           <p>Search Boost</p>
                           <small>
                             This feature helps your profile rank higher on the
                             search results
                           </small>
                         </div>
-                        <div className="col-md-7 px-0">
-                          <ul className="d-flex mb-0 list-unstyled">
+                        <div className="col-xl-7 px-0">
+                          <ul className="d-flex mb-0 list-unstyled listSkS">
                             <li>
                               <p className="ms-0">Not enable </p>
                             </li>
@@ -500,12 +499,12 @@ const SubscriptionPlane = () => {
                       </div>
 
                       <div className="row fetures py-3 align-items-center mx-0">
-                        <div className="col-md-5 d-flex flex-column">
+                        <div className="col-xl-5 d-flex flex-column">
                           <p>Find Jobs</p>
                           <small>Search for jobs in your category</small>
                         </div>
-                        <div className="col-md-7 px-0">
-                          <ul className="d-flex mb-0 list-unstyled">
+                        <div className="col-xl-7 px-0">
+                          <ul className="d-flex mb-0 list-unstyled listSkS">
                             <li>
                               <p className="ms-0">Enable</p>
                             </li>

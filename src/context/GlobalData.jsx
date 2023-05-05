@@ -67,29 +67,31 @@ const reducer = (state, action) => {
 
 const GlobalData = (props) => {
   const [contextData, dispatch] = useReducer(reducer, initialState);
-  const [cookies, , removeCookie] = useCookies()
+  const [cookies, , removeCookie] = useCookies();
   const [showDisclamer, setShowDisclamer] = useState();
 
   useEffect(() => {
     if (cookies?.user_data) {
-      axios.put('http://13.52.16.160:8082/stripe/professionl/verify-account/', {
-        professioanl_id: cookies?.user_data?.user_id,
-        professioanl_token: cookies?.user_data?.user_token
-      }).then((result) => {
-        if (result?.data?.status === "Failed") {
-          dispatch({
-            type: "VERIFIED",
-            value: false,
-          })
-        } else {
-          dispatch({
-            type: "VERIFIED",
-            value: true,
-          })
-        }
-      })
+      axios
+        .put("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+          professioanl_id: cookies?.user_data?.user_id,
+          professioanl_token: cookies?.user_data?.user_token,
+        })
+        .then((result) => {
+          if (result?.data?.status === "Failed") {
+            dispatch({
+              type: "VERIFIED",
+              value: false,
+            });
+          } else {
+            dispatch({
+              type: "VERIFIED",
+              value: true,
+            });
+          }
+        });
     }
-  }, [contextData?.verified])
+  }, [contextData?.verified, cookies]);
 
   useEffect(() => {
     if (!contextData?.userData) {
@@ -99,20 +101,23 @@ const GlobalData = (props) => {
       });
     }
     if (!contextData?.profileData) {
-      axios.post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-        ...cookies?.user_data
-      }).then((res) => {
-        if (res.data.status === "Success") {
-          dispatch({
-            type: "FETCH_PROFILE_DATA",
-            value: res?.data?.data,
-          });
-        } else {
-          removeCookie('user_data')
-        }
-      }).catch(error => {
-        removeCookie('user_data')
-      })
+      axios
+        .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+          ...cookies?.user_data,
+        })
+        .then((res) => {
+          if (res.data.status === "Success") {
+            dispatch({
+              type: "FETCH_PROFILE_DATA",
+              value: res?.data?.data,
+            });
+          } else {
+            removeCookie("user_data");
+          }
+        })
+        .catch((error) => {
+          removeCookie("user_data");
+        });
     }
   }, [contextData?.profileData, contextData?.showDisclamer]);
   const skillsOpt = [
@@ -195,28 +200,32 @@ const GlobalData = (props) => {
   const [unreadNotification, setUnreadNotification] = useState(null);
   useEffect(() => {
     const bringnotificationCount = () => {
-      axios.post("http://13.52.16.160:8082/identity/unread_notification_count", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-      }).then((res) => {
-        if (res?.data?.status === "Success") {
-          setUnreadNotification(res?.data?.data?.unread_count);
-        }
-      });
+      axios
+        .post("http://13.52.16.160:8082/identity/unread_notification_count", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setUnreadNotification(res?.data?.data?.unread_count);
+          }
+        });
     };
     contextData?.userData && bringnotificationCount();
   }, [contextData?.userData]);
   const [unreadChatCount, setUnreadChatCount] = useState(null);
   useEffect(() => {
     contextData?.userData &&
-      axios.post("http://13.52.16.160:8082/chat/unread_message_count", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-      }).then((res) => {
-        setUnreadChatCount(res?.data?.data?.unread_count);
-      });
+      axios
+        .post("http://13.52.16.160:8082/chat/unread_message_count", {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+        })
+        .then((res) => {
+          setUnreadChatCount(res?.data?.data?.unread_count);
+        });
   }, [contextData?.userData]);
 
   const [notification, setNotification] = useState([]);

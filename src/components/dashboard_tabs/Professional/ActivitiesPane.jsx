@@ -172,10 +172,10 @@ const ActivitiesPane = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-2 col-lg-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <Dashboardside />
             </div>
-            <div className="col-xxl-10 col-md-10 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one  dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {!loading ? (
                 <Backdrop
@@ -193,7 +193,7 @@ const ActivitiesPane = () => {
                     id="myactivity"
                     className="container-fluid  myProjectTable"
                   >
-                    <h2 className="ps-5"></h2>
+                    <h2 className="ps-5">Running Projects</h2>
                     <div className="m-xl-5 shadow">
                       {searchProject?.final_data.length ||
                       myProject?.final_data?.length ? (

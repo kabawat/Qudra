@@ -7,11 +7,11 @@ import useWindowSize from "../../Hooks/useWindowSize";
 import ReactLotti3 from "../../loader/ReactLottie3";
 import { useState } from "react";
 const ClientProcess = ({ location }) => {
-  console.log(location);
   const navigate = useNavigate();
   const windowSize = useWindowSize();
   const contextData = useContext(Global);
   const [loader, setloader] = useState(false);
+  const [descshowless, setdescshowless] = useState(false);
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
@@ -85,14 +85,14 @@ const ClientProcess = ({ location }) => {
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.area}
+                          {location?.state?.projectData?.area} sq meter
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">4</div>
                         <h5>Estimated Budget:</h5>
                         <p className="m-0 ms-3">
-                          {location?.state?.projectData?.project_cost}
+                          $ {location?.state?.projectData?.project_cost}
                         </p>
                       </div>
                     </div>
@@ -115,44 +115,192 @@ const ClientProcess = ({ location }) => {
                         </p>
                       </div>
                     </div>
+                    <div className="row">
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">7</div>
+                        <h5>Project File:</h5>
+                        <a
+                          href={location?.state?.projectData?.project_status}
+                          download={
+                            location?.state?.projectData?.project_status
+                          }
+                          target="_new"
+                        >
+                          View File
+                        </a>
+                      </div>
+                      <div className="col-xxl d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">8</div>
+                        <h5> Work Assigned:</h5>
+                        <p className="m-0 ms-3">
+                          {location?.state?.projectData?.work_assigned}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-xxl-12 d-flex align-items-center my-3 align-items-center">
+                        <div className="project-details">5</div>
+                        <h5>Project Description: </h5>
+                      </div>
+                      <div>
+                        {descshowless === "projectdescription" ? (
+                          <p
+                            className="m-0 ms-3 d-block"
+                            style={{ textTransform: "capitalize" }}
+                          >
+                            {location?.state?.projectData?.description} <br />
+                            {location?.state?.projectData?.description.length <
+                            200 ? null : (
+                              <span
+                                style={{
+                                  marginTop: "10px",
+                                  cursor: "pointer",
+                                  textDecoration: "underline",
+
+                                  color: "#01a78a",
+                                  // backgroundColor: "#0F9E83",
+                                }}
+                                onClick={(e) => {
+                                  setdescshowless("");
+                                }}
+                              >
+                                show less
+                              </span>
+                            )}
+                          </p>
+                        ) : (
+                          <p
+                            className="m-0 ms-3"
+                            style={{ textTransform: "capitalize" }}
+                          >
+                            {location?.state?.projectData?.description.slice(
+                              0,
+                              199
+                            )}{" "}
+                            <br />
+                            {location?.state?.projectData?.description.length <
+                            200 ? null : (
+                              <span
+                                style={{
+                                  marginTop: "10px",
+                                  cursor: "pointer",
+                                  textDecoration: "underline",
+
+                                  color: "#01a78a",
+                                  // backgroundColor: "#0F9E83",
+                                }}
+                                onClick={(e) => {
+                                  setdescshowless("projectdescription");
+                                }}
+                              >
+                                show more
+                              </span>
+                            )}
+                          </p>
+                        )}
+                        {/* <p
+                          className="m-0 ms-3"
+                          style={ { textTransform: "capitalize" } }
+                        >
+
+                          { location?.state?.projectData?.description.slice( 0, 199 ) }{ location?.state?.projectData?.description.length < 200 ? null : <button onClick={ ( e ) => {
+                            setdescshowless( "projectdescription" )
+                          } }></button> }
+                        </p> */}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>
               <section className="projectMilestoneInfo">
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
-                {location?.state?.milesStoneData?.map((res) => (
+                {location?.state?.milesStoneData?.map((res, i) => (
                   <div>
                     <div className="milestoneBox row">
                       <div className="col-3">
                         {" "}
+                        <p style={{ fontWeight: "600" }}>Name</p>
                         <p>{res?.milestone_name}</p>
                       </div>
 
                       <div className="col-3">
                         {" "}
-                        <p>{res?.milestone_amount_percent} %</p>
+                        <p style={{ fontWeight: "600" }}>Cost%</p>
+                        <p>{res?.milestone_amount_percent}</p>
                       </div>
-
                       <div className="col-3">
                         {" "}
-                        <a href={res?.milestone_attachment} download>
+                        <p style={{ fontWeight: "600" }}>Date</p>
+                        <p
+                          // className="prewviewButton "
+                          style={{ top: "0" }}
+                        >
+                          {res?.milestone_date}
+                        </p>
+                      </div>
+                      <div className="col-3 d-flex justify-content-end">
+                        {" "}
+                        <a
+                          className="viesfilea"
+                          href={res?.milestone_attachment}
+                          download
+                        >
                           {" "}
                           View File
                         </a>
                       </div>
-                      <div className="col-3">
-                        {" "}
-                        <button
-                          className="prewviewButton "
-                          style={{ top: "0" }}
+
+                      <div className="row">
+                        <p
+                          className="col-12"
+                          style={{ fontWeight: "600", marginTop: "20px" }}
                         >
-                          {res?.milestone_date}
-                        </button>
+                          Milestone Description:
+                        </p>
+                        {descshowless === i + 1 ? (
+                          <p>
+                            {res?.milestone_description}
+                            <span
+                              id={i + 1}
+                              style={{
+                                marginTop: "10px",
+                                cursor: "pointer",
+                                textDecoration: "underline",
+
+                                color: "#01a78a",
+                                // backgroundColor: "#0F9E83",
+                              }}
+                              onClick={(e) => {
+                                setdescshowless("");
+                              }}
+                            >
+                              show less
+                            </span>
+                          </p>
+                        ) : (
+                          <p>
+                            {res?.milestone_description.slice(0, 199)}{" "}
+                            {res?.milestone_description.length < 200 ? null : (
+                              <span
+                                id={i + 1}
+                                style={{
+                                  marginTop: "10px",
+                                  cursor: "pointer",
+                                  textDecoration: "underline",
+
+                                  color: "#01a78a",
+                                  // backgroundColor: "#0F9E83",
+                                }}
+                                onClick={(e) => {
+                                  setdescshowless(parseInt(e.target.id));
+                                }}
+                              >
+                                show more
+                              </span>
+                            )}
+                          </p>
+                        )}
                       </div>
-                    </div>
-                    <div className="row">
-                      <p className="mb-0">Milestone Description:-</p>
-                      <p>{res?.milestone_description}</p>
                     </div>
                   </div>
                 ))}
@@ -180,6 +328,7 @@ const ClientProcess = ({ location }) => {
                   </div>
                   <div className="col-sm">
                     <button
+                      disabled={loader ? true : false}
                       onClick={() => {
                         handleClientDecesion("approved");
                       }}
@@ -196,7 +345,6 @@ const ClientProcess = ({ location }) => {
                       }`}
                     >
                       {loader ? <ReactLotti3 /> : "Approve"}
-                      <i className="fa-solid  fa-arrow-right-long ms-3"></i>
                     </button>
                   </div>
                 </div>

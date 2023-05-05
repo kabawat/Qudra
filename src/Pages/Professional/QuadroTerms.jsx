@@ -71,14 +71,27 @@ const QuadroTerms = () => {
                       <div
                         className={`row ${index === 0 ? "pt-md-5" : ""}`}
                         key={index}
+                        style={{ cursor: "default" }}
                       >
-                        <div className="col-md my-md-3 my-1">
-                          <div className="create-account-input">
-                            <div className="policy-span">
+                        <div
+                          className="col-md my-md-3 my-1"
+                          style={{ cursor: "default" }}
+                        >
+                          <div
+                            className="create-account-input"
+                            style={{ cursor: "default" }}
+                          >
+                            <div
+                              className="policy-span"
+                              style={{ cursor: "default" }}
+                            >
                               <img
                                 src="/static/images/infoIcon.png"
                                 alt=""
-                                style={{ position: "static" }}
+                                style={{
+                                  position: "static",
+                                  cursor: "default",
+                                }}
                                 className="me-3"
                               />
                               {res.point}

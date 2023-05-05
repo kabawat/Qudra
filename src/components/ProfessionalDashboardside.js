@@ -1,12 +1,28 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { MdOutlineLiveHelp, MdSubscriptions } from "react-icons/md";
+import { MdSell } from "react-icons/md";
+
 import Global from "../context/Global";
 import { TbMessageReport } from "react-icons/tb";
+import axios from "axios";
 
 const Dashboardside = () => {
   const contextData = useContext(Global);
+  const [progressData, setProgressData] = useState([]);
+  useEffect(() => {
+    axios
+      .post(" http://13.52.16.160:8082/professional/progress_report/", {
+        user_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+      })
+      .then((res) => {
+        console.log(res);
+        setProgressData(res.data);
+      });
+  }, []);
+
   return (
     <>
       <aside>
@@ -32,35 +48,33 @@ const Dashboardside = () => {
         <input type="checkbox" name="" id="dash" />
         <div className="menu-cont">
           <div className="px-xxl-5 px-4 py-xxl-5 py-4 progress-bar-main">
-            <label htmlFor="progressbar-quality-of-work">Quality of Work</label>
-            <div className="progress">
-              <div
-                className="progress-bar"
-                role="progressbar"
-                style={{ width: "80%" }}
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
+            <div className="d-flex justify-content-between">
+              <label htmlFor="progressbar-quality-of-work">
+                Quality of Work
+              </label>
+              <span
+                style={{
+                  color: "#fff",
+                  marginLeft: "12%",
+                  fontWeight: "bolder",
+                }}
               >
-                <span>80%</span>
-              </div>
+                {progressData?.work_quality
+                  ? ` ${progressData?.work_quality}%`
+                  : `0%`}
+              </span>
             </div>
-            <label htmlFor="progressbar-quality-of-work">Inbox Response</label>
             <div className="progress">
               <div
                 className="progress-bar"
                 role="progressbar"
-                style={{ width: "80%" }}
+                style={{ width: `${progressData?.work_quality}%` }}
                 aria-valuenow="25"
                 aria-valuemin="0"
                 aria-valuemax="100"
-              >
-                <span>80%</span>
-              </div>
+              ></div>
             </div>
-            <label htmlFor="progressbar-quality-of-work">
-              Delivered on time
-            </label>
+            {/* <label htmlFor="progressbar-quality-of-work">Inbox Response</label>
             <div className="progress">
               <div
                 className="progress-bar"
@@ -72,21 +86,58 @@ const Dashboardside = () => {
               >
                 <span>80%</span>
               </div>
+            </div> */}
+            <div className="d-flex justify-content-between">
+              <label htmlFor="progressbar-quality-of-work">
+                Delivered on time
+              </label>
+              <span
+                style={{
+                  color: "#fff",
+                  marginLeft: "2%",
+                  fontWeight: "bolder",
+                }}
+              >
+                {progressData.deliver_percentage
+                  ? ` ${progressData?.deliver_percentage}%`
+                  : `0%`}
+              </span>
             </div>
-            <label htmlFor="progressbar-quality-of-work">
-              Order Completion
-            </label>
             <div className="progress">
               <div
                 className="progress-bar"
                 role="progressbar"
-                style={{ width: "80%" }}
+                style={{ width: `${progressData?.deliver_percentage}%` }}
                 aria-valuenow="25"
                 aria-valuemin="0"
                 aria-valuemax="100"
+              ></div>
+            </div>
+            <div className="d-flex justify-content-between">
+              <label htmlFor="progressbar-quality-of-work">
+                Order Completion
+              </label>{" "}
+              <span
+                style={{
+                  color: "#fff",
+                  marginLeft: "2%",
+                  fontWeight: "bolder",
+                }}
               >
-                <span>80%</span>
-              </div>
+                {progressData.order_completion
+                  ? ` ${progressData?.order_completion}%`
+                  : `0%`}
+              </span>
+            </div>
+            <div className="progress">
+              <div
+                className="progress-bar"
+                role="progressbar"
+                style={{ width: `${progressData?.order_completion}%` }}
+                aria-valuenow="25"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
             </div>
           </div>
           <ul
@@ -260,18 +311,18 @@ const Dashboardside = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className={`nav-link liked-btn`} to="/reports-tab">
-                <TbMessageReport
+              <NavLink className={`nav-link liked-btn`} to="/sold-design">
+                <MdSell
                   style={{
                     color: `${
-                      contextData?.current_professional_tab === "reports"
+                      contextData?.current_professional_tab === "sold_design"
                         ? "#00a78b"
                         : "white"
                     }`,
                     fontSize: "27px",
                   }}
                 />
-                <span className="mob-hide"> Reports</span>
+                <span className="mob-hide"> Sold Design</span>
               </NavLink>
             </li>
             <li className="nav-item">
@@ -305,7 +356,7 @@ const Dashboardside = () => {
 
             <li className="nav-item">
               <NavLink
-                className={`nav-link liked-btn`}
+                className={`nav-link liked-btn helpactive`}
                 to="/professional-guidelines"
               >
                 <MdOutlineLiveHelp
@@ -319,7 +370,6 @@ const Dashboardside = () => {
                   }}
                 />
                 <span className="mob-hide" style={{ marginLeft: "5px" }}>
-                  {" "}
                   Help
                 </span>
               </NavLink>

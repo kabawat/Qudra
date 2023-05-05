@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import Global from "../context/Global";
+import Rating from "@mui/material/Rating";
 import HomeServiceCard from "../components/Card/HomeServiceCard";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,6 +27,7 @@ import HeroesSection from "../components/HeroesSection";
 import axios, { AxiosError } from "axios";
 import { useCookies } from "react-cookie";
 import { Button, Modal } from "react-bootstrap";
+
 const options1 = {
   loop: false,
   margin: 10,
@@ -61,20 +63,16 @@ const options2 = {
 };
 
 const Home = () => {
+  const [topClients, setTopClients] = useState([]);
+  const [topEarners, setTopEarners] = useState([]);
+  const [recentEarners, setRecentEarners] = useState([]);
   const contextData = useContext(Global);
   const navigate = useNavigate();
   const [cookies] = useCookies();
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "/heroes.js";
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   // auth
   const [isRender, setIsRender] = useState(false);
+
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
@@ -89,39 +87,25 @@ const Home = () => {
     } else {
       setIsRender(true);
     }
-  }, []);
-
-  useEffect(() => {
-    const user_data = cookies?.user_data;
-    if (user_data) {
-      axios
-        .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
-          ...user_data,
-        })
-        .then((res) => {
-          contextData?.dispatch({
-            type: "FETCH_PROFILE_DATA",
-            value: res?.data?.data,
-          });
-
-          contextData?.dispatch({
-            type: "FETCH_USER_DATA",
-            value: user_data,
-          });
-
-          if (res?.data?.data?.category_selected === true) {
-            navigate("/");
-          } else {
-            if (user_data?.role === "client") {
-              contextData.setShowDisclamer(true);
-              navigate("/client-architechture");
-            } else {
-              contextData.setShowDisclamer(true);
-              navigate("/categoryArchitecture");
-            }
-          }
-        });
-    }
+    axios
+      .post("http://13.52.16.160:8082/quadra/show_top_client/")
+      .then((res) => {
+        setTopClients(res?.data?.data);
+      });
+    axios.post("http://13.52.16.160:8082/quadra/top_earners/").then((res) => {
+      setTopEarners(res?.data?.data);
+    });
+    axios
+      .post("http://13.52.16.160:8082/quadra/recent_professional_earners/")
+      .then((res) => {
+        setRecentEarners(res?.data?.data);
+      });
+    const script = document.createElement("script");
+    script.src = "/heroes.js";
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   const handleFindService = () => {
@@ -164,13 +148,13 @@ const Home = () => {
     }
   };
   const handleProfessionalServices = () => {
-    if (cookies?.user?.role === "client") {
+    if (contextData?.userData?.role === "client") {
       contextData?.dispatch({
         type: "CURRENT_CLIENT_TAB",
         value: "browse",
       });
       navigate("/clientdashboard");
-    } else if (cookies?.user?.role === "professional") {
+    } else if (contextData?.userData?.role === "professional") {
       toast.warn("Fistly Register With Client Profile !", {
         position: "top-right",
         autoClose: 2000,
@@ -188,13 +172,22 @@ const Home = () => {
 
   const [plansType, setPlansType] = useState("monthly");
   const [plans, setPlans] = useState();
-  useEffect(() => {
-    axios
-      .get("http://13.52.16.160:8082/stripe/subscription-plans/")
-      .then((responce) => {
-        setPlans(responce?.data?.data?.final_list);
+  const checkRole = (professional_id) => {
+    if (contextData?.userData?.role === "client") {
+      navigate(`/professionalprofile/${professional_id}`);
+    } else {
+      toast.warn("Fistly Register With Client Profile !", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
-  }, []);
+    }
+  };
 
   return isRender ? (
     <>
@@ -235,489 +228,131 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="Top_Earners">
-        <div className="container">
-          <div className="Top_Earners_Ineer">
-            <h2>Our Top Earners</h2>
-          </div>
-          <OwlCarousel
-            className="owl-carousel top-slider owl-theme"
-            {...options1}
-          >
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
+      {topEarners.length > 0 && (
+        <section className="Top_Earners">
+          <div className="container">
+            <div className="Top_Earners_Ineer">
+              <h2>Our Top Earners</h2>
+            </div>
+            <OwlCarousel
+              className="owl-carousel top-slider owl-theme"
+              {...options1}
+            >
+              {topEarners?.map((item, i) => {
+                return (
+                  <div className="item" key={i}>
+                    <div className="henry-section">
+                      <div className="henry-img">
+                        <img alt="" src={item.professional_image} />
+                        <div className="online"></div>
+                      </div>
 
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <div className="div">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star start-bg"></i>
-                    <span>4.8</span>
+                      <div className="henry-text">
+                        <h6>{item.professional_name}</h6>
+                        <span>
+                          <img alt="" src={projectImg} className="object-fit" />
+                          {item.total_projects} Projects done
+                        </span>
+                      </div>
+                    </div>
+                    <div className="add-hire">
+                      <div className="">
+                        <Rating
+                          name="read-only"
+                          value={parseInt(item?.ratings)}
+                          readOnly
+                        />
+                      </div>
+
+                      <div
+                        className="add-btn"
+                        onClick={() => {
+                          checkRole(item.professional_id);
+                          // NAVIGATING TO `/professionalprofile/${item.professional_id}`
+                        }}
+                      >
+                        <span>
+                          <button>
+                            Add/Hire
+                            <img
+                              alt=""
+                              src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
+                            />
+                          </button>
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={ourTeam} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </OwlCarousel>
-        </div>
-      </section>
-      <section className="Top_Earners Recent_Earners">
-        <div className="container">
-          <div className="Top_Earners_Ineer">
-            <h2>Recent Earners</h2>
-            {/* <!-- <h6>Fillter</h6> --> */}
+                );
+              })}
+            </OwlCarousel>
           </div>
-          <OwlCarousel
-            className="owl-carousel Recent_Earners_Owl  owl-theme"
-            {...options2}
-          >
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
+        </section>
+      )}
 
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
+      {recentEarners.length > 0 && (
+        <section className="Top_Earners Recent_Earners">
+          <div className="container">
+            <div className="Top_Earners_Ineer">
+              <h2>Recent Earners</h2>
+              {/* <!-- <h6>Fillter</h6> --> */}
             </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
+            <OwlCarousel
+              className="owl-carousel Recent_Earners_Owl  owl-theme"
+              {...options2}
+            >
+              {recentEarners?.map((item, i) => {
+                return (
+                  <div className="item">
+                    <div className="henry-section">
+                      <div className="henry-img">
+                        <img alt="" src={item.professional_image} />
+                        <div className="online"></div>
+                      </div>
 
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
+                      <div className="henry-text">
+                        <h6>{item.professional_name}</h6>
+                        <span>
+                          <img alt="" src={projectImg} className="object-fit" />
+                          {item.total_projects} Projects done
+                        </span>
+                      </div>
+                    </div>
+                    <div className="add-hire">
+                      <div className="">
+                        <Rating
+                          name="simple-controlled"
+                          value={parseInt(item?.ratings)}
+                          readOnly
+                        />
+                      </div>
+                      {/* <span>{item?.ratings}</span> */}
 
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="item">
-              <div className="henry-section">
-                <div className="henry-img">
-                  <img alt="" src={ourTeam} />
-                  <div className="online"></div>
-                </div>
-
-                <div className="henry-text">
-                  <h6>Henry Simatupang</h6>
-                  <span>
-                    <img alt="" src={projectImg} className="object-fit" />
-                    100+ Projects Done
-                  </span>
-                </div>
-              </div>
-              <div className="add-hire">
-                <div className="add-icon">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star start-bg"></i>
-                  <span>4.8</span>
-                </div>
-
-                <div className="add-btn">
-                  <Link to="/">
-                    <button>
-                      Add/Hire
-                      <img
-                        alt=""
-                        src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </OwlCarousel>
-        </div>
-      </section>
+                      <div
+                        className="add-btn"
+                        onClick={() => {
+                          checkRole(item.professional_id);
+                          // NAVIGATING TO `/professionalprofile/${item.professional_id}`
+                        }}
+                      >
+                        <span>
+                          <button>
+                            Add/Hire
+                            <img
+                              alt=""
+                              src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
+                            />
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </OwlCarousel>
+          </div>
+        </section>
+      )}
 
       <section className="our-top-clients-sec">
         <div className="container">
@@ -728,22 +363,29 @@ const Home = () => {
         <div className="container">
           <div>
             <div className="card-box-our-top-clients p-xl-5 p-2">
-              <div className="row p-2">
-                <div className="col-md card border-0 text-center">
-                  <img alt="" src={imgpsh1} />
-                  <h5 className="pt-4 pb-3 m-0">Jack Nicholson </h5>
-                  <p>Seo Manager</p>
-                </div>
-                <div className="col-md card border-0 text-center">
-                  <img alt="" src={imgpsh2} />
-                  <h5 className="pt-4 pb-3 m-0">Dwayne Johnson</h5>
-                  <p>Ui Designer</p>
-                </div>
-                <div className="col-md card border-0 text-center">
-                  <img alt="" src={imgpsh3} />
-                  <h5 className="pt-4 pb-3 m-0">Ryan Reynolds</h5>
-                  <p>Web Developer</p>
-                </div>
+              <div className="row p-2 card-box-our-top-clients-row">
+                {topClients?.map((item, i) => {
+                  return (
+                    <div className="col-md card border-0 text-center" key={i}>
+                      <img
+                        alt=""
+                        src={item.client_image}
+                        style={{
+                          aspectRatio: "3/3",
+                          borderRadius: "12px",
+                          boxShadow: "1px 1px #dedede",
+                        }}
+                      />
+                      <h5
+                        className="pt-4 pb-3 m-0"
+                        style={{ textTransform: "capitalize" }}
+                      >
+                        {item.client_name}{" "}
+                      </h5>
+                      <p>{item.nation}</p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

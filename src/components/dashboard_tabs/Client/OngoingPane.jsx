@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Global from "../../../context/Global";
 import { useNavigate } from "react-router-dom";
 import { CiLocationOn } from "react-icons/ci";
 import Pagination from "react-bootstrap/Pagination";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "../../Footer";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
-import Loader from "../../Loader";
 import { useCookies } from "react-cookie";
 import { BsSearch } from "react-icons/bs";
 import { Backdrop, CircularProgress } from "@mui/material";
@@ -17,7 +15,6 @@ import { Backdrop, CircularProgress } from "@mui/material";
 const OngoingPane = () => {
   const navigate = useNavigate();
   const [cookies] = useCookies();
-  const contextData = useContext(Global);
   const [noResult, setNoResult] = useState(false);
   const [searchActiveProject, setSearchActiveProject] = useState();
   const [onGoingProject, setOnGoingProject] = useState([]);
@@ -69,45 +66,64 @@ const OngoingPane = () => {
     onGoingProjectArray.push(i + 1);
   }
 
-  const handleClientAcceptation = (id, project_id, project_cost) => {
+  // const handleClientAcceptation = (payload) => {
+  //   axios
+  //     .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+  //       user_token: cookies?.user_data?.user_token,
+  //       role: cookies?.user_data?.role,
+  //       client_id: cookies?.user_data?.user_id,
+  //       project_id: payload?.project_id,
+  //     })
+  //     .then((res) => {
+  //       if (res?.data?.status === "Success") {
+  //         axios.post(
+  //           "http://13.52.16.160:8082/client/particular_project_details",
+  //           {
+  //             client_id: cookies?.user_data?.user_id,
+  //             user_token: cookies?.user_data?.user_token,
+  //             role: cookies?.user_data?.role,
+  //             project_id: project_id,
+  //           }
+  //         ).then((respo) => {
+  //           if (respo?.data?.status === "Success") {
+  //             if (id !== undefined) {
+  //               navigate("/project-details", {
+  //                 state: {
+  //                   projectDetails: { id, project_id },
+  //                   projectData: respo?.data?.data,
+  //                   milesStoneData: res?.data?.data,
+  //                   isFromClientTab: true,
+  //                   project_cost: project_cost,
+  //                 },
+  //               });
+  //             }
+  //           }
+  //         });
+  //       }
+  //     });
+  // };
+
+  const handleClientAcceptation = (payload) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-        professional_id: id,
-        project_id: project_id,
+        client_id: cookies?.user_data?.user_id,
+        project_id: payload?.project_id,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
-          axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: project_id,
-              }
-            )
-            .then((respo) => {
-              if (respo?.data?.status === "Success") {
-                if (id !== undefined) {
-                  navigate("/project-details", {
-                    state: {
-                      projectDetails: { id, project_id },
-                      projectData: respo?.data?.data,
-                      milesStoneData: res?.data?.data,
-                      isFromClientTab: true,
-                      project_cost: project_cost,
-                    },
-                  });
-                }
-              }
-            });
+          navigate("/project-details", {
+            state: {
+              projectData: payload,
+              milesStoneData: res?.data?.data,
+              isFromClientTab: true,
+            },
+          });
         }
       });
   };
+
   const handleFilterProject = (e) => {
     e.preventDefault();
     axios
@@ -148,10 +164,10 @@ const OngoingPane = () => {
       <div className="dashboard">
         <div className="container-fluid h-100">
           <div className="row h-100 dashboard-theme-color">
-            <div className="col-xxl-2 col-md-3 px-0 dashboard-theme-color">
+            <div className="col-xxl-2 col-md-3 col-lg-3 px-0 dashboard-theme-color">
               <ClientDashboardAside />
             </div>
-            <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
+            <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
               {!isRender ? (
                 <Backdrop
@@ -250,11 +266,7 @@ const OngoingPane = () => {
                                   style={{ textTransform: "capitalize" }}
                                   className="underline_hover"
                                   onClick={() => {
-                                    handleClientAcceptation(
-                                      res?.professional_id,
-                                      res?.project_id,
-                                      res?.project_cost
-                                    );
+                                    handleClientAcceptation(res);
                                   }}
                                 >
                                   {res?.project_name}
