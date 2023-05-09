@@ -66,43 +66,6 @@ const OngoingPane = () => {
     onGoingProjectArray.push(i + 1);
   }
 
-  // const handleClientAcceptation = (payload) => {
-  //   axios
-  //     .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-  //       user_token: cookies?.user_data?.user_token,
-  //       role: cookies?.user_data?.role,
-  //       client_id: cookies?.user_data?.user_id,
-  //       project_id: payload?.project_id,
-  //     })
-  //     .then((res) => {
-  //       if (res?.data?.status === "Success") {
-  //         axios.post(
-  //           "http://13.52.16.160:8082/client/particular_project_details",
-  //           {
-  //             client_id: cookies?.user_data?.user_id,
-  //             user_token: cookies?.user_data?.user_token,
-  //             role: cookies?.user_data?.role,
-  //             project_id: project_id,
-  //           }
-  //         ).then((respo) => {
-  //           if (respo?.data?.status === "Success") {
-  //             if (id !== undefined) {
-  //               navigate("/project-details", {
-  //                 state: {
-  //                   projectDetails: { id, project_id },
-  //                   projectData: respo?.data?.data,
-  //                   milesStoneData: res?.data?.data,
-  //                   isFromClientTab: true,
-  //                   project_cost: project_cost,
-  //                 },
-  //               });
-  //             }
-  //           }
-  //         });
-  //       }
-  //     });
-  // };
-
   const handleClientAcceptation = (payload) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
