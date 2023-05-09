@@ -10,7 +10,9 @@
   display: flex;
   align-items: center;
 }
-
+.choose-payment-button {
+  margin-bottom: 5%;
+}
 .checkout_data .right-profile-description h4 {
   font-size: 20px;
   font-weight: 600;

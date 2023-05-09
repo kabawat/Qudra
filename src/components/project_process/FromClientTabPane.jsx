@@ -19,7 +19,9 @@ const FromClientTabPane = ({ location }) => {
   const [submitLoader, setsubmitLoader] = useState(false);
   const [locations, setLoctions] = useState(location);
   const [projectDetaile, setProjectDetaile] = useState({});
-  // console.log(location);
+  const [descshowless, setdescshowless] = useState(false);
+
+  console.log(locations?.state);
   const navigate = useNavigate();
   useEffect(() => {
     axios
@@ -27,7 +29,6 @@ const FromClientTabPane = ({ location }) => {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-        professional_id: locations?.state?.projectData?.projectData,
         project_id: locations?.state?.projectData?.project_id,
       })
       .then((res) => {
@@ -47,10 +48,9 @@ const FromClientTabPane = ({ location }) => {
                 setProjectDetaile({ ...respo?.data?.data });
                 if (locations?.state?.projectDetails?.id !== undefined) {
                   const state = {
-                    projectDetails: locations?.state?.projectDetails,
                     projectData: respo?.data?.data,
                     milesStoneData: res?.data?.data,
-                    project_cost: locations?.state?.project_cost,
+                    isFromClientTab: true,
                   };
                   setLoctions({
                     ...locations,
@@ -216,7 +216,7 @@ const FromClientTabPane = ({ location }) => {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: "client",
-        project_id: curProject?.project_id,
+        project_id: locations?.state?.projectData?.project_id,
         milestone_id: curProject?.milestone_id,
       })
       .then((response) => {
@@ -236,7 +236,7 @@ const FromClientTabPane = ({ location }) => {
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
         professional_id: locations?.state?.projectDetails?.id,
-        project_id: locations?.state?.projectDetails?.project_id,
+        project_id: locations?.state?.projectData?.project_id,
       })
       .then((response) => {
         const data = response.data.data?.filter((item) => {
@@ -270,7 +270,7 @@ const FromClientTabPane = ({ location }) => {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: "client",
-        project_id: curProject?.project_id,
+        project_id: locations?.state?.projectData?.project_id,
         milestone_id: curProject?.milestone_id,
         status: "accepted",
       })
@@ -285,37 +285,20 @@ const FromClientTabPane = ({ location }) => {
                 user_token: cookies?.user_data?.user_token,
                 role: cookies?.user_data?.role,
                 professional_id: locations?.state?.projectDetails?.id,
-                project_id: locations?.state?.projectDetails?.project_id,
+                project_id: locations?.state?.projectData?.project_id,
               }
             )
             .then((res) => {
               if (res?.data?.status === "Success") {
-                axios
-                  .post(
-                    "http://13.52.16.160:8082/client/particular_project_details",
-                    {
-                      client_id: cookies?.user_data?.user_id,
-                      user_token: cookies?.user_data?.user_token,
-                      role: cookies?.user_data?.role,
-                      project_id: locations?.state?.projectDetails?.project_id,
-                    }
-                  )
-                  .then((respo) => {
-                    if (respo?.data?.status === "Success") {
-                      if (locations?.state?.projectDetails?.id !== undefined) {
-                        const state = {
-                          projectDetails: locations?.state?.projectDetails,
-                          projectData: respo?.data?.data,
-                          milesStoneData: res?.data?.data,
-                          project_cost: locations?.state?.project_cost,
-                        };
-                        setLoctions({
-                          ...locations,
-                          state: state,
-                        });
-                      }
-                    }
-                  });
+                const state = {
+                  projectData: projectDetaile,
+                  milesStoneData: res?.data?.data,
+                  isFromClientTab: true,
+                };
+                setLoctions({
+                  ...locations,
+                  state: state,
+                });
               }
             });
           SetCurProject({});
@@ -356,7 +339,7 @@ const FromClientTabPane = ({ location }) => {
                   user_token: cookies?.user_data?.user_token,
                   role: cookies?.user_data?.role,
                   professional_id: locations?.state?.projectDetails?.id,
-                  project_id: locations?.state?.projectDetails?.project_id,
+                  project_id: curProject?.project_id,
                 }
               )
               .then((res) => {
@@ -368,8 +351,7 @@ const FromClientTabPane = ({ location }) => {
                         client_id: cookies?.user_data?.user_id,
                         user_token: cookies?.user_data?.user_token,
                         role: cookies?.user_data?.role,
-                        project_id:
-                          locations?.state?.projectDetails?.project_id,
+                        project_id: curProject?.project_id,
                       }
                     )
                     .then((respo) => {
@@ -413,7 +395,10 @@ const FromClientTabPane = ({ location }) => {
               <section className="ProjectDetailsPageProjectDetailsSection">
                 <div className="row">
                   <div className="col ">
-                    <h3 className="theme-text-color fs-24 mb-5">
+                    <h3
+                      className="theme-text-color fs-24 mb-5"
+                      style={{ cursor: "pointer" }}
+                    >
                       <span
                         className="text-decoration-none text-dark m-0 h2"
                         onClick={() => {
@@ -466,7 +451,10 @@ const FromClientTabPane = ({ location }) => {
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">5</div>
                         <h5>Project Status:</h5>
-                        <p className="m-0 ms-3">
+                        <p
+                          className="m-0 ms-3"
+                          style={{ textTransform: "capitalize" }}
+                        >
                           {projectDetaile?.project_status}
                         </p>
                       </div>
@@ -481,7 +469,7 @@ const FromClientTabPane = ({ location }) => {
                     <div className="row">
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">7</div>
-                        <h5>Project File:</h5>
+                        <h5>Project File: &nbsp; &nbsp;</h5>
                         <a
                           href={projectDetaile?.attachment}
                           download={projectDetaile?.attachment}
@@ -503,30 +491,75 @@ const FromClientTabPane = ({ location }) => {
                     <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                       <div className="project-details">9</div>
                       <h5> Project Description: </h5>
-                      <p className="m-0 ms-3">{projectDetaile?.description}</p>
+                      {descshowless === "show" ? (
+                        <p>
+                          {projectDetaile?.description}
+                          <span
+                            id={"show"}
+                            style={{
+                              marginTop: "10px",
+                              cursor: "pointer",
+                              textDecoration: "underline",
+
+                              color: "#01a78a",
+                              // backgroundColor: "#0F9E83",
+                            }}
+                            onClick={(e) => {
+                              setdescshowless("");
+                            }}
+                          >
+                            show less
+                          </span>
+                        </p>
+                      ) : (
+                        <p>
+                          {projectDetaile?.description?.slice(0, 199)}{" "}
+                          {projectDetaile?.description?.length < 200 ? null : (
+                            <span
+                              id={"show"}
+                              style={{
+                                marginTop: "10px",
+                                cursor: "pointer",
+                                textDecoration: "underline",
+
+                                color: "#01a78a",
+                                // backgroundColor: "#0F9E83",
+                              }}
+                              onClick={(e) => {
+                                setdescshowless(e.target.id);
+                              }}
+                            >
+                              show more
+                            </span>
+                          )}
+                        </p>
+                      )}
+                      {/* <p className="m-0 ms-3">{projectDetaile?.description}</p> */}
                     </div>
                   </div>
                 </div>
               </section>
               <section className="projectMilestoneInfo">
-                <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
-                {locations?.state?.milesStoneData?.map((res, index) => (
+                <h3 className="theme-text-color fs-24 mt-5 mb-4">
+                  Milestone Details
+                </h3>
+                {locations?.state?.milesStoneData?.map((res, i) => (
                   <>
-                    <div className="row milestoneBox" key={index}>
-                      <div className="row">
+                    <div className="row milestoneBox" key={i}>
+                      <div className="row milestoneBoxInner">
                         <div className="milestoneBox1 col-4 col-xl-3">
                           <p className="headingMile">Name</p>
                           <p style={{ textTransform: "capitalize" }}>
                             {res?.milestone_name}
                           </p>
                         </div>
-                        <div className="col-4 col-xl-2">
-                          <p className="headingMile">Cost %</p>
+                        <div className="col-4 col-xl-2 milestoneBox1">
+                          <p className="headingMile">Cost </p>
                           <p style={{ textTransform: "capitalize" }}>
-                            {res?.milestone_amount_percent}
+                            {res?.milestone_amount_percent} %
                           </p>
                         </div>
-                        <div className="col-4 col-xl-2">
+                        <div className="col-4 col-xl-2 milestoneBox1">
                           <p className="headingMile">Date</p>
                           <div className="date"> {res?.milestone_date}</div>
                         </div>
@@ -589,12 +622,12 @@ const FromClientTabPane = ({ location }) => {
                           </>
                         )}
 
-                        {res?.status === "accepted" && (
+                        {res?.status == "accepted" && (
                           <>
-                            <div className="col-xl-5  d-flex resMile">
+                            <div className="col-xl-5  col-12 d-flex resMile">
                               <div
                                 className="accept_btn_group"
-                                style={{ margin: "auto" }}
+                                style={{ margin: "0 auto" }}
                               >
                                 <div className="Milestone btnBoeMile1">
                                   Completed
@@ -627,26 +660,28 @@ const FromClientTabPane = ({ location }) => {
                         )}
                         {res?.status === "completed" && (
                           <>
-                            <div
-                              className="accept_btn_group btnBoeMile"
-                              // style={{ margin: "auto" }}
-                            >
-                              <button> Completed</button>
-                            </div>
-                            <button
-                              className="btn DownloadbtnMile "
-                              onClick={() => {
-                                // console.log("here");
-                                SetCurProject({ ...res });
-                                setShow(true);
-                              }}
-                              type="button"
-                            >
-                              Download
-                            </button>
-                            <p style={{ textTransform: "capitalize" }}>
+                            <div className="col-4 col-xl-5 col-12 d-flex btnBoeMileOuter">
+                              <div
+                                className="accept_btn_group btnBoeMile"
+                                // style={{ margin: "auto" }}
+                              >
+                                <button> Completed</button>
+                              </div>
+                              <button
+                                className="btn DownloadbtnMile "
+                                onClick={() => {
+                                  // console.log("here");
+                                  SetCurProject({ ...res });
+                                  setShow(true);
+                                }}
+                                type="button"
+                              >
+                                Download
+                              </button>
+                              {/* <p style={{ textTransform: "capitalize" }}>
                               {res?.milestone_description}
-                            </p>
+                            </p> */}
+                            </div>
                           </>
                         )}
                       </div>
@@ -654,7 +689,50 @@ const FromClientTabPane = ({ location }) => {
                         <div className="col-xl-10">
                           <p className="headingMile">Milestone Description</p>
                           <p style={{ textTransform: "capitalize" }}>
-                            {res?.milestone_description}
+                            {descshowless === i + 1 ? (
+                              <p>
+                                {res?.milestone_description}
+                                <span
+                                  id={i + 1}
+                                  style={{
+                                    marginTop: "10px",
+                                    cursor: "pointer",
+                                    textDecoration: "underline",
+
+                                    color: "#01a78a",
+                                    // backgroundColor: "#0F9E83",
+                                  }}
+                                  onClick={(e) => {
+                                    setdescshowless("");
+                                  }}
+                                >
+                                  show less
+                                </span>
+                              </p>
+                            ) : (
+                              <p>
+                                {res?.milestone_description?.slice(0, 199)}{" "}
+                                {res?.milestone_description?.length <
+                                200 ? null : (
+                                  <span
+                                    id={i + 1}
+                                    style={{
+                                      marginTop: "10px",
+                                      cursor: "pointer",
+                                      textDecoration: "underline",
+
+                                      color: "#01a78a",
+                                      // backgroundColor: "#0F9E83",
+                                    }}
+                                    onClick={(e) => {
+                                      setdescshowless(parseInt(e.target.id));
+                                    }}
+                                  >
+                                    show more
+                                  </span>
+                                )}
+                              </p>
+                            )}
                           </p>
                         </div>
                         <div className="col-xl-2 ">

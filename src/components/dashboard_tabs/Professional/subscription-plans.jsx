@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "../../Footer";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
@@ -12,6 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Button, Modal } from "react-bootstrap";
 import ReactLotti from "../../../loader/ReactLotti";
 import ReactLotti2 from "../../../loader/ReactLottie3";
+
 const SubscriptionPlane = () => {
   const navigate = useNavigate();
   const [cookies] = useCookies();
@@ -176,7 +176,8 @@ const SubscriptionPlane = () => {
           setLoading_sub(false);
           const error = res?.data?.message;
           setPaymentError(error.split(":")[1]);
-          setPayErrorMessage(res?.data?.message);
+          // setPayErrorMessage(res?.data?.message);
+          setPayErrorMessage(res?.data?.message?.split(":")[1]);
           setShow(false);
           setIsError(true);
           handleClosePayTab(currentPlans);
@@ -331,16 +332,20 @@ const SubscriptionPlane = () => {
                             <li>
                               {plansList[0].id === currentPlans ? (
                                 <div className="d-flex">
-                                  <button className="buy-now-btn-active">
+                                  <button
+                                    className="buy-now-btn-active"
+                                    disabled
+                                  >
                                     Active
                                   </button>
                                 </div>
                               ) : (
                                 <button
+                                  disabled
                                   className="buy-now-btn-active"
-                                  onClick={() => {
-                                    handlePayment(plansList[0]);
-                                  }}
+                                  // onClick={() => {
+                                  //   handlePayment(plansList[0]);
+                                  // }}
                                 >
                                   Active
                                 </button>
@@ -349,9 +354,9 @@ const SubscriptionPlane = () => {
                             <li>
                               {plansList[1].id === currentPlans ? (
                                 <div className="d-flex">
-                                  <button className="buy-now-btn-active">
+                                  {/* <button className="buy-now-btn-active">
                                     Active
-                                  </button>
+                                  </button> */}
                                   {noPlans ? (
                                     <button
                                       className="buy-now-btn-cancel"
@@ -384,9 +389,9 @@ const SubscriptionPlane = () => {
                             <li>
                               {plansList[2].id === currentPlans ? (
                                 <div className="d-flex">
-                                  <button className="buy-now-btn-active">
+                                  {/* <button className="buy-now-btn-active">
                                     Active
-                                  </button>
+                                  </button> */}
                                   {noPlans ? (
                                     <button
                                       className="buy-now-btn-cancel"
@@ -733,7 +738,6 @@ const SubscriptionPlane = () => {
           </Modal.Footer>
         </Modal>
       </div>
-      <Footer />
     </>
   );
 };

@@ -71,6 +71,10 @@ const DashboardPane = () => {
   }, [onGoingProjectPageId]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [onGoingProjectPageId]);
+
+  useEffect(() => {
     contextData?.userData &&
       axios
         .post("http://13.52.16.160:8082/client/client_recent_payments/", {
@@ -176,7 +180,7 @@ const DashboardPane = () => {
                 }}
               ></div>
               <div className="d-flex align-items-center justify-content-center py-3 px-3">
-                <img src="./static/images/TotalEarnings.png" alt="" />
+                <img src="./static/images/all-projects1.png" alt="" />
                 <div className="ps-2">
                   <h6 className="m-0">All Projects</h6>
                   <h2 className="m-0">

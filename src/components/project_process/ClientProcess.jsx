@@ -6,11 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import useWindowSize from "../../Hooks/useWindowSize";
 import ReactLotti3 from "../../loader/ReactLottie3";
 import { useState } from "react";
+import ReactLotti from "../../loader/ReactLotti";
 const ClientProcess = ({ location }) => {
   const navigate = useNavigate();
   const windowSize = useWindowSize();
   const contextData = useContext(Global);
   const [loader, setloader] = useState(false);
+  const [decloader, setDecloader] = useState(false);
   const [descshowless, setdescshowless] = useState(false);
   const customStyleOne = {
     borderRadius: "30px",
@@ -18,22 +20,56 @@ const ClientProcess = ({ location }) => {
     padding: "100px 0",
   };
   const handleClientDecesion = (req) => {
-    setloader(true);
-    axios
-      .post("http://13.52.16.160:8082/client/approve_projects", {
-        client_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: "client",
-        project_id: location?.state?.project_id,
-        project_approval_status: req,
-        professional_id: location?.state?.professional_id,
-      })
-      .then((res) => {
-        setloader(false);
-        if (res?.data?.status === "Success") {
-          navigate("/accept-project");
-        }
-      });
+    if (req === "approved") {
+      setloader(true);
+      axios
+        .post("http://13.52.16.160:8082/client/approve_projects", {
+          client_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: "client",
+          project_id: location?.state?.project_id,
+          project_approval_status: req,
+          professional_id: location?.state?.professional_id,
+        })
+        .then((res) => {
+          setloader(false);
+          if (res?.data?.status === "Success") {
+            navigate("/accept-project");
+          }
+        });
+    } else {
+      setDecloader(true);
+      axios
+        .post("http://13.52.16.160:8082/client/approve_projects", {
+          client_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: "client",
+          project_id: location?.state?.project_id,
+          project_approval_status: req,
+          professional_id: location?.state?.professional_id,
+        })
+        .then((res) => {
+          setDecloader(false);
+          if (res?.data?.status === "Success") {
+            navigate("/accept-project");
+          }
+        });
+      axios
+        .post("http://13.52.16.160:8082/client/approve_projects", {
+          client_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: "client",
+          project_id: location?.state?.project_id,
+          project_approval_status: req,
+          professional_id: location?.state?.professional_id,
+        })
+        .then((res) => {
+          // setloader( false );
+          if (res?.data?.status === "Success") {
+            navigate("/accept-project");
+          }
+        });
+    }
   };
   return (
     <div className="create-account">
@@ -47,19 +83,15 @@ const ClientProcess = ({ location }) => {
                   <div className="col ">
                     <h3 className="theme-text-color fs-24 mb-5">
                       <span>
-                        <Link
-                          to={
-                            contextData?.userData?.role === "client"
-                              ? "/accept-project"
-                              : "/request-projects"
-                          }
+                        <span
+                          onClick={() => navigate(-1)}
                           className="text-decoration-none text-dark m-0 h2"
                         >
                           <i
                             className="fa-solid fa-arrow-left-long pe-3"
                             style={{ color: "#01a78a" }}
                           ></i>
-                        </Link>
+                        </span>
                       </span>
                       Project Details
                     </h3>
@@ -145,7 +177,7 @@ const ClientProcess = ({ location }) => {
                       <div>
                         {descshowless === "projectdescription" ? (
                           <p
-                            className="m-0 ms-3 d-block"
+                            className="m-0 ms-3 d-block wordbreak"
                             style={{ textTransform: "capitalize" }}
                           >
                             {location?.state?.projectData?.description} <br />
@@ -173,12 +205,12 @@ const ClientProcess = ({ location }) => {
                             className="m-0 ms-3"
                             style={{ textTransform: "capitalize" }}
                           >
-                            {location?.state?.projectData?.description.slice(
+                            {location?.state?.projectData?.description?.slice(
                               0,
                               199
                             )}{" "}
                             <br />
-                            {location?.state?.projectData?.description.length <
+                            {location?.state?.projectData?.description?.length <
                             200 ? null : (
                               <span
                                 style={{
@@ -279,8 +311,8 @@ const ClientProcess = ({ location }) => {
                           </p>
                         ) : (
                           <p>
-                            {res?.milestone_description.slice(0, 199)}{" "}
-                            {res?.milestone_description.length < 200 ? null : (
+                            {res?.milestone_description?.slice(0, 199)}{" "}
+                            {res?.milestone_description?.length < 200 ? null : (
                               <span
                                 id={i + 1}
                                 style={{
@@ -322,8 +354,14 @@ const ClientProcess = ({ location }) => {
                         windowSize?.width > 576 ? "ms-auto" : "mx-auto"
                       }`}
                     >
-                      <i className="fa-solid  fa-arrow-left-long me-3"></i>
-                      Decline
+                      {decloader ? (
+                        <ReactLotti />
+                      ) : (
+                        <>
+                          <i className="fa-solid  fa-arrow-left-long me-3"></i>
+                          Decline
+                        </>
+                      )}
                     </button>
                   </div>
                   <div className="col-sm">
@@ -344,7 +382,14 @@ const ClientProcess = ({ location }) => {
                         windowSize?.width > 576 ? "me-auto" : "mx-auto"
                       }`}
                     >
-                      {loader ? <ReactLotti3 /> : "Approve"}
+                      {loader ? (
+                        <ReactLotti3 />
+                      ) : (
+                        <>
+                          Approve
+                          <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>

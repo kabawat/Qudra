@@ -17,6 +17,8 @@ import { HeaderDashboard } from "../../Header";
 import Footer from "../../Footer";
 import Loader from "../../Loader";
 import { Backdrop, CircularProgress } from "@mui/material";
+import ScrollToTop from "../../../Hooks/ScrollToTop";
+import { Dropdown } from "react-bootstrap";
 const BrowsePane = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ const BrowsePane = () => {
   const [filterProject, setFilterProject] = useState("sub_category");
   const [browseProfessinalPageId, setBrowseProfessionalPageId] = useState({
     page: 1,
-    page_size: 10,
+    page_size: 12,
   });
   const [uploadSubCatagoryModal, setUploadSubCatagoryModal] = useState(false);
 
@@ -80,7 +82,9 @@ const BrowsePane = () => {
     contextData?.currentTabClientDashboard,
     uploadSubCatagoryModal,
   ]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [browseProfessinalPageId]);
   const paginationArray = [];
   for (
     let i = 0;
@@ -353,6 +357,51 @@ const BrowsePane = () => {
                                 <FaSearch color="#fff" />
                               </button>
                               <div className="position-relative d-flex justify-content-center align-items-center ms-5">
+                                <Dropdown>
+                                  <Dropdown.Toggle
+                                    variant=""
+                                    id="dropdown-basic"
+                                  >
+                                    <IoFilterOutline
+                                      style={{
+                                        fontSize: "30px",
+                                        fontWeight: "bold",
+                                      }}
+                                    />
+                                  </Dropdown.Toggle>
+
+                                  <Dropdown.Menu>
+                                    <Dropdown.Item
+                                      value="sub_category"
+                                      onClick={() => {
+                                        setFilterProject("sub_category");
+                                        setBrowserProfessionalSearchInput("");
+                                      }}
+                                    >
+                                      Category
+                                    </Dropdown.Item>
+                                    <Dropdown.Item
+                                      value="nation"
+                                      onClick={() => {
+                                        setFilterProject("nation");
+                                        setBrowserProfessionalSearchInput("");
+                                      }}
+                                    >
+                                      Country
+                                    </Dropdown.Item>
+                                    <Dropdown.Item
+                                      value="price_range"
+                                      onClick={() => {
+                                        setFilterProject("price_range");
+                                        setBrowserProfessionalSearchInput("");
+                                      }}
+                                    >
+                                      Price
+                                    </Dropdown.Item>
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </div>
+                              {/* <div className="position-relative d-flex justify-content-center align-items-center ms-5">
                                 <IoFilterOutline style={{ fontSize: "30px" }} />
                                 <select
                                   value={filterProject}
@@ -379,7 +428,7 @@ const BrowsePane = () => {
                                     Price
                                   </option>
                                 </select>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                           <div className="col-lg-4">
@@ -409,10 +458,90 @@ const BrowsePane = () => {
                         </button>
                       </form>
                       <div className="row">
-                        {browserProfessionalSearchInput
-                          ? browseProfessionalData &&
+                        {browserProfessionalSearchInput ? (
+                          browseProfessionalData === null ? (
+                            <>
+                              <div
+                                style={{ minHeight: "600px" }}
+                                className="d-flex justify-content-center align-items-center"
+                              >
+                                <span className="h4">
+                                  No Professional To Show
+                                </span>
+                              </div>
+                            </>
+                          ) : (
+                            browseProfessionalData &&
                             browseProfessionalData?.final_data?.map((res) => (
                               <div className="col-xxl-4 col-lg-6  my-3">
+                                <div className="item">
+                                  <div className="henry-section">
+                                    <div className="henry-img">
+                                      <img src={res?.avatar} alt={res?.name} />
+                                      <div className="online"></div>
+                                    </div>
+                                    <div className="henry-text">
+                                      <h6>{res?.name}</h6>
+                                      <span>
+                                        <img
+                                          src="./static/images/project.png"
+                                          className="object-fit"
+                                          alt={res?.projects}
+                                        />
+                                        {res?.projects}+ Projects Done
+                                      </span>
+                                      <span style={{ fontWeight: "600" }}>
+                                        Minimum Rate Per sq/mtr :
+                                        <b
+                                          style={{
+                                            fontSize: "18px",
+                                            marginLeft: "4px",
+                                          }}
+                                        >
+                                          {" "}
+                                          $ {res?.price_range}
+                                        </b>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="add-hire">
+                                    <Rating
+                                      name="read-only"
+                                      value={parseInt(res?.ratings)}
+                                      readOnly
+                                    />
+                                    <div className="add-btn">
+                                      <button
+                                        onClick={() => {
+                                          navigate(
+                                            `/professionalprofile/${res?.professional_id}`
+                                          );
+                                          contextData?.dispatch({
+                                            type: "PROFESSIONAL_USER_PROFILE_DATA",
+                                            value: null,
+                                          });
+                                        }}
+                                      >
+                                        View Profile
+                                        <img
+                                          src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
+                                          alt="add/hire"
+                                        />
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          )
+                        ) : (
+                          defaultProfessionalProfile &&
+                          defaultProfessionalProfile?.final_data?.map(
+                            (res, key) => (
+                              <div
+                                className="col-xxl-4 col-lg-6  my-3"
+                                key={key}
+                              >
                                 <div className="item">
                                   <div className="henry-section">
                                     <div className="henry-img">
@@ -471,77 +600,9 @@ const BrowsePane = () => {
                                   </div>
                                 </div>
                               </div>
-                            ))
-                          : defaultProfessionalProfile &&
-                            defaultProfessionalProfile?.final_data?.map(
-                              (res, key) => (
-                                <div
-                                  className="col-xxl-4 col-lg-6  my-3"
-                                  key={key}
-                                >
-                                  <div className="item">
-                                    <div className="henry-section">
-                                      <div className="henry-img">
-                                        <img
-                                          src={res?.avatar}
-                                          alt={res?.name}
-                                        />
-                                        <div className="online"></div>
-                                      </div>
-                                      <div className="henry-text">
-                                        <h6>{res?.name}</h6>
-                                        <span>
-                                          <img
-                                            src="./static/images/project.png"
-                                            className="object-fit"
-                                            alt={res?.projects}
-                                          />
-                                          {res?.projects}+ Projects Done
-                                        </span>
-                                        <span style={{ fontWeight: "600" }}>
-                                          Minimum Rate Per sq.mtr :
-                                          <b
-                                            style={{
-                                              fontSize: "18px",
-                                              marginLeft: "4px",
-                                            }}
-                                          >
-                                            {" "}
-                                            $ {res?.price_range}
-                                          </b>
-                                        </span>
-                                      </div>
-                                    </div>
-                                    <div className="add-hire">
-                                      <Rating
-                                        name="read-only"
-                                        value={parseInt(res?.ratings)}
-                                        readOnly
-                                      />
-                                      <div className="add-btn">
-                                        <button
-                                          onClick={() => {
-                                            navigate(
-                                              `/professionalprofile/${res?.professional_id}`
-                                            );
-                                            contextData?.dispatch({
-                                              type: "PROFESSIONAL_USER_PROFILE_DATA",
-                                              value: null,
-                                            });
-                                          }}
-                                        >
-                                          View Profile
-                                          <img
-                                            src="https://img.icons8.com/fluency-systems-regular/20/ffffff/long-arrow-right.png"
-                                            alt="add/hire"
-                                          />
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              )
-                            )}
+                            )
+                          )
+                        )}
                         <div>
                           {browserProfessionalSearchInput
                             ? browseProfessionalData &&
@@ -605,6 +666,7 @@ const BrowsePane = () => {
                                       );
                                     }}
                                   />
+
                                   <Pagination.Last
                                     onClick={() => {
                                       setBrowseProfessionalSearchPageId(
@@ -894,9 +956,9 @@ const BrowsePane = () => {
                                       </div>
                                     </div>
                                     {catErr ? (
-                                      <span className="text-danger">
-                                        Minimum one catagories required
-                                      </span>
+                                      <p className="text-danger mt-3">
+                                        Minimum one catagory required
+                                      </p>
                                     ) : (
                                       ""
                                     )}
@@ -950,7 +1012,7 @@ const BrowsePane = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

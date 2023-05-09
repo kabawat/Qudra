@@ -4,7 +4,6 @@ import { CiLocationOn } from "react-icons/ci";
 import Pagination from "react-bootstrap/Pagination";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "../../Footer";
 import { HeaderDashboard } from "../../Header";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { useCookies } from "react-cookie";
@@ -55,7 +54,9 @@ const DeclineProject = () => {
       navigate("/select-sign-in");
     }
   }, [completedProjectPageId]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [completedProjectPageId]);
   const completedProjectArray = [];
   for (
     let i = 0;
@@ -301,7 +302,6 @@ const DeclineProject = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

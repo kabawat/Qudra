@@ -8,7 +8,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
-import Footer from "../../Footer";
 import { useCookies } from "react-cookie";
 import { Backdrop, CircularProgress } from "@mui/material";
 const Ratings = () => {
@@ -56,6 +55,10 @@ const Ratings = () => {
   };
   useEffect(() => {
     fetchRatingData();
+  }, [projectPageId]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
   }, [projectPageId]);
 
   const projectPaginationArray = [];
@@ -380,7 +383,6 @@ const Ratings = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

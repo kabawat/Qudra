@@ -94,6 +94,8 @@ const FromProfessionalTabPane = ({ location }) => {
   const [cookies] = useCookies();
   const navigate = useNavigate();
   const [showText, setShowText] = useState(false);
+  const [descshowless, setdescshowless] = useState(false);
+
   const handleShowMore = () => {
     setShowText(true);
   };
@@ -101,12 +103,13 @@ const FromProfessionalTabPane = ({ location }) => {
   const handleShowLess = () => {
     setShowText(false);
   };
+
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
     padding: "100px 0",
   };
-
+  // console.log("project id",location);
   useEffect(() => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {
@@ -202,7 +205,6 @@ const FromProfessionalTabPane = ({ location }) => {
 
   const handleMilestoneUpdate = async (event) => {
     event.preventDefault();
-    setsubmitLoader(true);
     const data = new FormData();
     data.append("user_id", cookies?.user_data?.user_id);
     data.append("user_token", cookies?.user_data?.user_token);
@@ -210,13 +212,15 @@ const FromProfessionalTabPane = ({ location }) => {
     data.append("project_id", project?.project_id);
     data.append("milestone_id", project?.milestone_id);
     data.append("milestone_file", file[0]);
-    if (file) {
+    if (file?.length > 0) {
+      setsubmitLoader(true);
       await axios
         .post("http://13.52.16.160:8082/client/milestone_file", data)
         .then((res) => {
           setsubmitLoader(false);
           if (res?.data?.status === "Success") {
             handalClose();
+            setsubmitLoader(false);
           }
         });
     } else {
@@ -349,8 +353,50 @@ const FromProfessionalTabPane = ({ location }) => {
                           <h5>Project Description: </h5>
                         </div>
                         <br />
-                        <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.description}
+                        <p className="m-0 ms-3 ">
+                          {showText ? (
+                            <div>
+                              {location?.state?.projectData?.description}
+                            </div>
+                          ) : (
+                            <div>
+                              {location?.state?.projectData?.description.substring(
+                                0,
+                                212
+                              )}
+                            </div>
+                          )}
+                          {location?.state?.projectData?.description.length >
+                          100 ? (
+                            !showText ? (
+                              <span
+                                onClick={handleShowMore}
+                                style={{
+                                  color: "#01a78a",
+                                  marginTop: "10px",
+                                  textDecoration: "underline",
+                                  cursor: "pointer",
+                                  // backgroundColor: "#0F9E83",
+                                }}
+                              >
+                                Show More
+                              </span>
+                            ) : (
+                              <span
+                                onClick={handleShowLess}
+                                style={{
+                                  marginTop: "10px",
+                                  cursor: "pointer",
+                                  textDecoration: "underline",
+
+                                  color: "#01a78a",
+                                  // backgroundColor: "#0F9E83",
+                                }}
+                              >
+                                Show Less
+                              </span>
+                            )
+                          ) : null}
                         </p>
                       </div>
                     </div>
@@ -359,8 +405,8 @@ const FromProfessionalTabPane = ({ location }) => {
               </section>
               <section className="projectMilestoneInfo">
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
-                {locations?.state?.milesStoneData?.map((res, index) => (
-                  <div className="milestoneBox row" key={index}>
+                {locations?.state?.milesStoneData?.map((res, i) => (
+                  <div className="milestoneBox row" key={i}>
                     <div className=" d-block  ">
                       <div className="row">
                         <div className="col-4 col-xl-2">
@@ -374,8 +420,8 @@ const FromProfessionalTabPane = ({ location }) => {
                           </div>{" "}
                         </div>
                         <div className="col-4 col-xl-2">
-                          <p className="headingMile">Cost %</p>
-                          <p>{res?.milestone_amount_percent}</p>
+                          <p className="headingMile">Cost </p>
+                          <p>{res?.milestone_amount_percent} %</p>
                         </div>
                         <div className="uploadMileStoneof col-xl-6 resMile">
                           {res?.status === "pending" && (
@@ -436,7 +482,53 @@ const FromProfessionalTabPane = ({ location }) => {
                       <div className="col-10">
                         <p className="headingMile">MileStone Description:</p>
                         <div className="milestonedes row">
-                          <div>{res?.milestone_description}</div>
+                          <div>
+                            {" "}
+                            {descshowless === i + 1 ? (
+                              <p>
+                                {res?.milestone_description}
+                                <span
+                                  id={i + 1}
+                                  style={{
+                                    marginTop: "10px",
+                                    cursor: "pointer",
+                                    textDecoration: "underline",
+
+                                    color: "#01a78a",
+                                    // backgroundColor: "#0F9E83",
+                                  }}
+                                  onClick={(e) => {
+                                    setdescshowless("");
+                                  }}
+                                >
+                                  show less
+                                </span>
+                              </p>
+                            ) : (
+                              <p>
+                                {res?.milestone_description?.slice(0, 199)}{" "}
+                                {res?.milestone_description?.length <
+                                200 ? null : (
+                                  <span
+                                    id={i + 1}
+                                    style={{
+                                      marginTop: "10px",
+                                      cursor: "pointer",
+                                      textDecoration: "underline",
+
+                                      color: "#01a78a",
+                                      // backgroundColor: "#0F9E83",
+                                    }}
+                                    onClick={(e) => {
+                                      setdescshowless(parseInt(e.target.id));
+                                    }}
+                                  >
+                                    show more
+                                  </span>
+                                )}
+                              </p>
+                            )}
+                          </div>
 
                           {/* {res?.milestone_descriptio > 200?<p>{res?.milestone_description}</p>:null}
                         {showText?<button>Read more</button>:

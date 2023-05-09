@@ -10,7 +10,6 @@ import clientGuidelineImg7 from "../../assets/img/7.jpg";
 import clientGuidelineImg8 from "../../assets/img/8.jpg";
 import ClientDashboardAside from "../ClientDashboardAside";
 import { HeaderDashboard } from "../Header";
-import Footer from "../Footer";
 import { useCookies } from "react-cookie";
 import Loader from "../Loader";
 import { useNavigate } from "react-router-dom";
@@ -139,7 +138,6 @@ const ClientGuidlines = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   ) : (
     <Loader />

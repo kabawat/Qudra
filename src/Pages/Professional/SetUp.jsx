@@ -1529,7 +1529,7 @@ const SetUp = () => {
                               id="EmailInputSignUpForm"
                               type="email"
                               className="form-control"
-                              placeholder="Enter Your Mail"
+                              placeholder="Enter Your Email"
                               name="email"
                               onInput={handleEmailFocus}
                             />

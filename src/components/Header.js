@@ -9,6 +9,19 @@ import Global from "../context/Global";
 import useWindowSize from "../Hooks/useWindowSize";
 import { useCookies } from "react-cookie";
 import { GoUnverified, GoVerified } from "react-icons/go";
+const style = {
+  color: "white",
+  textDecoration: "none",
+  fontFamily: "Raleway",
+};
+
+const buttonStyle = {
+  border: "none",
+  color: "#fff",
+  fontFamily: "Raleway",
+  outline: "none",
+  background: "none",
+};
 const Header2 = ({ link }) => {
   const navigate = useNavigate();
   const [cookies, , removeCookie] = useCookies();
@@ -33,15 +46,17 @@ const Header2 = ({ link }) => {
   };
   //Edit-Profile button function
   const handleEditProfileButton = () => {
-    axios.put("http://13.52.16.160:8082/identity/update_account", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        navigate("/edit-profile", { state: res?.data?.data });
-      }
-    });
+    axios
+      .put("http://13.52.16.160:8082/identity/update_account", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          navigate("/edit-profile", { state: res?.data?.data });
+        }
+      });
   };
 
   return (
@@ -51,7 +66,11 @@ const Header2 = ({ link }) => {
           <div className="row py-4 ">
             <div className="col align-items-center headerMail">
               <Link to={link ? "/categoryArchitecture" : "/"}>
-                <img src="/static/images/Quadra-transparrent-logo.png" alt="logo" style={{ height: "100px" }} />
+                <img
+                  src="/static/images/Quadra-transparrent-logo.png"
+                  alt="logo"
+                  style={{ height: "100px" }}
+                />
               </Link>
               <ul className="ms-auto d-flex p-0 mb-0 headerMailInner">
                 <li>
@@ -108,7 +127,7 @@ const Header2 = ({ link }) => {
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                        // onClick={ profileDropdown }
+                          // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
                             {contextData?.profileData &&
@@ -189,7 +208,7 @@ const Header2 = ({ link }) => {
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                        // onClick={ profileDropdown }
+                          // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
                             {contextData?.profileData &&
@@ -231,86 +250,86 @@ const Header2 = ({ link }) => {
                   )}
                   {window.location.pathname ===
                     "/professional-buy-and-sale" && (
-                      <div
-                        className="d-flex align-items-center flex-wrap profileinfo"
-                        onClick={profileDropdown}
-                      >
-                        {cookies?.user_data?.role === "professional" ? (
-                          <div>
-                            <img
-                              src={
-                                contextData?.profileData &&
-                                contextData?.profileData?.user_image_url
-                              }
-                              alt="profilepic"
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                cursor: "pointer",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <div>
-                            <img
-                              src={
-                                contextData?.profileData &&
-                                contextData?.profileData?.user_image_url
-                              }
-                              alt=""
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                cursor: "pointer",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </div>
-                        )}
-                        <div className="ps-3">
-                          <button
-                            className="d-flex align-items-center profileEdit-button"
-                          // onClick={ profileDropdown }
-                          >
-                            <h4 className="userName">
-                              {contextData?.profileData &&
-                                contextData?.profileData?.name}
-                            </h4>
-                            <i className="fa-solid fa-caret-down"></i>
-                            <div id="Edit_toggle"></div>
-                          </button>
-                          <div className="profile-edit-dropdown">
-                            <div className=" d-flex flex-column ">
-                              <Link
-                                to=""
-                                className="d-flex justify-content-center rounded-top"
-                              >
-                                <button onClick={handleEditProfileButton}>
-                                  Edit Profile
-                                </button>
-                              </Link>
-                              <Link
-                                to=""
-                                className="d-flex justify-content-center rounded-bottom"
-                              >
-                                <button
-                                  onClick={() => {
-                                    setShow(true);
-                                  }}
-                                >
-                                  Log Out
-                                </button>
-                              </Link>
-                            </div>
-                          </div>
-                          <h6 className="m-0 email">
-                            {contextData?.profileData &&
-                              contextData?.profileData?.email}
-                          </h6>
+                    <div
+                      className="d-flex align-items-center flex-wrap profileinfo"
+                      onClick={profileDropdown}
+                    >
+                      {cookies?.user_data?.role === "professional" ? (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt="profilepic"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
                         </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={
+                              contextData?.profileData &&
+                              contextData?.profileData?.user_image_url
+                            }
+                            alt=""
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="ps-3">
+                        <button
+                          className="d-flex align-items-center profileEdit-button"
+                          // onClick={ profileDropdown }
+                        >
+                          <h4 className="userName">
+                            {contextData?.profileData &&
+                              contextData?.profileData?.name}
+                          </h4>
+                          <i className="fa-solid fa-caret-down"></i>
+                          <div id="Edit_toggle"></div>
+                        </button>
+                        <div className="profile-edit-dropdown">
+                          <div className=" d-flex flex-column ">
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button onClick={handleEditProfileButton}>
+                                Edit Profile
+                              </button>
+                            </Link>
+                            <Link
+                              to=""
+                              className="d-flex justify-content-center rounded-bottom"
+                            >
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                Log Out
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                        <h6 className="m-0 email">
+                          {contextData?.profileData &&
+                            contextData?.profileData?.email}
+                        </h6>
                       </div>
-                    )}
+                    </div>
+                  )}
                   {window.location.pathname === "/client-architechture" && (
                     <div
                       className="d-flex align-items-center flex-wrap profileinfo"
@@ -352,7 +371,7 @@ const Header2 = ({ link }) => {
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                        // onClick={ profileDropdown }
+                          // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
                             {contextData?.profileData &&
@@ -430,7 +449,7 @@ const Header2 = ({ link }) => {
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                        // onClick={ profileDropdown }
+                          // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
                             {contextData?.profileData &&
@@ -511,7 +530,7 @@ const Header2 = ({ link }) => {
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                        // onClick={ profileDropdown }
+                          // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
                             {contextData?.profileData &&
@@ -529,6 +548,16 @@ const Header2 = ({ link }) => {
                               <button onClick={handleEditProfileButton}>
                                 Edit Profile
                               </button>
+                            </Link>
+                            <Link
+                              to={
+                                cookies?.user_data?.role === "client"
+                                  ? "/clientdashboard"
+                                  : "/professionaldashboard"
+                              }
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button>Dashboard</button>
                             </Link>
                             <Link
                               to=""
@@ -592,7 +621,7 @@ const Header2 = ({ link }) => {
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                        // onClick={ profileDropdown }
+                          // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
                             {contextData?.profileData &&
@@ -675,7 +704,7 @@ const Header2 = ({ link }) => {
                       <div className="ps-3">
                         <button
                           className="d-flex align-items-center profileEdit-button"
-                        // onClick={ profileDropdown }
+                          // onClick={ profileDropdown }
                         >
                           <h4 className="userName">
                             {contextData?.profileData &&
@@ -693,6 +722,16 @@ const Header2 = ({ link }) => {
                               <button onClick={handleEditProfileButton}>
                                 Edit Profile
                               </button>
+                            </Link>
+                            <Link
+                              to={
+                                cookies?.user_data?.role === "client"
+                                  ? "/clientdashboard"
+                                  : "/professionaldashboard"
+                              }
+                              className="d-flex justify-content-center rounded-top"
+                            >
+                              <button>Dashboard</button>
                             </Link>
                             <Link
                               to=""
@@ -871,7 +910,7 @@ const HeaderHome = () => {
                         <div className="ps-3 col">
                           <button
                             className="d-flex align-items-center profileEdit-button"
-                          // onClick={profileDropdown}
+                            // onClick={profileDropdown}
                           >
                             <h4>
                               {contextData?.profileData &&
@@ -999,7 +1038,7 @@ const HeaderHome = () => {
                         </Button>
                       </Modal.Footer>
                     </Modal>
-                    {cookies?.user_data?.role === "client" && (
+                    {/* {cookies?.user_data?.role === "client" && (
                       <li>
                         <Link
                           to={!cookies?.user_data ? "/join" : "clientdashboard"}
@@ -1007,7 +1046,7 @@ const HeaderHome = () => {
                           Business
                         </Link>
                       </li>
-                    )}
+                    )} */}
                     {cookies?.user_data?.role !== "professional" &&
                       cookies?.user_data?.role !== "client" && (
                         <li>
@@ -1212,25 +1251,30 @@ const ChatHeader = () => {
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
-          axios.post("http://13.52.16.160:8082/client/particular_project_details", {
-            client_id: cookies?.user_data?.user_id,
-            user_token: cookies?.user_data?.user_token,
-            role: cookies?.user_data?.role,
-            project_id: client_project_id,
-          }).then((respo) => {
-            if (respo?.data?.status === "Success") {
-              if (clientDetails !== undefined) {
-                navigate("/project-details", {
-                  state: {
-                    projectDetails: { client_id, client_project_id },
-                    projectData: respo?.data?.data,
-                    milesStoneData: res?.data?.data,
-                    isFromClientNotification: true,
-                  },
-                });
+          axios
+            .post(
+              "http://13.52.16.160:8082/client/particular_project_details",
+              {
+                client_id: cookies?.user_data?.user_id,
+                user_token: cookies?.user_data?.user_token,
+                role: cookies?.user_data?.role,
+                project_id: client_project_id,
               }
-            }
-          });
+            )
+            .then((respo) => {
+              if (respo?.data?.status === "Success") {
+                if (clientDetails !== undefined) {
+                  navigate("/project-details", {
+                    state: {
+                      projectDetails: { client_id, client_project_id },
+                      projectData: respo?.data?.data,
+                      milesStoneData: res?.data?.data,
+                      isFromClientNotification: true,
+                    },
+                  });
+                }
+              }
+            });
         }
       });
   };
@@ -1242,18 +1286,20 @@ const ChatHeader = () => {
   const [notificationArray, setNotificationArray] = useState();
   const handleNotificationBox = () => {
     cookies?.user_data &&
-      axios.post("http://13.52.16.160:8082/identity/get-notifications", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        ...notificationPageId,
-      }).then((res) => {
-        if (res?.data?.status === "Success") {
-          contextData?.setNotification(res?.data?.data);
-          setNotificationArray(res?.data?.data?.final_data?.reverse());
-          setShowNotificationBox(!showNotificationBox);
-        }
-      });
+      axios
+        .post("http://13.52.16.160:8082/identity/get-notifications", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          ...notificationPageId,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            contextData?.setNotification(res?.data?.data);
+            setNotificationArray(res?.data?.data?.final_data?.reverse());
+            setShowNotificationBox(!showNotificationBox);
+          }
+        });
   };
 
   const handleEditProfileButton = () => {
@@ -1264,22 +1310,24 @@ const ChatHeader = () => {
     });
   };
   const bringnotificationCount = () => {
-    axios.post("http://13.52.16.160:8082/identity/unread_notification_count", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-    }).then((res) => {
-      if (res?.data?.status === "Success") {
-        contextData?.setUnreadNotification(res?.data?.data?.unread_count);
-      }
-    });
+    axios
+      .post("http://13.52.16.160:8082/identity/unread_notification_count", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          contextData?.setUnreadNotification(res?.data?.data?.unread_count);
+        }
+      });
   };
   return (
     <>
       <header className="dashboard-header bg-white custom-border-radius-one border-bottom">
         <div className="container ">
           <div className="row py-3">
-            <div className="col-xxl-9 col-xl-8 col-lg-7 d-block  d-flex align-items-center  justify-content-between ">
+            <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-8 d-block  d-flex align-items-center  justify-content-between ">
               <Link
                 to={
                   cookies?.user_data?.role === "client"
@@ -1294,7 +1342,11 @@ const ChatHeader = () => {
                 ></i>{" "}
                 Dashboard
               </Link>
-              <div className={`d-flex align-items-center ${widowSize.width > 992 ? "border-end" : ""}  py-4`}>
+              <div
+                className={`d-flex align-items-center ${
+                  widowSize.width > 992 ? "border-end" : ""
+                }  py-4`}
+              >
                 <div
                   className="dashboard-user-notification me-md-3 me-2"
                   onClick={() => {
@@ -1402,11 +1454,12 @@ const ChatHeader = () => {
               </div>
             </div>
             <div
-              className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap"
+              className="col-xxl-3 col-xl-4 col-lg-5 col-md-4 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap"
               onClick={profileDropdown}
             >
               {cookies?.user_data?.role === "professional" ? (
                 <div
+                  className="w-25"
                   onClick={() => {
                     axios
                       .post(
@@ -1451,16 +1504,16 @@ const ChatHeader = () => {
                       width: "50px",
                       height: "50px",
                       cursor: "pointer",
-
+                      objectFit: "cover",
                       borderRadius: "50%",
                     }}
                   />
                 </div>
               )}
-              <div className="ps-3">
+              <div className="ps-3 w-75">
                 <button
                   className="d-flex align-items-center profileEdit-button"
-                // onClick={ profileDropdown }
+                  // onClick={ profileDropdown }
                 >
                   <h4>
                     {contextData?.profileData && contextData?.profileData?.name}
@@ -1753,10 +1806,10 @@ const HeaderDashboard = () => {
   };
   return (
     <>
-      <header className="dashboard-header bg-white custom-border-radius-one">
+      <header className="dashboard-header bg-white custom-border-radius-one bl-header">
         <div className="container-fluid px-lg-5 px-md-4 px-3">
           <div className="row py-4">
-            <div className="col-xxl-9 col-xl-8 col-lg-8 col-10 d-block  d-flex align-items-center  justify-content-between dashboardMob ">
+            <div className="col-xxl-9 col-xl-8 col-lg-8 col-8 d-block  d-flex align-items-center  justify-content-between dashboardMob ">
               <Link
                 to={
                   cookies?.user_data?.role === "client"
@@ -1768,8 +1821,9 @@ const HeaderDashboard = () => {
                 Dashboard
               </Link>
               <div
-                className={`d-flex align-items-center ${widowSize?.width > 992 ? "border-end" : ""
-                  }  py-4`}
+                className={`d-flex align-items-center ${
+                  widowSize?.width > 992 ? "border-end" : ""
+                }  py-4`}
               >
                 {cookies?.user_data?.role !== "client" ? (
                   <>
@@ -1977,7 +2031,7 @@ const HeaderDashboard = () => {
               </div>
             </div>
             <div
-              className="col-xxl-3 col-xl-4 col-lg-4 col-2 profile-mob d-flex align-items-center justify-content-md-end justify-content-center"
+              className="col-xxl-3 col-xl-4 col-lg-4 col-4 profile-mob d-flex align-items-center justify-content-md-end justify-content-center"
               onClick={profileDropdown}
             >
               {cookies?.user_data?.role === "professional" ? (
@@ -2016,7 +2070,7 @@ const HeaderDashboard = () => {
               <div className="ps-3">
                 <button
                   className="d-flex align-items-center profileEdit-button"
-                // onClick={ profileDropdown }
+                  // onClick={ profileDropdown }
                 >
                   <h4>
                     {contextData?.profileData && contextData?.profileData?.name}
@@ -2033,6 +2087,16 @@ const HeaderDashboard = () => {
                       <button onClick={handleEditProfileButton}>
                         Edit Profile
                       </button>
+                    </Link>
+                    <Link
+                      to={
+                        cookies?.user_data?.role === "client"
+                          ? "/clientdashboard"
+                          : "/professionaldashboard"
+                      }
+                      className="d-flex justify-content-center rounded-top"
+                    >
+                      <button>Dashboard</button>
                     </Link>
                     <Link
                       to=""

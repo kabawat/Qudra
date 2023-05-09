@@ -62,7 +62,9 @@ const AcceptProject = () => {
   useEffect(() => {
     searchData();
   }, [onGoingProjectPageId]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [onGoingProjectPageId]);
   const onGoingProjectArray = [];
   for (
     let i = 0;
@@ -360,7 +362,7 @@ const AcceptProject = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import ClientDashboardAside from "../../components/ClientDashboardAside";
 import { HeaderDashboard } from "../../components/Header";
-import Footer from "../../components/Footer";
 import DashboardPane from "../../components/dashboard_tabs/Client/DashboardPane";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -45,7 +44,6 @@ const ClientDashboard = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   ) : (
     <Loader />

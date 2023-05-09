@@ -756,14 +756,21 @@ footer .quadra-copyright p {
   padding: 0 20px 0 0;
 }
 
-header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton input {
+header.home-page-header
+  .mobile-menu
+  .mobile-menu-content
+  form.headerSearchButton
+  input {
   border-radius: 30px;
   width: auto;
   padding: 10px 20px;
   margin: 10px 0;
 }
 
-header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton {
+header.home-page-header
+  .mobile-menu
+  .mobile-menu-content
+  form.headerSearchButton {
   display: unset;
 }
 
@@ -772,7 +779,11 @@ header.home-page-header ul li {
   font-size: 20px;
 }
 
-header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
+header.home-page-header
+  .mobile-menu
+  .mobile-menu-content
+  form.headerSearchButton
+  button[type="submit"] {
   position: absolute;
   right: 5px;
   padding: 11px 16px;
@@ -787,7 +798,11 @@ header.home-page-header .mobile-menu .mobile-menu-content ul li {
   list-style: none;
 }
 
-header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
+header.home-page-header
+  .mobile-menu
+  .mobile-menu-content
+  form.headerSearchButton
+  button[type="submit"] {
   position: absolute;
   right: 2px;
   padding: 10px 14px;
@@ -889,13 +904,11 @@ header.dashboard-header .profile-edit-dropdown {
   position: absolute;
   padding-top: 20px;
 }
-
 .home-page-header .profile-edit-dropdown {
   display: none;
   position: absolute;
   padding-top: 20px;
 }
-
 .profile-edit-dropdown button {
   border: 0;
   text-align: center;
@@ -930,7 +943,9 @@ header.dashboard-header .dashboard-user-notification {
   z-index: 9000;
 }
 
-header.dashboard-header .dashboard-user-notification .dashboard-user-notification-number {
+header.dashboard-header
+  .dashboard-user-notification
+  .dashboard-user-notification-number {
   position: absolute;
   min-width: 20px;
   background-color: #01a78a;
@@ -1213,7 +1228,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.Residential-Architecture-page .card:hover>.card-img-overlay {
+.Residential-Architecture-page .card:hover > .card-img-overlay {
   opacity: 1;
   background: #000000ad;
 }
@@ -1247,7 +1262,11 @@ textarea {
   padding: 15px 0;
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .Become-professional {
   background-image: url(../img/become-professional-earner-banner.png);
   padding: 60px 0 60px 60px;
   border-radius: 30px;
@@ -1255,7 +1274,12 @@ textarea {
   background-size: 100% 100%;
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h4 {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .Become-professional
+  h4 {
   font-size: 32px;
   line-height: 51px;
   color: #ffffff;
@@ -1263,7 +1287,12 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h3 {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .Become-professional
+  h3 {
   font-size: 35px;
   line-height: 51px;
   color: #ffffff;
@@ -1271,7 +1300,12 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional p {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .Become-professional
+  p {
   font-size: 18px;
   line-height: 34px;
   color: #ffffff;
@@ -1280,7 +1314,12 @@ textarea {
   width: 70%;
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional button {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .Become-professional
+  button {
   font-size: 20px;
   line-height: 32px;
   color: #01a78a;
@@ -1292,27 +1331,46 @@ textarea {
   border-radius: 50px;
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .completed-projects-box {
   box-shadow: 0px 2px 2px 2px #adadad38;
   border-radius: 25px;
   padding: 15px 0;
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h3 {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .completed-projects-box
+  h3 {
   font-size: 22px;
   color: #3a3939;
   font-weight: 600;
   /* font-family: "Poppins"; */
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h6 {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .completed-projects-box
+  h6 {
   font-size: 16px;
   color: #3a3939;
   font-weight: 300;
   /* font-family: "Poppins"; */
 }
 
-.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h2 {
+.dashboard
+  main
+  #dashboard-menu-bar
+  .completed-projects-row
+  .completed-projects-box
+  h2 {
   font-size: 32px;
   color: #01a78a;
   font-weight: 600;
@@ -1480,7 +1538,13 @@ textarea {
 }
 
 .create-account main.create-account-main form input:focus,
-.create-account main.create-account-main form select:focus.create-account main.create-account-main form textarea:focus {
+.create-account
+  main.create-account-main
+  form
+  select:focus.create-account
+  main.create-account-main
+  form
+  textarea:focus {
   outline: none;
   box-shadow: none;
 }
@@ -1490,7 +1554,11 @@ textarea {
   border-radius: 50px;
 }
 
-.create-account main.create-account-main form .create-account-input input::placeholder,
+.create-account
+  main.create-account-main
+  form
+  .create-account-input
+  input::placeholder,
 .create-account main.create-account-main form select::placeholder,
 .create-account main.create-account-main form textarea::placeholder,
 .create-account main.create-account-main form .create-account-input input,
@@ -1703,7 +1771,11 @@ textarea {
   display: none;
 }
 
-.create-account main.create-account-main form .create-account-input .policy-span {
+.create-account
+  main.create-account-main
+  form
+  .create-account-input
+  .policy-span {
   padding: 15px 20px;
   font-size: 14px;
   color: #000000;
@@ -1787,12 +1859,11 @@ textarea {
 .let-get-started .join-us-now-main .join-us-now-image {
   width: 40%;
 }
-
 .let-get-started .join-us-now-main .join-us-now-image img {
-  border-radius: 30px 0 0 30px;
+  border-radius: 0;
   width: 100%;
-  max-height: 700px;
   object-fit: cover;
+  height: calc(100vh - 148px);
 }
 
 .result-based-on-catogory-one {
@@ -1845,7 +1916,7 @@ h2.filters-h2 {
 section.chatbox {
   max-height: calc(100vh - 137px);
   height: calc(100vh - 137px);
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 section.chatbox .chats-header h5 {
@@ -1919,7 +1990,11 @@ section.chatbox .chats-main .chats-show {
   flex-direction: column;
 }
 
-section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input {
+section.chatbox
+  .chats-main
+  .chats-show
+  .chatbox-text-input-box
+  input.chatbox-text-input {
   background: #eeeeee;
   padding: 15px 30px;
   border: 0px;
@@ -1940,9 +2015,21 @@ section.chatbox .chats-main .chats-show .chatbox-text-input-box button {
   right: 20px;
 }
 
-section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus,
-section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input::placeholder,
-section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus-visible {
+section.chatbox
+  .chats-main
+  .chats-show
+  .chatbox-text-input-box
+  input.chatbox-text-input:focus,
+section.chatbox
+  .chats-main
+  .chats-show
+  .chatbox-text-input-box
+  input.chatbox-text-input::placeholder,
+section.chatbox
+  .chats-main
+  .chats-show
+  .chatbox-text-input-box
+  input.chatbox-text-input:focus-visible {
   border: 0;
   outline: 0;
   font-size: 18px;
@@ -2412,7 +2499,7 @@ main.profile-page section.profile-page-sec-six h6 {
 #heroes {
   width: 100%;
   overflow: hidden;
-  height: calc(100vh - 117px);
+  height: calc(100vh - 148px);
   background-image: url("../img/380.jpg");
   background-size: 100% 100%;
 }
@@ -2609,11 +2696,14 @@ canvas {
 }
 
 .PaymentCardSubmitButton {
-  padding: 10px 0px;
-  border: none;
+  padding: 10px 40px;
+  width: 100px;
   border-radius: 20px;
+  border: 0;
 }
-
+.PaymentCardSubmitButton {
+  width: 175px !important;
+}
 .ImgBox video {
   height: 95%;
   width: 80% !important;
@@ -2943,6 +3033,7 @@ canvas {
   opacity: 0;
   z-index: 999;
   position: absolute;
+  cursor: pointer;
 }
 
 .inputImageFeaturedImagePara {
@@ -3003,31 +3094,36 @@ canvas {
 }
 
 .LoadingMain .cuboid .side:nth-of-type(2) {
-  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin)) rotateY(180deg);
+  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin))
+    rotateY(180deg);
   background: hsl(var(--hue), var(--sat), 25%);
 }
 
 .LoadingMain .cuboid .side:nth-of-type(3) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(90deg)
+    translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 75%);
 }
 
 .LoadingMain .cuboid .side:nth-of-type(4) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(-90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(-90deg)
+    translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: #009379;
 }
 
 .LoadingMain .cuboid .side:nth-of-type(5) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(90deg)
+    translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: #008971;
 }
 
 .LoadingMain .cuboid .side:nth-of-type(6) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(-90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(-90deg)
+    translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 20%);
 }
 
@@ -3171,7 +3267,6 @@ canvas {
   margin: 0;
   width: 100%;
 }
-
 .chatBoxFileSelectMainBox {
   display: flex;
   justify-content: center;
@@ -3217,6 +3312,94 @@ canvas {
   width: 100%;
 }
 
+.fileSelectLinkChatbox input {
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  opacity: 0;
+  height: 100%;
+}
+
+.fileDeleteBtn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+.pdf-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.chatBoxFileSelectMainBox button,
+.chatBoxFileSelectMainBox button svg {
+  width: 30px;
+  height: 50px;
+  background-color: transparent;
+  border: 0;
+}
+
+.chatMessageInputText,
+.chatMessageInputText:focus,
+.chatMessageInputText:focus-visible {
+  width: 80%;
+  border: 0;
+  outline: 0;
+  padding: 0 20px;
+}
+
+.chatBoxFileSelectMainBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chatBoxFileSelectMainBox .fileSelectLinkChatbox svg {
+  color: white;
+  z-index: 0;
+  width: 30px;
+  height: 50px;
+}
+
+.fileSelectLinkChatbox {
+  position: relative;
+  min-width: 50px;
+  max-width: 50px;
+  background: rgb(1 167 138);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.input-area {
+  position: relative;
+}
+
+.previewFile {
+  position: absolute;
+  bottom: 0%;
+  width: 350px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 6px;
+}
+
+.previewFile img {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 8px;
+  width: 100%;
+}
+
 .fileDeleteBtn {
   position: absolute;
   right: 10px;
@@ -3235,23 +3418,6 @@ canvas {
 
 .chatBoxFileSelectMainBox input {
   display: none;
-}
-
-.chatBoxFileSelectMainBox button,
-.chatBoxFileSelectMainBox button svg {
-  width: 30px;
-  height: 50px;
-  background-color: transparent;
-  border: 0;
-}
-
-.chatMessageInputText,
-.chatMessageInputText:focus,
-.chatMessageInputText:focus-visible {
-  width: 80%;
-  border: 0;
-  outline: 0;
-  padding: 0 20px;
 }
 
 .rce-button,
@@ -3688,7 +3854,6 @@ input[name="milestone_date_fifth"]::placeholder {
   position: relative;
   background: #f9f9f9;
 }
-
 .viesfilea {
   background-color: #0bbb92;
   padding: 8px 25px;
@@ -3710,11 +3875,9 @@ input[name="milestone_date_fifth"]::placeholder {
 
   color: black;
 }
-
 .accept_btn_group {
   display: flex;
 }
-
 .accept_btn_group button {
   height: 100%;
   border: 0;
@@ -3722,25 +3885,22 @@ input[name="milestone_date_fifth"]::placeholder {
 
   background: transparent;
 }
-
 .milerow-2 {
   margin-top: 2% !important;
 }
-
 .mileFile {
   border: 1px solid #008971;
   padding: 5px;
+  height: 40px;
 
   border-radius: 20px;
 }
-
 .mileFile a {
   color: #008971;
   text-decoration: none;
   display: grid;
   place-content: center;
 }
-
 .viewFile {
   display: flex;
   align-items: center;
@@ -3751,18 +3911,15 @@ input[name="milestone_date_fifth"]::placeholder {
   padding: 8px 10px;
   border-radius: 50px;
 }
-
 .viewFile:hover {
   color: #0f9e83;
 }
-
 .uploadMileStoneof {
   align-items: center;
   display: flex;
 
   justify-content: flex-end;
 }
-
 .uploadMileStonefo {
   padding: 10px 25px;
   border-radius: 50px;
@@ -3771,7 +3928,6 @@ input[name="milestone_date_fifth"]::placeholder {
   cursor: pointer;
   margin-right: 22px;
 }
-
 .pendingMileStone {
   margin-right: 50px;
   display: flex;
@@ -3783,35 +3939,28 @@ input[name="milestone_date_fifth"]::placeholder {
   padding: 8px 10px;
   border-radius: 50px;
 }
-
 .pendingMileStone:hover {
   color: #0f9e83;
 }
-
 .headingMile {
   font-weight: bold !important;
   padding-top: 8px;
 }
-
 .headingMile2 {
   text-align: center !important;
 }
-
 .mileFile a :hover {
   color: #008971;
 }
-
 .mileColor {
   border: 1px solid #008971 !important;
   padding: 0px 20px !important;
   border-radius: 30px;
   color: #008971 !important;
 }
-
 .mileColor button {
   color: #008971 !important;
 }
-
 .btnBoeMile {
   border: 1px solid #008971 !important;
   padding: 0px 20px !important;
@@ -3819,17 +3968,16 @@ input[name="milestone_date_fifth"]::placeholder {
   color: #008971 !important;
   margin-right: 10px !important;
 }
-
 .accept_btn_group button:first-child {
   /* background: rgb(245, 81, 81);
   color: #fff; */
 }
-
 .btnBoeMile1 {
   border: 1px solid #008971 !important;
   padding: 9px 20px !important;
   border-radius: 30px;
   color: #008971 !important;
+  height: 40px !important;
 }
 
 .default-cursor {
@@ -4327,7 +4475,7 @@ a:visited {
 
 .plan-box-tab li button.active {
   color: #fff;
-  background: #2777c6;
+  background: #01a789;
 }
 
 .heading ul li {
@@ -4341,12 +4489,12 @@ a:visited {
 }
 
 .heading ul li:nth-child(odd) {
-  background: #293246;
+  background: #01a789;
   color: #fff;
 }
 
 .heading ul li:nth-child(even) {
-  background: #313b51;
+  background: #1b816e;
   color: #fff;
 }
 
@@ -4354,13 +4502,13 @@ a:visited {
 .buy-now-btn-active,
 .buy-now-btn-cancel {
   display: inline-block;
-  background: #005ea6;
-  border: 1px solid #005ea6;
+  background: #83918e;
+  border: 0;
   opacity: 0.9;
   border-radius: 5px;
   cursor: pointer;
   color: #fff;
-  padding: 1rem 1.5rem;
+  padding: 1rem 0;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
@@ -4376,13 +4524,13 @@ a:visited {
 }
 
 .buy-now-btn-active {
-  background: #4caf50;
-  border: 1px solid #4caf50;
+  background: #179b82;
+  border: 0;
 }
 
 .buy-now-btn-cancel {
-  background: #f56531;
-  border: 1px solid #f56531;
+  background: #235249;
+  border: 0;
 }
 
 .fetures ul li,
@@ -4597,31 +4745,25 @@ canvas {
   margin-left: 3%;
   border-radius: 1px;
 }
-
 .react-datepicker__close-icon {
   right: 10% !important;
 }
-
 .milestone_input_des {
   width: 100%;
   border: 0;
   padding: 10px 20px 10px 40px;
 }
-
 .rowMilestone {
   border-bottom: 1px solid #b6b6b6;
   margin: 0 !important;
   padding: 0 !important;
 }
-
 .colMilestone {
   border-right: 1px solid #b6b6b6;
 }
-
 .mileStoneAttach {
   margin-top: 10px;
 }
-
 .mileStoneAttach_lablel {
   box-shadow: none;
 }
@@ -4629,7 +4771,6 @@ canvas {
 .attachmentMilestone {
   box-shadow: none;
 }
-
 .footer-right {
   display: grid;
   place-content: end;
@@ -4727,44 +4868,36 @@ canvas {
 }
 
 @media only screen and (max-width: 767px) and (min-width: 320px) {
-
   .form_data .half-cullom .field-data,
   .form_data .half-cullom .field-custom {
     width: 100%;
     margin-bottom: 25px;
   }
-
   .form_data .half-cullom {
     display: block;
   }
-
   .form_data .field-custom input,
   .form_data .half-cullom .field-data input {
     padding: 12px 20px;
   }
-
   .form_data .full_cullomn .field_data label,
   .form_data .full_cullomn .field-data label,
   .form_data .half-cullom label {
     font-size: 15px;
     padding-bottom: 10px;
   }
-
   .form_data .half-cullom .field-custom_image input#file {
     background-size: 33px;
     height: 35px;
   }
-
   .form_data .half-cullom .field-custom_image {
     margin-top: 30px;
     width: 65%;
   }
-
   .form_data .half-cullom .field-custom_image span {
     padding: 15px 20px;
     font-size: 13px;
   }
-
   .form_data .field_data textarea {
     padding: 12px 20px;
     height: 120px;
@@ -4777,24 +4910,20 @@ canvas {
     box-sizing: border-box;
     width: 100%;
   }
-
   .form_data .half-cullom .field-data,
   .form_data .half-cullom .field-custom {
     width: 46%;
     display: inline-block;
   }
-
   .form_data .half-cullom .field-data:nth-child(2) {
     margin-left: 20px;
   }
-
   .form_data .half-cullom .field-custom_image {
     display: inline-block;
     width: 43%;
     margin-left: 20px;
     top: -12px;
   }
-
   .form_data .half-cullom .field-custom {
     margin-top: 20px;
   }
@@ -4811,35 +4940,30 @@ canvas {
   padding: 5px 50px !important;
   color: #01a78a !important;
 }
-
 .statusBtnMilecol {
   display: grid !important;
   place-content: end !important;
 }
-
 .DownloadbtnMile {
   background-color: #01a78a !important;
   border-radius: 30px !important;
   padding: 5px 30px !important;
   color: white !important;
 }
-
 .pendingBtnMileAll {
   border: 1px solid #01a78a !important;
   border-radius: 30px !important;
   padding: 5px 15px !important;
-  height: 38px !important;
+  height: 40px !important;
+  color: #01a78a !important;
 }
-
 .colAccDec {
   justify-content: end !important;
   text-align: end !important;
 }
-
 .colAccDecpar {
   display: flex;
 }
-
 .colAccDecchl {
   margin-right: 10px;
 }
@@ -4851,7 +4975,7 @@ canvas {
 .newJoin {
   position: absolute;
   width: 100%;
-  top: 17%;
+  top: 148px;
   z-index: 999;
 }
 
@@ -4877,12 +5001,79 @@ canvas {
 }
 
 .chat-box {
-  /* background: red; */
-  height: 480px;
+  height: 70vh;
   overflow: auto;
   margin-bottom: 5px;
 }
 
 .chat-box::-webkit-scrollbar {
   width: 0px;
+}
+
+.rce-mbox {
+  max-width: 50%;
+}
+
+.resMile {
+  height: 40px;
+}
+.pendingBtnMile {
+  height: 40px !important;
+}
+.DownloadbtnMile {
+  height: 40px !important;
+}
+.Milestone {
+  color: #01a78a !important;
+}
+
+.btnBoeMile {
+  height: 40px;
+}
+
+/* .VIpgJd-ZVi9od-ORHb-OEVmcd {
+  opacity: hidden !important;
+} */
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
+  display: none !important;
+}
+.btnBoeMileOuter {
+  justify-content: space-between;
+}
+
+.btnBoeMile button {
+  color: #01a78a !important;
+}
+.buy-now-btn {
+  width: 110px;
+}
+.buy-now-btn-active {
+  width: 110px;
+}
+.buy-now-btn-cancel {
+  width: 110px;
+}
+.VIpgJd-ZVi9od-ORHb {
+  display: none !important;
+}
+
+.rce-button {
+  background-color: #009379 !important;
+}
+
+.userChatName {
+  color: white;
+  font-size: 21px;
+  font-weight: 800;
+}
+.rce-citem-body--top-title {
+  text-transform: capitalize;
+}
+
+/* ========== 09-05-2023 =========== */
+
+.bl-col img {
+  height: 95px !important;
+  width: 100%;
+  object-fit: cover;
 }

@@ -19,7 +19,6 @@ import { IoMdClose } from "react-icons/io";
 import { AiFillDelete } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
 
-import Footer from "../../Footer";
 import InstructionModal from "../../Modals/InstructionModal";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
@@ -1772,7 +1771,6 @@ const PortfolioPane = () => {
         </div>
       </div>
       <InstructionModal />
-      <Footer />
     </>
   );
 };

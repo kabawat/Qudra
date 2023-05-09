@@ -12,7 +12,6 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router-dom";
-import Footer from "../../Footer";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
 import ReactLotti from "../../../loader/ReactLotti";
@@ -82,8 +81,10 @@ const PurchaseDesign = () => {
   formdata.set("client_token", cookies?.user_data?.user_token);
   formdata.set("attachment", attachement);
   formdata.set("buysell_payment_id", buysell_id);
-  useEffect(() => {}, [purchaseDesignsPagination]);
-
+  // useEffect(() => {}, [purchaseDesignsPagination]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [purchaseDesignsPagination]);
   useEffect(() => {
     if (cookies?.user_data) {
       axios
@@ -833,6 +834,7 @@ const PurchaseDesign = () => {
                         type="submit"
                         className="theme-bg-color border-0"
                         onClick={ReportUpload}
+                        style={{ padding: reportResposne ? "0px" : null }}
                       >
                         {reportResposne ? <ReactLotti /> : "Submit"}
                       </Button>
@@ -1163,7 +1165,6 @@ const PurchaseDesign = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

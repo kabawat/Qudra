@@ -39,7 +39,9 @@ const DashboardPane = () => {
         dispatch({ type: "PROJECTS", value: res?.data?.data });
       });
   }, [projectPageId]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [projectPageId]);
   const projectPaginationArray = [];
   for (
     let i = 0;

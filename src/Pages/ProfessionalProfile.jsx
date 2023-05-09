@@ -43,6 +43,8 @@ const ProfessionalProfile = () => {
   const params = useParams();
   const [loader, setLoader] = useState(false);
   const [likepro, setLikepro] = useState(false);
+  const [reviewsCount, setReviewsCount] = useState(null);
+  const [ratingsCount, setRatingsCount] = useState(null);
 
   const [showRating, setShowRating] = useState(false);
   const [submitRevieRating, setSubmitReviewRating] = useState(false);
@@ -97,7 +99,10 @@ const ProfessionalProfile = () => {
         professional_id: params?.professional_id,
       })
       .then((respo) => {
+        console.log(respo?.data);
         setLikepro(respo?.data?.data?.liked);
+        setReviewsCount(respo?.data?.data?.reviews);
+        setRatingsCount(respo?.data?.data?.ratings);
         setRating({
           ...ratingreview,
           rating: !respo?.data?.data?.rating_given
@@ -269,8 +274,6 @@ const ProfessionalProfile = () => {
   const onSetRating = (val) => {
     if (ratingreview.rating && ratingreview.review) {
       setIslotti(true);
-      // setRating(val);
-      // setReviewHeading(!reviewHeading);
       axios
         .post("http://13.52.16.160:8082/client/client_rating", {
           professional_id:
@@ -285,11 +288,24 @@ const ProfessionalProfile = () => {
         .then((res) => {
           if (res?.data?.status === "Success") {
             setIslotti(false);
-            // setShowRating(false);
             setSucessreview(true);
             setShowRatingReview(false);
             setSubmitReviewRating(true);
             setReviewHeading("Reviewed");
+            axios
+              .post(
+                "http://13.52.16.160:8082/professional/professional_profile",
+                {
+                  client_id: cookies?.user_data?.user_id,
+                  role: cookies?.user_data?.role,
+                  user_token: cookies?.user_data?.user_token,
+                  professional_id: params?.professional_id,
+                }
+              )
+              .then((res) => {
+                setReviewsCount(res?.data?.data?.reviews);
+                setRatingsCount(res?.data?.data?.ratings);
+              });
           }
         });
     } else {
@@ -389,7 +405,7 @@ const ProfessionalProfile = () => {
             }}
           >
             {cookies?.user_data?.role === "client" && (
-              <NavLink to="/clientdashboard" style={{ color: "white" }}>
+              <NavLink to="/browse-professionals" style={{ color: "white" }}>
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
                   style={{ fontSize: "30px" }}
@@ -465,9 +481,14 @@ const ProfessionalProfile = () => {
             >
               <div className="user-profile-info w-100">
                 <div className="row pt-md-0 pt-5">
-                  <div className="row m-auto">
-                    <div className="col-md d-flex">
-                      <h2 style={{ marginLeft: "-3%" }}>
+                  <div className="row m-auto pb-3">
+                    <div className="col-md d-flex m-auto">
+                      <h2
+                        style={{
+                          marginLeft: "-3%",
+                          textTransform: "capitalize",
+                        }}
+                      >
                         {contextData?.professional_user_profile_data &&
                           contextData?.professional_user_profile_data?.details
                             ?.name}
@@ -481,11 +502,12 @@ const ProfessionalProfile = () => {
                           padding: "5px 10px",
                           boxShadow: "4px 4px 4px #dddddd",
                           borderRadius: "10px",
-                          display: "inline-block",
+                          display: "flex",
                         }}
                       >
-                        <h2 className="m-auto miniRate">Minimum Rate</h2>
+                        <h2 className="m-auto miniRate">Minimum Rate : </h2>
                         <h2 className="">
+                          ${" "}
                           {contextData?.professional_user_profile_data &&
                             contextData?.professional_user_profile_data?.details
                               ?.price_range}{" "}
@@ -505,11 +527,7 @@ const ProfessionalProfile = () => {
                     <div className="d-flex">
                       <Rating
                         name="read-only"
-                        value={parseInt(
-                          contextData?.professional_user_profile_data &&
-                            contextData?.professional_user_profile_data?.details
-                              ?.ratings
-                        )}
+                        value={parseInt(ratingsCount)}
                         readOnly
                       />
                     </div>
@@ -539,9 +557,10 @@ const ProfessionalProfile = () => {
                     &nbsp;
                     <span>
                       <span style={{ padding: "0 5px" }}>
-                        {contextData?.professional_user_profile_data &&
+                        {/* { contextData?.professional_user_profile_data &&
                           contextData?.professional_user_profile_data?.details
-                            ?.reviews}
+                            ?.reviews } */}
+                        {reviewsCount}
                       </span>
                       {contextData?.professional_user_profile_data?.details
                         ?.reviews > 1000

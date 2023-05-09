@@ -132,21 +132,30 @@ const Cart = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              <div className="cart_page_main mx-lg-5 px-lg-5 my-lg-5 py-lg-5 ">
-                <NavLink to="/clientdashboard" style={{ color: "#00A78B" }}>
-                  <i
-                    className="fa-solid fa-arrow-left-long py-3"
-                    style={{ fontSize: "30px" }}
-                  ></i>
-                </NavLink>
+              <div className="cart_page_main mx-xl-5 px-lg-5 my-xl-5 py-lg-5 ">
                 <div className="row leftShoppingCart">
-                  <h2 className="pb-4">{location?.state?.sub_category_name}</h2>
+                  <h2 className="pb-4">
+                    <span
+                      onClick={() => navigate(-1)}
+                      style={{
+                        color: "#00A78B",
+                        marginRight: "8px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <i
+                        className="fa-solid fa-arrow-left-long mx-1"
+                        style={{ fontSize: "30px" }}
+                      ></i>
+                    </span>
+                    {location?.state?.sub_category_name}
+                  </h2>
                 </div>
                 <div
-                  className="row p-3 bg-white"
+                  className="row p-3 bg-white align-items-center bl-col"
                   style={{ border: "1px solid #e3e2de", borderRadius: "12px" }}
                 >
-                  <div className="col-lg-2">
+                  <div className="col-xl-2 col-md-6 ">
                     <img
                       style={{ height: "100%", borderRadius: "12px" }}
                       src={location?.state?.image}
@@ -155,7 +164,7 @@ const Cart = () => {
                       onClick={() => setImgPreview(true)}
                     />
                   </div>
-                  <div className="col-lg-2 ">
+                  <div className="col-xl-2 col-md-6">
                     <video
                       width="100%"
                       style={{ height: "100%", borderRadius: "12px" }}
@@ -166,38 +175,50 @@ const Cart = () => {
                       Your browser does not support HTML video.
                     </video>
                   </div>
-                  <div className="col-lg-8 d-flex flex-column justify-content-center">
-                    <div className="row">
-                      <h3 className="col-5">Price:</h3>
-                      <h3 className="col-4">
-                        $ {location?.state?.project_cost}
-                      </h3>
-                    </div>
-                    <div className="row">
-                      <h3 className="col-5">Customization Price:</h3>
-                      <h3 className="col-4">
-                        $ {location?.state?.customize_price}
-                      </h3>
-                    </div>
-                    <div className="row d-flex align-items-center">
-                      {/* <div className="col-5">
-                        <h5>Total:</h5>
-                      </div>
-                      <div className="col-4">
-                        <h4>${ location?.state?.project_cost }</h4>
-                      </div> */}
-                      <div className="col">
-                        <button
-                          type="button"
-                          onClick={handalSubmit}
-                          disabled={loading ? true : false}
-                          className="PaymentCardSubmitButton px-4"
+                  <div className="col-xl-6 px-xl-5 my-3 col-md-12">
+                    <div className="d-flex flex-column justify-content-center">
+                      <div className="row">
+                        <h3
+                          className="col-8 col-md-8"
+                          style={{ fontSize: "1.25rem" }}
                         >
-                          {!loading ? "Checkout" : <ReactLotti3 />}
-                          {/* Checkout <BsArrowRight /> */}
-                        </button>
+                          Price:
+                        </h3>
+                        <h3
+                          className="col-4 col-md-4 text-dark"
+                          style={{ fontSize: "1.25rem" }}
+                        >
+                          $ {location?.state?.project_cost}
+                        </h3>
                       </div>
                     </div>
+                    <div className="d-flex w-100">
+                      <div className="row w-100">
+                        <h3
+                          className="col-8 col-md-8"
+                          style={{ fontSize: "1.25rem" }}
+                        >
+                          Customization Price:
+                        </h3>
+                        <h3
+                          className="col-4 col-md-4 text-dark text-right"
+                          style={{ fontSize: "1.25rem" }}
+                        >
+                          $ {location?.state?.customize_price} /sq.mtr
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xl-2 col-md-12">
+                    <button
+                      type="button"
+                      onClick={handalSubmit}
+                      disabled={loading ? true : false}
+                      className="PaymentCardSubmitButton px-4"
+                    >
+                      {!loading ? <>Checkout</> : <ReactLotti3 />}
+                      {/* Checkout <BsArrowRight /> */}
+                    </button>
                   </div>
                 </div>
               </div>

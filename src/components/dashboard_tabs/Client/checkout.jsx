@@ -16,6 +16,8 @@ const CheckOut = () => {
   const [card, setCard] = useState(location.state?.cards);
   const navigate = useNavigate();
   const [isRender, setIsRender] = useState(true);
+  const [show2, setShow2] = useState(false);
+
   const [error, setError] = useState("");
   const [curCart, setCurCart] = useState("");
   const [project, setProject] = useState("");
@@ -87,6 +89,9 @@ const CheckOut = () => {
   const handalBack = () => {
     navigate(-1);
   };
+  const showcancel = () => {
+    setShow2(false);
+  };
   const downloadProject = () => {
     const url = project;
     const link = document.createElement("a");
@@ -154,6 +159,7 @@ const CheckOut = () => {
           const error = response?.data?.message;
           setPaymentError(error.split(":")[1]);
         } else {
+          setShow2(true);
           setcheckout_loader(false);
           handleCard();
           setIsPayment(false);
@@ -194,18 +200,27 @@ const CheckOut = () => {
                 <>
                   <section className="checkout_data">
                     <Container>
-                      <div className="checkout-listing">
-                        <span
-                          onClick={handalBack}
-                          className="text-decoration-none text-dark m-0 h2"
-                          style={{ cursor: "pointer" }}
-                        >
-                          <i
-                            className="fa-solid fa-arrow-left-long "
-                            style={{ color: "#01a78a" }}
-                          ></i>
-                        </span>
-                        <h2 className="pt-3">Checkout Payment</h2>
+                      <div className="checkout-listing ">
+                        <div className="d-flex">
+                          {" "}
+                          <span
+                            onClick={handalBack}
+                            className="text-decoration-none text-dark m-0 h2"
+                            style={{
+                              cursor: "pointer",
+                              display: "grid",
+                              placeItems: "center",
+                            }}
+                          >
+                            <i
+                              className="fa-solid fa-arrow-left-long "
+                              style={{ color: "#01a78a" }}
+                            ></i>
+                          </span>
+                          <h2 className="pt-3 " style={{ marginLeft: "3%" }}>
+                            Checkout Payment
+                          </h2>
+                        </div>
                         <div className="content pt-3">
                           <div className="profile_data mb-4">
                             <div
@@ -232,7 +247,7 @@ const CheckOut = () => {
                           <div className="amount-listing">
                             <ul className="listing">
                               <li>Amout</li>
-                              <li>Charge</li>
+                              <li>Service Charge</li>
                               <li>Total Amount</li>
                             </ul>
                             <ul className="amount-list">
@@ -327,6 +342,17 @@ const CheckOut = () => {
 
         <Modal.Footer className="d-flex justify-content-start">
           <Button className="theme-bg-color border-0" onClick={downloadProject}>
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal centered show={show2} onHide={showcancel}>
+        <Modal.Body>
+          <Modal.Title>New Card Added!</Modal.Title>
+        </Modal.Body>
+
+        <Modal.Footer className="d-flex justify-content-start">
+          <Button className="theme-bg-color border-0" onClick={showcancel}>
             Ok
           </Button>
         </Modal.Footer>
@@ -436,7 +462,7 @@ const CheckOut = () => {
           </div>
         </Modal.Footer>
       </Modal>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

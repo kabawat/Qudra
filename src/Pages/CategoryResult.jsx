@@ -119,7 +119,7 @@ const CategoryResult = () => {
             className="d-flex flex-column justify-content-center align-items-center "
           >
             <h2>User Has Not Uploaded Any Image Yet</h2>
-            <div>
+            {/* <div>
               <button
                 className="theme-green"
                 style={buttonStyle}
@@ -127,7 +127,7 @@ const CategoryResult = () => {
               >
                 Ask For Price
               </button>
-            </div>
+            </div> */}
           </div>
         ) : (
           ""
@@ -255,7 +255,7 @@ const CategoryResult = () => {
       ) : (
         ""
       )}
-      <div className="container d-flex mt-5 justify-content-center">
+      <div className="container d-flex my-5 justify-content-center">
         <BackButton text="back" />
       </div>
       <Modal

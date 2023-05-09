@@ -36,6 +36,10 @@ function ReportTab() {
   // }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [myProjectPageId]);
+
+  useEffect(() => {
     if (cookies?.user_data) {
       axios
         .post(
@@ -56,6 +60,7 @@ function ReportTab() {
         });
     }
   }, [myProjectPageId]);
+
   const paginationArray = [];
   for (let i = 0; i < myProject?.total_data / myProjectPageId?.page_size; i++) {
     paginationArray.push(i + 1);
@@ -143,34 +148,49 @@ function ReportTab() {
                                         }}
                                         alt={res?.client_name}
                                       />
-                                      <h4
+                                      <h5
                                         style={{
+                                          marginTop: "2%",
+                                          fontSize: "1.25rem",
                                           color: "rgb(0, 167, 139)",
+                                          textTransform: "capitalize",
                                         }}
                                       >
                                         {res?.client_name}
-                                      </h4>
+                                      </h5>
                                     </div>
                                     <div className="col-lg-9  py-3 d-flex justify-content-center flex-column">
                                       <div className="row my-2 ">
                                         <div className="col-lg-6">
-                                          <div>
-                                            <h4>{res?.sub_category_name} </h4>
-                                          </div>
                                           <div className="d-flex  ">
-                                            <h4>Price:</h4>
+                                            <h5>Price:</h5>
+                                            <h5 className="ms-1">
+                                              $ {res?.price}
+                                            </h5>
+                                            {/* <h4>{res?.sub_category_name} </h4> */}
+                                          </div>
+                                          <div>
+                                            <h5
+                                              style={{
+                                                fontWeight: "bold",
+                                                fontSize: "1rem",
+                                                color: "rgb(0, 167, 139)",
+                                              }}
+                                            >
+                                              {res?.sub_category_name}{" "}
+                                            </h5>
+
+                                            {/* <h4>Price:</h4>
                                             <h4 className="ms-4">
                                               $ {res?.price}
-                                            </h4>
+                                            </h4> */}
                                           </div>
                                         </div>
                                         <div className="col-lg-6">
-                                          <div className="d-flex  ">
-                                            <h4> Customize Price:</h4>
-                                            <h4 className="ms-4">
-                                              $ {res?.customize_price}
-                                            </h4>
-                                          </div>
+                                          <h5 className="">
+                                            Customize Price: $
+                                            {res?.customize_price}/sq.mtr
+                                          </h5>
                                         </div>
                                       </div>
 
@@ -183,7 +203,7 @@ function ReportTab() {
                                               backgroundColor:
                                                 "rgb(0, 167, 139)",
                                               color: "white",
-                                              borderRadius: "10px  ",
+                                              borderRadius: "4px  ",
                                             }}
                                             onClick={() => {
                                               setShowPurchaseDesignModal(true);
@@ -210,7 +230,7 @@ function ReportTab() {
                                               backgroundColor:
                                                 "rgb(0, 167, 139)",
                                               color: "white",
-                                              borderRadius: "10px  ",
+                                              borderRadius: "4px  ",
                                             }}
                                             onClick={() => {
                                               setShowPurchaseDesignModal(true);
@@ -234,7 +254,7 @@ function ReportTab() {
                                               backgroundColor:
                                                 "rgb(0, 167, 139)",
                                               color: "white",
-                                              borderRadius: "10px  ",
+                                              borderRadius: "4px  ",
                                               textDecoration: "none",
                                             }}
                                           >

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { HeaderDashboard } from "../../Header";
-import Footer from "../../Footer";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -153,7 +152,6 @@ const Report = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

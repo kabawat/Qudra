@@ -10,7 +10,6 @@ import Loader from "../../Loader";
 import { useEffect } from "react";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { HeaderDashboard } from "../../Header";
-import Footer from "../../Footer";
 import freelancer1 from "../../../assets/img/frelancer_1.jpg";
 import freelancer2 from "../../../assets/img/frelancer_2.jpg";
 import freelancer3 from "../../../assets/img/frelancer_3.jpg";
@@ -120,7 +119,6 @@ const LastStep = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   ) : (
     <Loader />

@@ -6,7 +6,6 @@ import Pagination from "react-bootstrap/Pagination";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "../../Footer";
 import { HeaderDashboard } from "../../Header";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import Loader from "../../Loader";
@@ -74,6 +73,10 @@ const CompletedPane = () => {
     } else {
       navigate("/select-sign-in");
     }
+  }, [completedProjectPageId]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
   }, [completedProjectPageId]);
 
   const completedProjectArray = [];
@@ -167,7 +170,7 @@ const CompletedPane = () => {
                                     searchData();
                                   }
                                 }}
-                                placeholder="Search via rofessional name"
+                                placeholder="Search via professional name"
                               />
                               <button type="submit">
                                 <BsSearch />
@@ -372,7 +375,6 @@ const CompletedPane = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

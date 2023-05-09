@@ -65,7 +65,6 @@ const OngoingPane = () => {
   ) {
     onGoingProjectArray.push(i + 1);
   }
-
   const handleClientAcceptation = (payload) => {
     axios
       .post("http://13.52.16.160:8082/client/particular_project_milestones", {

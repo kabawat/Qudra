@@ -7,7 +7,6 @@ import Global from "../../../context/Global";
 import axios from "axios";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { HeaderDashboard } from "../../Header";
-import Footer from "../../Footer";
 import Loader from "../../Loader";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -65,7 +64,9 @@ const LikesShow = () => {
       navigate("/select-sign-in");
     }
   }, [projectPageId]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [projectPageId]);
   const projectPaginationArray = [];
   for (let i = 0; i < likes?.total_data / projectPageId?.page_size; i++) {
     projectPaginationArray.push(i + 1);
@@ -357,7 +358,6 @@ const LikesShow = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

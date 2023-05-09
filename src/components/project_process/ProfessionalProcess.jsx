@@ -169,6 +169,12 @@ const ProfessionalProcess = ({ location }) => {
     setShowText(false);
   };
 
+  document.querySelectorAll(".maxlength").forEach((input) => {
+    input.oninput = () => {
+      if (input.value.length > input.maxLength)
+        input.value = input.value.slice(0, input.maxLength);
+    };
+  });
   return loading ? (
     <Loader />
   ) : (
@@ -661,8 +667,11 @@ const ProfessionalProcess = ({ location }) => {
                                 <Field
                                   type="number"
                                   name="milestone_one_percent"
+                                  maxLength="2"
+                                  min="0"
+                                  max="99"
                                   placeholder=" Cost % "
-                                  className="milestone_input_des"
+                                  className="milestone_input_des maxlength "
                                   value={values.milestone_one_percent}
                                   onChange={(e) => {
                                     setFieldValue(
@@ -851,8 +860,11 @@ const ProfessionalProcess = ({ location }) => {
                                 <Field
                                   name="milestone_two_percent"
                                   type="number"
+                                  maxLength="2"
+                                  min="0"
+                                  max="99"
                                   placeholder=" Cost % "
-                                  className="milestone_input_des"
+                                  className="milestone_input_des maxlength"
                                   value={values.milestone_two_percent}
                                   onChange={(e) => {
                                     setFieldValue(
@@ -1047,8 +1059,11 @@ const ProfessionalProcess = ({ location }) => {
                                 <Field
                                   name="milestone_third_percent"
                                   type="number"
+                                  maxLength="2"
+                                  min="0"
+                                  max="99"
                                   placeholder=" Cost % "
-                                  className="milestone_input_des  "
+                                  className="milestone_input_des  maxlength"
                                   value={values.milestone_third_percent}
                                   onChange={(e) => {
                                     setFieldValue(
@@ -1242,8 +1257,11 @@ const ProfessionalProcess = ({ location }) => {
                                 <Field
                                   name="milestone_four_percent"
                                   type="number"
+                                  maxLength="2"
+                                  min="0"
+                                  max="99"
                                   placeholder=" Cost % "
-                                  className="milestone_input_des  "
+                                  className="milestone_input_des  maxlength"
                                   value={values.milestone_four_percent}
                                   onChange={(e) => {
                                     setFieldValue(
@@ -1435,8 +1453,11 @@ const ProfessionalProcess = ({ location }) => {
                                 <Field
                                   name="milestone_fifth_percent"
                                   type="number"
+                                  maxLength="2"
+                                  min="0"
+                                  max="99"
                                   placeholder=" Cost % "
-                                  className="milestone_input_des  "
+                                  className="milestone_input_des  maxlength"
                                   value={values.milestone_fifth_percent}
                                   onChange={(e) => {
                                     setFieldValue(
@@ -1651,7 +1672,9 @@ const ProfessionalProcess = ({ location }) => {
                             }}
                             style={{
                               width: "max-content",
-                              padding: "10px 65px",
+                              padding: decline_loader
+                                ? "0px 65px"
+                                : "10px 65px",
                               border: "2px solid",
                               borderRadius: "50px",
                               display: "block",

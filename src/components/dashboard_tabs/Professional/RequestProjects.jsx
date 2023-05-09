@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Pagination from "react-bootstrap/Pagination";
-import Footer from "../../Footer";
+
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
@@ -66,7 +66,9 @@ const RequestProject = () => {
       navigate("/select-sign-in");
     }
   }, [myProjectPageId]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [myProjectPageId]);
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const handleFilterProject = (e) => {
     e.preventDefault();
@@ -536,7 +538,6 @@ const RequestProject = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

@@ -598,7 +598,7 @@ const ProfessionalBuyAndSale = () => {
                             </div>
                           </div>
                           <div className=" col-12 my-md-4 my-3 d-flex align-items-center justify-content-end">
-                            <button
+                            {/* <button
                               type="submit"
                               className="create-account-btn"
                               onClick={() =>
@@ -609,7 +609,7 @@ const ProfessionalBuyAndSale = () => {
                             >
                               Continue{" "}
                               <BsArrowRight style={{ color: "white" }} />
-                            </button>
+                            </button> */}
                           </div>
                         </div>
                       ) : (
@@ -1026,6 +1026,9 @@ const ProfessionalBuyAndSale = () => {
                                     }}
                                   >
                                     <GiCancel
+                                      style={{
+                                        cursor: "pointer",
+                                      }}
                                       onClick={() => {
                                         // setimgPreview("");
                                         imgnull(imgclear);
@@ -1083,7 +1086,11 @@ const ProfessionalBuyAndSale = () => {
                           <div className="row m-0 pb-3 mb-3 pt-3  ">
                             <div className="col-md-6 ps-0">
                               <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
-                                <button className="w-100 pointer" type="button">
+                                <button
+                                  className="w-100 pointer"
+                                  type="button"
+                                  style={{ pointerEvents: "none" }}
+                                >
                                   <BsPlusLg
                                     className="pointer"
                                     style={{
@@ -1108,6 +1115,9 @@ const ProfessionalBuyAndSale = () => {
                                     }}
                                   >
                                     <GiCancel
+                                      style={{
+                                        cursor: "pointer",
+                                      }}
                                       size={25}
                                       color="gray"
                                       onClick={() => {
@@ -1148,7 +1158,11 @@ const ProfessionalBuyAndSale = () => {
                             </div>
                             <div className="col-md-6 pe-0">
                               <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
-                                <button className="w-100" type="button">
+                                <button
+                                  className="w-100"
+                                  type="button"
+                                  style={{ pointerEvents: "none" }}
+                                >
                                   <BsPlusLg
                                     style={{
                                       color: "#fff",
@@ -1193,6 +1207,9 @@ const ProfessionalBuyAndSale = () => {
                                     }}
                                   >
                                     <GiCancel
+                                      style={{
+                                        cursor: "pointer",
+                                      }}
                                       size={25}
                                       color="gray"
                                       onClick={() => {

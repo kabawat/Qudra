@@ -27,6 +27,23 @@
   .logo {
     height: 0px !important;
   }
+
+  /* ====== 09-05-2023 ======= */
+
+  .leftShoppingCart h2,
+  .leftShoppingCart i {
+    font-size: 17px;
+  }
+
+  .bl-col img {
+    margin-bottom: 30px;
+    height: 150px !important;
+    object-fit: cover;
+  }
+
+  .cart_page_main h3 {
+    font-size: 18px !important;
+  }
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1600px) {
@@ -37,9 +54,75 @@
   .form-image-input img {
     width: 100%;
   }
+
+  /* ======== 09-05-2023 ========= */
+
+  .bl-chat {
+    padding: 15px !important;
+  }
+
+  .bl-chat h5 {
+    padding-bottom: 10px;
+  }
+
+  section.chatbox .chats-header form.search input.search__input {
+    width: 130px;
+  }
+
+  form.search button {
+    position: absolute;
+    right: 5px;
+  }
+
+  form.search {
+    position: relative;
+  }
+
+  .chatbox .container {
+    padding: 0px;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .chat-box {
+    padding: 0 10px 15px 0;
+  }
 }
 
 @media screen and (min-width: 320px) and (max-width: 575px) {
+  .btnBoeMile1 {
+    padding: 9px !important;
+    height: 40px;
+  }
+  .btnBoeMile {
+    padding: 0px 9px !important;
+    margin-right: 9px !important;
+    margin-left: 7px !important;
+  }
+
+  .DownloadbtnMile {
+    padding: 5px 7px !important;
+    height: 40px;
+  }
+  .milestoneBox {
+    padding: 0;
+  }
+  .milestoneBoxInner {
+    padding: 0 !important;
+  }
+  .pendingBtnMileAll {
+    padding: 5px 7px !important;
+  }
+  .colAccDecchl {
+    margin-right: 8px;
+  }
+  .accept_btn_group button {
+    padding: 0px 9px !important;
+  }
+  .resMile {
+    padding: 0 !important;
+  }
+
   .colAccDec {
     justify-content: center !important;
   }
@@ -65,6 +148,23 @@
   }
   .MyProjectDisplayRow .col-lg-3 {
     max-width: 100%;
+  }
+
+  /* ====== 09-05-2023 ======= */
+
+  .leftShoppingCart h2,
+  .leftShoppingCart i {
+    font-size: 17px;
+  }
+
+  .bl-col img {
+    margin-bottom: 30px;
+    height: 150px !important;
+    object-fit: cover;
+  }
+
+  .cart_page_main h3 {
+    font-size: 13px !important;
   }
 }
 
@@ -108,7 +208,7 @@
 
   .preview .date,
   .Milestone {
-    border-left: none !important;
+    /* border-left: none !important; */
     margin: auto;
   }
 
@@ -803,6 +903,9 @@
   .colAccDec {
     justify-content: center !important;
   }
+  .DownloadbtnMile {
+    width: 190px;
+  }
   .logo {
     height: 60px !important;
   }
@@ -841,14 +944,16 @@
   .accept_btn_group {
     text-align: center;
   }
-
+  .btnBoeMile {
+    margin-left: 20px !important;
+  }
   .projectMilestoneInfo .milestoneBox button.prewviewButton {
     margin: auto;
   }
 
   .preview .date,
   .Milestone {
-    border-left: none !important;
+    /* border-left: none !important; */
     margin: auto;
   }
 
@@ -856,10 +961,11 @@
     border-radius: 50px;
   }
 
-  .profileEdit-button h4,
-  .profile-mob h6 {
+  .bl-header .profileEdit-button h4,
+  .bl-header .profile-mob h6 {
     display: none;
   }
+
   .uploadimageCat {
     height: 52px;
     margin-top: 20px;
@@ -1201,9 +1307,9 @@
   .result-based-on-catogory-two {
     padding: 60px 0;
   }
-  section.chatbox {
+  /* section.chatbox {
     padding: 75px 0;
-  }
+  } */
   section.chatbox .chats-main .chats-sidebar {
     height: 425px;
   }
@@ -1312,6 +1418,54 @@
   }
   .find-visualizer form button[type="reset"] {
     padding: 21px;
+  }
+
+  /* ======== 09-05-2023 ========= */
+
+  .bl-chat {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+
+  .bl-chat h5 {
+    padding-bottom: 10px;
+  }
+
+  section.chatbox .chats-header form.search input.search__input {
+    width: 130px;
+  }
+
+  form.search button {
+    position: absolute;
+    right: 5px;
+  }
+
+  form.search {
+    position: relative;
+  }
+
+  .chatbox .container {
+    padding: 0px;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .chat-box {
+    padding: 0 10px 15px 0;
+  }
+
+  .cart_page_main {
+    padding: 0 30px;
+  }
+
+  .bl-col img {
+    height: 127px !important;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .bl-col video {
+    margin-top: 8px;
   }
 }
 
@@ -1619,12 +1773,30 @@
   section.profile-page-sec-five {
     padding-bottom: 29px;
   }
+
+  .chat-box {
+    padding: 0 10px 15px 0;
+  }
+
+  .cart_page_main {
+    padding: 0 30px;
+  }
+
+  .bl-col img {
+    height: 175px !important;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .bl-col video {
+    margin-top: 8px;
+  }
 }
 
 @media screen and (min-device-width: 992px) and (max-device-width: 1199px) {
-  .newJoin {
+  /* .newJoin {
     top: 30%;
-  }
+  } */
   .let-get-started .join-us-now-main .join-us-now-text a:nth-child(1) button,
   .let-get-started .join-us-now-main .join-us-now-text a:nth-child(2) button {
     font-size: 14px;
@@ -1666,15 +1838,33 @@
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1279px) {
+  .btnBoeMile1 {
+    padding: 9px 10px !important;
+  }
+  .btnBoeMile {
+    padding: 9px 10px !important;
+  }
+
   .pendingBtnMile {
     padding: 5px 37px !important;
+  }
+  .resMile {
+    justify-content: space-between !important;
+  }
+  .accept_btn_group button {
   }
 }
 
 @media screen and (min-device-width: 1024px) and (max-device-width: 1279px) {
-  .newJoin {
-    top: 30%;
+  .PaymentCardSubmitButton {
+    width: 115px !important;
   }
+  .cart_page_main h3 {
+    font-size: 16px !important;
+  }
+  /* .newJoin {
+    top: 30%;
+  } */
   .MyProjectDisplayRow .col-lg-3:first-child {
     min-width: 100% !important;
   }
@@ -1895,8 +2085,27 @@
 }
 
 @media screen and (min-device-width: 1280px) and (max-device-width: 1365px) {
-  .newJoin {
+  /* .newJoin {
     top: 25%;
+  } */
+  .PaymentCardSubmitButton {
+    width: 115px !important;
+  }
+  .cart_page_main h3 {
+    font-size: 16px !important;
+  }
+  .resMile {
+    justify-content: space-between !important;
+  }
+  .DownloadbtnMile {
+    padding: 5px 15px !important;
+  }
+  .btnBoeMile {
+    margin: 0 10px !important;
+    padding: 0 12px !important;
+  }
+  .btnBoeMile1 {
+    padding: 6px 12px !important;
   }
   .logo {
     height: 80px !important;
@@ -1933,9 +2142,92 @@
   main.profile-page section.profile-page-sec-two .user-profile-image img {
     padding: 0px;
   }
+
+  .cart_page_main h3 {
+    font-size: 11px !important;
+  }
+  .PaymentCardSubmitButton {
+    width: 120px !important;
+    font-size: 13px;
+  }
+}
+@media screen and (min-device-width: 1366px) and (max-device-width: 1399px) {
+  .resMile {
+    justify-content: space-between !important;
+  }
+  .bl-col img {
+    height: 65px !important;
+    width: 100%;
+    object-fit: cover;
+  }
+  .DownloadbtnMile {
+    padding: 5px 15px !important;
+  }
+  .btnBoeMile {
+    margin: 0 10px !important;
+    padding: 0 12px !important;
+  }
+  .btnBoeMile1 {
+    padding: 6px 12px !important;
+  }
+
+  /* ======== 09-05-2023 ========= */
+
+  .bl-chat {
+    padding: 15px !important;
+  }
+
+  .bl-chat h5 {
+    padding-bottom: 0px !important;
+    margin-left: 10px !important;
+  }
+
+  section.chatbox .chats-header form.search input.search__input {
+    width: 130px;
+  }
+
+  form.search button {
+    position: absolute;
+    right: 5px;
+  }
+
+  form.search {
+    position: relative;
+  }
+
+  .chatbox .container {
+    padding: 0px;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .chat-box {
+    padding: 0 10px 15px 0;
+  }
+
+  .cart_page_main h3 {
+    font-size: 13px !important;
+  }
+  .PaymentCardSubmitButton {
+    width: 120px !important;
+    font-size: 13px;
+  }
+}
+
+@media screen and (min-device-width: 1400px) {
+  .fetures ul li {
+    width: 34%;
+  }
+  .fetures ul li,
+  .fetures2 ul li {
+    width: 34%;
+  }
 }
 
 @media screen and (min-device-width: 1400px) and (max-device-width: 1600px) {
+  .resMile {
+    justify-content: space-between !important;
+  }
   .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
     font-size: 14px;
     line-height: 55px;
@@ -1949,9 +2241,9 @@
     background-position: 100%;
     background-size: 105% 100%;
   }
-  .newJoin {
+  /* .newJoin {
     top: 20%;
-  }
+  } */
 }
 
 /* 
@@ -2007,6 +2299,9 @@
   .card-box-our-top-clients-row {
     max-height: 0 !important;
   }
+  .accept_btn_group {
+    margin: 0 !important;
+  }
   .image_report {
     width: 50px !important;
     height: 50px !important;
@@ -2033,12 +2328,15 @@
   .miniRate {
     font-size: 18px !important;
   }
-  .newJoin {
+  /* .newJoin {
     top: 30%;
-  }
+  } */
 }
 
 @media screen and (min-width: 992px) {
+  .accept_btn_group {
+    margin: 0 !important;
+  }
   .mainProfileBox {
     margin-top: 22% !important;
   }
@@ -2051,29 +2349,80 @@
   .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
     font-size: 15px;
   }
-  .newJoin {
+  /* .newJoin {
     top: 25%;
-  }
+  } */
 }
 
 @media screen and (max-width: 460px) {
+  .accept_btn_group {
+    margin: 0 !important;
+  }
   .headerMail {
     display: block !important;
   }
   .headerMailInner {
     margin-top: 7%;
   }
+
+  .btnBoeMile1 {
+    padding: 9px !important;
+    height: 40px;
+  }
+  .btnBoeMile {
+    padding: 0px 9px !important;
+    margin-right: 9px !important;
+    margin-left: 7px !important;
+  }
+
+  .DownloadbtnMile {
+    padding: 5px 7px !important;
+    height: 40px;
+  }
+  .milestoneBox {
+    padding: 0;
+  }
+  .milestoneBoxInner {
+    padding: 0 !important;
+  }
+  .pendingBtnMileAll {
+    padding: 5px 7px !important;
+  }
+  .colAccDecchl {
+    margin-right: 8px;
+  }
+  .accept_btn_group button {
+    padding: 0px 9px !important;
+  }
+  .resMile {
+    padding: 0 !important;
+  }
 }
 @media screen and (max-width: 1199px) {
+  .cart_page_main h3 {
+    font-size: 16px !important;
+  }
+
   .uploadMileStoneof {
     justify-content: center;
   }
-}
-
-@media screen and (min-device-width: 1400px) and (max-device-width: 1600px) {
-  .fetures ul li {
-    width: 30%;
+  .mileFile {
+    margin: 10px 0 !important;
   }
+  .resMile {
+    justify-content: space-around !important;
+  }
+  .btnBoeMileOuter {
+    justify-content: space-around !important;
+    margin: 3% 0 !important;
+  }
+}
+@media screen and (min-width: 1199px) {
+  .statusBtnMilecol {
+    justify-content: end !important;
+  }
+}
+@media screen and (min-device-width: 1400px) and (max-device-width: 1600px) {
   .buy-now-btn,
   .buy-now-btn-active,
   .buy-now-btn-cancel {
@@ -2083,7 +2432,13 @@
 
 @media screen and (min-device-width: 1300px) and (max-device-width: 1399px) {
   .fetures ul li {
-    width: 27%;
+    width: 34%;
+  }
+  .fetures2 ul li {
+    width: 34%;
+  }
+  .fetures2 p {
+    font-size: 16px;
   }
   .buy-now-btn,
   .buy-now-btn-active,
@@ -2094,7 +2449,13 @@
 
 @media screen and (min-device-width: 1150px) and (max-device-width: 1299px) {
   .fetures ul li {
-    width: 26%;
+    width: 34%;
+  }
+  .fetures2 ul li {
+    width: 34%;
+  }
+  .fetures2 p {
+    font-size: 16px;
   }
   .buy-now-btn,
   .buy-now-btn-active,
@@ -2117,5 +2478,55 @@
   }
   .dashboardMob {
     justify-content: start I !important;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1470px) {
+  .checkout_data .checkout-listing {
+    padding-left: 5% !important;
+  }
+}
+@media screen and (min-device-width: 992px) and (max-device-width: 1199px) {
+  .milestoneBox1 {
+    display: grid !important;
+    place-content: center !important;
+  }
+  /* ======== 09-05-2023 ========= */
+
+  .bl-chat {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+
+  .bl-chat h5 {
+    padding-bottom: 10px;
+  }
+
+  section.chatbox .chats-header form.search input.search__input {
+    width: 130px;
+  }
+
+  form.search button {
+    position: absolute;
+    right: 5px;
+  }
+
+  form.search {
+    position: relative;
+  }
+
+  .chatbox .container {
+    padding: 0px;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .chat-box {
+    padding: 0 10px 15px 0;
+  }
+}
+@media screen and (min-width: 1601px) {
+  .resMile {
+    justify-content: space-between !important;
   }
 }

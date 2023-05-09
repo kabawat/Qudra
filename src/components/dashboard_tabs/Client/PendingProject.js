@@ -6,7 +6,6 @@ import { CiLocationOn } from "react-icons/ci";
 import Pagination from "react-bootstrap/Pagination";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "../../Footer";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
 import { useCookies } from "react-cookie";
@@ -60,7 +59,9 @@ const PendingProject = () => {
       navigate("/select-sign-in");
     }
   }, [onGoingProjectPageId]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [onGoingProjectPageId]);
   // useEffect( () => {
   //     contextData?.userData &&
   //         axios
@@ -388,7 +389,6 @@ const PendingProject = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

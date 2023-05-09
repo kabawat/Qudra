@@ -5,7 +5,6 @@ import Rating from "@mui/material/Rating";
 import Pagination from "react-bootstrap/Pagination";
 import Global from "../../../context/Global";
 import axios from "axios";
-import Footer from "../../Footer";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { useNavigate } from "react-router-dom";
@@ -56,7 +55,9 @@ const Ratings = () => {
       navigate("/select-sign-in");
     }
   }, [projectPageId]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [projectPageId]);
   const projectPaginationArray = [];
   for (let i = 0; i < rating?.total_data / projectPageId?.page_size; i++) {
     projectPaginationArray.push(i + 1);
@@ -361,7 +362,6 @@ const Ratings = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

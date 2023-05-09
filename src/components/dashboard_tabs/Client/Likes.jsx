@@ -4,7 +4,6 @@ import { CiLocationOn } from "react-icons/ci";
 import Pagination from "react-bootstrap/Pagination";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Footer from "../../Footer";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
 import { useCookies } from "react-cookie";
@@ -38,7 +37,9 @@ const Likes = () => {
       setLikes([]);
     }
   }, []);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [searchPageId, projectPageId]);
   const fetchLikeData = () => {
     axios
       .post("http://13.52.16.160:8082/identity/get-like-save", {
@@ -382,7 +383,6 @@ const Likes = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

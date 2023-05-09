@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import Select from "react-select";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import Footer from "../../Footer";
 import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
 import { useCookies } from "react-cookie";
@@ -210,9 +209,9 @@ const CheckoutMilstone = () => {
                               <li>Total Amount</li>
                             </ul>
                             <ul className="amount-list">
-                              <li>{location?.state?.amount}</li>
-                              <li>{location?.state?.charge}</li>
-                              <li>{location?.state?.total_amount}</li>
+                              <li> $ {location?.state?.amount}</li>
+                              <li> $ {location?.state?.charge}</li>
+                              <li> $ {location?.state?.total_amount}</li>
                             </ul>
                           </div>
                           <div className="choose-card">
@@ -401,7 +400,6 @@ const CheckoutMilstone = () => {
           </div>
         </Modal.Footer>
       </Modal>
-      <Footer />
     </>
   );
 };

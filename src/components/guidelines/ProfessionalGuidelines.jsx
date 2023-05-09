@@ -11,7 +11,7 @@ import profGuidelineImg8 from "../../assets/img/pro8.jpg";
 import profGuidelineImg9 from "../../assets/img/pro9.jpg";
 import Dashboardside from "../ProfessionalDashboardside";
 import { HeaderDashboard } from "../Header";
-import Footer from "../Footer";
+
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
@@ -104,7 +104,6 @@ const ProfessionalGuidelines = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   ) : (
     <Loader />

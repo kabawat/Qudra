@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Pagination from "react-bootstrap/Pagination";
-import Footer from "../../Footer";
 import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
@@ -61,6 +60,10 @@ const DeclinedActivity = () => {
     } else {
       navigate("/select-sign-in");
     }
+  }, [myProjectPageId]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
   }, [myProjectPageId]);
 
   const handleFilterProject = (e) => {
@@ -408,7 +411,6 @@ const DeclinedActivity = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

@@ -20,7 +20,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
 
   const [purchaseDesignsPagination, setPurchaseDesignsPagination] = useState({
     page: 1,
-    page_size: 8,
+    page_size: 4,
   });
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -42,6 +42,10 @@ const BuyDesign = ({ setBuyDesigns }) => {
           }
         });
   }, [contextData?.showDisclamer, purchaseDesignsPagination]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [purchaseDesignsPagination]);
+
   const [specificProductData, setSpecificProductData] = useState([]);
   const [specificProductDataType, setSpecificProductDataType] = useState("");
 
@@ -191,7 +195,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                                 Purchase Project
                               </NavLink>
                             </div>
-                            <div className="col-xxl-6 col-lg-12 col-6">
+                            {/* <div className="col-xxl-6 col-lg-12 col-6">
                               <NavLink
                                 to={`/professionalprofile/${res?.professional_id}`}
                                 state={{
@@ -215,7 +219,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                               >
                                 Customize
                               </NavLink>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
