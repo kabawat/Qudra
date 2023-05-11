@@ -62,54 +62,49 @@ const Cart = () => {
   const [show, setShow] = useState(false);
   const handalSubmit = () => {
     setLoading(true);
-    axios
-      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-        professional_id: location?.state?.professional_id,
-        amount_paid: location?.state?.project_cost,
-      })
-      .then((result) => {
-        if (
-          result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
-        ) {
-          setLoading(false);
-          setIsPayment(true);
-        } else {
-          setLoading(false);
+    axios.post("http://13.52.16.160:8082/client/client_checkout_details/", {
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+      professional_id: location?.state?.professional_id,
+      amount_paid: location?.state?.project_cost,
+    }).then((result) => {
+      if (
+        result?.data?.error_code === 109 &&
+        result?.data?.status === "Failed"
+      ) {
+        setLoading(false);
+        setIsPayment(true);
+      } else {
+        setLoading(false);
 
-          navigate("/checkout", {
-            state: {
-              ...result?.data?.data,
-              ...location?.state,
-            },
-          });
-        }
-      });
+        navigate("/checkout", {
+          state: {
+            ...result?.data?.data,
+            ...location?.state,
+          },
+        });
+      }
+    });
   };
 
   const handalPurchase = (event) => {
     event.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/stripe/client/card/", {
-        ...cartInfo,
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-      })
-      .then((response) => {
-        if (response?.data?.status === "Failed") {
-          const error = response?.data?.message;
-          setPaymentError(error.split(":")[1]);
-        } else {
-          setIsPayment(false);
-          setPaymentError("");
-          handalSubmit();
-        }
-      })
-      .catch((error) => {
-        // console.log(error.response)
-      });
+    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
+      ...cartInfo,
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+    }).then((response) => {
+      if (response?.data?.status === "Failed") {
+        const error = response?.data?.message;
+        setPaymentError(error.split(":")[1]);
+      } else {
+        setIsPayment(false);
+        setPaymentError("");
+        handalSubmit();
+      }
+    }).catch((error) => {
+      // console.log(error.response)
+    });
   };
 
   // card number maxLength validation

@@ -44,32 +44,30 @@ const CompletedPane = () => {
 
   useEffect(() => {
     if (cookies?.user_data) {
-      axios
-        .post("http://13.52.16.160:8082/identity/filter_projects", {
-          user_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          project_status: "completed",
-          ...completedProjectPageId,
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            setCompletedProject(res?.data?.data);
-            if (cookies?.user_data?.category_selected) {
-              if (cookies?.user_data?.role === "client") {
-                setIsReander(true);
-              } else {
-                navigate("/professionaldashboard");
-              }
+      axios.post("http://13.52.16.160:8082/identity/filter_projects", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        project_status: "completed",
+        ...completedProjectPageId,
+      }).then((res) => {
+        if (res?.data?.status === "Success") {
+          setCompletedProject(res?.data?.data);
+          if (cookies?.user_data?.category_selected) {
+            if (cookies?.user_data?.role === "client") {
+              setIsReander(true);
             } else {
-              if (cookies?.user_data?.role === "client") {
-                navigate("/client-architechture");
-              } else {
-                navigate("/categoryArchitecture");
-              }
+              navigate("/professionaldashboard");
+            }
+          } else {
+            if (cookies?.user_data?.role === "client") {
+              navigate("/client-architechture");
+            } else {
+              navigate("/categoryArchitecture");
             }
           }
-        });
+        }
+      });
     } else {
       navigate("/select-sign-in");
     }
@@ -88,44 +86,30 @@ const CompletedPane = () => {
     completedProjectArray.push(i + 1);
   }
   const handleProjectNameClick = (payload) => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        client_id: cookies?.user_data?.user_id,
-        project_id: payload?.project_id,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/project-details", {
-            state: {
-              projectData: payload,
-              milesStoneData: res?.data?.data,
-              isFromClientTab: true,
-            },
-          });
-        }
-      });
+    navigate("/project-details", {
+      state: {
+        projectData: payload,
+        isFromClientTab: true,
+      },
+    });
   };
 
   const handleFilterProject = (e) => {
     e.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/identity/search_projects", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        search_status: "completed",
-        search: searchActiveProject || "",
-        ...completedProjectPageId,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Failed") {
-          setNoResult(true);
-        } else {
-          setCompletedProject(res?.data?.data);
-        }
-      });
+    axios.post("http://13.52.16.160:8082/identity/search_projects", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      search_status: "completed",
+      search: searchActiveProject || "",
+      ...completedProjectPageId,
+    }).then((res) => {
+      if (res?.data?.status === "Failed") {
+        setNoResult(true);
+      } else {
+        setCompletedProject(res?.data?.data);
+      }
+    });
   };
   return (
     <>
@@ -234,27 +218,7 @@ const CompletedPane = () => {
                                   style={{ textTransform: "capitalize" }}
                                   className="underline_hover"
                                   onClick={() => {
-                                    if (
-                                      res?.project_status === "accepted" ||
-                                      res?.project_status === "completed"
-                                    ) {
-                                      handleProjectNameClick(res);
-                                    }
-                                    if (res?.project_status === "pending") {
-                                      toast(
-                                        " Your Acceptance And Project Milestone is still Pending ❕",
-                                        {
-                                          position: "top-right",
-                                          autoClose: 5000,
-                                          hideProgressBar: false,
-                                          closeOnClick: true,
-                                          pauseOnHover: true,
-                                          draggable: true,
-                                          progress: undefined,
-                                          theme: "colored",
-                                        }
-                                      );
-                                    }
+                                    handleProjectNameClick(res)
                                   }}
                                 >
                                   {res?.project_name}
@@ -336,7 +300,7 @@ const CompletedPane = () => {
                                 ...prev,
                                 page:
                                   completedProjectArray?.length !==
-                                  completedProjectPageId?.page
+                                    completedProjectPageId?.page
                                     ? completedProjectPageId?.page + 1
                                     : completedProjectPageId?.page,
                               }));

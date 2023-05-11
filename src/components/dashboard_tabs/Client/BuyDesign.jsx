@@ -26,21 +26,19 @@ const BuyDesign = ({ setBuyDesigns }) => {
   useEffect(() => {
     setLoading(true);
     cookies?.user_data &&
-      axios
-        .post("http://13.52.16.160:8082/client/client_buysell_projects", {
-          client_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          ...purchaseDesignsPagination,
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            setPurchaseDesigns(res?.data?.data);
-            setLoading(false);
-          } else {
-            setLoading(false);
-          }
-        });
+      axios.post("http://13.52.16.160:8082/client/client_buysell_projects", {
+        client_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        ...purchaseDesignsPagination,
+      }).then((res) => {
+        if (res?.data?.status === "Success") {
+          setPurchaseDesigns(res?.data?.data);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      });
   }, [contextData?.showDisclamer, purchaseDesignsPagination]);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -195,31 +193,6 @@ const BuyDesign = ({ setBuyDesigns }) => {
                                 Purchase Project
                               </NavLink>
                             </div>
-                            {/* <div className="col-xxl-6 col-lg-12 col-6">
-                              <NavLink
-                                to={`/professionalprofile/${res?.professional_id}`}
-                                state={{
-                                  buysell_id: index,
-                                  category_id: res?.category_id,
-                                  professional_id: res?.professional_id,
-                                  sub_category_id: res?.sub_category_id,
-                                  sub_category_name: res?.sub_category_name,
-
-                                  project_cost: res?.price[index],
-                                  video: `${purchaseDesigns?.video_url}${res?.video[index]}`,
-                                  image: `${purchaseDesigns?.image_url}${it}`,
-                                }}
-                                type="button"
-                                className="btn btn-primary border-0"
-                                style={{
-                                  width: "100%",
-                                  fontSize: "14px",
-                                  backgroundColor: "rgb(0, 167, 139)",
-                                }}
-                              >
-                                Customize
-                              </NavLink>
-                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -269,7 +242,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                     ...prev,
                     page:
                       purchaseDesignsArray?.length !==
-                      purchaseDesignsPagination?.page
+                        purchaseDesignsPagination?.page
                         ? purchaseDesignsPagination?.page + 1
                         : purchaseDesignsPagination?.page,
                   }));

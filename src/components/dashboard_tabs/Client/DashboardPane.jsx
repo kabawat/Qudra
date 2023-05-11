@@ -125,15 +125,6 @@ const DashboardPane = () => {
     ],
   };
 
-  // const options = {
-  //   responsive: true,
-  //   plugins: {
-  //     legend: {
-  //       position: "top",
-  //     },
-  //   },
-  // };
-
   return buyDesigns ? (
     <BuyDesign setBuyDesigns={setBuyDesigns} />
   ) : (

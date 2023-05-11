@@ -27,26 +27,25 @@ const CheckOut = () => {
   const [checkout_loader, setcheckout_loader] = useState(false);
 
   const handleCard = () => {
-    axios
-      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-        professional_id: location?.state?.professional_id,
-        amount_paid: location?.state?.project_cost,
-      })
-      .then((result) => {
-        if (
-          result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
-        ) {
-          setIsPayment(true);
-        } else {
-          setError("");
-          setCard(result?.data?.data?.cards);
-        }
-      });
+    axios.post("http://13.52.16.160:8082/client/client_checkout_details/", {
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+      professional_id: location?.state?.professional_id,
+      amount_paid: location?.state?.project_cost,
+    }).then((result) => {
+      if (
+        result?.data?.error_code === 109 &&
+        result?.data?.status === "Failed"
+      ) {
+        setIsPayment(true);
+      } else {
+        setError("");
+        setCard(result?.data?.data?.cards);
+      }
+    });
   };
   useEffect(() => {
+    console.log(location?.state)
     handleCard();
   }, []);
 
@@ -147,28 +146,26 @@ const CheckOut = () => {
   const handalPurchase = (event) => {
     setcheckout_loader(true);
     event.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/stripe/client/card/", {
-        ...cartInfo,
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-      })
-      .then((response) => {
+    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
+      ...cartInfo,
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+    }).then((response) => {
+      setcheckout_loader(false);
+      if (response?.data?.status === "Failed") {
+        const error = response?.data?.message;
+        setPaymentError(error.split(":")[1]);
+      } else {
+        handleCard();
+        setShow2(true);
         setcheckout_loader(false);
-        if (response?.data?.status === "Failed") {
-          const error = response?.data?.message;
-          setPaymentError(error.split(":")[1]);
-        } else {
-          setShow2(true);
-          setcheckout_loader(false);
-          handleCard();
-          setIsPayment(false);
-          setPaymentError("");
-          setCartInfo(infocard);
-        }
-      })
-      .catch((error) => {});
+        setIsPayment(false);
+        setPaymentError("");
+        setCartInfo(infocard);
+      }
+    }).catch((error) => { });
   };
+
   document.querySelectorAll('input[type="number"]').forEach((input) => {
     input.oninput = () => {
       if (input.value.length > input.maxLength)

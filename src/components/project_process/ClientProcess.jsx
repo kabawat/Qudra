@@ -22,53 +22,47 @@ const ClientProcess = ({ location }) => {
   const handleClientDecesion = (req) => {
     if (req === "approved") {
       setloader(true);
-      axios
-        .post("http://13.52.16.160:8082/client/approve_projects", {
-          client_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: "client",
-          project_id: location?.state?.project_id,
-          project_approval_status: req,
-          professional_id: location?.state?.professional_id,
-        })
-        .then((res) => {
-          setloader(false);
-          if (res?.data?.status === "Success") {
-            navigate("/accept-project");
-          }
-        });
+      axios.post("http://13.52.16.160:8082/client/approve_projects", {
+        client_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: "client",
+        project_id: location?.state?.project_id,
+        project_approval_status: req,
+        professional_id: location?.state?.professional_id,
+      }).then((res) => {
+        setloader(false);
+        if (res?.data?.status === "Success") {
+          navigate("/accept-project");
+        }
+      });
     } else {
       setDecloader(true);
-      axios
-        .post("http://13.52.16.160:8082/client/approve_projects", {
-          client_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: "client",
-          project_id: location?.state?.project_id,
-          project_approval_status: req,
-          professional_id: location?.state?.professional_id,
-        })
-        .then((res) => {
-          setDecloader(false);
-          if (res?.data?.status === "Success") {
-            navigate("/accept-project");
-          }
-        });
-      axios
-        .post("http://13.52.16.160:8082/client/approve_projects", {
-          client_id: contextData?.userData?.user_id,
-          user_token: contextData?.userData?.user_token,
-          role: "client",
-          project_id: location?.state?.project_id,
-          project_approval_status: req,
-          professional_id: location?.state?.professional_id,
-        })
-        .then((res) => {
-          // setloader( false );
-          if (res?.data?.status === "Success") {
-            navigate("/accept-project");
-          }
-        });
+      axios.post("http://13.52.16.160:8082/client/approve_projects", {
+        client_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: "client",
+        project_id: location?.state?.project_id,
+        project_approval_status: req,
+        professional_id: location?.state?.professional_id,
+      }).then((res) => {
+        setDecloader(false);
+        if (res?.data?.status === "Success") {
+          navigate("/accept-project");
+        }
+      });
+      axios.post("http://13.52.16.160:8082/client/approve_projects", {
+        client_id: contextData?.userData?.user_id,
+        user_token: contextData?.userData?.user_token,
+        role: "client",
+        project_id: location?.state?.project_id,
+        project_approval_status: req,
+        professional_id: location?.state?.professional_id,
+      }).then((res) => {
+        // setloader( false );
+        if (res?.data?.status === "Success") {
+          navigate("/accept-project");
+        }
+      });
     }
   };
   return (
@@ -182,7 +176,7 @@ const ClientProcess = ({ location }) => {
                           >
                             {location?.state?.projectData?.description} <br />
                             {location?.state?.projectData?.description.length <
-                            200 ? null : (
+                              200 ? null : (
                               <span
                                 style={{
                                   marginTop: "10px",
@@ -211,7 +205,7 @@ const ClientProcess = ({ location }) => {
                             )}{" "}
                             <br />
                             {location?.state?.projectData?.description?.length <
-                            200 ? null : (
+                              200 ? null : (
                               <span
                                 style={{
                                   marginTop: "10px",
@@ -350,9 +344,8 @@ const ClientProcess = ({ location }) => {
                         display: "block",
                       }}
                       type="button"
-                      className={`theme-text-color bg-white   ${
-                        windowSize?.width > 576 ? "ms-auto" : "mx-auto"
-                      }`}
+                      className={`theme-text-color bg-white   ${windowSize?.width > 576 ? "ms-auto" : "mx-auto"
+                        }`}
                     >
                       {decloader ? (
                         <ReactLotti />
@@ -378,9 +371,8 @@ const ClientProcess = ({ location }) => {
                         borderRadius: "50px",
                         display: "block",
                       }}
-                      className={`theme-bg-color text-white   ${
-                        windowSize?.width > 576 ? "me-auto" : "mx-auto"
-                      }`}
+                      className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"
+                        }`}
                     >
                       {loader ? (
                         <ReactLotti3 />

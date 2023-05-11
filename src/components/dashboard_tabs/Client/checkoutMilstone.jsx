@@ -11,64 +11,61 @@ const CheckoutMilstone = () => {
   const [show, setShow] = useState(false);
   const [cookies] = useCookies();
   const location = useLocation();
-  const [card, setCard] = useState(location.state?.cards);
   const navigate = useNavigate();
-  const [isRender, setIsRender] = useState(true);
+  const [isRender, setIsRender] = useState(false);
   const [error, setError] = useState("");
   const [curCart, setCurCart] = useState("");
   const [project, setProject] = useState("");
   const [isPayment, setIsPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
+  const [checkoutDetaile, setCheckoutDetaile] = useState({})
 
   const handleCard = () => {
-    axios
-      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-        professional_id: location?.state?.professional_id,
-        amount_paid: location?.state?.project_cost,
-      })
-      .then((result) => {
-        if (
-          result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
-        ) {
-          setIsPayment(true);
-        } else {
-          setError("");
-          setCard(result?.data?.data?.cards);
-        }
-      });
+    axios.post("http://13.52.16.160:8082/client/client_checkout_details/", {
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+      professional_id: location?.state?.projectDetaile?.professional_id,
+      amount_paid: location?.state?.projectDetaile?.project_cost,
+    }).then((result) => {
+      if (
+        result?.data?.error_code === 109 &&
+        result?.data?.status === "Failed"
+      ) {
+        setIsPayment(true);
+      } else {
+        setIsRender(true)
+        setCheckoutDetaile(result?.data?.data)
+      }
+    });
   };
   useEffect(() => {
     handleCard();
   }, []);
+
   const handalSubmit = (show) => {
     try {
       if (curCart === "") {
         throw new Error("please select a card");
       }
-      axios
-        .put("http://13.52.16.160:8082/client/update_status_view_file", {
-          user_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: "client",
-          project_id: location?.state?.curProject?.project_id,
-          milestone_id: location?.state?.curProject?.milestone_id,
-          payment_card_id: curCart,
-        })
-        .then((response) => {
-          setShow(false);
-          if (
-            response?.data?.error_code === 109 &&
-            response?.data?.status === "Failed"
-          ) {
-            setIsPayment(true);
-          } else {
-            setProject(response.data?.data?.file);
-            setShow(show);
-          }
-        });
+      axios.put("http://13.52.16.160:8082/client/update_status_view_file", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: "client",
+        project_id: location?.state?.curMilestone?.project_id,
+        milestone_id: location?.state?.curMilestone?.milestone_id,
+        payment_card_id: curCart,
+      }).then((response) => {
+        setShow(false);
+        if (
+          response?.data?.error_code === 109 &&
+          response?.data?.status === "Failed"
+        ) {
+          setIsPayment(true);
+        } else {
+          setProject(response.data?.data?.file);
+          setShow(show);
+        }
+      });
     } catch (error) {
       setError(error.message);
     }
@@ -131,26 +128,23 @@ const CheckoutMilstone = () => {
 
   const handalPurchase = (event) => {
     event.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/stripe/client/card/", {
-        ...cartInfo,
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-      })
-      .then((response) => {
-        if (response?.data?.status === "Failed") {
-          const error = response?.data?.message;
-          setPaymentError(error.split(":")[1]);
-        } else {
-          handleCard();
-          setIsPayment(false);
-          setPaymentError("");
-          setCartInfo(infocard);
-        }
-      })
-      .catch((error) => {
-        // console.log(error.response)
-      });
+    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
+      ...cartInfo,
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+    }).then((response) => {
+      if (response?.data?.status === "Failed") {
+        const error = response?.data?.message;
+        setPaymentError(error.split(":")[1]);
+      } else {
+        handleCard();
+        setIsPayment(false);
+        setPaymentError("");
+        setCartInfo(infocard);
+      }
+    }).catch((error) => {
+      // console.log(error.response)
+    });
   };
 
   return (
@@ -191,15 +185,15 @@ const CheckoutMilstone = () => {
                               }}
                             >
                               <img
-                                src={location?.state?.professional_image}
+                                src={location?.state?.projectDetaile?.professional_image}
                                 alt=""
                                 width="100%"
                                 height="100%"
                               />
                             </div>
                             <div className="right-profile-description">
-                              <h4>{location?.state?.professional_name}</h4>
-                              <p>{location?.state?.professional_nation}</p>
+                              <h4>{location?.state?.projectDetaile?.professional_name}</h4>
+                              <p>{location?.state?.projectDetaile?.location}</p>
                             </div>
                           </div>
                           <div className="amount-listing">
@@ -209,16 +203,16 @@ const CheckoutMilstone = () => {
                               <li>Total Amount</li>
                             </ul>
                             <ul className="amount-list">
-                              <li> $ {location?.state?.amount}</li>
-                              <li> $ {location?.state?.charge}</li>
-                              <li> $ {location?.state?.total_amount}</li>
+                              <li> $ {checkoutDetaile?.amount}</li>
+                              <li> $ {checkoutDetaile?.charge}</li>
+                              <li> $ {checkoutDetaile?.total_amount}</li>
                             </ul>
                           </div>
                           <div className="choose-card">
                             <h4>Choose a Card</h4>
                             <div className="card-image clearfix">
-                              {card &&
-                                card.map((item, keys) => {
+                              {checkoutDetaile &&
+                                checkoutDetaile?.cards?.map((item, keys) => {
                                   return (
                                     <div
                                       className={

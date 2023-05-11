@@ -66,59 +66,43 @@ const OngoingPane = () => {
     onGoingProjectArray.push(i + 1);
   }
   const handleClientAcceptation = (payload) => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        client_id: cookies?.user_data?.user_id,
-        project_id: payload?.project_id,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          navigate("/project-details", {
-            state: {
-              projectData: payload,
-              milesStoneData: res?.data?.data,
-              isFromClientTab: true,
-            },
-          });
-        }
-      });
+    navigate("/project-details", {
+      state: {
+        projectData: payload,
+        isFromClientTab: true,
+      },
+    });
   };
 
   const handleFilterProject = (e) => {
     e.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/identity/search_projects", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        search_status: "approved",
-        search: searchActiveProject || "",
-        ...onGoingProjectPageId,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Failed") {
-          setNoResult(true);
-        } else {
-          setOnGoingProject(res?.data?.data);
-        }
-      });
+    axios.post("http://13.52.16.160:8082/identity/search_projects", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      search_status: "approved",
+      search: searchActiveProject || "",
+      ...onGoingProjectPageId,
+    }).then((res) => {
+      if (res?.data?.status === "Failed") {
+        setNoResult(true);
+      } else {
+        setOnGoingProject(res?.data?.data);
+      }
+    });
   };
   const searchData = () => {
-    axios
-      .post("http://13.52.16.160:8082/identity/filter_projects", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        project_status: "approved",
-        ...onGoingProjectPageId,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setOnGoingProject(res?.data?.data);
-        }
-      });
+    axios.post("http://13.52.16.160:8082/identity/filter_projects", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      project_status: "approved",
+      ...onGoingProjectPageId,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        setOnGoingProject(res?.data?.data);
+      }
+    });
   };
 
   return (
@@ -310,7 +294,7 @@ const OngoingPane = () => {
                                 ...prev,
                                 page:
                                   onGoingProjectArray?.length !==
-                                  onGoingProjectPageId?.page
+                                    onGoingProjectPageId?.page
                                     ? onGoingProjectPageId?.page + 1
                                     : onGoingProjectPageId?.page,
                               }));

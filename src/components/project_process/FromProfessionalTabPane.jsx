@@ -89,13 +89,14 @@ const Wrapper = styled.div`
 
 const FromProfessionalTabPane = ({ location }) => {
   const [submitLoader, setsubmitLoader] = useState(false);
-  const [locations, setLocation] = useState(location);
   const [show, setShow] = useState(false);
   const [cookies] = useCookies();
   const navigate = useNavigate();
   const [showText, setShowText] = useState(false);
   const [descshowless, setdescshowless] = useState(false);
 
+  const [curProject, setCurProject] = useState({})
+  const [milestone, setMilestone] = useState([])
   const handleShowMore = () => {
     setShowText(true);
   };
@@ -109,48 +110,34 @@ const FromProfessionalTabPane = ({ location }) => {
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
     padding: "100px 0",
   };
-  // console.log("project id",location);
   useEffect(() => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        client_id: locations.state.projectDetails?.id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        professional_id: cookies?.user_data?.user_id,
-        project_id: location.state?.projectDetails?.project_id,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: locations.state.projectDetails?.id,
-                professional_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: location.state?.projectDetails?.project_id,
-              }
-            )
-            .then((respo) => {
-              if (respo?.data?.status === "Success") {
-                setLocation({
-                  state: {
-                    projectDetails: { ...location?.state?.projectDetails },
-                    projectData: respo?.data?.data,
-                    milesStoneData: res?.data?.data,
-                    isFromProfessionalTab: true,
-                  },
-                });
-              }
-            });
-        }
-      });
+    axios.post("http://13.52.16.160:8082/client/particular_project_details", {
+      client_id: location?.state?.client_id,
+      project_id: location?.state?.project_id,
+      professional_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+    }).then((respo) => {
+      if (respo?.data?.status === "Success") {
+        setCurProject(respo?.data?.data)
+        axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+          client_id: location?.state?.client_id,
+          user_token: cookies?.user_data?.user_token,
+          role: cookies?.user_data?.role,
+          professional_id: cookies?.user_data?.user_id,
+          project_id: location?.state?.project_id,
+        }).then((res) => {
+          if (res?.data?.status === "Success") {
+            setMilestone(res?.data?.data)
+          }
+        });
+      }
+    });
+
   }, []);
   const [project, setProject] = useState();
   const [file, setFile] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const handalshow = (res) => {
     setProject(res);
     setShow(true);
@@ -166,41 +153,17 @@ const FromProfessionalTabPane = ({ location }) => {
     setFile("");
     setError("");
     setShow(false);
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        client_id: locations.state.projectDetails?.id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        professional_id: cookies?.user_data?.user_id,
-        project_id: locations.state?.projectDetails?.project_id,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: locations.state.projectDetails?.id,
-                professional_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: project?.project_id,
-              }
-            )
-            .then((respo) => {
-              if (respo?.data?.status === "Success") {
-                setLocation({
-                  state: {
-                    projectDetails: { ...locations?.state?.projectDetails },
-                    projectData: respo?.data?.data,
-                    milesStoneData: res?.data?.data,
-                    isFromProfessionalTab: true,
-                  },
-                });
-              }
-            });
-        }
-      });
+    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      client_id: location?.state?.client_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      professional_id: cookies?.user_data?.user_id,
+      project_id: location?.state?.project_id,
+    }).then((res) => {
+      if (res?.data?.status === "Success") {
+        setMilestone(res?.data?.data)
+      }
+    });
   };
 
   const handleMilestoneUpdate = async (event) => {
@@ -214,18 +177,15 @@ const FromProfessionalTabPane = ({ location }) => {
     data.append("milestone_file", file[0]);
     if (file?.length > 0) {
       setsubmitLoader(true);
-      await axios
-        .post("http://13.52.16.160:8082/client/milestone_file", data)
-        .then((res) => {
+      await axios.post("http://13.52.16.160:8082/client/milestone_file", data).then((res) => {
+        setsubmitLoader(false);
+        if (res?.data?.status === "Success") {
+          handalClose();
           setsubmitLoader(false);
-          if (res?.data?.status === "Success") {
-            handalClose();
-            setsubmitLoader(false);
-          }
-        });
+        }
+      });
     } else {
       setsubmitLoader(false);
-
       setError("file required");
     }
   };
@@ -238,24 +198,24 @@ const FromProfessionalTabPane = ({ location }) => {
   const handalBack = () => {
     navigate(-1);
   };
+
   const handalDownload = (paylaod) => {
-    axios
-      .post("http://13.52.16.160:8082/professional/milestone/download/", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: "professional",
-        project_id: paylaod?.project_id,
-        milestone_id: paylaod?.milestone_id,
-      })
-      .then((result) => {
-        const url = result.data?.data?.file;
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", url.split("/")[5]); // you can set the filename here
-        document.body.appendChild(link);
-        link.click();
-      });
+    axios.post("http://13.52.16.160:8082/professional/milestone/download/", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: "professional",
+      project_id: paylaod?.project_id,
+      milestone_id: paylaod?.milestone_id,
+    }).then((result) => {
+      const url = result.data?.data?.file;
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", url.split("/")[5]); // you can set the filename here
+      document.body.appendChild(link);
+      link.click();
+    });
   };
+
   return (
     <div className="create-account">
       <Header2 />
@@ -284,14 +244,14 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">1</div>
                         <h5>Project Name:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.project_name}
+                          {curProject?.project_name}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">2</div>
                         <h5>Client Name :</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.client_name}
+                          {curProject?.client_name}
                         </p>
                       </div>
                     </div>
@@ -300,14 +260,14 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">3</div>
                         <h5>Estimated Area:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.area}
+                          {curProject?.area}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">4</div>
                         <h5>Estimated Budget:</h5>
                         <p className="m-0 ms-3">
-                          $ {locations?.state?.projectData?.project_cost}
+                          $ {curProject?.project_cost}
                         </p>
                       </div>
                     </div>
@@ -316,14 +276,14 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">5</div>
                         <h5>Project Status:</h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.project_status}
+                          {curProject?.project_status}
                         </p>
                       </div>
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">6</div>
                         <h5>Estimated Deadline: </h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.estimated_time}
+                          {curProject?.estimated_time}
                         </p>
                       </div>
                     </div>
@@ -332,7 +292,7 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">7</div>
                         <h5>Project File: </h5>
                         <a
-                          href={locations?.state?.projectData?.attachment}
+                          href={curProject?.attachment}
                           download
                         >
                           View File
@@ -342,7 +302,7 @@ const FromProfessionalTabPane = ({ location }) => {
                         <div className="project-details">8</div>
                         <h5>Work Assigned: </h5>
                         <p className="m-0 ms-3">
-                          {locations?.state?.projectData?.work_assigned}
+                          {curProject?.work_assigned}
                         </p>
                       </div>
                     </div>
@@ -356,18 +316,15 @@ const FromProfessionalTabPane = ({ location }) => {
                         <p className="m-0 ms-3 ">
                           {showText ? (
                             <div>
-                              {location?.state?.projectData?.description}
+                              {curProject?.description}
                             </div>
                           ) : (
                             <div>
-                              {location?.state?.projectData?.description.substring(
-                                0,
-                                212
-                              )}
+                              {curProject?.description?.substring(0, 212)}
                             </div>
                           )}
-                          {location?.state?.projectData?.description.length >
-                          100 ? (
+                          {curProject?.description?.length >
+                            100 ? (
                             !showText ? (
                               <span
                                 onClick={handleShowMore}
@@ -405,7 +362,7 @@ const FromProfessionalTabPane = ({ location }) => {
               </section>
               <section className="projectMilestoneInfo">
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
-                {locations?.state?.milesStoneData?.map((res, i) => (
+                {milestone?.map((res, i) => (
                   <div className="milestoneBox row" key={i}>
                     <div className=" d-block  ">
                       <div className="row">
@@ -437,15 +394,15 @@ const FromProfessionalTabPane = ({ location }) => {
                           {(res?.status === "updated" ||
                             res?.status === "downloaded" ||
                             res?.status === "uploaded") && (
-                            <div className="pendingMileStone">Pending</div>
-                          )}
+                              <div className="pendingMileStone">Pending</div>
+                            )}
 
                           {(res?.status === "accepted" ||
                             res?.status === "completed") && (
-                            <div className="pendingMileStone pendingMileStone1">
-                              Completed
-                            </div>
-                          )}
+                              <div className="pendingMileStone pendingMileStone1">
+                                Completed
+                              </div>
+                            )}
 
                           {res?.status === "decline" && (
                             <>
@@ -493,13 +450,9 @@ const FromProfessionalTabPane = ({ location }) => {
                                     marginTop: "10px",
                                     cursor: "pointer",
                                     textDecoration: "underline",
-
                                     color: "#01a78a",
-                                    // backgroundColor: "#0F9E83",
                                   }}
-                                  onClick={(e) => {
-                                    setdescshowless("");
-                                  }}
+                                  onClick={(e) => { setdescshowless(""); }}
                                 >
                                   show less
                                 </span>
@@ -508,21 +461,16 @@ const FromProfessionalTabPane = ({ location }) => {
                               <p>
                                 {res?.milestone_description?.slice(0, 199)}{" "}
                                 {res?.milestone_description?.length <
-                                200 ? null : (
+                                  200 ? null : (
                                   <span
                                     id={i + 1}
                                     style={{
                                       marginTop: "10px",
                                       cursor: "pointer",
                                       textDecoration: "underline",
-
                                       color: "#01a78a",
-                                      // backgroundColor: "#0F9E83",
                                     }}
-                                    onClick={(e) => {
-                                      setdescshowless(parseInt(e.target.id));
-                                    }}
-                                  >
+                                    onClick={(e) => { setdescshowless(parseInt(e.target.id)); }}>
                                     show more
                                   </span>
                                 )}
@@ -537,12 +485,7 @@ const FromProfessionalTabPane = ({ location }) => {
                       </div>
                       <div className="col-lg-2">
                         <p>
-                          <a
-                            className="viewFile"
-                            target="new"
-                            href={res?.milestone_attachment}
-                            download
-                          >
+                          <a className="viewFile" target="new" href={res?.milestone_attachment} download>
                             View File{" "}
                           </a>
                         </p>

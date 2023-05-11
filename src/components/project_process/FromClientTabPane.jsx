@@ -1,115 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Header2 } from "../Header";
 import BackButton from "../Button/BackButton";
-import styled from "styled-components";
 import axios from "axios";
 import Global from "../../context/Global";
 import { Button, Modal } from "react-bootstrap";
-import FileViewer from "react-file-viewer";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import $ from "jquery";
-import { useLocation } from "react-router-dom";
-import { BiCreditCardAlt } from "react-icons/bi";
-import { FaPaypal } from "react-icons/fa";
 import { useCookies } from "react-cookie";
-import { BsArrowRight } from "react-icons/bs";
 import Select from "react-select";
 import ReactLotti3 from "../../loader/ReactLottie3";
 const FromClientTabPane = ({ location }) => {
   const [submitLoader, setsubmitLoader] = useState(false);
-  const [locations, setLoctions] = useState(location);
   const [projectDetaile, setProjectDetaile] = useState({});
   const [descshowless, setdescshowless] = useState(false);
+  const [milestones, setMilestones] = useState([])
+  const [curMilestone, SetCurMilestnoe] = useState({});
+  const [isPayment, setIsPayment] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const [acceptShow, setAcceptShow] = useState(false);
+  const [reason, setReason] = useState("");
+  const [reasonError, SetReasonError] = useState("");
+  const [DeclineShow, setDeclineShow] = useState(false);
 
-  console.log(locations?.state);
-  const navigate = useNavigate();
-  useEffect(() => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        client_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        project_id: locations?.state?.projectData?.project_id,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: locations?.state?.projectData?.project_id,
-              }
-            )
-            .then((respo) => {
-              if (respo?.data?.status === "Success") {
-                setProjectDetaile({ ...respo?.data?.data });
-                if (locations?.state?.projectDetails?.id !== undefined) {
-                  const state = {
-                    projectData: respo?.data?.data,
-                    milesStoneData: res?.data?.data,
-                    isFromClientTab: true,
-                  };
-                  setLoctions({
-                    ...locations,
-                    state: state,
-                  });
-                }
-              }
-            });
-        }
-      });
-  }, []);
   const contextData = useContext(Global);
+  const navigate = useNavigate();
+
   const customStyleOne = {
     borderRadius: "30px",
     filter: "drop-shadow(2.5px 4.33px 6.5px rgba(0,0,0,0.2))",
     padding: "100px 0",
-  };
-  const Wrapper = styled.div`
-    .preview {
-      right: 0;
-      display: flex;
-      top: 0;
-      position: absolute;
-      .date {
-        position: static !important;
-        border-left: 1px solid #01a78a;
-        padding: 10px;
-        width: 115px;
-        text-align: center;
-      }
-      .btn btn-success {
-        position: static !important;
-        pointer-events: all !important;
-      }
-    }
-    .Milestone {
-      position: static !important;
-      border: none;
-      border-left: 1px solid #01a78a;
-      padding: 5px;
-      width: 180px;
-      text-align: center;
-    }
-  `;
-  const handlePreviewData = (milestone, id, type) => {
-    axios
-      .put("http://13.52.16.160:8082/client/update_status_view_file", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        project_id: id,
-        milestone_id: milestone,
-        purpuse: type,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Success") {
-          setShow(true);
-        }
-      });
   };
 
   // cart
@@ -157,233 +76,172 @@ const FromClientTabPane = ({ location }) => {
     });
   };
 
-  const [curProject, SetCurProject] = useState({});
-  const [isPayment, setIsPayment] = useState(false);
-  const [paymentError, setPaymentError] = useState("");
+  useEffect(() => {
+    milestoneHandle()
+    axios.post("http://13.52.16.160:8082/client/particular_project_details", {
+      client_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      project_id: location?.state?.projectData?.project_id,
+    }).then((respo) => {
+      if (respo?.data?.status === "Success") {
+        setProjectDetaile({ ...respo?.data?.data });
+      }
+    });
+  }, []);
 
+  // particular project milestones API 
+  function milestoneHandle() {
+    axios.post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      client_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: cookies?.user_data?.role,
+      project_id: location?.state?.projectData?.project_id,
+    }).then((res) => {
+      setMilestones(res?.data?.data)
+    })
+  }
+
+
+  // add a new card to payment
   const handalSubmit = (event) => {
     event.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/stripe/client/card/", {
-        ...cartInfo,
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-      })
-      .then((response) => {
-        if (response?.data?.status === "Failed") {
-          const error = response?.data?.message;
-          setPaymentError(error.split(":")[1]);
-        } else {
-          setShow(false);
-          SetCurProject({});
-          setIsPayment(false);
-          setPaymentError("");
-        }
-      })
-      .catch((error) => {
-        // console.log(error.response)
-      });
-  };
-
-  const handalDownload = (curProject) => {
-    axios
-      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-        professional_id: location?.state?.projectData?.professional_id,
-        amount_paid: location?.state?.projectData?.project_cost,
-      })
-      .then((result) => {
-        if (
-          result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
-        ) {
-          setIsPayment(true);
-        } else {
-          navigate("/check-out", {
-            state: {
-              ...result?.data?.data,
-              ...location?.state,
-              curProject,
-            },
-          });
-        }
-      });
-  };
-  const handalDownload1 = (curProject) => {
-    axios
-      .put("http://13.52.16.160:8082/client/update_status_view_file", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: "client",
-        project_id: locations?.state?.projectData?.project_id,
-        milestone_id: curProject?.milestone_id,
-      })
-      .then((response) => {
-        const url = response?.data?.data?.file;
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", url.split("/")[5]); // you can set the filename here
-        document.body.appendChild(link);
-        link.click();
-      });
-  };
-
-  const handalDownloadInvoice = (payload) => {
-    axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
-        client_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: cookies?.user_data?.role,
-        professional_id: locations?.state?.projectDetails?.id,
-        project_id: locations?.state?.projectData?.project_id,
-      })
-      .then((response) => {
-        const data = response.data.data?.filter((item) => {
-          if (payload?.milestone_id === item?.milestone_id) {
-            return item;
-          }
-        });
+    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
+      ...cartInfo,
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+    }).then((response) => {
+      if (response?.data?.status === "Failed") {
+        const error = response?.data?.message;
+        setPaymentError(error.split(":")[1]);
+      } else {
+        handalDownload(curMilestone)
         setShow(false);
-        if (
-          response?.data?.error_code === 109 &&
-          response?.data?.status === "Failed"
-        ) {
-          setIsPayment(true);
-        } else {
-          const url = data[0]?.invoice;
-          const link = document.createElement("a");
-          link.setAttribute("target", "_blank");
-          link.href = url;
-          link.setAttribute("download", url.split("/")[5]); // you can set the filename here
-          document.body.appendChild(link);
-          link.click();
-        }
-      });
+        SetCurMilestnoe({});
+        setIsPayment(false);
+        setPaymentError("");
+      }
+    }).catch((error) => {
+      // console.log(error.response)
+    });
   };
 
-  const [acceptShow, setAcceptShow] = useState(false);
+  // go to checkout page 
+  function handalDownload(curMilestone) {
+    SetCurMilestnoe(curMilestone)
+    console.log(projectDetaile)
+    axios.post("http://13.52.16.160:8082/client/client_checkout_details/", {
+      client_id: cookies?.user_data?.user_id,
+      client_token: cookies?.user_data?.user_token,
+      professional_id: location?.state?.projectData?.professional_id,
+      amount_paid: location?.state?.projectData?.project_cost,
+    }).then((result) => {
+      if (
+        result?.data?.error_code === 109 &&
+        result?.data?.status === "Failed"
+      ) {
+        setIsPayment(true);
+      } else {
+        navigate("/check-out", {
+          state: {
+            projectDetaile: {
+              ...projectDetaile,
+              professional_image: location?.state?.projectData?.professional_image,
+              location: location?.state?.projectData?.location,
+            },
+            curMilestone: curMilestone
+          },
+        });
+      }
+    });
+  };
+
+
+  // complated milestones download 
+  const handalDownload1 = (curMilestone) => {
+    axios.put("http://13.52.16.160:8082/client/update_status_view_file", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: "client",
+      project_id: location?.state?.projectData?.project_id,
+      milestone_id: curMilestone?.milestone_id,
+    }).then((response) => {
+      const url = response?.data?.data?.file;
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", url.split("/")[5]); // you can set the filename here
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
+
+  // download invoice 
+  const handalDownloadInvoice = (payload) => {
+    const data = milestones?.filter((item) => {
+      if (payload?.milestone_id === item?.milestone_id) {
+        return item;
+      }
+    });
+    const url = data[0]?.invoice;
+    const link = document.createElement("a");
+    link.setAttribute("target", "_blank");
+    link.href = url;
+    link.setAttribute("download", url.split("/")[5]); // you can set the filename here
+    document.body.appendChild(link);
+    link.click();
+  };
+
+
+  // accept project 
   const AcceptHandal = () => {
     setsubmitLoader(true);
-    axios
-      .post("http://13.52.16.160:8082/client/update_status_view_file", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: "client",
-        project_id: locations?.state?.projectData?.project_id,
-        milestone_id: curProject?.milestone_id,
-        status: "accepted",
-      })
-      .then((result) => {
-        if (result?.data?.status === "Success") {
-          setsubmitLoader(false);
-          axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_milestones",
-              {
-                client_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                professional_id: locations?.state?.projectDetails?.id,
-                project_id: locations?.state?.projectData?.project_id,
-              }
-            )
-            .then((res) => {
-              if (res?.data?.status === "Success") {
-                const state = {
-                  projectData: projectDetaile,
-                  milesStoneData: res?.data?.data,
-                  isFromClientTab: true,
-                };
-                setLoctions({
-                  ...locations,
-                  state: state,
-                });
-              }
-            });
-          SetCurProject({});
-          setAcceptShow(false);
-        }
-        SetCurProject({});
+    axios.post("http://13.52.16.160:8082/client/update_status_view_file", {
+      user_id: cookies?.user_data?.user_id,
+      user_token: cookies?.user_data?.user_token,
+      role: "client",
+      project_id: location?.state?.projectData?.project_id,
+      milestone_id: curMilestone?.milestone_id,
+      status: "accepted",
+    }).then((result) => {
+      if (result?.data?.status === "Success") {
+        milestoneHandle()
+        setsubmitLoader(false);
+        SetCurMilestnoe({});
         setAcceptShow(false);
-      });
+      }
+      SetCurMilestnoe({});
+      setAcceptShow(false);
+    });
   };
 
-  const [reason, setReason] = useState("");
-  const [reasonError, SetReasonError] = useState("");
-  const [DeclineShow, setDeclineShow] = useState(false);
+  // decline project 
   const declineHandal = () => {
     setsubmitLoader(true);
     if (reason) {
-      axios
-        .post("http://13.52.16.160:8082/client/update_status_view_file", {
-          user_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: "client",
-          project_id: curProject?.project_id,
-          milestone_id: curProject?.milestone_id,
-          status: "decline",
-          reason: reason,
-        })
-        .then((result) => {
-          if (result?.data?.status === "Success") {
-            SetCurProject({});
-            setDeclineShow(false);
-            SetReasonError("");
-            setReason("");
-            axios
-              .post(
-                "http://13.52.16.160:8082/client/particular_project_milestones",
-                {
-                  client_id: cookies?.user_data?.user_id,
-                  user_token: cookies?.user_data?.user_token,
-                  role: cookies?.user_data?.role,
-                  professional_id: locations?.state?.projectDetails?.id,
-                  project_id: curProject?.project_id,
-                }
-              )
-              .then((res) => {
-                if (res?.data?.status === "Success") {
-                  axios
-                    .post(
-                      "http://13.52.16.160:8082/client/particular_project_details",
-                      {
-                        client_id: cookies?.user_data?.user_id,
-                        user_token: cookies?.user_data?.user_token,
-                        role: cookies?.user_data?.role,
-                        project_id: curProject?.project_id,
-                      }
-                    )
-                    .then((respo) => {
-                      setsubmitLoader(false);
-                      if (respo?.data?.status === "Success") {
-                        if (
-                          locations?.state?.projectDetails?.id !== undefined
-                        ) {
-                          const state = {
-                            projectDetails: locations?.state?.projectDetails,
-                            projectData: respo?.data?.data,
-                            milesStoneData: res?.data?.data,
-                            project_cost: locations?.state?.project_cost,
-                          };
-                          setLoctions({
-                            ...locations,
-                            state: state,
-                          });
-                        }
-                      }
-                    });
-                }
-              });
-          } else {
-            SetReasonError("Failed due to some reason");
-          }
-        });
+      axios.post("http://13.52.16.160:8082/client/update_status_view_file", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: "client",
+        project_id: curMilestone?.project_id,
+        milestone_id: curMilestone?.milestone_id,
+        status: "decline",
+        reason: reason,
+      }).then((result) => {
+        if (result?.data?.status === "Success") {
+          SetCurMilestnoe({});
+          setDeclineShow(false);
+          SetReasonError("");
+          setReason("");
+          milestoneHandle()
+        } else {
+          SetReasonError("Failed due to some reason");
+        }
+      });
     } else {
       SetReasonError("Reason Required");
     }
   };
-  window.addEventListener("click", (event) => {});
 
   return (
     <div className="create-account">
@@ -543,155 +401,168 @@ const FromClientTabPane = ({ location }) => {
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">
                   Milestone Details
                 </h3>
-                {locations?.state?.milesStoneData?.map((res, i) => (
-                  <>
-                    <div className="row milestoneBox" key={i}>
-                      <div className="row milestoneBoxInner">
-                        <div className="milestoneBox1 col-4 col-xl-3">
-                          <p className="headingMile">Name</p>
-                          <p style={{ textTransform: "capitalize" }}>
-                            {res?.milestone_name}
-                          </p>
-                        </div>
-                        <div className="col-4 col-xl-2 milestoneBox1">
-                          <p className="headingMile">Cost </p>
-                          <p style={{ textTransform: "capitalize" }}>
-                            {res?.milestone_amount_percent} %
-                          </p>
-                        </div>
-                        <div className="col-4 col-xl-2 milestoneBox1">
-                          <p className="headingMile">Date</p>
-                          <div className="date"> {res?.milestone_date}</div>
-                        </div>
-
-                        {(res?.status === "pending" ||
-                          res?.status === "decline") && (
-                          <>
-                            <div className="col-xl-5 statusBtnMilecol resMile">
-                              <button
-                                className="btn default-cursor pendingBtnMile"
-                                type="button"
-                              >
-                                Pending
-                              </button>
-                            </div>
-                          </>
-                        )}
-
-                        {(res?.status === "downloaded" ||
-                          res?.status === "updated" ||
-                          res?.status === "uploaded") && (
-                          <>
-                            <div className="col-xl-5 d-flex  colAccDec resMile">
-                              <div className="row">
-                                <div className="col-6 colAccDecpar">
-                                  <div className="accept_btn_group ">
-                                    <button
-                                      className="pendingBtnMileAll colAccDecchl"
-                                      onClick={() => {
-                                        setAcceptShow(true);
-                                        SetCurProject({ ...res });
-                                      }}
-                                    >
-                                      Accept
-                                    </button>
-                                    <button
-                                      className="pendingBtnMileAll"
-                                      onClick={() => {
-                                        setDeclineShow(true);
-                                        SetCurProject({ ...res });
-                                      }}
-                                    >
-                                      Decline
-                                    </button>
-                                  </div>
-                                </div>
-                                <div className="col-6">
-                                  <button
-                                    className="btn DownloadbtnMile"
-                                    onClick={() => {
-                                      handalDownload({ ...res });
-                                    }}
-                                    type="button"
-                                  >
-                                    Download
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </>
-                        )}
-
-                        {res?.status == "accepted" && (
-                          <>
-                            <div className="col-xl-5  col-12 d-flex resMile">
-                              <div
-                                className="accept_btn_group"
-                                style={{ margin: "0 auto" }}
-                              >
-                                <div className="Milestone btnBoeMile1">
-                                  Completed
-                                </div>
-                              </div>
-                              {res?.invoice && (
-                                <div className="accept_btn_group btnBoeMile">
-                                  <button
-                                    className="Milestone"
-                                    onClick={() => handalDownloadInvoice(res)}
-                                  >
-                                    Invoice
-                                  </button>
-                                </div>
-                              )}
-
-                              <button
-                                className="btn DownloadbtnMile"
-                                onClick={() => {
-                                  res?.invoice
-                                    ? handalDownload1({ ...res })
-                                    : handalDownload({ ...res });
-                                }}
-                                type="button"
-                              >
-                                Download
-                              </button>
-                            </div>
-                          </>
-                        )}
-                        {res?.status === "completed" && (
-                          <>
-                            <div className="col-4 col-xl-5 col-12 d-flex btnBoeMileOuter">
-                              <div
-                                className="accept_btn_group btnBoeMile"
-                                // style={{ margin: "auto" }}
-                              >
-                                <button> Completed</button>
-                              </div>
-                              <button
-                                className="btn DownloadbtnMile "
-                                onClick={() => {
-                                  // console.log("here");
-                                  SetCurProject({ ...res });
-                                  setShow(true);
-                                }}
-                                type="button"
-                              >
-                                Download
-                              </button>
-                              {/* <p style={{ textTransform: "capitalize" }}>
-                              {res?.milestone_description}
-                            </p> */}
-                            </div>
-                          </>
-                        )}
+                {milestones?.map((res, i) => (
+                  <div className="row milestoneBox" key={i}>
+                    <div className="row milestoneBoxInner">
+                      <div className="milestoneBox1 col-4 col-xl-3">
+                        <p className="headingMile">Name</p>
+                        <p style={{ textTransform: "capitalize" }}>
+                          {res?.milestone_name}
+                        </p>
                       </div>
-                      <div className="row milerow-2">
-                        <div className="col-xl-10">
-                          <p className="headingMile">Milestone Description</p>
-                          <p style={{ textTransform: "capitalize" }}>
-                            {descshowless === i + 1 ? (
-                              <p>
-                                {res?.milestone_description}
+                      <div className="col-4 col-xl-2 milestoneBox1">
+                        <p className="headingMile">Cost </p>
+                        <p style={{ textTransform: "capitalize" }}>
+                          {res?.milestone_amount_percent} %
+                        </p>
+                      </div>
+                      <div className="col-4 col-xl-2 milestoneBox1">
+                        <p className="headingMile">Date</p>
+                        <div className="date"> {res?.milestone_date}</div>
+                      </div>
+
+                      {/* pending and decline project  */}
+                      {(res?.status === "pending" || res?.status === "decline") && (
+                        <>
+                          <div className="col-xl-5 statusBtnMilecol resMile">
+                            <button
+                              className="btn default-cursor pendingBtnMile"
+                              type="button"
+                            >
+                              Pending
+                            </button>
+                          </div>
+                        </>
+                      )}
+
+                      {/* downloaded , updated and uploaded project  */}
+                      {(res?.status === "downloaded" || res?.status === "updated" || res?.status === "uploaded") && (
+                        <>
+                          <div className="col-xl-5 d-flex  colAccDec resMile">
+                            <div className="row">
+                              <div className="col-6 colAccDecpar">
+                                <div className="accept_btn_group ">
+                                  <button
+                                    className="pendingBtnMileAll colAccDecchl"
+                                    onClick={() => {
+                                      setAcceptShow(true);
+                                      SetCurMilestnoe({ ...res });
+                                    }}
+                                  >
+                                    Accept
+                                  </button>
+                                  <button
+                                    className="pendingBtnMileAll"
+                                    onClick={() => {
+                                      setDeclineShow(true);
+                                      SetCurMilestnoe({ ...res });
+                                    }}
+                                  >
+                                    Decline
+                                  </button>
+                                </div>
+                              </div>
+                              <div className="col-6">
+                                <button
+                                  className="btn DownloadbtnMile"
+                                  onClick={() => {
+                                    handalDownload({ ...res });
+                                  }}
+                                  type="button"
+                                >
+                                  Download
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {/* accepted project  */}
+                      {res?.status == "accepted" && (
+                        <>
+                          <div className="col-xl-5  col-12 d-flex resMile">
+                            <div className="accept_btn_group" style={{ margin: "0 auto" }} >
+                              <div className="Milestone btnBoeMile1">
+                                Completed
+                              </div>
+                            </div>
+                            {res?.invoice && (
+                              <div className="accept_btn_group btnBoeMile">
+                                <button className="Milestone" onClick={() => handalDownloadInvoice(res)} >
+                                  Invoice
+                                </button>
+                              </div>
+                            )}
+
+                            <button
+                              className="btn DownloadbtnMile"
+                              onClick={() => {
+                                res?.invoice
+                                  ? handalDownload1({ ...res })
+                                  : handalDownload({ ...res });
+                              }} type="button" >
+                              Download
+                            </button>
+                          </div>
+                        </>
+                      )}
+
+                      {res?.status === "completed" && (
+                        <>
+                          <div className="col-4 col-xl-5 col-12 d-flex btnBoeMileOuter">
+                            <div className="accept_btn_group btnBoeMile">
+                              <button> Completed</button>
+                            </div>
+                            {res?.invoice && (
+                              <div className="accept_btn_group btnBoeMile">
+                                <button className="Milestone" onClick={() => handalDownloadInvoice(res)} >
+                                  Invoice
+                                </button>
+                              </div>
+                            )}
+                            <button
+                              className="btn DownloadbtnMile "
+                              onClick={() => {
+                                SetCurMilestnoe({ ...res });
+                                setShow(true);
+                              }} type="button" >
+                              Download
+                            </button>
+                          </div>
+                        </>
+                      )}
+                      
+                    </div>
+                    <div className="row milerow-2">
+                      <div className="col-xl-10">
+                        <p className="headingMile">Milestone Description</p>
+                        <p style={{ textTransform: "capitalize" }}>
+                          {descshowless === i + 1 ? (
+                            <p>
+                              {res?.milestone_description}
+                              <span
+                                id={i + 1}
+                                style={{
+                                  marginTop: "10px",
+                                  cursor: "pointer",
+                                  textDecoration: "underline",
+
+                                  color: "#01a78a",
+                                  // backgroundColor: "#0F9E83",
+                                }}
+                                onClick={(e) => {
+                                  setdescshowless("");
+                                }}
+                              >
+                                show less
+                              </span>
+                            </p>
+                          ) : (
+                            <p>
+                              {res?.milestone_description?.slice(0, 199)}{" "}
+                              {res?.milestone_description?.length <
+                                200 ? null : (
                                 <span
                                   id={i + 1}
                                   style={{
@@ -703,53 +574,30 @@ const FromClientTabPane = ({ location }) => {
                                     // backgroundColor: "#0F9E83",
                                   }}
                                   onClick={(e) => {
-                                    setdescshowless("");
+                                    setdescshowless(parseInt(e.target.id));
                                   }}
                                 >
-                                  show less
+                                  show more
                                 </span>
-                              </p>
-                            ) : (
-                              <p>
-                                {res?.milestone_description?.slice(0, 199)}{" "}
-                                {res?.milestone_description?.length <
-                                200 ? null : (
-                                  <span
-                                    id={i + 1}
-                                    style={{
-                                      marginTop: "10px",
-                                      cursor: "pointer",
-                                      textDecoration: "underline",
-
-                                      color: "#01a78a",
-                                      // backgroundColor: "#0F9E83",
-                                    }}
-                                    onClick={(e) => {
-                                      setdescshowless(parseInt(e.target.id));
-                                    }}
-                                  >
-                                    show more
-                                  </span>
-                                )}
-                              </p>
-                            )}
-                          </p>
-                        </div>
-                        <div className="col-xl-2 ">
-                          <p className="mileFile">
-                            <a
-                              href={res?.milestone_attachment}
-                              download={res?.milestone_attachment}
-                              target="_new"
-                            >
-                              View File
-                            </a>
-                          </p>
-                        </div>
-                        <br />
+                              )}
+                            </p>
+                          )}
+                        </p>
                       </div>
+                      <div className="col-xl-2 ">
+                        <p className="mileFile">
+                          <a
+                            href={res?.milestone_attachment}
+                            download={res?.milestone_attachment}
+                            target="_new"
+                          >
+                            View File
+                          </a>
+                        </p>
+                      </div>
+                      <br />
                     </div>
-                  </>
+                  </div>
                 ))}
                 <BackButton
                   customclassName="mx-auto d-block mt-4"
@@ -760,6 +608,7 @@ const FromClientTabPane = ({ location }) => {
           </div>
         </div>
       </main>
+
       <Modal centered show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
@@ -775,7 +624,7 @@ const FromClientTabPane = ({ location }) => {
             onClick={() => {
               setPaymentError("");
               setShow(false);
-              SetCurProject({});
+              SetCurMilestnoe({});
             }}
           >
             cancel
@@ -792,7 +641,7 @@ const FromClientTabPane = ({ location }) => {
         onHide={() => {
           setIsPayment(false);
           setPaymentError("");
-          SetCurProject({});
+          SetCurMilestnoe({});
         }}
       >
         <Modal.Header closeButton>
@@ -893,7 +742,7 @@ const FromClientTabPane = ({ location }) => {
         show={acceptShow}
         onHide={() => {
           setAcceptShow(false);
-          SetCurProject({});
+          SetCurMilestnoe({});
         }}
       >
         <Modal.Header closeButton>
@@ -904,7 +753,7 @@ const FromClientTabPane = ({ location }) => {
             variant="secondary"
             onClick={() => {
               setAcceptShow(false);
-              SetCurProject({});
+              SetCurMilestnoe({});
             }}
           >
             Cancel
@@ -923,7 +772,7 @@ const FromClientTabPane = ({ location }) => {
         centered
         show={DeclineShow}
         onHide={() => {
-          SetCurProject({});
+          SetCurMilestnoe({});
           setDeclineShow(false);
         }}
       >
@@ -942,7 +791,7 @@ const FromClientTabPane = ({ location }) => {
           <Button
             variant="secondary"
             onClick={() => {
-              SetCurProject({});
+              SetCurMilestnoe({});
               setDeclineShow(false);
             }}
           >
