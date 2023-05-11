@@ -1009,7 +1009,6 @@ const HeaderHome = () => {
                         <Link to="/select-sign-in">Sign In</Link>
                       </li>
                     )}
-
                     <Modal centered show={show} onHide={() => setShow(false)}>
                       <Modal.Header closeButton>
                         <Modal.Title>
@@ -1047,13 +1046,13 @@ const HeaderHome = () => {
                         </Link>
                       </li>
                     )} */}
-                    {cookies?.user_data?.role !== "professional" &&
-                      cookies?.user_data?.role !== "client" && (
-                        <li>
-                          <Link to="/client-sign-up">Business</Link>
-                        </li>
-                      )}
-
+                    {/* {cookies?.user_data?.role !== "professional" &&
+                      cookies?.user_data?.role !== "client" 
+                     && (
+                      <li>
+                        <Link to="/client-sign-up">Business</Link>
+                      </li>
+                    )} */}
                     <div className="LanguageSelectBox">
                       <li
                         className="LanguageShow text-white"
@@ -1125,7 +1124,7 @@ const HeaderHome = () => {
                           </>
                         )}
 
-                        <li>
+                        {/* <li>
                           <Link
                             to="/join"
                             onClick={() =>
@@ -1136,7 +1135,7 @@ const HeaderHome = () => {
                           >
                             Business
                           </Link>
-                        </li>
+                        </li> */}
                         <li onClick={googleTranslateElementInit}>
                           <div id="google_translate_element">
                             <MdLanguage
@@ -1303,11 +1302,17 @@ const ChatHeader = () => {
   };
 
   const handleEditProfileButton = () => {
-    axios.put("http://13.52.16.160:8082/identity/update_account", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-    });
+    axios
+      .put("http://13.52.16.160:8082/identity/update_account", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          navigate("/edit-profile", { state: res?.data?.data });
+        }
+      });
   };
   const bringnotificationCount = () => {
     axios
@@ -1527,7 +1532,16 @@ const ChatHeader = () => {
                         Edit Profile
                       </button>
                     </Link>
-
+                    <Link
+                      to={
+                        cookies?.user_data?.role === "client"
+                          ? "/clientdashboard"
+                          : "/professionaldashboard"
+                      }
+                      className="d-flex justify-content-center rounded-top"
+                    >
+                      <button>Dashboard</button>
+                    </Link>
                     <Link
                       to=""
                       className="d-flex justify-content-center rounded-bottom"

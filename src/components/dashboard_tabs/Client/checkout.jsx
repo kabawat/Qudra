@@ -9,6 +9,8 @@ import { useCookies } from "react-cookie";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { Button, Container, Modal } from "react-bootstrap";
 import ReactLotti3 from "../../../loader/ReactLottie3";
+import { HiTrash } from "react-icons/hi";
+
 const CheckOut = () => {
   const [show, setShow] = useState(false);
   const [cookies] = useCookies();
@@ -27,27 +29,43 @@ const CheckOut = () => {
   const [checkout_loader, setcheckout_loader] = useState(false);
 
   const handleCard = () => {
-    axios.post("http://13.52.16.160:8082/client/client_checkout_details/", {
-      client_id: cookies?.user_data?.user_id,
-      client_token: cookies?.user_data?.user_token,
-      professional_id: location?.state?.professional_id,
-      amount_paid: location?.state?.project_cost,
-    }).then((result) => {
-      if (
-        result?.data?.error_code === 109 &&
-        result?.data?.status === "Failed"
-      ) {
-        setIsPayment(true);
-      } else {
-        setError("");
-        setCard(result?.data?.data?.cards);
-      }
-    });
+    axios
+      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+        professional_id: location?.state?.professional_id,
+        amount_paid: location?.state?.project_cost,
+      })
+      .then((result) => {
+        if (
+          result?.data?.error_code === 109 &&
+          result?.data?.status === "Failed"
+        ) {
+          setIsPayment(true);
+        } else {
+          setError("");
+          setCard(result?.data?.data?.cards);
+        }
+      });
   };
   useEffect(() => {
-    console.log(location?.state)
+    console.log(location?.state);
     handleCard();
   }, []);
+
+  const deleteCard = () => {
+    axios
+      .post("http://13.52.16.160:8082/stripe/client/delete/card/", {
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+        card_id: card[0].id,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          handleCard();
+        }
+      });
+  };
 
   const handalSubmit = (show) => {
     setpayment_loader(true);
@@ -146,26 +164,28 @@ const CheckOut = () => {
   const handalPurchase = (event) => {
     setcheckout_loader(true);
     event.preventDefault();
-    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
-      ...cartInfo,
-      client_id: cookies?.user_data?.user_id,
-      client_token: cookies?.user_data?.user_token,
-    }).then((response) => {
-      setcheckout_loader(false);
-      if (response?.data?.status === "Failed") {
-        const error = response?.data?.message;
-        setPaymentError(error.split(":")[1]);
-      } else {
-        handleCard();
-        setShow2(true);
+    axios
+      .post("http://13.52.16.160:8082/stripe/client/new/card/", {
+        ...cartInfo,
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+      })
+      .then((response) => {
         setcheckout_loader(false);
-        setIsPayment(false);
-        setPaymentError("");
-        setCartInfo(infocard);
-      }
-    }).catch((error) => { });
+        if (response?.data?.status === "Failed") {
+          const error = response?.data?.message;
+          setPaymentError(error.split(":")[1]);
+        } else {
+          setShow2(true);
+          setcheckout_loader(false);
+          handleCard();
+          setIsPayment(false);
+          setPaymentError("");
+          setCartInfo(infocard);
+        }
+      })
+      .catch((error) => {});
   };
-
   document.querySelectorAll('input[type="number"]').forEach((input) => {
     input.oninput = () => {
       if (input.value.length > input.maxLength)
@@ -255,32 +275,41 @@ const CheckOut = () => {
                           </div>
                           <div className="choose-card">
                             <h4>Choose a Card</h4>
-                            <div className="card-image clearfix">
+                            <div className="card-image clearfix row">
                               {card &&
                                 card.map((item, keys) => {
                                   return (
-                                    <div
-                                      className={
-                                        item?.id === curCart
-                                          ? "first-card active"
-                                          : "first-card"
-                                      }
-                                      key={keys}
-                                      onClick={() => {
-                                        setCurCart(item?.id);
-                                        setError("");
-                                      }}
-                                    >
-                                      <h5>XXX XXXX XXXX {item?.last4}</h5>
-                                      <div className="card-details">
-                                        <span>
-                                          Expiry Month: {item?.exp_month}
-                                        </span>{" "}
-                                        <span>
-                                          Expiry Year: {item?.exp_year}
-                                        </span>
+                                    <>
+                                      <div className="card_div">
+                                        <div
+                                          className={
+                                            item?.id === curCart
+                                              ? "first-card active"
+                                              : "first-card"
+                                          }
+                                          key={keys}
+                                          onClick={() => {
+                                            setCurCart(item?.id);
+                                            setError("");
+                                          }}
+                                        >
+                                          <h5>XXX XXXX XXXX {item?.last4}</h5>
+                                          <div className="card-details">
+                                            <span>
+                                              Expiry Month: {item?.exp_month}
+                                            </span>{" "}
+                                            <span>
+                                              Expiry Year: {item?.exp_year}
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div className="Delete_card">
+                                          <span onClick={deleteCard}>
+                                            <HiTrash color="white" size={25} />
+                                          </span>
+                                        </div>
                                       </div>
-                                    </div>
+                                    </>
                                   );
                                 })}
                             </div>

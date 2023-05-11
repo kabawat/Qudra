@@ -3844,8 +3844,8 @@ input[name="milestone_date_fifth"]::placeholder {
 }
 
 .projectMilestoneInfo .milestoneBox {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
   align-items: center;
   border: 1px solid rgb(128, 128, 128);
   border-radius: 12px;
@@ -3877,6 +3877,7 @@ input[name="milestone_date_fifth"]::placeholder {
 }
 .accept_btn_group {
   display: flex;
+  justify-content: center;
 }
 .accept_btn_group button {
   height: 100%;
@@ -3892,7 +3893,7 @@ input[name="milestone_date_fifth"]::placeholder {
   border: 1px solid #008971;
   padding: 5px;
   height: 40px;
-
+  width: 165px;
   border-radius: 20px;
 }
 .mileFile a {
@@ -3903,6 +3904,7 @@ input[name="milestone_date_fifth"]::placeholder {
 }
 .viewFile {
   display: flex;
+  width: 165px;
   align-items: center;
   justify-content: center;
   text-decoration: none;
@@ -3921,15 +3923,18 @@ input[name="milestone_date_fifth"]::placeholder {
   justify-content: flex-end;
 }
 .uploadMileStonefo {
-  padding: 10px 25px;
+  padding: 10px 0px;
+  width: 165px;
+  text-align: center;
   border-radius: 50px;
   color: #ffffff;
   background-color: #0e9e84;
   cursor: pointer;
-  margin-right: 22px;
+  /* margin-right: 22px; */
 }
 .pendingMileStone {
   margin-right: 50px;
+  width: 165px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3967,7 +3972,9 @@ input[name="milestone_date_fifth"]::placeholder {
   border-radius: 30px;
   color: #008971 !important;
   margin-right: 10px !important;
+  width: 165px;
 }
+
 .accept_btn_group button:first-child {
   /* background: rgb(245, 81, 81);
   color: #fff; */
@@ -4949,6 +4956,7 @@ canvas {
   border-radius: 30px !important;
   padding: 5px 30px !important;
   color: white !important;
+  width: 165px;
 }
 .pendingBtnMileAll {
   border: 1px solid #01a78a !important;
@@ -5073,7 +5081,22 @@ canvas {
 /* ========== 09-05-2023 =========== */
 
 .bl-col img {
-  height: 95px !important;
+  /* height: 95px !important; */
   width: 100%;
   object-fit: cover;
+}
+.resMileinvoice {
+  display: flex;
+  justify-content: space-around;
+}
+.catCursor :hover {
+  cursor: pointer;
+}
+
+.details_back :hover {
+  cursor: pointer;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #f6feff !important;
 }

@@ -51,6 +51,7 @@ const style = {
 };
 
 const EditProfileClient = ({ location }) => {
+  // console.log("ram ram", location);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const [cookies] = useCookies();
@@ -81,17 +82,17 @@ const EditProfileClient = ({ location }) => {
     const fileReader = new FileReader();
     const file = e.target.files[0];
     setFilePic(file);
-    const signupuser = new FormData();
-    signupuser.append("image", file);
-    signupuser.append("user_id", cookies?.user_data?.user_id);
-    signupuser.append("user_token", cookies?.user_data?.user_token);
+    // const signupuser = new FormData();
+    // signupuser.append("image", file);
+    // signupuser.append("user_id", cookies?.user_data?.user_id);
+    // signupuser.append("user_token", cookies?.user_data?.user_token);
 
-    signupuser.append("role", cookies?.user_data?.role);
-    signupuser &&
-      axios.post(
-        "http://13.52.16.160:8082/identity/client_profile",
-        signupuser
-      );
+    // signupuser.append("role", cookies?.user_data?.role);
+    // signupuser &&
+    //   axios.post(
+    //     "http://13.52.16.160:8082/identity/client_profile",
+    //     signupuser
+    //   );
     if (file) {
       let reader = new FileReader();
       reader.onload = function (event) {
@@ -109,17 +110,17 @@ const EditProfileClient = ({ location }) => {
         role: "client",
       })
       .then((res) => {
-        contextData?.dispatch({
-          type: "FETCH_PROFILE_DATA",
-          value: res?.data?.data,
-        });
+        // contextData?.dispatch({
+        //   type: "FETCH_PROFILE_DATA",
+        //   value: res?.data?.data,
+        // });
         if (res.data.data.category_selected) {
           navigate("/clientdashboard", {
-            state: { role: "client" },
+            state: { role: "client", designe: false },
           });
         } else {
           navigate("/client-architechture", {
-            state: { role: "client" },
+            state: { role: "client", designe: false },
           });
         }
       });
@@ -202,33 +203,59 @@ const EditProfileClient = ({ location }) => {
                           .then((res) => {
                             if (res?.data?.status === "Success") {
                               // dfgdfgdfg============================***************************************************************
+                              const signupuser = new FormData();
+                              signupuser.append("image", filePic);
+                              signupuser.append(
+                                "user_id",
+                                cookies?.user_data?.user_id
+                              );
+                              signupuser.append(
+                                "user_token",
+                                cookies?.user_data?.user_token
+                              );
 
-                              axios
-                                .post(
-                                  "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                                  {
-                                    user_id: cookies?.user_data?.user_id,
-                                    user_token: cookies?.user_data?.user_token,
-                                    role: "client",
-                                  }
-                                )
-                                .then((res) => {
-                                  contextData?.dispatch({
-                                    type: "FETCH_PROFILE_DATA",
-                                    value: res?.data?.data,
+                              signupuser.append(
+                                "role",
+                                cookies?.user_data?.role
+                              );
+                              signupuser &&
+                                axios
+                                  .post(
+                                    "http://13.52.16.160:8082/identity/client_profile",
+                                    signupuser
+                                  )
+                                  .then((res) => {
+                                    if (res?.data?.status === "Success") {
+                                      axios
+                                        .post(
+                                          "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                          {
+                                            user_id:
+                                              cookies?.user_data?.user_id,
+                                            user_token:
+                                              cookies?.user_data?.user_token,
+                                            role: "client",
+                                          }
+                                        )
+                                        .then((res) => {
+                                          contextData?.dispatch({
+                                            type: "FETCH_PROFILE_DATA",
+                                            value: res?.data?.data,
+                                          });
+
+                                          if (res.data.data.category_selected) {
+                                            //     navigate("/clientdashboard", {
+                                            //   state: { role: "client" },
+                                            // });
+                                            setShowConfirm(true);
+                                          } else {
+                                            navigate("/client-architechture", {
+                                              state: { role: "client" },
+                                            });
+                                          }
+                                        });
+                                    }
                                   });
-
-                                  if (res.data.data.category_selected) {
-                                    //     navigate("/clientdashboard", {
-                                    //   state: { role: "client" },
-                                    // });
-                                    setShowConfirm(true);
-                                  } else {
-                                    navigate("/client-architechture", {
-                                      state: { role: "client" },
-                                    });
-                                  }
-                                });
                             }
                           });
                         // .then((res) => {
@@ -435,6 +462,7 @@ const EditProfileClient = ({ location }) => {
                         {/* to="/clientdashboard"  */}
                         <button
                           onClick={handleCancel}
+                          type="button"
                           style={{
                             ...style,
                             border: "none",
@@ -448,7 +476,7 @@ const EditProfileClient = ({ location }) => {
                       <button
                         type="submit"
                         className="create-account-btn mx-3"
-                        disabled={isSubmitting}
+                        // disabled={isSubmitting}
                         style={{ pointerEvents: "all" }}
                         onClick={() => {
                           setShow(true);

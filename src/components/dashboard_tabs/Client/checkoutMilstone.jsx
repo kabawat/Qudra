@@ -7,6 +7,8 @@ import { HeaderDashboard } from "../../Header";
 import { useCookies } from "react-cookie";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { Button, Container, Modal } from "react-bootstrap";
+import { HiTrash } from "react-icons/hi";
+
 const CheckoutMilstone = () => {
   const [show, setShow] = useState(false);
   const [cookies] = useCookies();
@@ -18,54 +20,74 @@ const CheckoutMilstone = () => {
   const [project, setProject] = useState("");
   const [isPayment, setIsPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const [checkoutDetaile, setCheckoutDetaile] = useState({})
+  const [checkoutDetaile, setCheckoutDetaile] = useState({});
+  const [card, setCard] = useState("");
 
   const handleCard = () => {
-    axios.post("http://13.52.16.160:8082/client/client_checkout_details/", {
-      client_id: cookies?.user_data?.user_id,
-      client_token: cookies?.user_data?.user_token,
-      professional_id: location?.state?.projectDetaile?.professional_id,
-      amount_paid: location?.state?.projectDetaile?.project_cost,
-    }).then((result) => {
-      if (
-        result?.data?.error_code === 109 &&
-        result?.data?.status === "Failed"
-      ) {
-        setIsPayment(true);
-      } else {
-        setIsRender(true)
-        setCheckoutDetaile(result?.data?.data)
-      }
-    });
+    axios
+      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+        professional_id: location?.state?.projectDetaile?.professional_id,
+        amount_paid: location?.state?.projectDetaile?.project_cost,
+      })
+      .then((result) => {
+        if (
+          result?.data?.error_code === 109 &&
+          result?.data?.status === "Failed"
+        ) {
+          setIsPayment(true);
+        } else {
+          setIsRender(true);
+          setCheckoutDetaile(result?.data?.data);
+          setCard(result?.data?.data?.cards);
+        }
+      });
   };
   useEffect(() => {
     handleCard();
   }, []);
+
+  const deleteCard = () => {
+    axios
+      .post("http://13.52.16.160:8082/stripe/client/delete/card/", {
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+        card_id: card[0].id,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          handleCard();
+        }
+      });
+  };
 
   const handalSubmit = (show) => {
     try {
       if (curCart === "") {
         throw new Error("please select a card");
       }
-      axios.put("http://13.52.16.160:8082/client/update_status_view_file", {
-        user_id: cookies?.user_data?.user_id,
-        user_token: cookies?.user_data?.user_token,
-        role: "client",
-        project_id: location?.state?.curMilestone?.project_id,
-        milestone_id: location?.state?.curMilestone?.milestone_id,
-        payment_card_id: curCart,
-      }).then((response) => {
-        setShow(false);
-        if (
-          response?.data?.error_code === 109 &&
-          response?.data?.status === "Failed"
-        ) {
-          setIsPayment(true);
-        } else {
-          setProject(response.data?.data?.file);
-          setShow(show);
-        }
-      });
+      axios
+        .put("http://13.52.16.160:8082/client/update_status_view_file", {
+          user_id: cookies?.user_data?.user_id,
+          user_token: cookies?.user_data?.user_token,
+          role: "client",
+          project_id: location?.state?.curMilestone?.project_id,
+          milestone_id: location?.state?.curMilestone?.milestone_id,
+          payment_card_id: curCart,
+        })
+        .then((response) => {
+          setShow(false);
+          if (
+            response?.data?.error_code === 109 &&
+            response?.data?.status === "Failed"
+          ) {
+            setIsPayment(true);
+          } else {
+            setProject(response.data?.data?.file);
+            setShow(show);
+          }
+        });
     } catch (error) {
       setError(error.message);
     }
@@ -128,23 +150,24 @@ const CheckoutMilstone = () => {
 
   const handalPurchase = (event) => {
     event.preventDefault();
-    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
-      ...cartInfo,
-      client_id: cookies?.user_data?.user_id,
-      client_token: cookies?.user_data?.user_token,
-    }).then((response) => {
-      if (response?.data?.status === "Failed") {
-        const error = response?.data?.message;
-        setPaymentError(error.split(":")[1]);
-      } else {
-        handleCard();
-        setIsPayment(false);
-        setPaymentError("");
-        setCartInfo(infocard);
-      }
-    }).catch((error) => {
-      // console.log(error.response)
-    });
+    axios.post("http://13.52.16.160:8082/stripe/client/new/card/", {
+        ...cartInfo,
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+      }).then((response) => {
+        if (response?.data?.status === "Failed") {
+          const error = response?.data?.message;
+          setPaymentError(error.split(":")[1]);
+        } else {
+          handleCard();
+          setIsPayment(false);
+          setPaymentError("");
+          setCartInfo(infocard);
+        }
+      })
+      .catch((error) => {
+        // console.log(error.response)
+      });
   };
 
   return (
@@ -185,14 +208,22 @@ const CheckoutMilstone = () => {
                               }}
                             >
                               <img
-                                src={location?.state?.projectDetaile?.professional_image}
+                                src={
+                                  location?.state?.projectDetaile
+                                    ?.professional_image
+                                }
                                 alt=""
                                 width="100%"
                                 height="100%"
                               />
                             </div>
                             <div className="right-profile-description">
-                              <h4>{location?.state?.projectDetaile?.professional_name}</h4>
+                              <h4>
+                                {
+                                  location?.state?.projectDetaile
+                                    ?.professional_name
+                                }
+                              </h4>
                               <p>{location?.state?.projectDetaile?.location}</p>
                             </div>
                           </div>
@@ -214,28 +245,37 @@ const CheckoutMilstone = () => {
                               {checkoutDetaile &&
                                 checkoutDetaile?.cards?.map((item, keys) => {
                                   return (
-                                    <div
-                                      className={
-                                        item?.id === curCart
-                                          ? "first-card active"
-                                          : "first-card"
-                                      }
-                                      key={keys}
-                                      onClick={() => {
-                                        setCurCart(item?.id);
-                                        setError("");
-                                      }}
-                                    >
-                                      <h5>XXX XXXX XXXX {item?.last4}</h5>
-                                      <div className="card-details">
-                                        <span>
-                                          Expiry Month: {item?.exp_month}
-                                        </span>{" "}
-                                        <span>
-                                          Expiry Year: {item?.exp_year}
-                                        </span>
+                                    <>
+                                      <div className="card_div">
+                                        <div
+                                          className={
+                                            item?.id === curCart
+                                              ? "first-card active"
+                                              : "first-card"
+                                          }
+                                          key={keys}
+                                          onClick={() => {
+                                            setCurCart(item?.id);
+                                            setError("");
+                                          }}
+                                        >
+                                          <h5>XXX XXXX XXXX {item?.last4}</h5>
+                                          <div className="card-details">
+                                            <span>
+                                              Expiry Month: {item?.exp_month}
+                                            </span>{" "}
+                                            <span>
+                                              Expiry Year: {item?.exp_year}
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div className="Delete_card">
+                                          <span onClick={deleteCard}>
+                                            <HiTrash color="white" size={25} />
+                                          </span>
+                                        </div>
                                       </div>
-                                    </div>
+                                    </>
                                   );
                                 })}
                             </div>

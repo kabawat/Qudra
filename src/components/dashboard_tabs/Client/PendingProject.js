@@ -229,7 +229,13 @@ const PendingProject = () => {
                         </div>
                       )}
                       {noResult ? (
-                        <div style={{ minHeight: "600px" }} className="d-flex ">
+                        <div
+                          style={{
+                            minHeight: "600px",
+                            display: "grid",
+                            placeItems: "center",
+                          }}
+                        >
                           <span className="h4">No Result Found</span>
                         </div>
                       ) : onGoingProject?.final_data?.length ? (

@@ -62,49 +62,54 @@ const Cart = () => {
   const [show, setShow] = useState(false);
   const handalSubmit = () => {
     setLoading(true);
-    axios.post("http://13.52.16.160:8082/client/client_checkout_details/", {
-      client_id: cookies?.user_data?.user_id,
-      client_token: cookies?.user_data?.user_token,
-      professional_id: location?.state?.professional_id,
-      amount_paid: location?.state?.project_cost,
-    }).then((result) => {
-      if (
-        result?.data?.error_code === 109 &&
-        result?.data?.status === "Failed"
-      ) {
-        setLoading(false);
-        setIsPayment(true);
-      } else {
-        setLoading(false);
+    axios
+      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+        professional_id: location?.state?.professional_id,
+        amount_paid: location?.state?.project_cost,
+      })
+      .then((result) => {
+        if (
+          result?.data?.error_code === 109 &&
+          result?.data?.status === "Failed"
+        ) {
+          setLoading(false);
+          setIsPayment(true);
+        } else {
+          setLoading(false);
 
-        navigate("/checkout", {
-          state: {
-            ...result?.data?.data,
-            ...location?.state,
-          },
-        });
-      }
-    });
+          navigate("/checkout", {
+            state: {
+              ...result?.data?.data,
+              ...location?.state,
+            },
+          });
+        }
+      });
   };
 
   const handalPurchase = (event) => {
     event.preventDefault();
-    axios.post("http://13.52.16.160:8082/stripe/client/card/", {
-      ...cartInfo,
-      client_id: cookies?.user_data?.user_id,
-      client_token: cookies?.user_data?.user_token,
-    }).then((response) => {
-      if (response?.data?.status === "Failed") {
-        const error = response?.data?.message;
-        setPaymentError(error.split(":")[1]);
-      } else {
-        setIsPayment(false);
-        setPaymentError("");
-        handalSubmit();
-      }
-    }).catch((error) => {
-      // console.log(error.response)
-    });
+    axios
+      .post("http://13.52.16.160:8082/stripe/client/card/", {
+        ...cartInfo,
+        client_id: cookies?.user_data?.user_id,
+        client_token: cookies?.user_data?.user_token,
+      })
+      .then((response) => {
+        if (response?.data?.status === "Failed") {
+          const error = response?.data?.message;
+          setPaymentError(error.split(":")[1]);
+        } else {
+          setIsPayment(false);
+          setPaymentError("");
+          handalSubmit();
+        }
+      })
+      .catch((error) => {
+        // console.log(error.response)
+      });
   };
 
   // card number maxLength validation
@@ -190,13 +195,13 @@ const Cart = () => {
                     <div className="d-flex w-100">
                       <div className="row w-100">
                         <h3
-                          className="col-8 col-md-8"
+                          className="col-7 col-md-8"
                           style={{ fontSize: "1.25rem" }}
                         >
                           Customization Price:
                         </h3>
                         <h3
-                          className="col-4 col-md-4 text-dark text-right"
+                          className="col-5 col-md-4 text-dark text-right"
                           style={{ fontSize: "1.25rem" }}
                         >
                           $ {location?.state?.customize_price} /sq.mtr
@@ -422,7 +427,7 @@ const Cart = () => {
           </Modal.Footer>
         </Modal>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

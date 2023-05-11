@@ -152,8 +152,11 @@ const DeclineProject = () => {
                         </div>
                       ) : (
                         <div
-                          style={{ minHeight: "600px" }}
-                          className="d-flex justify-content-center align-items-center"
+                          style={{
+                            minHeight: "600px",
+                            display: "grid",
+                            placeItems: "center",
+                          }}
                         >
                           <span className="h4">
                             No Declined Projects To Show
@@ -161,7 +164,13 @@ const DeclineProject = () => {
                         </div>
                       )}
                       {noResult ? (
-                        <div style={{ minHeight: "600px" }} className="d-flex ">
+                        <div
+                          style={{
+                            minHeight: "600px",
+                            display: "grid",
+                            placeItems: "center",
+                          }}
+                        >
                           <span className="h4">No Result Found</span>
                         </div>
                       ) : completedProject?.final_data?.length ? (

@@ -153,7 +153,7 @@ const DashboardPane = () => {
 
             <div className="d-flex align-items-center justify-content-center py-3 px-3">
               <img src="./static/images/img/TotalEarnings.png" alt="" />
-              <div className="ps-2">
+              <div className="p-0">
                 <h6 className="m-0">Pending</h6>
                 <h2 className="m-0">
                   {contextData?.profileData?.pending_project > 1000

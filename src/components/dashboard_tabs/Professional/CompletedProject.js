@@ -65,20 +65,22 @@ const CompletedProject = () => {
   }, [myProjectPageId]);
   const handleFilterProject = (e) => {
     e.preventDefault();
-    axios.post("http://13.52.16.160:8082/identity/search_projects", {
-      user_id: cookies?.user_data?.user_id,
-      user_token: cookies?.user_data?.user_token,
-      role: cookies?.user_data?.role,
-      search_status: "completed",
-      search: searchActiveProject || "",
-      ...searchProjectPageId,
-    }).then((res) => {
-      if (res?.data?.status === "Failed") {
-        setNoResult(true);
-      } else {
-        setSearchProject(res?.data?.data);
-      }
-    });
+    axios
+      .post("http://13.52.16.160:8082/identity/search_projects", {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        search_status: "completed",
+        search: searchActiveProject || "",
+        ...searchProjectPageId,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Failed") {
+          setNoResult(true);
+        } else {
+          setSearchProject(res?.data?.data);
+        }
+      });
   };
 
   const paginationArray = [];
@@ -135,7 +137,7 @@ const CompletedProject = () => {
                     <h2 className="ps-5">Completed Projects</h2>
                     <div className="m-xl-5 shadow">
                       {searchProject?.final_data.length ||
-                        myProject?.final_data?.length ? (
+                      myProject?.final_data?.length ? (
                         <div className="row align-items-center MyProjectDisplayRow">
                           <div className="searchActiveProject col-md-4 ms-auto">
                             <form onSubmit={handleFilterProject}>
@@ -294,122 +296,122 @@ const CompletedProject = () => {
 
                     {searchActiveProject
                       ? searchProject &&
-                      searchProject?.total_data >
-                      searchProjectPageId?.page_size && (
-                        <Pagination className="ps-5 paginationBoxProfessionalDashboard">
-                          <Pagination.First
-                            onClick={() => {
-                              setSearchProjectPageId({
-                                page: 1,
-                                page_size: 10,
-                              });
-                            }}
-                          />
-                          <Pagination.Prev
-                            onClick={() => {
-                              setSearchProjectPageId((prev) => ({
-                                ...prev,
-                                page:
-                                  searchProjectPageId?.page !== 1
-                                    ? searchProjectPageId?.page - 1
-                                    : 1,
-                              }));
-                            }}
-                          />
-                          {paginationSearchArray?.map((res, key) => (
-                            <Pagination.Item
-                              key={key}
-                              active={searchProjectPageId?.page === res}
+                        searchProject?.total_data >
+                          searchProjectPageId?.page_size && (
+                          <Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                            <Pagination.First
+                              onClick={() => {
+                                setSearchProjectPageId({
+                                  page: 1,
+                                  page_size: 10,
+                                });
+                              }}
+                            />
+                            <Pagination.Prev
                               onClick={() => {
                                 setSearchProjectPageId((prev) => ({
                                   ...prev,
-                                  page: res,
+                                  page:
+                                    searchProjectPageId?.page !== 1
+                                      ? searchProjectPageId?.page - 1
+                                      : 1,
                                 }));
                               }}
-                            >
-                              {res}
-                            </Pagination.Item>
-                          ))}
-                          <Pagination.Next
-                            onClick={() => {
-                              setSearchProjectPageId((prev) => ({
-                                ...prev,
-                                page:
-                                  paginationSearchArray?.length !==
+                            />
+                            {paginationSearchArray?.map((res, key) => (
+                              <Pagination.Item
+                                key={key}
+                                active={searchProjectPageId?.page === res}
+                                onClick={() => {
+                                  setSearchProjectPageId((prev) => ({
+                                    ...prev,
+                                    page: res,
+                                  }));
+                                }}
+                              >
+                                {res}
+                              </Pagination.Item>
+                            ))}
+                            <Pagination.Next
+                              onClick={() => {
+                                setSearchProjectPageId((prev) => ({
+                                  ...prev,
+                                  page:
+                                    paginationSearchArray?.length !==
                                     searchProjectPageId?.page
-                                    ? searchProjectPageId?.page + 1
-                                    : searchProjectPageId?.page,
-                              }));
-                            }}
-                          />
-                          <Pagination.Last
-                            onClick={() => {
-                              setSearchProjectPageId((prev) => ({
-                                ...prev,
-                                page: paginationSearchArray?.length,
-                              }));
-                            }}
-                          />
-                        </Pagination>
-                      )
+                                      ? searchProjectPageId?.page + 1
+                                      : searchProjectPageId?.page,
+                                }));
+                              }}
+                            />
+                            <Pagination.Last
+                              onClick={() => {
+                                setSearchProjectPageId((prev) => ({
+                                  ...prev,
+                                  page: paginationSearchArray?.length,
+                                }));
+                              }}
+                            />
+                          </Pagination>
+                        )
                       : myProject &&
-                      myProject?.total_data > myProjectPageId?.page_size && (
-                        <Pagination className="ps-5 paginationBoxProfessionalDashboard">
-                          <Pagination.First
-                            onClick={() => {
-                              setMyProjectPageId({
-                                page: 1,
-                                ...myProjectPageId,
-                              });
-                            }}
-                          />
-                          <Pagination.Prev
-                            onClick={() => {
-                              setMyProjectPageId((prev) => ({
-                                ...prev,
-                                page:
-                                  myProjectPageId?.page !== 1
-                                    ? myProjectPageId?.page - 1
-                                    : 1,
-                              }));
-                            }}
-                          />
-                          {paginationArray?.map((res, key) => (
-                            <Pagination.Item
-                              key={key}
-                              active={myProjectPageId?.page === res}
+                        myProject?.total_data > myProjectPageId?.page_size && (
+                          <Pagination className="ps-5 paginationBoxProfessionalDashboard">
+                            <Pagination.First
+                              onClick={() => {
+                                setMyProjectPageId({
+                                  page: 1,
+                                  ...myProjectPageId,
+                                });
+                              }}
+                            />
+                            <Pagination.Prev
                               onClick={() => {
                                 setMyProjectPageId((prev) => ({
                                   ...prev,
-                                  page: res,
+                                  page:
+                                    myProjectPageId?.page !== 1
+                                      ? myProjectPageId?.page - 1
+                                      : 1,
                                 }));
                               }}
-                            >
-                              {res}
-                            </Pagination.Item>
-                          ))}
-                          <Pagination.Next
-                            onClick={() => {
-                              setMyProjectPageId((prev) => ({
-                                ...prev,
-                                page:
-                                  paginationArray?.length !==
+                            />
+                            {paginationArray?.map((res, key) => (
+                              <Pagination.Item
+                                key={key}
+                                active={myProjectPageId?.page === res}
+                                onClick={() => {
+                                  setMyProjectPageId((prev) => ({
+                                    ...prev,
+                                    page: res,
+                                  }));
+                                }}
+                              >
+                                {res}
+                              </Pagination.Item>
+                            ))}
+                            <Pagination.Next
+                              onClick={() => {
+                                setMyProjectPageId((prev) => ({
+                                  ...prev,
+                                  page:
+                                    paginationArray?.length !==
                                     myProjectPageId?.page
-                                    ? myProjectPageId?.page + 1
-                                    : myProjectPageId?.page,
-                              }));
-                            }}
-                          />
-                          <Pagination.Last
-                            onClick={() => {
-                              setMyProjectPageId((prev) => ({
-                                ...prev,
-                                page: paginationArray?.length,
-                              }));
-                            }}
-                          />
-                        </Pagination>
-                      )}
+                                      ? myProjectPageId?.page + 1
+                                      : myProjectPageId?.page,
+                                }));
+                              }}
+                            />
+                            <Pagination.Last
+                              onClick={() => {
+                                setMyProjectPageId((prev) => ({
+                                  ...prev,
+                                  page: paginationArray?.length,
+                                }));
+                              }}
+                            />
+                          </Pagination>
+                        )}
                     <ToastContainer
                       position="top-center"
                       autoClose={3000}

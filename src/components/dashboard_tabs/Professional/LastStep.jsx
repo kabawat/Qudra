@@ -21,6 +21,7 @@ import freelancer8 from "../../../assets/img/frelancer_8.jpg";
 import freelancer9 from "../../../assets/img/frelancer_9.jpg";
 import freelancer10 from "../../../assets/img/frelancer_10.jpg";
 import freelancer11 from "../../../assets/img/frelancer_11.jpg";
+import freelancer12 from "../../../assets/img/frelancer_12.jpg";
 import top_professional from "../../../assets/vid/top_professional.mp4";
 const LastStep = () => {
   const navigate = useNavigate();
@@ -81,34 +82,37 @@ const LastStep = () => {
                       </div>
                       <div className="row p-4 img-container2">
                         <div className="col-md-6 col-lg-6 my-2 img-container2">
-                          <img src={freelancer2} alt="guideline-image1" />
+                          <img src={freelancer2} alt="freelancer-image1" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer3} alt="guideline-image2" />
+                          <img src={freelancer3} alt="freelancer-image2" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer4} alt="guideline-image3" />
+                          <img src={freelancer4} alt="freelancer-image3" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer5} alt="guideline-image4" />
+                          <img src={freelancer5} alt="freelancer-image4" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer6} alt="guideline-image5" />
+                          <img src={freelancer6} alt="freelancer-image5" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer7} alt="guideline-image6" />
+                          <img src={freelancer7} alt="freelancer-image6" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer8} alt="guideline-image7" />
+                          <img src={freelancer8} alt="freelancer-image7" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer9} alt="guideline-image8" />
+                          <img src={freelancer9} alt="freelancer-image8" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer10} alt="guideline-image9" />
+                          <img src={freelancer10} alt="freelancer-image9" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer11} alt="guideline-image9" />
+                          <img src={freelancer11} alt="freelancer-image9" />
+                        </div>
+                        <div className="col-md-6 col-lg-6 my-2">
+                          <img src={freelancer12} alt="freelancer-image" />
                         </div>
                       </div>
                     </div>

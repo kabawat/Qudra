@@ -41,6 +41,17 @@ const DashboardPane = () => {
   const [userdata, setuserdata] = useState("");
 
   useEffect(() => {
+    console.log(location?.state?.designe);
+    if (location?.state?.designe === false) {
+      setBuyDesigns(false);
+    } else if (location?.state?.designe === undefined) {
+      setBuyDesigns(false);
+    } else {
+      setBuyDesigns(true);
+    }
+  }, []);
+
+  useEffect(() => {
     contextData?.userData &&
       axios
         .post("http://13.52.16.160:8082/identity/filter_projects", {
@@ -70,9 +81,9 @@ const DashboardPane = () => {
       });
   }, [onGoingProjectPageId]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [onGoingProjectPageId]);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [onGoingProjectPageId]);
 
   useEffect(() => {
     contextData?.userData &&
@@ -124,6 +135,15 @@ const DashboardPane = () => {
       },
     ],
   };
+
+  // const options = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: "top",
+  //     },
+  //   },
+  // };
 
   return buyDesigns ? (
     <BuyDesign setBuyDesigns={setBuyDesigns} />

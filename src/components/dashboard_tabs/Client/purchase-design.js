@@ -501,34 +501,40 @@ const PurchaseDesign = () => {
 
                           // </div>
                           <div
-                            className="container   "
+                            className="container purchaseContainer "
                             key={index}
-                            style={{ width: "90%" }}
+                            style={{ width: "93%" }}
                           >
                             <div
-                              className="row   p-3 my-2"
+                              className="row  sukhuPurchase  py-3 my-2"
                               style={{
                                 borderRadius: "8px",
                                 border: "1px solid #ccc6c6",
                                 backgroundColor: "#FFFFFF",
                               }}
                             >
-                              <div className="col-xl-1 col-xl-2 ">
-                                <img
-                                  src={`${res?.image}`}
-                                  className="card-img w-100"
-                                  style={{
-                                    borderRadius: "10px",
-                                    objectFit: "cover",
-                                    height: "100%",
-                                  }}
-                                  alt="..."
-                                />
-                              </div>
-                              <div className="col-xl-11 col-xl-10 d-flex justify-content-center  flex-column">
-                                <div className="row">
+                              <div className="row">
+                                <div className=" col-md-2 ">
+                                  <img
+                                    src={`${res?.image}`}
+                                    className="card-img w-100"
+                                    style={{
+                                      borderRadius: "10px",
+                                      objectFit: "cover",
+                                      height: "100%",
+                                    }}
+                                    alt="..."
+                                  />
+                                </div>
+                                <div className="col-md-10 m-auto">
+                                  <h6
+                                    className=" my-2 cuspurchase"
+                                    style={{ fontWeight: "bold" }}
+                                  >
+                                    {res?.sub_category_name}
+                                  </h6>
                                   <h5
-                                    className=" "
+                                    className="cuspurchase "
                                     style={{ fontWeight: "bold" }}
                                   >
                                     <span style={{ color: "#01a78a" }}>
@@ -536,132 +542,146 @@ const PurchaseDesign = () => {
                                       Price :{" "}
                                     </span>{" "}
                                     ${res?.price} &nbsp; &nbsp; &nbsp;
-                                    <span style={{ color: "#01a78a" }}>
+                                  </h5>
+                                  <h5
+                                    className="cuspurchase "
+                                    style={{ fontWeight: "bold" }}
+                                  >
+                                    <span
+                                      style={{
+                                        color: "#01a78a",
+                                      }}
+                                    >
                                       {" "}
                                       Customization Price :{" "}
                                     </span>{" "}
                                     ${res?.price}/sq. mtr
                                   </h5>
-                                  <h6
-                                    className=" my-2 "
-                                    style={{ fontWeight: "bold" }}
-                                  >
-                                    {res?.sub_category_name}
-                                  </h6>
                                 </div>
-                                <div className="row">
-                                  <div className="col">
-                                    <button
-                                      type="button"
-                                      className="btn btn-primary border-0"
-                                      style={{
-                                        width: "100%",
+                              </div>
 
-                                        fontSize: "14px",
-                                        backgroundColor: "rgb(0, 167, 139)",
-                                      }}
-                                      onClick={() => {
-                                        setShowPurchaseDesignModal(true);
-                                        handleImageAndVideoClick(
-                                          [res],
-                                          purchaseDesigns?.image,
-                                          "image"
-                                        );
-                                      }}
-                                    >
-                                      Preview Images
-                                    </button>
+                              <div className="row my-3">
+                                <div className="col-xl-6">
+                                  <div className="row ">
+                                    <div className="col">
+                                      <button
+                                        type="button"
+                                        className="btn btn-primary border-0 "
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          fontSize: "14px",
+                                          backgroundColor: "rgb(0, 167, 139)",
+                                        }}
+                                        onClick={() => {
+                                          setShowPurchaseDesignModal(true);
+                                          handleImageAndVideoClick(
+                                            [res],
+                                            purchaseDesigns?.image,
+                                            "image"
+                                          );
+                                        }}
+                                      >
+                                        Preview Images
+                                      </button>
+                                    </div>
+                                    <div className="col">
+                                      <button
+                                        type="button"
+                                        className="btn btn-primary border-0 "
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          fontSize: "14px",
+                                          backgroundColor: "rgb(0, 167, 139)",
+                                        }}
+                                        onClick={() => {
+                                          setShowPurchaseDesignModal(true);
+                                          handleImageAndVideoClick(
+                                            [res],
+                                            purchaseDesigns?.video,
+                                            "video"
+                                          );
+                                        }}
+                                      >
+                                        Preview Videos
+                                      </button>
+                                    </div>
+                                    <div className="col">
+                                      <button
+                                        className="btn btn-primary border-0"
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          fontSize: "14px",
+                                          backgroundColor: "rgb(0, 167, 139)",
+                                        }}
+                                        type="button"
+                                        onClick={() => {
+                                          setShow(true);
+                                          setDesignInfo(res);
+                                          setDesignindex(index);
+                                        }}
+                                      >
+                                        Download
+                                      </button>
+                                    </div>
                                   </div>
-                                  <div className="col">
-                                    <button
-                                      type="button"
-                                      className="btn btn-primary border-0"
-                                      style={{
-                                        width: "100%",
-                                        fontSize: "14px",
-                                        backgroundColor: "rgb(0, 167, 139)",
-                                      }}
-                                      onClick={() => {
-                                        setShowPurchaseDesignModal(true);
-                                        handleImageAndVideoClick(
-                                          [res],
-                                          purchaseDesigns?.video,
-                                          "video"
-                                        );
-                                      }}
-                                    >
-                                      Preview Videos
-                                    </button>
-                                  </div>
-                                  <div className="col">
-                                    <button
-                                      className="btn btn-primary border-0"
-                                      style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        fontSize: "14px",
-                                        backgroundColor: "rgb(0, 167, 139)",
-                                      }}
-                                      type="button"
-                                      onClick={() => {
-                                        setShow(true);
-                                        setDesignInfo(res);
-                                        setDesignindex(index);
-                                      }}
-                                    >
-                                      Download
-                                    </button>
-                                  </div>
-                                  <div className="col">
-                                    <button
-                                      className="btn btn-primary border-0"
-                                      style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        fontSize: "14px",
-                                        backgroundColor: "rgb(0, 167, 139)",
-                                      }}
-                                      type="button"
-                                      onClick={() => {
-                                        setShowReport(true);
-                                        setbuysell_id(res.id);
-                                      }}
-                                    >
-                                      Report
-                                    </button>
-                                  </div>
-                                  <div className="col ">
-                                    <button
-                                      className="btn btn-primary border-0"
-                                      style={{
-                                        width: "100%",
-                                        fontSize: "13px",
-                                        backgroundColor: "rgb(0, 167, 139)",
-                                      }}
-                                      type="button"
-                                      onClick={() => {
-                                        downloadInvoice(res);
-                                      }}
-                                    >
-                                      Download invoice
-                                    </button>
-                                  </div>
-                                  <div className="col ">
-                                    <button
-                                      className="btn btn-primary border-0"
-                                      style={{
-                                        // width: "100%",
-                                        height: "100%",
-                                        fontSize: "13px",
-                                        backgroundColor: "rgb(0, 167, 139)",
-                                      }}
-                                      type="button"
-                                      onClick={() => {
-                                        setShowModal(res);
-                                      }}
-                                    >
-                                      Customize
-                                    </button>
+                                </div>
+                                <div className="col-xl-6">
+                                  <div className="row gapForpurchase">
+                                    <div className="col">
+                                      <button
+                                        className="btn btn-primary border-0"
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          fontSize: "14px",
+                                          backgroundColor: "rgb(0, 167, 139)",
+                                        }}
+                                        type="button"
+                                        onClick={() => {
+                                          setShowReport(true);
+                                          setbuysell_id(res.id);
+                                        }}
+                                      >
+                                        Report
+                                      </button>
+                                    </div>
+                                    <div className="col ">
+                                      <button
+                                        className="btn btn-primary border-0 "
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          fontSize: "13px",
+                                          backgroundColor: "rgb(0, 167, 139)",
+                                        }}
+                                        type="button"
+                                        onClick={() => {
+                                          downloadInvoice(res);
+                                        }}
+                                      >
+                                        Download invoice
+                                      </button>
+                                    </div>
+                                    <div className="col ">
+                                      <button
+                                        className="btn btn-primary border-0"
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          fontSize: "13px",
+                                          backgroundColor: "rgb(0, 167, 139)",
+                                        }}
+                                        type="button"
+                                        onClick={() => {
+                                          setShowModal(res);
+                                        }}
+                                      >
+                                        Customize
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
                               </div>

@@ -210,7 +210,7 @@ const RequestProject = () => {
                                   setSearchActiveProject(e?.target?.value);
                                   setNoResult(false);
                                 }}
-                                placeholder="Search..."
+                                placeholder="Search via client or project name"
                               />
                               <button type="submit">
                                 <BsSearch />

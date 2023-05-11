@@ -481,7 +481,11 @@ const BrowsePane = () => {
                                       <div className="online"></div>
                                     </div>
                                     <div className="henry-text">
-                                      <h6>{res?.name}</h6>
+                                      <h6
+                                        style={{ textTransform: "capitalize" }}
+                                      >
+                                        {res?.name}
+                                      </h6>
                                       <span>
                                         <img
                                           src="./static/images/project.png"
@@ -549,7 +553,11 @@ const BrowsePane = () => {
                                       <div className="online"></div>
                                     </div>
                                     <div className="henry-text">
-                                      <h6>{res?.name}</h6>
+                                      <h6
+                                        style={{ textTransform: "capitalize" }}
+                                      >
+                                        {res?.name}
+                                      </h6>
                                       <span>
                                         <img
                                           src="./static/images/project.png"

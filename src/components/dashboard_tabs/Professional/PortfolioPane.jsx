@@ -24,7 +24,7 @@ import { HeaderDashboard } from "../../Header";
 import Dashboardside from "../../ProfessionalDashboardside";
 import { useCookies } from "react-cookie";
 import Loader from "../../Loader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import ReactLotti3 from "../../../loader/ReactLottie3";
@@ -34,6 +34,10 @@ const PortfolioPane = () => {
   const [displaycls, setdisplaycls] = useState("none");
   const [loader, setLoader] = useState(false);
   const [imgPreview, setimgPreview] = useState("");
+  const [design, setdesign] = useState({
+    architecture: "",
+    visualiztion: "",
+  });
   const [showUploadDesign, setUploadDesign] = useState({
     home: true,
     architecture: false,
@@ -52,6 +56,13 @@ const PortfolioPane = () => {
     delete_project_modal: false,
   };
   const navigate = useNavigate();
+
+  const sendpagequery = (q, v) => {
+    navigate({
+      pathname: "/portfolio",
+      search: `${q}=${v}`,
+    });
+  };
 
   const [isRender, setIsRender] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -131,6 +142,35 @@ const PortfolioPane = () => {
     PortfolioData?.architecture_design_upload_modal,
     PortfolioData?.visualization_design_upload_modal,
   ]);
+
+  const location = useLocation();
+  const querysearch = new URLSearchParams(location.search);
+
+  useEffect(() => {
+    console.log(querysearch.get("visualiztion"));
+    if (querysearch.get("visualiztion") === "1") {
+      setUploadDesign({
+        home: false,
+        architecture: false,
+        visualiztion: true,
+        uploadCatagory: false,
+      });
+    } else if (querysearch.get("architecture") === "1") {
+      setUploadDesign({
+        home: false,
+        architecture: true,
+        visualiztion: false,
+        uploadCatagory: false,
+      });
+    } else {
+      setUploadDesign({
+        home: true,
+        architecture: false,
+        visualiztion: false,
+      });
+    }
+  }, []);
+
   const [catErr, setCatErr] = useState(false);
   const [errimgdisplay, seterrimgdisplay] = useState("none");
   const [errimg, setErrimg] = useState("none");
@@ -352,13 +392,18 @@ const PortfolioPane = () => {
                         <div className="row CardCatagoryMain">
                           <div
                             className="col-xxl col-lg-4 my-3 col-md-6"
-                            onClick={() =>
+                            onClick={() => {
                               setUploadDesign({
                                 home: false,
                                 architecture: true,
                                 visualiztion: false,
-                              })
-                            }
+                              });
+                              sendpagequery("architecture", 1);
+                              setdesign({
+                                architecture: true,
+                                visualiztion: false,
+                              });
+                            }}
                           >
                             <div className="dashboard-theme-color d-flex align-items-center flex-column text-white browse-project-card justify-content-center residental-card">
                               <img
@@ -376,13 +421,18 @@ const PortfolioPane = () => {
                           </div>
                           <div
                             className="col-xxl col-lg-4 my-3 col-md-6"
-                            onClick={() =>
+                            onClick={() => {
                               setUploadDesign({
                                 home: false,
                                 architecture: false,
                                 visualiztion: true,
-                              })
-                            }
+                              });
+                              setdesign({
+                                architecture: false,
+                                visualiztion: true,
+                              });
+                              sendpagequery("visualiztion", 1);
+                            }}
                           >
                             <div className="dashboard-theme-color d-flex align-items-center flex-column text-white browse-project-card justify-content-center">
                               <img
@@ -402,6 +452,24 @@ const PortfolioPane = () => {
                       )}
                       {showUploadDesign?.architecture && (
                         <div className=" ArchitectureCardCatagoryMainInner row">
+                          <span
+                            className="catCursor"
+                            onClick={() => {
+                              setUploadDesign({
+                                home: true,
+                                architecture: false,
+                                visualiztion: false,
+                                uploadCatagory: false,
+                              });
+                            }}
+                          >
+                            <span className="text-decoration-none text-dark m-0 h2">
+                              <i
+                                className="fa-solid fa-arrow-left-long pe-3"
+                                style={{ color: "#01a78a" }}
+                              ></i>
+                            </span>
+                          </span>
                           {contextData?.static_architecture_design?.data
                             ?.length &&
                             contextData?.static_architecture_design?.data?.map(
@@ -424,6 +492,10 @@ const PortfolioPane = () => {
                                             CataId: res?.category_id,
                                             SubCataId: res?.sub_category_id,
                                           },
+                                        });
+                                        setdesign({
+                                          architecture: true,
+                                          visualiztion: false,
                                         });
                                         setUploadDesign({
                                           home: false,
@@ -470,7 +542,6 @@ const PortfolioPane = () => {
                               <BsPlusLg className="theme-text-color" />
                             </div>
                           </div>
-
                           <div className="row">
                             <div className="col">
                               <button
@@ -495,6 +566,26 @@ const PortfolioPane = () => {
                       )}
                       {showUploadDesign?.visualiztion && (
                         <div className=" VisualisationCardCatagoryMainInner row">
+                          <span
+                            className="catCursor"
+                            onClick={() => {
+                              setUploadDesign({
+                                home: true,
+                                architecture: false,
+                                visualiztion: false,
+                                uploadCatagory: false,
+                              });
+                              console.log("suraj");
+                            }}
+                          >
+                            <span className="text-decoration-none text-dark m-0 h2">
+                              <i
+                                className="fa-solid fa-arrow-left-long pe-3"
+                                style={{ color: "#01a78a" }}
+                              ></i>
+                            </span>
+                          </span>
+
                           {contextData?.static_visualization_design?.data
                             ?.length &&
                             contextData?.static_visualization_design?.data?.map(
@@ -519,6 +610,11 @@ const PortfolioPane = () => {
                                             SubCataId: res?.sub_category_id,
                                             Video: res?.video,
                                           },
+                                        });
+
+                                        setdesign({
+                                          architecture: false,
+                                          visualiztion: true,
                                         });
 
                                         setUploadDesign({
@@ -597,6 +693,27 @@ const PortfolioPane = () => {
                         >
                           <br />
                           <h3 className="pt-xxl-5 pt-4">
+                            <span
+                              className="catCursor"
+                              onClick={() => {
+                                setUploadDesign({
+                                  home: false,
+                                  architecture:
+                                    design.architecture === true ? true : false,
+                                  visualiztion:
+                                    design.visualiztion === true ? true : false,
+                                  uploadCatagory: false,
+                                });
+                                console.log("suraj", design);
+                              }}
+                            >
+                              <span className="text-decoration-none text-dark m-0 h2">
+                                <i
+                                  className="fa-solid fa-arrow-left-long pe-3"
+                                  style={{ color: "#01a78a" }}
+                                ></i>
+                              </span>
+                            </span>
                             {PortfolioData?.sub_catagory_data?.CataName}
                           </h3>
                           <div className="row py-lg-5 py-md-4 py-3">

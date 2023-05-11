@@ -464,7 +464,7 @@ const countries = [
 
   {
     id: 50,
-    name: "Indone  sia",
+    name: "Indonesia",
     flag: "ID",
     alpha2: "ID",
     alpha3: "IDN",

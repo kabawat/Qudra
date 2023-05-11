@@ -116,7 +116,7 @@ function ReportTab() {
                           </div>
                         </>
                       ) : (
-                        <div className="w-100 align-items-center">
+                        <div className="w-100 align-items-center bl-sold-card ">
                           {designsSold?.final_data?.length &&
                             designsSold?.final_data?.map((res, index) => {
                               const dateString = res.created_at;
@@ -135,7 +135,7 @@ function ReportTab() {
                                       borderRadius: "12px",
                                     }}
                                   >
-                                    <div className="col-lg-2  d-flex flex-column py-3 ">
+                                    <div className="col-lg-2  d-flex flex-column pt-3 ">
                                       <img
                                         src={res?.client_image}
                                         className="img-fluid "
@@ -159,35 +159,37 @@ function ReportTab() {
                                         {res?.client_name}
                                       </h5>
                                     </div>
-                                    <div className="col-lg-9  py-3 d-flex justify-content-center flex-column">
+                                    <div className="col-lg-9  pb-3 d-flex justify-content-center flex-column">
                                       <div className="row my-2 ">
-                                        <div className="col-lg-6">
-                                          <div className="d-flex  ">
-                                            <h5>Price:</h5>
-                                            <h5 className="ms-1">
-                                              $ {res?.price}
-                                            </h5>
-                                            {/* <h4>{res?.sub_category_name} </h4> */}
-                                          </div>
-                                          <div>
-                                            <h5
-                                              style={{
-                                                fontWeight: "bold",
-                                                fontSize: "1rem",
-                                                color: "rgb(0, 167, 139)",
-                                              }}
-                                            >
-                                              {res?.sub_category_name}{" "}
-                                            </h5>
-
-                                            {/* <h4>Price:</h4>
-                                            <h4 className="ms-4">
-                                              $ {res?.price}
-                                            </h4> */}
-                                          </div>
+                                        <div>
+                                          <h5
+                                            style={{
+                                              fontWeight: "bold",
+                                              fontSize: "1rem",
+                                              color: "rgb(0, 167, 139)",
+                                            }}
+                                          >
+                                            {res?.sub_category_name}{" "}
+                                          </h5>
                                         </div>
-                                        <div className="col-lg-6">
-                                          <h5 className="">
+                                      </div>
+                                      <div className="row">
+                                        <div className="d-flex col-lg-4  ">
+                                          <h5 style={{ fontWeight: "bold" }}>
+                                            Price:
+                                          </h5>
+                                          <h5
+                                            className="ms-1"
+                                            style={{ fontWeight: "bold" }}
+                                          >
+                                            $ {res?.price}
+                                          </h5>
+                                        </div>
+                                        <div className="col-lg-8">
+                                          <h5
+                                            className=""
+                                            style={{ fontWeight: "bold" }}
+                                          >
                                             Customize Price: $
                                             {res?.customize_price}/sq.mtr
                                           </h5>
@@ -195,8 +197,9 @@ function ReportTab() {
                                       </div>
 
                                       <div className="row ">
-                                        <div className="col-4">
+                                        <div className="col-sm-4">
                                           <button
+                                            className="bl-btn"
                                             style={{
                                               border: "none",
                                               padding: "5px 22px",
@@ -217,13 +220,9 @@ function ReportTab() {
                                             Preview Image
                                           </button>
                                         </div>
-                                        <div className="col-4">
-                                          {/* <div className="d-flex  ">
-                                            <h4 className="ms-4">
-                                              $ {res?.customize_price}
-                                            </h4>
-                                          </div> */}
+                                        <div className="col-sm-4 ">
                                           <button
+                                            className="bl-btn"
                                             style={{
                                               border: "none",
                                               padding: "5px 22px",
@@ -244,10 +243,9 @@ function ReportTab() {
                                             Preview Video
                                           </button>
                                         </div>
-                                        <div className="col-4">
-                                          <a
-                                            href={res?.project_link}
-                                            download={res?.project_link}
+                                        <div className="col-sm-4 ">
+                                          <button
+                                            className="bl-btn"
                                             style={{
                                               border: "none",
                                               padding: "5px 22px",
@@ -258,8 +256,17 @@ function ReportTab() {
                                               textDecoration: "none",
                                             }}
                                           >
-                                            Download
-                                          </a>
+                                            <a
+                                              style={{
+                                                color: "white",
+                                                textDecoration: "none",
+                                              }}
+                                              href={res?.project_link}
+                                              download={res?.project_link}
+                                            >
+                                              Download
+                                            </a>
+                                          </button>
                                         </div>
                                       </div>
                                     </div>
@@ -385,7 +392,7 @@ function ReportTab() {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

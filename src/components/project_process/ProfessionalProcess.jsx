@@ -151,6 +151,16 @@ const ProfessionalProcess = ({ location }) => {
     setattch({ ...attch, [e.target.name]: e.target.files[0] });
     setreqportlbl({ ...reqportlbl, [e.target.name]: e.target.files[0].name });
   };
+
+  function handleChange_File(e) {
+    const file = URL.createObjectURL(e.target.files[0]);
+    let pdfFile = e.target.files[0].name;
+    setAttachement(e.target.files[0]);
+    setFileReport(pdfFile);
+    setreportUpload(true);
+    // setreportUpload(true);
+    // setAttachementError("");
+  }
   const handleShowMore = () => {
     setShowText(true);
   };
@@ -290,7 +300,7 @@ const ProfessionalProcess = ({ location }) => {
                             </div>
                           )}
                           {location?.state?.projectData?.description.length >
-                            100 ? (
+                          100 ? (
                             !showText ? (
                               <span
                                 onClick={handleShowMore}
@@ -428,182 +438,186 @@ const ProfessionalProcess = ({ location }) => {
                     return false;
                   } else {
                     setsubmit_loader(true);
-                    axios.put(
-                      "http://13.52.16.160:8082/stripe/professionl/verify-account/",
-                      {
-                        professioanl_id: cookies?.user_data?.user_id,
-                        professioanl_token: cookies?.user_data?.user_token,
-                      }
-                    ).then((result) => {
-                      if (result?.data?.status === "Failed") {
-                        setShow(true);
-                      } else {
-                        const formdata = new FormData();
-                        formdata.set("client_id", location?.state?.client_id);
-                        formdata.set(
-                          "user_token",
-                          cookies?.user_data?.user_token
-                        );
-                        formdata.set(
-                          "professional_id",
-                          cookies?.user_data?.user_id
-                        );
-                        formdata.set("role ", cookies?.user_data?.role);
-                        formdata.set(
-                          "client_project_id ",
-                          location?.state?.client_project_id
-                        );
-                        formdata.set(
-                          "professional_budget ",
-                          values.professional_budget
-                        );
-                        formdata.set(
-                          "estimated_date ",
-                          new Date(values?.estimated_date).toLocaleDateString(
-                            "en-CA"
-                          )
-                        );
-                        formdata.set(
-                          "milestone_name_one ",
-                          values.milestone_name_one
-                        );
-                        formdata.set(
-                          "milestone_name_two ",
-                          values.milestone_name_two
-                        );
-                        formdata.set(
-                          "milestone_name_third ",
-                          values.milestone_name_third
-                        );
-                        formdata.set(
-                          "milestone_name_four ",
-                          values.milestone_name_four
-                        );
-                        formdata.set(
-                          "milestone_name_fifth ",
-                          values.milestone_name_fifth
-                        );
-
-                        formdata.set(
-                          "milestone_date_one ",
-                          values.milestone_date_one
-                        );
-                        formdata.set(
-                          "milestone_date_two ",
-                          values.milestone_date_two
-                        );
-                        formdata.set(
-                          "milestone_date_third ",
-                          values.milestone_date_third
-                        );
-                        formdata.set(
-                          "milestone_date_four ",
-                          values.milestone_date_four
-                        );
-                        formdata.set(
-                          "milestone_date_fifth ",
-                          values.milestone_date_fifth
-                        );
-
-                        formdata.set(
-                          "milestone_one_description ",
-                          values.milestone_one_description
-                        );
-                        formdata.set(
-                          "milestone_two_description ",
-                          values.milestone_two_description
-                        );
-                        formdata.set(
-                          "milestone_third_description ",
-                          values.milestone_third_description
-                        );
-                        formdata.set(
-                          "milestone_four_description ",
-                          values.milestone_four_description
-                        );
-                        formdata.set(
-                          "milestone_fifth_description ",
-                          values.milestone_fifth_description
-                        );
-                        formdata.set(
-                          "milestone_one_attachment",
-                          attch.attach1
-                        );
-                        formdata.set(
-                          "milestone_two_attachment",
-                          attch.attach2
-                        );
-                        formdata.set(
-                          "milestone_third_attachment",
-                          attch.attach3
-                        );
-                        formdata.set(
-                          "milestone_four_attachment",
-                          attch.attach4
-                        );
-                        formdata.set(
-                          "milestone_fifth_attachment",
-                          attch.attach5
-                        );
-                        formdata.set(
-                          "milestone_one_percent",
-                          values?.milestone_one_percent
-                        );
-                        formdata.set(
-                          "milestone_two_percent",
-                          values?.milestone_two_percent
-                        );
-                        formdata.set(
-                          "milestone_third_percent",
-                          values?.milestone_third_percent
-                        );
-                        formdata.set(
-                          "milestone_four_percent",
-                          values?.milestone_four_percent
-                        );
-                        formdata.set(
-                          "milestone_fifth_percent",
-                          values?.milestone_fifth_percent
-                        );
-
-                        setsubmit_loader(true);
-                        if (
-                          Number(values?.milestone_fifth_percent) +
-                          Number(values?.milestone_four_percent) +
-                          Number(values?.milestone_one_percent) +
-                          Number(values?.milestone_third_percent) +
-                          Number(values?.milestone_two_percent) ===
-                          100
-                        ) {
-                          axios.post(
-                            "http://13.52.16.160:8082/professional/project_details",
-                            formdata
-                          ).then((res) => {
-                            setsubmit_loader(false);
-                            if (res?.data?.status === "Success") {
-                              handleProfessionalDecesion(
-                                "accepted",
-                                values?.professional_budget,
-                                values?.estimated_date
-                              );
-                            }
-                          });
-                        } else {
-                          setsubmit_loader(false);
-                          toast.error("Total cost should be 100%", {
-                            position: "top-right",
-                            autoClose: 2000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                          });
-                          return false;
+                    axios
+                      .put(
+                        "http://13.52.16.160:8082/stripe/professionl/verify-account/",
+                        {
+                          professioanl_id: cookies?.user_data?.user_id,
+                          professioanl_token: cookies?.user_data?.user_token,
                         }
-                      }
-                    });
+                      )
+                      .then((result) => {
+                        if (result?.data?.status === "Failed") {
+                          setShow(true);
+                        } else {
+                          const formdata = new FormData();
+                          formdata.set("client_id", location?.state?.client_id);
+                          formdata.set(
+                            "user_token",
+                            cookies?.user_data?.user_token
+                          );
+                          formdata.set(
+                            "professional_id",
+                            cookies?.user_data?.user_id
+                          );
+                          formdata.set("role ", cookies?.user_data?.role);
+                          formdata.set(
+                            "client_project_id ",
+                            location?.state?.client_project_id
+                          );
+                          formdata.set(
+                            "professional_budget ",
+                            values.professional_budget
+                          );
+                          formdata.set(
+                            "estimated_date ",
+                            new Date(values?.estimated_date).toLocaleDateString(
+                              "en-CA"
+                            )
+                          );
+                          formdata.set(
+                            "milestone_name_one ",
+                            values.milestone_name_one
+                          );
+                          formdata.set(
+                            "milestone_name_two ",
+                            values.milestone_name_two
+                          );
+                          formdata.set(
+                            "milestone_name_third ",
+                            values.milestone_name_third
+                          );
+                          formdata.set(
+                            "milestone_name_four ",
+                            values.milestone_name_four
+                          );
+                          formdata.set(
+                            "milestone_name_fifth ",
+                            values.milestone_name_fifth
+                          );
+
+                          formdata.set(
+                            "milestone_date_one ",
+                            values.milestone_date_one
+                          );
+                          formdata.set(
+                            "milestone_date_two ",
+                            values.milestone_date_two
+                          );
+                          formdata.set(
+                            "milestone_date_third ",
+                            values.milestone_date_third
+                          );
+                          formdata.set(
+                            "milestone_date_four ",
+                            values.milestone_date_four
+                          );
+                          formdata.set(
+                            "milestone_date_fifth ",
+                            values.milestone_date_fifth
+                          );
+
+                          formdata.set(
+                            "milestone_one_description ",
+                            values.milestone_one_description
+                          );
+                          formdata.set(
+                            "milestone_two_description ",
+                            values.milestone_two_description
+                          );
+                          formdata.set(
+                            "milestone_third_description ",
+                            values.milestone_third_description
+                          );
+                          formdata.set(
+                            "milestone_four_description ",
+                            values.milestone_four_description
+                          );
+                          formdata.set(
+                            "milestone_fifth_description ",
+                            values.milestone_fifth_description
+                          );
+                          formdata.set(
+                            "milestone_one_attachment",
+                            attch.attach1
+                          );
+                          formdata.set(
+                            "milestone_two_attachment",
+                            attch.attach2
+                          );
+                          formdata.set(
+                            "milestone_third_attachment",
+                            attch.attach3
+                          );
+                          formdata.set(
+                            "milestone_four_attachment",
+                            attch.attach4
+                          );
+                          formdata.set(
+                            "milestone_fifth_attachment",
+                            attch.attach5
+                          );
+                          formdata.set(
+                            "milestone_one_percent",
+                            values?.milestone_one_percent
+                          );
+                          formdata.set(
+                            "milestone_two_percent",
+                            values?.milestone_two_percent
+                          );
+                          formdata.set(
+                            "milestone_third_percent",
+                            values?.milestone_third_percent
+                          );
+                          formdata.set(
+                            "milestone_four_percent",
+                            values?.milestone_four_percent
+                          );
+                          formdata.set(
+                            "milestone_fifth_percent",
+                            values?.milestone_fifth_percent
+                          );
+
+                          setsubmit_loader(true);
+                          if (
+                            Number(values?.milestone_fifth_percent) +
+                              Number(values?.milestone_four_percent) +
+                              Number(values?.milestone_one_percent) +
+                              Number(values?.milestone_third_percent) +
+                              Number(values?.milestone_two_percent) ===
+                            100
+                          ) {
+                            axios
+                              .post(
+                                "http://13.52.16.160:8082/professional/project_details",
+                                formdata
+                              )
+                              .then((res) => {
+                                setsubmit_loader(false);
+                                if (res?.data?.status === "Success") {
+                                  handleProfessionalDecesion(
+                                    "accepted",
+                                    values?.professional_budget,
+                                    values?.estimated_date
+                                  );
+                                }
+                              });
+                          } else {
+                            setsubmit_loader(false);
+                            toast.error("Total cost should be 100%", {
+                              position: "top-right",
+                              autoClose: 2000,
+                              hideProgressBar: true,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              progress: undefined,
+                              theme: "colored",
+                            });
+                            return false;
+                          }
+                        }
+                      });
                   }
                 }}
               >
@@ -641,7 +655,12 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
                               </div>
                               <div className="field-data">
                                 <label htmlFor="fname">Cost Percentage</label>
@@ -670,7 +689,14 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="number"
+                                 
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                  max="100"
+                                  min="0"
+                                /> */}
                               </div>
                               <div className="field-custom ">
                                 <label htmlFor="fname">Enter Date</label>
@@ -699,7 +725,11 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  className="form-control"
+                                  type="date"
+                                  required=""
+                                /> */}
                               </div>
                               <div className="field-custom_image">
                                 <input
@@ -773,7 +803,13 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <textarea
+                                  id="subject"
+                                  name="subject"
+                                  placeholder="Descrption"
+                                  rows={2}
+                                  defaultValue={""}
+                                /> */}
                               </div>
                             </div>
                             <div className="row">
@@ -810,7 +846,12 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
                               </div>
                               <div className="field-data">
                                 <label htmlFor="milestone_two_percent">
@@ -840,7 +881,12 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="number"
+                                 
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                /> */}
                               </div>
                               <div className="field-custom">
                                 <label htmlFor="milestone_date_two">
@@ -870,7 +916,11 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  className="form-control"
+                                  type="date"
+                                  required=""
+                                /> */}
                               </div>
                               <div className="field-custom_image">
                                 <input
@@ -950,7 +1000,13 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <textarea
+                                  id="subject"
+                                  name="subject"
+                                  placeholder="Descrption"
+                                  rows={2}
+                                  defaultValue={""}
+                                /> */}
                               </div>
                             </div>
                             <div className="row">
@@ -989,7 +1045,12 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
                               </div>
                               <div className="field-data">
                                 <label htmlFor="milestone_third_percent">
@@ -1020,7 +1081,12 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="number"
+                                 
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                /> */}
                               </div>
                               <div className="field-custom">
                                 <label htmlFor="milestone_date_third">
@@ -1050,7 +1116,11 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  className="form-control"
+                                  type="date"
+                                  required=""
+                                /> */}
                               </div>
                               <div className="field-custom_image">
                                 <input
@@ -1097,7 +1167,8 @@ const ProfessionalProcess = ({ location }) => {
                                     />
                                   </span>
                                 </label>
-
+                                {/* <input type="file" name="file" id="file" />
+                                <span>Upload Attachement</span> */}
                               </div>
                             </div>
                             <div className="full_cullomn">
@@ -1129,7 +1200,13 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <textarea
+                                  id="subject"
+                                  name="subject"
+                                  placeholder="Descrption"
+                                  rows={2}
+                                  defaultValue={""}
+                                /> */}
                               </div>
                             </div>
                             <div className="row">
@@ -1166,7 +1243,12 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
                               </div>
                               <div className="field-data">
                                 <label htmlFor="milestone_four_percent">
@@ -1197,7 +1279,11 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="number"
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                /> */}
                               </div>
                               <div className="field-custom">
                                 <label htmlFor="fname">Enter Date</label>
@@ -1225,7 +1311,11 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  className="form-control"
+                                  type="date"
+                                  required=""
+                                /> */}
                               </div>
                               <div className="field-custom_image">
                                 <input
@@ -1275,7 +1365,8 @@ const ProfessionalProcess = ({ location }) => {
                                     />
                                   </span>
                                 </label>
-
+                                {/* <input type="file" name="file" id="file" />
+                                <span>Upload Attachement</span> */}
                               </div>
                             </div>
                             <div className="full_cullomn">
@@ -1306,7 +1397,13 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <textarea
+                                  id="subject"
+                                  name="subject"
+                                  placeholder="Descrption"
+                                  rows={2}
+                                  defaultValue={""}
+                                /> */}
                               </div>
                             </div>
                             <div className="row">
@@ -1341,7 +1438,12 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  type="text"
+                                 
+                                  name="firstname"
+                                  placeholder="Name of the milestone"
+                                /> */}
                               </div>
 
                               <div class="field-data">
@@ -1373,12 +1475,25 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
+                                {/* <input
+                                  type="number"
+                                 
+                                  name="firstname"
+                                  placeholder="Cost Percentage"
+                                /> */}
                               </div>
 
                               <div class="field-custom">
                                 <label for="milestone_date_fifth">
                                   Enter Date
                                 </label>
+                                {/* isClearable
+                            autoComplete="off"
+                            placeholderText="Enter Date"
+                            minDate={new Date()}
+                            name="estimated_date"
+                             */}
+
                                 <DatePicker
                                   selected={dateFive}
                                   placeholderText="Enter Date"
@@ -1402,7 +1517,11 @@ const ProfessionalProcess = ({ location }) => {
                                     }
                                   }}
                                 />
-
+                                {/* <input
+                                  class="form-control"
+                                  type="date"
+                                  required
+                                /> */}
                               </div>
 
                               <div class="field-custom_image">
@@ -1546,7 +1665,8 @@ const ProfessionalProcess = ({ location }) => {
                       </div>
                       <div className="row mt-sm-5 mt-3 g-sm-3 g-3">
                         <div className="col-sm">
-                          <button disabled={decline_loader ? true : false}
+                          <button
+                            disabled={decline_loader ? true : false}
                             onClick={() => {
                               handleProfessionalDecesion("declined");
                             }}
@@ -1560,20 +1680,34 @@ const ProfessionalProcess = ({ location }) => {
                               display: "block",
                             }}
                             type="button"
-                            className={`theme-text-color bg-white   ${windowSize?.width > 576 ? "ms-auto" : "mx-auto"
-                              }`}>
+                            className={`theme-text-color bg-white   ${
+                              windowSize?.width > 576 ? "ms-auto" : "mx-auto"
+                            }`}
+                          >
                             {decline_loader ? <ReactLotti /> : "Decline"}
                           </button>
                         </div>
 
                         <div className="col-sm">
-                          {
-                            submit_loader ? (
-                              <button type="button" className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"}`}><ReactLottie3 /></button>
-                            ) : (
-                              <button type="submit" className={`theme-bg-color text-white   ${windowSize?.width > 576 ? "me-auto" : "mx-auto"}`}>Accept</button>
-                            )
-                          }
+                          {submit_loader ? (
+                            <button
+                              type="button"
+                              className={`theme-bg-color text-white   ${
+                                windowSize?.width > 576 ? "me-auto" : "mx-auto"
+                              }`}
+                            >
+                              <ReactLottie3 />
+                            </button>
+                          ) : (
+                            <button
+                              type="submit"
+                              className={`theme-bg-color text-white   ${
+                                windowSize?.width > 576 ? "me-auto" : "mx-auto"
+                              }`}
+                            >
+                              Accept
+                            </button>
+                          )}
                         </div>
                       </div>
                     </section>

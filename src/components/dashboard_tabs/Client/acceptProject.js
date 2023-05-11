@@ -179,7 +179,7 @@ const AcceptProject = () => {
                                     searchData();
                                   }
                                 }}
-                                placeholder="Search via project name"
+                                placeholder="Search via client project name"
                               />
                               <button type="submit">
                                 <BsSearch />
@@ -201,7 +201,13 @@ const AcceptProject = () => {
                         </div>
                       )}
                       {noResult ? (
-                        <div style={{ minHeight: "600px" }} className="d-flex ">
+                        <div
+                          style={{
+                            minHeight: "600px",
+                            display: "grid",
+                            placeItems: "center",
+                          }}
+                        >
                           <span className="h4">No Result Found</span>
                         </div>
                       ) : onGoingProject?.final_data?.length ? (

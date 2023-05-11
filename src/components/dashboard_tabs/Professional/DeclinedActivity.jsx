@@ -143,7 +143,7 @@ const DeclinedActivity = () => {
                                   setSearchActiveProject(e?.target?.value);
                                   setNoResult(false);
                                 }}
-                                placeholder="Search..."
+                                placeholder="Search via client name or project name"
                               />
                               <button type="submit">
                                 <BsSearch />
@@ -163,8 +163,11 @@ const DeclinedActivity = () => {
                       )}
                       {noResult ? (
                         <div
-                          style={{ minHeight: "600px" }}
-                          className="d-flex w-100 justify-content-center align-items-center"
+                          style={{
+                            minHeight: "600px",
+                            display: "grid",
+                            placeItems: "center",
+                          }}
                         >
                           <span className="h4">No Result Found</span>
                         </div>

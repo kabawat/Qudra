@@ -1,4 +1,8 @@
 @media screen and (min-width: 576px) and (max-width: 767px) {
+  .cart_page_main {
+    width: 85% !important;
+    margin: auto;
+  }
   section.earners-review-carousel {
     background-position: 12% 0% !important;
   }
@@ -37,7 +41,7 @@
 
   .bl-col img {
     margin-bottom: 30px;
-    height: 150px !important;
+    /* height: 150px !important; */
     object-fit: cover;
   }
 
@@ -89,10 +93,25 @@
   }
 }
 
+@media screen and (min-width: 768px) and (max-width: 781px) {
+  .purchaseContainer {
+    width: 95% !important;
+  }
+}
+
 @media screen and (min-width: 320px) and (max-width: 575px) {
+  .buy-now-btn-cancel,
+  .buy-now-btn,
+  .buy-now-btn-active {
+    width: 95px;
+  }
   .btnBoeMile1 {
     padding: 9px !important;
     height: 40px;
+  }
+  .cart_page_main {
+    width: 90% !important;
+    margin: auto;
   }
   .btnBoeMile {
     padding: 0px 9px !important;
@@ -159,7 +178,7 @@
 
   .bl-col img {
     margin-bottom: 30px;
-    height: 150px !important;
+    /* height: 150px !important; */
     object-fit: cover;
   }
 
@@ -167,10 +186,35 @@
     font-size: 13px !important;
   }
 }
-
+@media screen and (min-width: 320px) and (max-width: 506px) {
+  .purchaseContainer {
+    width: 100% !important;
+  }
+  .sukhuPurchase {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+@media screen and (min-width: 507px) and (max-width: 531px) {
+  .purchaseContainer {
+    width: 94% !important;
+  }
+  .sukhuPurchase {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+@media screen and (min-width: 532px) and (max-width: 570px) {
+  .purchaseContainer {
+    width: 97% !important;
+  }
+}
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .searchActiveProject.col-lg-8.ms-auto form input {
     padding-right: 67px;
+  }
+  .cuspurchase {
+    font-size: 15px;
   }
   .colAccDec {
     justify-content: center !important;
@@ -899,6 +943,12 @@
 }
 
 @media screen and (min-device-width: 768px) and (max-device-width: 991px) {
+  .cuspurchase {
+    font-size: 15px;
+  }
+  .verify-text {
+    display: none;
+  }
   /* =============== 05 April  ================ */
   .colAccDec {
     justify-content: center !important;
@@ -937,7 +987,7 @@
     flex-wrap: wrap;
   }
   section.projectMilestoneInfo button:last-child {
-    width: 100%;
+    width: 165px;
     margin: 0 20px;
   }
 
@@ -1019,7 +1069,7 @@
   }
 
   .mob-hide {
-    display: none;
+    /* display: none; */
   }
 
   .henry-img img {
@@ -1459,7 +1509,7 @@
   }
 
   .bl-col img {
-    height: 127px !important;
+    /* height: 127px !important; */
     width: 100%;
     object-fit: cover;
   }
@@ -1472,6 +1522,20 @@
 @media screen and (min-device-width: 992px) and (max-device-width: 1024px) {
   .myProjectTable h2 {
     font-size: 20px;
+  }
+  .verify-text {
+    font-size: 14px;
+  }
+  header.dashboard-header h6 {
+    font-size: 12px !important;
+
+    /* font-family: "Poppins"; */
+  }
+  .verify-text {
+    display: none;
+  }
+  .profileEdit-button h4 {
+    font-size: 14px !important;
   }
   .colAccDec {
     justify-content: center !important;
@@ -1783,7 +1847,7 @@
   }
 
   .bl-col img {
-    height: 175px !important;
+    /* height: 175px !important; */
     width: 100%;
     object-fit: cover;
   }
@@ -1792,8 +1856,20 @@
     margin-top: 8px;
   }
 }
+@media screen and (min-device-width: 1025px) and (max-device-width: 1099px) {
+  header.dashboard-header h6 {
+    font-size: 12px !important;
 
+    /* font-family: "Poppins"; */
+  }
+  .profileEdit-button h4 {
+    font-size: 14px !important;
+  }
+}
 @media screen and (min-device-width: 992px) and (max-device-width: 1199px) {
+  .cuspurchase {
+    font-size: 15px;
+  }
   /* .newJoin {
     top: 30%;
   } */
@@ -1837,6 +1913,15 @@
   }
 }
 
+@media screen and (min-device-width: 1200px) and (max-device-width: 1399px) {
+  .viewFilePro {
+    padding: 0 !important;
+  }
+  .viewFile {
+    width: 160px;
+  }
+}
+
 @media screen and (min-device-width: 1200px) and (max-device-width: 1279px) {
   .btnBoeMile1 {
     padding: 9px 10px !important;
@@ -1849,13 +1934,16 @@
     padding: 5px 37px !important;
   }
   .resMile {
-    justify-content: space-between !important;
+    /* justify-content: space-between !important; */
   }
   .accept_btn_group button {
   }
 }
 
 @media screen and (min-device-width: 1024px) and (max-device-width: 1279px) {
+  .cuspurchase {
+    font-size: 15px;
+  }
   .PaymentCardSubmitButton {
     width: 115px !important;
   }
@@ -2085,6 +2173,15 @@
 }
 
 @media screen and (min-device-width: 1280px) and (max-device-width: 1365px) {
+  .let-get-started .join-us-now-main .join-us-now-text {
+    padding: 75px 25px;
+  }
+  .mileFileCol {
+    padding: 0 !important;
+  }
+  .mileFile {
+    width: 160px;
+  }
   /* .newJoin {
     top: 25%;
   } */
@@ -2152,6 +2249,15 @@
   }
 }
 @media screen and (min-device-width: 1366px) and (max-device-width: 1399px) {
+  .let-get-started .join-us-now-main .join-us-now-text {
+    padding: 75px 25px;
+  }
+  .mileFileCol {
+    padding: 0 !important;
+  }
+  .mileFile {
+    width: 160px;
+  }
   .resMile {
     justify-content: space-between !important;
   }
@@ -2332,7 +2438,16 @@
     top: 30%;
   } */
 }
-
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .helpactive {
+    width: 300px !important;
+  }
+}
+@media screen and (min-width: 1276px) and (max-width: 1399px) {
+  .helpactive {
+    width: 350px !important;
+  }
+}
 @media screen and (min-width: 992px) {
   .accept_btn_group {
     margin: 0 !important;
@@ -2341,7 +2456,7 @@
     margin-top: 22% !important;
   }
   .helpactive {
-    width: 300px !important;
+    width: 300px;
   }
 }
 
@@ -2400,7 +2515,20 @@
 }
 @media screen and (max-width: 1199px) {
   .cart_page_main h3 {
-    font-size: 16px !important;
+    font-size: 14px !important;
+  }
+  .gapForpurchase {
+    padding-top: 20px !important;
+  }
+  .viewFilePro {
+    margin-top: 3% !important;
+    margin-bottom: 2% !important;
+    display: grid;
+    place-content: center;
+  }
+  .mileFileCol {
+    display: grid;
+    place-content: center;
   }
 
   .uploadMileStoneof {
@@ -2419,6 +2547,9 @@
 }
 @media screen and (min-width: 1199px) {
   .statusBtnMilecol {
+    justify-content: end !important;
+  }
+  .uploadMileStonefo {
     justify-content: end !important;
   }
 }
@@ -2527,6 +2658,25 @@
 }
 @media screen and (min-width: 1601px) {
   .resMile {
-    justify-content: space-between !important;
+    /* justify-content: space-between !important; */
+  }
+  .uploadMileStonefo {
+    padding: 10px 55px;
+  }
+  .pendingMileStone {
+    padding: 8px 50px;
+  }
+}
+
+@media screen and (max-width: 1601px) {
+  button.bl-btn {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+  .bl-sold-card {
+    padding: 0px 8px;
   }
 }
