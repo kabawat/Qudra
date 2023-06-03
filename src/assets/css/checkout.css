@@ -94,7 +94,7 @@
   padding: 23px;
   background-image: url(./card.png);
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   display: inline-block;
   margin-bottom: 10px;
   margin-right: 10px;
@@ -121,7 +121,7 @@
 
 .Delete_card {
   position: absolute;
-  top: 5%;
+  top: -565%;
   left: 3%;
 }
 .Delete_card :hover {
@@ -253,10 +253,23 @@
   }
 }
 
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  .Delete_card {
+    position: absolute;
+    top: -425% !important;
+    left: 3%;
+  }
+}
+
 @media only screen and (max-width: 1366px) and (min-width: 1200px) {
   .checkout_data .first-card {
     background-size: cover;
     width: calc(33% - 20px) !important;
+  }
+  .Delete_card {
+    position: absolute;
+    top: -405%;
+    left: 3%;
   }
 }
 
@@ -276,4 +289,25 @@
   padding: 12px 50px;
   text-decoration: none;
   font-size: 18px;
+}
+
+@media only screen and (max-width: 992px) {
+  .Delete_card {
+    position: absolute;
+    top: -425% !important;
+    left: 3%;
+  }
+}
+
+@media only screen and (max-width: 1366px) and (min-width: 1300px) {
+  .checkout_data .first-card {
+    background-size: cover;
+    width: calc(33% - 7px) !important;
+  }
+}
+@media only screen and (max-width: 1299px) and (min-width: 1200px) {
+  .checkout_data .first-card {
+    background-size: cover;
+    width: calc(33% - -33px) !important;
+  }
 }

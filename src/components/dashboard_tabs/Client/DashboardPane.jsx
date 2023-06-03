@@ -8,6 +8,7 @@ import Global from "../../../context/Global";
 import { useCookies } from "react-cookie";
 import useDemoConfig from "../../../components/Graph/Client/useDemoConfig";
 import { Link, useLocation } from "react-router-dom";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,6 +18,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { BaseUrl } from "../../../BaseUrl";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -41,7 +43,6 @@ const DashboardPane = () => {
   const [userdata, setuserdata] = useState("");
 
   useEffect(() => {
-    console.log(location?.state?.designe);
     if (location?.state?.designe === false) {
       setBuyDesigns(false);
     } else if (location?.state?.designe === undefined) {
@@ -54,7 +55,7 @@ const DashboardPane = () => {
   useEffect(() => {
     contextData?.userData &&
       axios
-        .post("http://13.52.16.160:8082/identity/filter_projects", {
+        .post(`${BaseUrl}/identity/filter_projects`, {
           user_id: contextData?.userData?.user_id,
           user_token: contextData?.userData?.user_token,
           role: contextData?.userData?.role,
@@ -68,7 +69,7 @@ const DashboardPane = () => {
         });
     //changes
     axios
-      .post("http://13.52.16.160:8082/client/browse_profesional_list", {
+      .post(`${BaseUrl}/client/browse_profesional_list`, {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -88,7 +89,7 @@ const DashboardPane = () => {
   useEffect(() => {
     contextData?.userData &&
       axios
-        .post("http://13.52.16.160:8082/client/client_recent_payments/", {
+        .post(`${BaseUrl}/client/client_recent_payments/`, {
           client_id: cookies?.user_data?.user_id,
           client_token: cookies?.user_data?.user_token,
         })
@@ -107,7 +108,7 @@ const DashboardPane = () => {
   }
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/client/client_graph_data", {
+      .post(`${BaseUrl}/client/client_graph_data`, {
         user_token: cookies?.user_data?.user_token,
         client_id: cookies?.user_data?.user_id,
         role: cookies?.user_data?.role,

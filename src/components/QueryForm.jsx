@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
 import ".././assets/css/QueryForm.css";
 import axios from "axios";
-
+import { BaseUrl } from "../BaseUrl";
+import ReactLotti3 from "../loader/ReactLottie3";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 function QueryForm() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [queryLoader, setQueryLoader] = useState(false);
   const [queryData, setQueryData] = useState({
     name: "",
     email: "",
@@ -10,12 +19,21 @@ function QueryForm() {
   });
 
   const SumitData = (e) => {
+    setQueryLoader(true);
     e.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/quadra/query/", queryData)
-      .then((res) => {
-        console.log(res);
-      });
+    axios.post(`${BaseUrl}/quadra/query/`, queryData).then((res) => {
+      if (res?.data?.status == "Success") {
+        setQueryLoader(false);
+        setQueryData({
+          name: "",
+          email: "",
+          query: "",
+        });
+        handleShow();
+      } else {
+        setQueryLoader(false);
+      }
+    });
   };
 
   return (
@@ -76,12 +94,26 @@ function QueryForm() {
               type="submit"
               id="contact-submit"
               data-submit="...Sending"
+              disabled={queryLoader ? true : false}
             >
-              Submit
+              {queryLoader ? <ReactLotti3 /> : "Submit"}
             </button>
           </fieldset>
         </form>
       </div>
+
+      <Modal show={show} onHide={handleClose} backdrop="static" centered>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>Thank you for submitting your query!</Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={handleClose}
+            style={{ backgroundColor: "#01B293", border: "none" }}
+          >
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

@@ -8,6 +8,8 @@ import {
   unstable_HistoryRouter,
   useLocation,
 } from "react-router-dom";
+// import { ToastContainer, toast } from "react-toastify";
+
 import Button from "react-bootstrap/Button";
 import OtpInput from "react-otp-input";
 import Modal from "react-bootstrap/Modal";
@@ -23,6 +25,8 @@ import { Header2 } from "../components/Header";
 import { Cookies, useCookies } from "react-cookie";
 import ReactLotti from "../loader/ReactLotti";
 import Loader from "../components/Loader";
+import ReactLotti3 from "../loader/ReactLottie3";
+import { BaseUrl } from "../BaseUrl";
 
 const apiUrl = "";
 const LoginSchema = Yup.object().shape({
@@ -46,8 +50,10 @@ const Login = () => {
   const [resetEmailInput, setResetEmailInput] = useState("");
   const [resetPasswordInput, setResetPasswordInput] = useState("");
   const location = useLocation();
+  const [isVerified, setisVerified] = useState(false);
   const roleAPI = location?.state?.role;
   const [isRender, setIsRender] = useState(false);
+  const [submitLoader, setsubmitLoader] = useState(false);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -75,9 +81,7 @@ const Login = () => {
   }, []);
 
   const [error, setError] = useState(false);
-  const [submitAPI, setSubmitAPI] = useState(
-    "http://13.52.16.160:8082/quadra/login_admin"
-  );
+  const [submitAPI, setSubmitAPI] = useState(`${BaseUrl}/quadra/login_admin`);
   const [modalShow, setModalShow] = React.useState(false);
 
   const [loadingActive, setLoadingActive] = useState(false);
@@ -86,19 +90,22 @@ const Login = () => {
 
   const [otp, handleOTP] = useState("");
 
+  const [regexerr, setRegexerr] = useState(false);
+  let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
   const handleResetRequest = () => {
     if (resetPasswordInput == "") {
       setPasswordEpt(true);
       return false;
     }
 
-    if (resetPasswordInput.length < 8) {
-      setPasswordLen(true);
+    if (!regex.test(resetPasswordInput)) {
+      setRegexerr(true);
       return false;
     }
-
+    setRegexerr(false);
+    setsubmitLoader(true);
     axios
-      .post("http://13.52.16.160:8082/identity/forget-password", {
+      .post(`${BaseUrl}/identity/forget-password`, {
         email: resetEmailInput,
         role: roleAPI,
         otp: otp,
@@ -107,10 +114,19 @@ const Login = () => {
       .then((res) => {
         if (res?.data?.status === "Failed") {
           setVerifyButtonText("Verify");
+          setsubmitLoader(false);
         } else {
           setVerifyButtonText("Verified");
           setModalShow(false);
+          setsubmitLoader(false);
         }
+        setOtpbox(false);
+        setModalShow(false);
+        setVerifyButtonText("Verify");
+        setResetPasswordInput("");
+        setResetEmailInput("");
+        handleOTP("");
+        setLoadingActive(false);
         toast(
           <div
             className={`text-center ${
@@ -132,11 +148,12 @@ const Login = () => {
       setLoadingActive(false);
     }
     axios
-      .post("http://13.52.16.160:8082/identity/generate-otp", {
+      .post(`${BaseUrl}/identity/generate-otp`, {
         email: resetEmailInput,
       })
       .then((res) => {
         if (res?.data?.status === "Success") {
+          setisVerified(true);
           setVerifyButtonText("Sent");
           setLoadingActive(false);
           setOtpbox(true);
@@ -146,6 +163,7 @@ const Login = () => {
         }
       });
   };
+
   return isRender ? (
     <>
       {roleAPI && (
@@ -163,22 +181,16 @@ const Login = () => {
                 onSubmit={(values, { setSubmitting }) => {
                   setError(false);
                   axios
-                    .post(
-                      "http://13.52.16.160:8082/identity/account-login",
-                      values
-                    )
+                    .post(`${BaseUrl}/identity/account-login`, values)
                     .then((res) => {
                       if (res?.data?.status === "Success") {
                         setCookie("user_data", res?.data?.data);
                         axios
-                          .post(
-                            "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-                            {
-                              user_id: res?.data?.data?.user_id,
-                              user_token: res?.data?.data?.user_token,
-                              role: res?.data?.data?.role,
-                            }
-                          )
+                          .post(`${BaseUrl}/identity/get_dashboard_profile/`, {
+                            user_id: res?.data?.data?.user_id,
+                            user_token: res?.data?.data?.user_token,
+                            role: res?.data?.data?.role,
+                          })
                           .then((res) => {
                             contextData?.dispatch({
                               type: "FETCH_PROFILE_DATA",
@@ -208,8 +220,11 @@ const Login = () => {
                           value: res?.data?.data,
                         });
                       } else {
-                        setError(true);
+                        // setError(true);
                         setSubmitting(false);
+                        toast.error(res.data.message, {
+                          position: toast.POSITION.TOP_CENTER,
+                        });
                       }
                     });
                 }}
@@ -289,23 +304,34 @@ const Login = () => {
                       </button>
 
                       <Modal
+                        backdrop="static"
+                        keyboard={false}
                         size="md"
                         aria-labelledby="contained-modal-title-vcenter"
                         centered
                         className="resetPasswordModal"
                         show={modalShow}
+                        onHide={() => {
+                          setOtpbox(false);
+                          setModalShow(false);
+                          setVerifyButtonText("Verify");
+                          setResetPasswordInput("");
+                          setResetEmailInput("");
+                          handleOTP("");
+                          setLoadingActive(false);
+                        }}
                       >
                         <Modal.Header
                           closeButton
-                          onClick={() => {
-                            setOtpbox(false);
-                            setModalShow(false);
-                            setVerifyButtonText("Verify");
-                            setResetPasswordInput("");
-                            setResetEmailInput("");
-                            handleOTP("");
-                            setLoadingActive(false);
-                          }}
+                          // onClick={ () => {
+                          //   setOtpbox( false );
+                          //   setModalShow( false );
+                          //   setVerifyButtonText( "Verify" );
+                          //   setResetPasswordInput( "" );
+                          //   setResetEmailInput( "" );
+                          //   handleOTP( "" );
+                          //   setLoadingActive( false );
+                          // } }
                         >
                           <Modal.Title id="contained-modal-title-vcenter">
                             Reset your password
@@ -315,6 +341,7 @@ const Login = () => {
                           <div className="create-account-input">
                             <input
                               type="email"
+                              disabled={isVerified ? true : false}
                               className="form-control"
                               placeholder="Enter your email"
                               value={resetEmailInput}
@@ -367,9 +394,12 @@ const Login = () => {
                                     type="password"
                                     value={resetPasswordInput}
                                     disabled
-                                    onChange={(e) =>
-                                      setResetPasswordInput(e.target.value)
-                                    }
+                                    onChange={(e) => {
+                                      setResetPasswordInput(e.target.value);
+                                    }}
+                                    // onInput={ ( e ) => {
+                                    //   if ( regex.test( e.target.value ) ) setRegexerr( false )
+                                    // } }
                                     className="form-control"
                                     id="resetPasswordNewPasswordInput"
                                     placeholder="Enter A New Password"
@@ -400,9 +430,11 @@ const Login = () => {
                               ) : (
                                 ""
                               )}
-                              {passwordLen ? (
+                              {regexerr ? (
                                 <span className="text-danger">
-                                  Minimum 8 character required
+                                  Must Contain 8 Characters, One Uppercase, One
+                                  Lowercase, One Number and one special case
+                                  Character
                                 </span>
                               ) : (
                                 ""
@@ -410,19 +442,22 @@ const Login = () => {
                             </div>
                           )}
                         </Modal.Body>
-                        <Modal.Footer>
-                          <Button
-                            onClick={handleResetRequest}
-                            style={{ background: "#01a78a", border: "none" }}
-                          >
-                            Submit
-                          </Button>
-                          <ToastContainer
-                            autoClose={false}
-                            hideProgressBar={true}
-                            closeOnClick={false}
-                          />
-                        </Modal.Footer>
+                        {isVerified ? (
+                          <Modal.Footer>
+                            <Button
+                              disabled={submitLoader ? true : false}
+                              onClick={handleResetRequest}
+                              style={{ background: "#01a78a", border: "none" }}
+                            >
+                              {submitLoader ? <ReactLotti3 /> : "Submit"}
+                            </Button>
+                            <ToastContainer
+                              autoClose={false}
+                              hideProgressBar={true}
+                              closeOnClick={false}
+                            />
+                          </Modal.Footer>
+                        ) : null}
                       </Modal>
                     </div>
                     <div className="d-md-flex align-items-center justify-content-center mt-md-5 my-2">
@@ -480,6 +515,7 @@ const Login = () => {
           </main>
         </div>
       )}
+      <ToastContainer />
     </>
   ) : (
     <Loader />

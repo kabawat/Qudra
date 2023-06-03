@@ -28,7 +28,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import ReactLotti3 from "../../../loader/ReactLottie3";
+import { BaseUrl } from "../../../BaseUrl";
+
 const PortfolioPane = () => {
+  const handleKeyDownPrice = (event) => {
+    if (event.key === ".") {
+      event.preventDefault();
+    }
+  };
   const [canUploadVideo, setCanUploadVideo] = useState("False");
   const contextData = useContext(Global);
   const [displaycls, setdisplaycls] = useState("none");
@@ -122,10 +129,7 @@ const PortfolioPane = () => {
     setLoading(true);
 
     axios
-      .post(
-        "http://13.52.16.160:8082/professional/professional_sub_cat",
-        cookies?.user_data
-      )
+      .post(`${BaseUrl}/professional/professional_sub_cat`, cookies?.user_data)
       .then((res) => {
         if (res?.data?.status === "Success") {
           setLoading(false);
@@ -147,7 +151,6 @@ const PortfolioPane = () => {
   const querysearch = new URLSearchParams(location.search);
 
   useEffect(() => {
-    console.log(querysearch.get("visualiztion"));
     if (querysearch.get("visualiztion") === "1") {
       setUploadDesign({
         home: false,
@@ -178,12 +181,14 @@ const PortfolioPane = () => {
   const [errpricedisplay, seterrpricedisplay] = useState("none");
   const [catagoriesDropdown, setCatagoriesDropdown] = useState([]);
   const SetUpSchema = Yup.object().shape({
-    price: Yup.string().required("Please enter a price"),
+    price: Yup.number()
+      .typeError("Price must be a number")
+      .required("Please enter a price"),
   });
   const deleteProject = () => {
     setlottiLoader(true);
     axios
-      .post("http://13.52.16.160:8082/professional/delete_designs", {
+      .post(`${BaseUrl}/professional/delete_designs`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -206,7 +211,7 @@ const PortfolioPane = () => {
 
   const fetchUserSubCata = () => {
     axios
-      .post("http://13.52.16.160:8082/professional/sub_cat_data", {
+      .post(`${BaseUrl}/professional/sub_cat_data`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -221,7 +226,7 @@ const PortfolioPane = () => {
   useEffect(() => {
     if (!contextData?.static_architecture_design?.data?.length) {
       axios
-        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
+        .get(`${BaseUrl}/quadra/sub_categories?category_id=1`)
         .then((res) => {
           contextData?.dispatch({
             type: "STATIC_ARCHITECTURE_DESIGN",
@@ -232,7 +237,7 @@ const PortfolioPane = () => {
 
     if (!contextData?.static_visualization_design?.data?.length) {
       axios
-        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=2")
+        .get(`${BaseUrl}/quadra/sub_categories?category_id=2`)
         .then((res) => {
           contextData?.dispatch({
             type: "STATIC_VISUALIZATION_DESIGN",
@@ -575,7 +580,6 @@ const PortfolioPane = () => {
                                 visualiztion: false,
                                 uploadCatagory: false,
                               });
-                              console.log("suraj");
                             }}
                           >
                             <span className="text-decoration-none text-dark m-0 h2">
@@ -704,7 +708,6 @@ const PortfolioPane = () => {
                                     design.visualiztion === true ? true : false,
                                   uploadCatagory: false,
                                 });
-                                console.log("suraj", design);
                               }}
                             >
                               <span className="text-decoration-none text-dark m-0 h2">
@@ -939,7 +942,7 @@ const PortfolioPane = () => {
                                         setLoader(true);
                                         axios
                                           .post(
-                                            "http://13.52.16.160:8082/professional/arc_design",
+                                            `${BaseUrl}/professional/arc_design`,
                                             catagoryUpload
                                           )
                                           .then((res) => {
@@ -972,6 +975,7 @@ const PortfolioPane = () => {
                                                 placeholder="Enter Your Price Per Square Meter "
                                                 className="priceInput"
                                                 name="price"
+                                                onKeyDown={handleKeyDownPrice}
                                               />
                                             </div>
                                             <ErrorMessage
@@ -1130,7 +1134,7 @@ const PortfolioPane = () => {
                                       setLoader(true);
                                       axios
                                         .post(
-                                          "http://13.52.16.160:8082/professional/vis_design",
+                                          `${BaseUrl}/professional/vis_design`,
                                           catagoryUpload
                                         )
                                         .then((res) => {
@@ -1208,6 +1212,9 @@ const PortfolioPane = () => {
                                                 >
                                                   <BsImage />
                                                   <input
+                                                    style={{
+                                                      cursor: "pointer",
+                                                    }}
                                                     type="file"
                                                     name="image"
                                                     accept="image/*"
@@ -1297,6 +1304,9 @@ const PortfolioPane = () => {
                                                 >
                                                   <IoVideocamOutline />
                                                   <input
+                                                    style={{
+                                                      cursor: "pointer",
+                                                    }}
                                                     type="file"
                                                     name="video"
                                                     accept="video/*"
@@ -1674,14 +1684,11 @@ const PortfolioPane = () => {
                               return false;
                             }
                             axios
-                              .put(
-                                "http://13.52.16.160:8082/professional/sel_sub_category",
-                                {
-                                  ...cookies?.user_data,
-                                  category_id: "1",
-                                  new_sub_cat: values?.new_sub_cat,
-                                }
-                              )
+                              .put(`${BaseUrl}/professional/sel_sub_category`, {
+                                ...cookies?.user_data,
+                                category_id: "1",
+                                new_sub_cat: values?.new_sub_cat,
+                              })
                               .then((res) => {
                                 return res?.data?.status === "Success"
                                   ? (dispatch({
@@ -1770,14 +1777,11 @@ const PortfolioPane = () => {
                               return false;
                             }
                             axios
-                              .put(
-                                "http://13.52.16.160:8082/professional/sel_sub_category",
-                                {
-                                  ...cookies?.user_data,
-                                  category_id: "2",
-                                  new_sub_cat: values?.new_sub_cat,
-                                }
-                              )
+                              .put(`${BaseUrl}/professional/sel_sub_category`, {
+                                ...cookies?.user_data,
+                                category_id: "2",
+                                new_sub_cat: values?.new_sub_cat,
+                              })
                               .then((res) => {
                                 return res?.data?.status === "Success"
                                   ? (dispatch({

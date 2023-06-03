@@ -26,6 +26,7 @@ import * as Yup from "yup";
 import { useCookies } from "react-cookie";
 import Loader from "../components/Loader";
 import ReactLottie3 from "../loader/ReactLottie3";
+import { BaseUrl } from "../BaseUrl";
 
 const ProfessionalProfile = () => {
   const validationSchema = Yup.object().shape({
@@ -33,8 +34,11 @@ const ProfessionalProfile = () => {
     work_assigned: Yup.string().required("This field is required"),
     description: Yup.string().required("Description is required"),
     time: Yup.string().required("Time is required"),
-    area: Yup.string().required("Area is required"),
+    area: Yup.number()
+      .typeError("Area must be a number")
+      .required("Area is required"),
     budget: Yup.number()
+      .typeError("Budget must be a number")
       .positive("Budget must be a positive number")
       .required("Budget is required"),
   });
@@ -49,6 +53,11 @@ const ProfessionalProfile = () => {
   const [showRating, setShowRating] = useState(false);
   const [submitRevieRating, setSubmitReviewRating] = useState(false);
   const [sucessReview, setSucessreview] = useState(false);
+  const [successfullyHired, setsuccessfullyHired] = useState(false);
+
+  const handleSuccessClose = () => setsuccessfullyHired(false);
+  const handleSuccessShow = () => setsuccessfullyHired(true);
+
   const [ratingreview, setRating] = useState({
     rating: 1,
     review: "",
@@ -92,14 +101,13 @@ const ProfessionalProfile = () => {
   useEffect(() => {
     setLoader(true);
     axios
-      .post("http://13.52.16.160:8082/professional/professional_profile", {
+      .post(`${BaseUrl}/professional/professional_profile`, {
         client_id: cookies?.user_data?.user_id,
         role: cookies?.user_data?.role,
         user_token: cookies?.user_data?.user_token,
         professional_id: params?.professional_id,
       })
       .then((respo) => {
-        console.log(respo?.data);
         setLikepro(respo?.data?.data?.liked);
         setReviewsCount(respo?.data?.data?.reviews);
         setRatingsCount(respo?.data?.data?.ratings);
@@ -120,15 +128,12 @@ const ProfessionalProfile = () => {
         if (respo?.data?.status === "Success") {
           if (cookies?.user_data?.role === "client") {
             axios
-              .post(
-                "http://13.52.16.160:8082/professional/professional_sub_cat",
-                {
-                  client_id: cookies?.user_data?.user_id,
-                  professional_id: params?.professional_id,
-                  role: cookies?.user_data?.role,
-                  user_token: cookies?.user_data?.user_token,
-                }
-              )
+              .post(`${BaseUrl}/professional/professional_sub_cat`, {
+                client_id: cookies?.user_data?.user_id,
+                professional_id: params?.professional_id,
+                role: cookies?.user_data?.role,
+                user_token: cookies?.user_data?.user_token,
+              })
               .then((res) => {
                 if (res?.data?.status === "Success") {
                   contextData?.dispatch({
@@ -158,14 +163,11 @@ const ProfessionalProfile = () => {
               });
           } else {
             axios
-              .post(
-                "http://13.52.16.160:8082/professional/professional_sub_cat",
-                {
-                  user_id: cookies?.user_data?.user_id,
-                  role: cookies?.user_data?.role,
-                  user_token: cookies?.user_data?.user_token,
-                }
-              )
+              .post(`${BaseUrl}/professional/professional_sub_cat`, {
+                user_id: cookies?.user_data?.user_id,
+                role: cookies?.user_data?.role,
+                user_token: cookies?.user_data?.user_token,
+              })
               .then((response) => {
                 if (response?.data?.status === "Success") {
                   contextData?.dispatch({
@@ -190,7 +192,7 @@ const ProfessionalProfile = () => {
   useEffect(() => {
     if (!contextData?.static_architecture_design?.length) {
       axios
-        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
+        .get(`${BaseUrl}/quadra/sub_categories?category_id=1`)
         .then((res) => {
           contextData?.dispatch({
             type: "STATIC_ARCHITECTURE_DESIGN",
@@ -200,7 +202,7 @@ const ProfessionalProfile = () => {
     }
     if (!contextData?.static_visualization_design?.length) {
       axios
-        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=2")
+        .get(`${BaseUrl}/quadra/sub_categories?category_id=2`)
         .then((res) => {
           contextData?.dispatch({
             type: "STATIC_VISUALIZATION_DESIGN",
@@ -240,10 +242,12 @@ const ProfessionalProfile = () => {
 
   const [date, setDate] = useState(null);
 
+  const [runFunction, setRunFunction] = useState(true);
   const handleLikeButton = () => {
+    setRunFunction(false);
     setLikepro(!likepro);
     axios
-      .post("http://13.52.16.160:8082/identity/like-save", {
+      .post(`${BaseUrl}/identity/like-save`, {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         professional_id:
@@ -267,6 +271,7 @@ const ProfessionalProfile = () => {
               theme: "colored",
             }
           );
+          setRunFunction(true);
         }
       });
   };
@@ -275,7 +280,7 @@ const ProfessionalProfile = () => {
     if (ratingreview.rating && ratingreview.review) {
       setIslotti(true);
       axios
-        .post("http://13.52.16.160:8082/client/client_rating", {
+        .post(`${BaseUrl}/client/client_rating`, {
           professional_id:
             contextData?.professional_user_profile_data?.details
               ?.professional_id,
@@ -293,15 +298,12 @@ const ProfessionalProfile = () => {
             setSubmitReviewRating(true);
             setReviewHeading("Reviewed");
             axios
-              .post(
-                "http://13.52.16.160:8082/professional/professional_profile",
-                {
-                  client_id: cookies?.user_data?.user_id,
-                  role: cookies?.user_data?.role,
-                  user_token: cookies?.user_data?.user_token,
-                  professional_id: params?.professional_id,
-                }
-              )
+              .post(`${BaseUrl}/professional/professional_profile`, {
+                client_id: cookies?.user_data?.user_id,
+                role: cookies?.user_data?.role,
+                user_token: cookies?.user_data?.user_token,
+                professional_id: params?.professional_id,
+              })
               .then((res) => {
                 setReviewsCount(res?.data?.data?.reviews);
                 setRatingsCount(res?.data?.data?.ratings);
@@ -383,8 +385,13 @@ const ProfessionalProfile = () => {
     // setreportUpload(true);
     // setAttachementError("");
   }
+
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
       event.preventDefault();
     }
   };
@@ -405,7 +412,7 @@ const ProfessionalProfile = () => {
             }}
           >
             {cookies?.user_data?.role === "client" && (
-              <NavLink to="/browse-professionals" style={{ color: "white" }}>
+              <NavLink to={-1} style={{ color: "white" }}>
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
                   style={{ fontSize: "30px" }}
@@ -414,7 +421,7 @@ const ProfessionalProfile = () => {
             )}
 
             {cookies?.user_data?.role === "professional" && (
-              <NavLink to="/professionaldashboard" style={{ color: "white" }}>
+              <NavLink to={-1} style={{ color: "white" }}>
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
                   style={{ fontSize: "30px" }}
@@ -430,7 +437,7 @@ const ProfessionalProfile = () => {
                 className="left-user-banner-image h-100 w-100"
               />
             </div>
-            <div className="col-lg-10 px-0">
+            <div className="col-lg-10 px-0 bannerMain">
               <img
                 src={
                   contextData?.professional_user_profile_data &&
@@ -506,7 +513,7 @@ const ProfessionalProfile = () => {
                         }}
                       >
                         <h2 className="m-auto miniRate">Minimum Rate : </h2>
-                        <h2 className="">
+                        <h2 className="miniRate_browse">
                           ${" "}
                           {contextData?.professional_user_profile_data &&
                             contextData?.professional_user_profile_data?.details
@@ -516,7 +523,7 @@ const ProfessionalProfile = () => {
                       </div>
                     </div>
                   </div>
-                  <h4>
+                  <h4 style={{ whiteSpace: "pre-line" }}>
                     {contextData?.professional_user_profile_data &&
                       contextData?.professional_user_profile_data?.details
                         ?.about}
@@ -595,7 +602,7 @@ const ProfessionalProfile = () => {
                   // to="/chat"
                   onClick={() => {
                     axios
-                      .post("http://13.52.16.160:8082/chat/get_room_id/", {
+                      .post(`${BaseUrl}/chat/get_room_id/`, {
                         client_id: cookies?.user_data.user_id,
                         role: cookies?.user_data.role,
                         user_token: cookies?.user_data.user_token,
@@ -632,7 +639,11 @@ const ProfessionalProfile = () => {
                   </div>
                 </div>
 
-                <Modal show={showRatingReview} onHide={handleCloseRating}>
+                <Modal
+                  show={showRatingReview}
+                  onHide={handleCloseRating}
+                  backdrop="static"
+                >
                   <Modal.Header closeButton>
                     <h4 className="m-auto">Add Review & Rating</h4>
                   </Modal.Header>
@@ -688,6 +699,7 @@ const ProfessionalProfile = () => {
                             width: "21%",
                           }}
                           type="submit"
+                          disabled={islotti ? true : false}
                           onClick={onSetRating}
                         >
                           {islotti ? <ReactLottie3 /> : "Submit"}
@@ -757,7 +769,11 @@ const ProfessionalProfile = () => {
                   </Modal>
                   <div
                     onClick={() => {
-                      handleLikeButton();
+                      if (runFunction) {
+                        handleLikeButton();
+                      } else {
+                        return false;
+                      }
                     }}
                     className="text-decoration-none text-black"
                   >
@@ -785,7 +801,7 @@ const ProfessionalProfile = () => {
           <div className="row">
             <div className="col">
               <h3>About</h3>
-              <p>
+              <p style={{ whiteSpace: "pre-line" }}>
                 {contextData?.professional_user_profile_data &&
                   contextData?.professional_user_profile_data?.details
                     ?.job_description}
@@ -908,6 +924,20 @@ const ProfessionalProfile = () => {
           </div>
         </div>
       </section>
+      {/* successfully hired freelancer modal */}
+      <Modal show={successfullyHired} onHide={handleSuccessClose} centered>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>Successfully hired freelancer!</Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={handleSuccessClose}
+            style={{ backgroundColor: "#01A78A", border: "none" }}
+          >
+            ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* ----------------- */}
       <Modal
         show={showModal}
         className="productDetailsUploadModalProfilePage "
@@ -924,6 +954,7 @@ const ProfessionalProfile = () => {
             setAttachement("");
             setFileReport("");
             setreportUpload(false);
+            setDate(null);
           }}
         >
           <Modal.Title id="contained-modal-title-vcenter">
@@ -967,21 +998,21 @@ const ProfessionalProfile = () => {
                 new Date(values?.time)?.toLocaleString("en-US").split(",")[0]
               );
 
-              if (!values?.work_assigned) {
+              if (!values?.work_assigned || !values.time) {
                 // alert( "put the alert" );
                 // return false
+                setSubmitting(false);
               } else {
                 setIslotti(true);
                 axios
-                  .post(
-                    "http://13.52.16.160:8082/client/start_project",
-                    formdata
-                  )
+                  .post(`${BaseUrl}/client/start_project`, formdata)
                   .then((res) => {
                     if (res?.data?.status === "Success") {
                       setShowModal(false);
                       setIslotti(false);
                       setDate(null);
+                      handleSuccessShow();
+
                       setAttachement("");
                       setFileReport("");
                       setreportUpload(false);
@@ -1049,6 +1080,7 @@ const ProfessionalProfile = () => {
                   <div className="col-md-6 area_price">
                     <Field
                       name="area"
+                      onKeyPress={handleKeyPress}
                       type="number"
                       placeholder="Estimated Area in Square Meter"
                       min="0"
@@ -1062,6 +1094,7 @@ const ProfessionalProfile = () => {
                   <div className="col-md-6 " style={{ position: "relative" }}>
                     <Field
                       name="budget"
+                      onKeyPress={handleKeyPress}
                       type="number"
                       placeholder="Estimated Budget in $"
                       min="0"
@@ -1094,7 +1127,7 @@ const ProfessionalProfile = () => {
                       name="attachment"
                       style={{ display: "none" }}
                       type="file"
-                      className="queryBox"
+                      className="queryBox input-path-label-chiled"
                       onChange={handleChange_File}
                       id="attachement1"
                     />
@@ -1124,7 +1157,11 @@ const ProfessionalProfile = () => {
                     File required
                   </span>
                 </div>
-                <button type="submit" disabled={islotti ? true : false}>
+                <button
+                  type="submit"
+                  disabled={islotti ? true : false}
+                  onclick={handleSuccessShow}
+                >
                   {islotti ? <ReactLottie3 /> : "submit"}
                 </button>
               </Form>

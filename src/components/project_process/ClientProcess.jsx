@@ -7,6 +7,8 @@ import useWindowSize from "../../Hooks/useWindowSize";
 import ReactLotti3 from "../../loader/ReactLottie3";
 import { useState } from "react";
 import ReactLotti from "../../loader/ReactLotti";
+import { BaseUrl } from "../../BaseUrl";
+
 const ClientProcess = ({ location }) => {
   const navigate = useNavigate();
   const windowSize = useWindowSize();
@@ -23,7 +25,7 @@ const ClientProcess = ({ location }) => {
     if (req === "approved") {
       setloader(true);
       axios
-        .post("http://13.52.16.160:8082/client/approve_projects", {
+        .post(`${BaseUrl}/client/approve_projects`, {
           client_id: contextData?.userData?.user_id,
           user_token: contextData?.userData?.user_token,
           role: "client",
@@ -40,7 +42,7 @@ const ClientProcess = ({ location }) => {
     } else {
       setDecloader(true);
       axios
-        .post("http://13.52.16.160:8082/client/approve_projects", {
+        .post(`${BaseUrl}/client/approve_projects`, {
           client_id: contextData?.userData?.user_id,
           user_token: contextData?.userData?.user_token,
           role: "client",
@@ -55,7 +57,7 @@ const ClientProcess = ({ location }) => {
           }
         });
       axios
-        .post("http://13.52.16.160:8082/client/approve_projects", {
+        .post(`${BaseUrl}/client/approve_projects`, {
           client_id: contextData?.userData?.user_id,
           user_token: contextData?.userData?.user_token,
           role: "client",
@@ -156,6 +158,7 @@ const ClientProcess = ({ location }) => {
                           download={
                             location?.state?.projectData?.project_status
                           }
+                          className="projectFileView"
                           target="_new"
                         >
                           View File
@@ -178,7 +181,10 @@ const ClientProcess = ({ location }) => {
                         {descshowless === "projectdescription" ? (
                           <p
                             className="m-0 ms-3 d-block wordbreak"
-                            style={{ textTransform: "capitalize" }}
+                            style={{
+                              textTransform: "capitalize",
+                              whiteSpace: "pre-line",
+                            }}
                           >
                             {location?.state?.projectData?.description} <br />
                             {location?.state?.projectData?.description.length <
@@ -290,7 +296,7 @@ const ClientProcess = ({ location }) => {
                           Milestone Description:
                         </p>
                         {descshowless === i + 1 ? (
-                          <p>
+                          <p style={{ whiteSpace: "pre-line" }}>
                             {res?.milestone_description}
                             <span
                               id={i + 1}
@@ -339,6 +345,7 @@ const ClientProcess = ({ location }) => {
                 <div className="row mt-sm-5 mt-3 g-sm-3 g-3">
                   <div className="col-sm">
                     <button
+                      disabled={loader || decloader ? true : false}
                       onClick={() => {
                         handleClientDecesion("declined");
                       }}
@@ -366,7 +373,7 @@ const ClientProcess = ({ location }) => {
                   </div>
                   <div className="col-sm">
                     <button
-                      disabled={loader ? true : false}
+                      disabled={loader || decloader ? true : false}
                       onClick={() => {
                         handleClientDecesion("approved");
                       }}

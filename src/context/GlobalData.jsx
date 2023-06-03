@@ -2,6 +2,8 @@ import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import Global from "./Global";
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../BaseUrl";
+
 const initialState = {
   userData: null,
   profileData: null,
@@ -73,7 +75,7 @@ const GlobalData = (props) => {
   useEffect(() => {
     if (cookies?.user_data) {
       axios
-        .put("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+        .put(`${BaseUrl}/stripe/professionl/verify-account/`, {
           professioanl_id: cookies?.user_data?.user_id,
           professioanl_token: cookies?.user_data?.user_token,
         })
@@ -102,7 +104,7 @@ const GlobalData = (props) => {
     }
     if (!contextData?.profileData) {
       axios
-        .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+        .post(`${BaseUrl}/identity/get_dashboard_profile/`, {
           ...cookies?.user_data,
         })
         .then((res) => {
@@ -201,7 +203,7 @@ const GlobalData = (props) => {
   useEffect(() => {
     const bringnotificationCount = () => {
       axios
-        .post("http://13.52.16.160:8082/identity/unread_notification_count", {
+        .post(`${BaseUrl}/identity/unread_notification_count`, {
           user_id: contextData?.userData?.user_id,
           user_token: contextData?.userData?.user_token,
           role: contextData?.userData?.role,
@@ -218,7 +220,7 @@ const GlobalData = (props) => {
   useEffect(() => {
     contextData?.userData &&
       axios
-        .post("http://13.52.16.160:8082/chat/unread_message_count", {
+        .post(`${BaseUrl}/chat/unread_message_count`, {
           user_id: contextData?.userData?.user_id,
           user_token: contextData?.userData?.user_token,
           role: contextData?.userData?.role,

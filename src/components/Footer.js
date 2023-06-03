@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Global from "../context/Global";
 import QueryForm from "./QueryForm";
+import { BaseUrl } from "../BaseUrl";
 const Footer = () => {
   const contextData = useContext(Global);
   useEffect(() => {
     if (!contextData?.footer_catagories_link?.length) {
       axios
-        .post("http://13.52.16.160:8082/quadra/footer_links", {
+        .post(`${BaseUrl}/quadra/footer_links`, {
           type: "Categories",
         })
         .then((res) => {
@@ -21,7 +22,7 @@ const Footer = () => {
 
     if (!contextData?.footer_support_link?.length) {
       axios
-        .post("http://13.52.16.160:8082/quadra/footer_links", {
+        .post(`${BaseUrl}/quadra/footer_links`, {
           type: "Support",
         })
         .then((res) => {
@@ -33,7 +34,7 @@ const Footer = () => {
     }
     if (!contextData?.footer_explore_link?.length) {
       axios
-        .post("http://13.52.16.160:8082/quadra/footer_links", {
+        .post(`${BaseUrl}/quadra/footer_links`, {
           type: "Explore",
         })
         .then((res) => {
@@ -45,7 +46,7 @@ const Footer = () => {
     }
     if (!contextData?.footer_resources_link?.length) {
       axios
-        .post("http://13.52.16.160:8082/quadra/footer_links", {
+        .post(`${BaseUrl}/quadra/footer_links`, {
           type: "Explore Resources",
         })
         .then((res) => {
@@ -56,14 +57,12 @@ const Footer = () => {
         });
     }
     if (!contextData?.footer_icons?.length) {
-      axios
-        .get("http://13.52.16.160:8082/quadra/footer_social_links")
-        .then((res) => {
-          contextData?.dispatch({
-            type: "FOOTER_ICONS",
-            value: res?.data?.data,
-          });
+      axios.get(`${BaseUrl}/quadra/footer_social_links`).then((res) => {
+        contextData?.dispatch({
+          type: "FOOTER_ICONS",
+          value: res?.data?.data,
         });
+      });
     }
   }, []);
 
@@ -76,7 +75,11 @@ const Footer = () => {
               className="col-md-6 py-lg-0 pb-4 "
               style={{ display: "grid", placeContent: "center" }}
             >
-              <img alt="" src="/static/images/logoQuadra.png" />
+              <img
+                alt=""
+                src="/static/images/Logo7.png"
+                style={{ width: "152px" }}
+              />
 
               <div className="d-flex social-icons-box d-flex justify-content-between align-items-center mt-3">
                 {contextData?.footer_icons?.map((res) => (

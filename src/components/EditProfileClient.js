@@ -16,6 +16,8 @@ import { getCode } from "country-list";
 import { useCookies } from "react-cookie";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import ReactLottie4 from "../loader/ReactLottie4";
+import { BaseUrl } from "../BaseUrl";
 
 const SignUpSchema = Yup.object().shape({
   password: Yup.string()
@@ -51,11 +53,11 @@ const style = {
 };
 
 const EditProfileClient = ({ location }) => {
-  // console.log("ram ram", location);
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
   const [cookies] = useCookies();
   const [show, setShow] = useState(false);
+  const [updateLoader, setupdateLoader] = useState(false);
 
   const [value, setValue] = useState({
     // alpha2: "us",
@@ -90,7 +92,7 @@ const EditProfileClient = ({ location }) => {
     // signupuser.append("role", cookies?.user_data?.role);
     // signupuser &&
     //   axios.post(
-    //     "http://13.52.16.160:8082/identity/client_profile",
+    //     `${BaseUrl}/identity/client_profile`,
     //     signupuser
     //   );
     if (file) {
@@ -104,7 +106,7 @@ const EditProfileClient = ({ location }) => {
 
   const handleCancel = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/get_dashboard_profile/", {
+      .post(`${BaseUrl}/identity/get_dashboard_profile/`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: "client",
@@ -190,19 +192,17 @@ const EditProfileClient = ({ location }) => {
                         mobile_no &&
                         nation
                       ) {
+                        setupdateLoader(true);
+
                         axios
-                          .post(
-                            "http://13.52.16.160:8082/identity/update_account",
-                            {
-                              user_id: cookies?.user_data?.user_id,
-                              user_token: cookies?.user_data?.user_token,
-                              role: "client",
-                              ...values,
-                            }
-                          )
+                          .post(`${BaseUrl}/identity/update_account`, {
+                            user_id: cookies?.user_data?.user_id,
+                            user_token: cookies?.user_data?.user_token,
+                            role: "client",
+                            ...values,
+                          })
                           .then((res) => {
                             if (res?.data?.status === "Success") {
-                              // dfgdfgdfg============================***************************************************************
                               const signupuser = new FormData();
                               signupuser.append("image", filePic);
                               signupuser.append(
@@ -221,14 +221,14 @@ const EditProfileClient = ({ location }) => {
                               signupuser &&
                                 axios
                                   .post(
-                                    "http://13.52.16.160:8082/identity/client_profile",
+                                    `${BaseUrl}/identity/client_profile`,
                                     signupuser
                                   )
                                   .then((res) => {
                                     if (res?.data?.status === "Success") {
                                       axios
                                         .post(
-                                          "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                          `${BaseUrl}/identity/get_dashboard_profile/`,
                                           {
                                             user_id:
                                               cookies?.user_data?.user_id,
@@ -242,6 +242,8 @@ const EditProfileClient = ({ location }) => {
                                             type: "FETCH_PROFILE_DATA",
                                             value: res?.data?.data,
                                           });
+                                          setupdateLoader(false);
+                                          setShow(true);
 
                                           if (res.data.data.category_selected) {
                                             //     navigate("/clientdashboard", {
@@ -249,6 +251,7 @@ const EditProfileClient = ({ location }) => {
                                             // });
                                             setShowConfirm(true);
                                           } else {
+                                            setupdateLoader(false);
                                             navigate("/client-architechture", {
                                               state: { role: "client" },
                                             });
@@ -414,7 +417,7 @@ const EditProfileClient = ({ location }) => {
                           />
                         </div>
                       </div>
-                      <div className="col-9">
+                      {/* <div className="col-9">
                         <div className="form-check my-3">
                           <Field
                             type="checkbox"
@@ -454,7 +457,7 @@ const EditProfileClient = ({ location }) => {
                             className="m-2 text-danger"
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="d-md-flex align-items-center justify-content-center my-md-5 my-2">
@@ -462,6 +465,7 @@ const EditProfileClient = ({ location }) => {
                         {/* to="/clientdashboard"  */}
                         <button
                           onClick={handleCancel}
+                          disabled={updateLoader ? true : false}
                           type="button"
                           style={{
                             ...style,
@@ -474,16 +478,20 @@ const EditProfileClient = ({ location }) => {
                         </button>
                       </button>
                       <button
-                        type="submit"
+                        type={updateLoader ? "button" : "submit"}
+                        disabled={updateLoader ? true : false}
                         className="create-account-btn mx-3"
                         // disabled={isSubmitting}
                         style={{ pointerEvents: "all" }}
-                        onClick={() => {
-                          setShow(true);
-                        }}
                       >
-                        Update Profile
-                        <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                        {updateLoader ? (
+                          <ReactLottie4 />
+                        ) : (
+                          <>
+                            Update Profile
+                            <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                          </>
+                        )}
                       </button>
                     </div>
                   </Form>
@@ -491,6 +499,7 @@ const EditProfileClient = ({ location }) => {
               </Formik>
 
               <Modal
+                backdrop="static"
                 centered
                 show={show}
                 onHide={() => setShow(false)}

@@ -11,8 +11,23 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Button, Modal } from "react-bootstrap";
 import ReactLotti from "../../../loader/ReactLotti";
 import ReactLotti2 from "../../../loader/ReactLottie3";
+import { BaseUrl } from "../../../BaseUrl";
 
 const SubscriptionPlane = () => {
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
+  const [showPlan, setShowPlan] = useState(false);
+
+  const planClose = () => setShowPlan(false);
+  const planShow = () => setShowPlan(true);
+
   const navigate = useNavigate();
   const [cookies] = useCookies();
   // const [plans, setPlans] = useState();
@@ -33,6 +48,7 @@ const SubscriptionPlane = () => {
   const [carderr, setCarderr] = useState(false);
 
   const [curCart, setCurCart] = useState({});
+  const [invoice, setInvoice] = useState();
 
   useEffect(() => {
     if (cookies?.user_data) {
@@ -40,7 +56,7 @@ const SubscriptionPlane = () => {
         if (cookies?.user_data.role === "professional") {
           axios
             .post(
-              "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+              `${BaseUrl}/identity/get_dashboard_profile/`,
               cookies?.user_data
             )
             .then((res) => {
@@ -48,7 +64,7 @@ const SubscriptionPlane = () => {
               setCurrentPlans(subscription_plan_id);
               setNoPlans(is_cancel);
               axios
-                .get("http://13.52.16.160:8082/stripe/subscription-plans/")
+                .get(`${BaseUrl}/stripe/subscription-plans/`)
                 .then((responce) => {
                   setLoading(true);
                   const { final_list } = responce?.data?.data;
@@ -167,26 +183,26 @@ const SubscriptionPlane = () => {
       ...cartInfo,
       plan_id: curCart?.id,
     };
-    axios
-      .post(`http://13.52.16.160:8082/stripe/subscription/`, data)
-      .then((res) => {
-        setLoading(true);
+    axios.post(`${BaseUrl}/stripe/subscription/`, data).then((res) => {
+      setLoading(true);
 
-        if (res?.data?.status === "Failed") {
-          setLoading_sub(false);
-          const error = res?.data?.message;
-          setPaymentError(error.split(":")[1]);
-          // setPayErrorMessage(res?.data?.message);
-          setPayErrorMessage(res?.data?.message?.split(":")[1]);
-          setShow(false);
-          setIsError(true);
-          handleClosePayTab(currentPlans);
-        } else {
-          setLoading_sub(false);
+      if (res?.data?.status === "Failed") {
+        setLoading_sub(false);
+        const error = res?.data?.message;
+        setPaymentError(error.split(":")[1]);
+        // setPayErrorMessage(res?.data?.message);
+        setPayErrorMessage(res?.data?.message?.split(":")[1]);
+        setShow(false);
+        setIsError(true);
+        handleClosePayTab(currentPlans);
+      } else {
+        setLoading_sub(false);
+        setInvoice(res?.data?.data?.invoice_url);
 
-          handleClosePayTab(curCart?.id);
-        }
-      });
+        setShowPlan(true);
+        handleClosePayTab(curCart?.id);
+      }
+    });
     // }`
   };
 
@@ -196,14 +212,14 @@ const SubscriptionPlane = () => {
     setLoading_sub(true);
 
     axios
-      .put("http://13.52.16.160:8082/stripe/subscription/", {
+      .put(`${BaseUrl}/stripe/subscription/`, {
         professioanl_id: cookies?.user_data?.user_id,
         professioanl_token: cookies?.user_data?.user_token,
       })
       .then((res) => {
         axios
           .post(
-            "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+            `${BaseUrl}/identity/get_dashboard_profile/`,
             cookies?.user_data
           )
           .then((res) => {
@@ -211,7 +227,7 @@ const SubscriptionPlane = () => {
             setCurrentPlans(subscription_plan_id);
             setNoPlans(is_cancel);
             axios
-              .get("http://13.52.16.160:8082/stripe/subscription-plans/")
+              .get(`${BaseUrl}/stripe/subscription-plans/`)
               .then((responce) => {
                 setIsCencel(false);
 
@@ -336,7 +352,7 @@ const SubscriptionPlane = () => {
                                     className="buy-now-btn-active"
                                     disabled
                                   >
-                                    Active
+                                    Free
                                   </button>
                                 </div>
                               ) : (
@@ -347,7 +363,7 @@ const SubscriptionPlane = () => {
                                   //   handlePayment(plansList[0]);
                                   // }}
                                 >
-                                  Active
+                                  Free
                                 </button>
                               )}
                             </li>
@@ -535,7 +551,7 @@ const SubscriptionPlane = () => {
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
             <Modal.Title>
-              Are you sure want to Cancel is active plans
+              Are you sure want to cancel this Active plans
             </Modal.Title>
           </Modal.Body>
 
@@ -580,12 +596,39 @@ const SubscriptionPlane = () => {
           </Modal.Footer>
         </Modal>
 
+        {/*  sucessfully bought plan*/}
+
+        <Modal centered show={showPlan} onHide={() => setShowPlan(false)}>
+          <Modal.Header closeButton></Modal.Header>
+          <Modal.Body>
+            <Modal.Title>
+              Thank you for sucessfully buying this plan!
+            </Modal.Title>
+          </Modal.Body>
+
+          <Modal.Footer className="d-flex justify-content-center">
+            <a
+              style={{ textDecoration: "none" }}
+              href={invoice}
+              download={invoice}
+              target="_blank"
+              className="PaymentCardSubmitButton"
+              variant="secondary"
+              onClick={() => {
+                setShowPlan(false);
+              }}
+            >
+              Ok
+            </a>
+          </Modal.Footer>
+        </Modal>
+
         {validDetails && (
           <Modal centered show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton></Modal.Header>
             <Modal.Body>
               <Modal.Title>
-                Are you sure want to purchase this plans
+                Are you sure you want to purchase this plan
               </Modal.Title>
             </Modal.Body>
 
@@ -614,6 +657,8 @@ const SubscriptionPlane = () => {
 
         <Modal
           centered
+          backdrop="static"
+          keyboard={false}
           show={isPayment}
           onHide={() => {
             setIsPayment(false);
@@ -638,10 +683,12 @@ const SubscriptionPlane = () => {
             <div className="bg-white payementFormMain card-popup">
               <form onSubmit={handalPurchase}>
                 <div className="row m-0 pt-3 pb-4 border-bottom">
-                  <h6>Card Number</h6>
+                  <h6 className="p-0">Card Number</h6>
                   <input
+                    className="p-0"
                     id="ccn"
-                    type="number"
+                    type="text"
+                    onKeyPress={handleKeyPress}
                     // inputMode="numeric"
                     // pattern="[0-9\s]{13,19}"
                     autoComplete="cc-number"
@@ -701,7 +748,8 @@ const SubscriptionPlane = () => {
                       <div className="col d-flex flex-column justify-content-end">
                         <label htmlFor="CVV">CVV:</label>
                         <input
-                          type="number"
+                          type="text"
+                          onKeyPress={handleKeyPress}
                           id="CVV"
                           placeholder="xxx"
                           className="border-bottom"

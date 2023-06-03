@@ -6,6 +6,8 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../../../BaseUrl";
+
 const Report = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -17,15 +19,12 @@ const Report = () => {
       if (cookies?.user_data) {
         if (cookies?.user_data?.role === "professional") {
           axios
-            .post(
-              "http://13.52.16.160:8082/professional/view-report-design/ ",
-              {
-                user_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: "professional",
-                ...location?.state,
-              }
-            )
+            .post(`${BaseUrl}/professional/view-report-design/`, {
+              user_id: cookies?.user_data?.user_id,
+              user_token: cookies?.user_data?.user_token,
+              role: "professional",
+              ...location?.state,
+            })
             .then((response) => {
               if (response?.data?.status === "Success") {
                 setReport({ ...response?.data?.data });

@@ -10,6 +10,8 @@ import ClientDashboardAside from "../../ClientDashboardAside";
 import { HeaderDashboard } from "../../Header";
 import { useCookies } from "react-cookie";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { BaseUrl } from "../../../BaseUrl";
+
 const Ratings = () => {
   const [projectPageId, setProjectPageId] = useState({
     page: 1,
@@ -24,7 +26,7 @@ const Ratings = () => {
   const fetchRatingData = () => {
     if (cookies?.user_data) {
       axios
-        .post("http://13.52.16.160:8082/identity/get-like-save", {
+        .post(`${BaseUrl}/identity/get-like-save`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -70,7 +72,7 @@ const Ratings = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     axios
-      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      .post(`${BaseUrl}/identity/search_like_rate_user`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -103,7 +105,7 @@ const Ratings = () => {
   const handleRating = (val) => {
     if (val == "") {
       axios
-        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+        .post(`${BaseUrl}/identity/search_like_rate_user`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -124,7 +126,7 @@ const Ratings = () => {
 
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      .post(`${BaseUrl}/identity/search_like_rate_user`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,

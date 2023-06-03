@@ -6,6 +6,7 @@ import Global from "../../context/Global";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../../BaseUrl";
 const Wrapper = styled.div`
   .theme-bg-color {
     height: 270px;
@@ -34,7 +35,7 @@ const CatagoryResultCard = ({ res, key, catagoryId, subCatagoryId }) => {
     if (cookies?.user_data?.role === "client") {
       contextData?.professional_user_profile_data?.details?.professional_id &&
         axios
-          .post("http://13.52.16.160:8082/professional/sub_cat_data", {
+          .post(`${BaseUrl}/professional/sub_cat_data`, {
             client_id: cookies?.user_data?.user_id,
             user_token: cookies?.user_data?.user_token,
             role: cookies?.user_data?.role,
@@ -52,7 +53,7 @@ const CatagoryResultCard = ({ res, key, catagoryId, subCatagoryId }) => {
     }
     if (cookies?.user_data?.role === "professional") {
       axios
-        .post("http://13.52.16.160:8082/professional/sub_cat_data", {
+        .post(`${BaseUrl}/professional/sub_cat_data`, {
           user_token: cookies?.user_data?.user_token,
           user_id: cookies?.user_data?.user_id,
           role: cookies?.user_data?.role,

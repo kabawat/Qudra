@@ -6,7 +6,9 @@ import { infoIcon } from "../../components/images";
 import Global from "../../context/Global";
 import Loader from "../../components/Loader";
 import { useCookies } from "react-cookie";
+
 import { useContext } from "react";
+import { BaseUrl } from "../../BaseUrl";
 const KickAssForm = () => {
   const [kickassPoints, setKickassPoints] = useState([]);
   const contextData = useContext(Global);
@@ -14,7 +16,7 @@ const KickAssForm = () => {
   let navigate = useNavigate();
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/quadra/profile_points", {
+      .post(`${BaseUrl}/quadra/profile_points`, {
         type: "Kickass Profile",
       })
       .then((res) => {

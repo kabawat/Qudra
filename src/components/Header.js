@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import $, { event } from "jquery";
 import Button from "react-bootstrap/Button";
 import { MdLanguage } from "react-icons/md";
@@ -9,6 +9,8 @@ import Global from "../context/Global";
 import useWindowSize from "../Hooks/useWindowSize";
 import { useCookies } from "react-cookie";
 import { GoUnverified, GoVerified } from "react-icons/go";
+import ReactLotti3 from "../loader/ReactLottie3";
+import { BaseUrl } from "../BaseUrl";
 const style = {
   color: "white",
   textDecoration: "none",
@@ -28,7 +30,7 @@ const Header2 = ({ link }) => {
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
   const logoutHandle = () => {
-    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+    axios.post(`${BaseUrl}/identity/logout`, {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
@@ -47,7 +49,7 @@ const Header2 = ({ link }) => {
   //Edit-Profile button function
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", {
+      .put(`${BaseUrl}/identity/update_account`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -67,24 +69,57 @@ const Header2 = ({ link }) => {
             <div className="col align-items-center headerMail">
               <Link to={link ? "/categoryArchitecture" : "/"}>
                 <img
-                  src="/static/images/Quadra-transparrent-logo.png"
+                  src="/static/images/Logo8.png"
                   alt="logo"
-                  style={{ height: "100px" }}
+                  className="headerLogo1"
                 />
               </Link>
               <ul className="ms-auto d-flex p-0 mb-0 headerMailInner">
-                <li>
+                <li className="liSignup">
                   {window.location.pathname === "/kickassform" && (
-                    <Link to="/select-sign-in">Sign in</Link>
+                    <Link
+                      to="/select-sign-in"
+                      className="loginSinup loginSinupbutton"
+                      style={{ color: "white !important", width: "200px" }}
+                    >
+                      Sign In
+                    </Link>
                   )}
                   {window.location.pathname === "/quadroterms" && (
-                    <Link to="/select-sign-in">Sign in</Link>
+                    <Link
+                      className="loginSinup loginSinupbutton"
+                      to="/select-sign-in"
+                      style={{ color: "white !important", width: "200px" }}
+                    >
+                      Sign In
+                    </Link>
                   )}
                   {window.location.pathname === "/setup" && (
-                    <Link to="/select-sign-in">Sign in</Link>
+                    <Link
+                      to="/select-sign-in "
+                      className="loginSinup"
+                      style={{ color: "white !important" }}
+                    >
+                      Sign In
+                    </Link>
+                  )}
+                  {window.location.pathname === "/client-sign-up" && (
+                    <Link
+                      to="/select-sign-in "
+                      className="loginSinup"
+                      style={{ color: "white !important" }}
+                    >
+                      Sign In
+                    </Link>
                   )}
                   {window.location.pathname === "/login" && (
-                    <Link to="/join">Sign up</Link>
+                    <Link
+                      to="/join"
+                      className="loginSinup"
+                      style={{ color: "white " }}
+                    >
+                      Sign up
+                    </Link>
                   )}
                   {window.location.pathname === "/categoryArchitecture" && (
                     <div
@@ -129,7 +164,7 @@ const Header2 = ({ link }) => {
                           className="d-flex align-items-center profileEdit-button"
                           // onClick={ profileDropdown }
                         >
-                          <h4 className="userName">
+                          <h4 className="userName userHeaderProjectName">
                             {contextData?.profileData &&
                               contextData?.profileData?.name}
                           </h4>
@@ -160,7 +195,7 @@ const Header2 = ({ link }) => {
                             </Link>
                           </div>
                         </div>
-                        <h6 className="m-0 email">
+                        <h6 className="m-0 email editEmail">
                           {contextData?.profileData &&
                             contextData?.profileData?.email}
                         </h6>
@@ -210,7 +245,7 @@ const Header2 = ({ link }) => {
                           className="d-flex align-items-center profileEdit-button"
                           // onClick={ profileDropdown }
                         >
-                          <h4 className="userName">
+                          <h4 className="userName userHeaderProjectName">
                             {contextData?.profileData &&
                               contextData?.profileData?.name}
                           </h4>
@@ -241,7 +276,7 @@ const Header2 = ({ link }) => {
                             </Link>
                           </div>
                         </div>
-                        <h6 className="m-0 email">
+                        <h6 className="m-0 email editEmail">
                           {contextData?.profileData &&
                             contextData?.profileData?.email}
                         </h6>
@@ -292,7 +327,7 @@ const Header2 = ({ link }) => {
                           className="d-flex align-items-center profileEdit-button"
                           // onClick={ profileDropdown }
                         >
-                          <h4 className="userName">
+                          <h4 className="userName userHeaderProjectName">
                             {contextData?.profileData &&
                               contextData?.profileData?.name}
                           </h4>
@@ -323,7 +358,7 @@ const Header2 = ({ link }) => {
                             </Link>
                           </div>
                         </div>
-                        <h6 className="m-0 email">
+                        <h6 className="m-0 email editEmail">
                           {contextData?.profileData &&
                             contextData?.profileData?.email}
                         </h6>
@@ -368,12 +403,12 @@ const Header2 = ({ link }) => {
                           />
                         </div>
                       )}
-                      <div className="ps-3">
+                      <div className="ps-3 profileinfo_padding">
                         <button
                           className="d-flex align-items-center profileEdit-button"
                           // onClick={ profileDropdown }
                         >
-                          <h4 className="userName">
+                          <h4 className="userName userHeaderProjectName">
                             {contextData?.profileData &&
                               contextData?.profileData?.name}
                           </h4>
@@ -404,7 +439,7 @@ const Header2 = ({ link }) => {
                             </Link>
                           </div>
                         </div>
-                        <h6 className="m-0 email">
+                        <h6 className="m-0 email editEmail">
                           {contextData?.profileData &&
                             contextData?.profileData?.email}
                         </h6>
@@ -446,12 +481,12 @@ const Header2 = ({ link }) => {
                           />
                         </div>
                       )}
-                      <div className="ps-3">
+                      <div className="ps-3 profileinfo_padding">
                         <button
                           className="d-flex align-items-center profileEdit-button"
                           // onClick={ profileDropdown }
                         >
-                          <h4 className="userName">
+                          <h4 className="userName userHeaderProjectName">
                             {contextData?.profileData &&
                               contextData?.profileData?.name}
                           </h4>
@@ -482,7 +517,7 @@ const Header2 = ({ link }) => {
                             </Link>
                           </div>
                         </div>
-                        <h6 className="m-0 email">
+                        <h6 className="m-0 email editEmail">
                           {contextData?.profileData &&
                             contextData?.profileData?.email}
                         </h6>
@@ -527,12 +562,12 @@ const Header2 = ({ link }) => {
                           />
                         </div>
                       )}
-                      <div className="ps-3">
+                      <div className="ps-3 profileinfo_padding">
                         <button
                           className="d-flex align-items-center profileEdit-button"
                           // onClick={ profileDropdown }
                         >
-                          <h4 className="userName">
+                          <h4 className="userName userHeaderProjectName">
                             {contextData?.profileData &&
                               contextData?.profileData?.name}
                           </h4>
@@ -573,7 +608,7 @@ const Header2 = ({ link }) => {
                             </Link>
                           </div>
                         </div>
-                        <h6 className="m-0 email">
+                        <h6 className="m-0 email editEmail">
                           {contextData?.profileData &&
                             contextData?.profileData?.email}
                         </h6>
@@ -618,12 +653,12 @@ const Header2 = ({ link }) => {
                           />
                         </div>
                       )}
-                      <div className="ps-3">
+                      <div className="ps-3 profileinfo_padding">
                         <button
                           className="d-flex align-items-center profileEdit-button"
                           // onClick={ profileDropdown }
                         >
-                          <h4 className="userName">
+                          <h4 className="userName userHeaderProjectName">
                             {contextData?.profileData &&
                               contextData?.profileData?.name}
                           </h4>
@@ -656,7 +691,7 @@ const Header2 = ({ link }) => {
                             </Link>
                           </div>
                         </div>
-                        <h6 className="m-0 email">
+                        <h6 className="m-0 email editEmail">
                           {contextData?.profileData &&
                             contextData?.profileData?.email}
                         </h6>
@@ -701,12 +736,12 @@ const Header2 = ({ link }) => {
                           />
                         </div>
                       )}
-                      <div className="ps-3">
+                      <div className="ps-3 profileinfo_padding">
                         <button
                           className="d-flex align-items-center profileEdit-button"
                           // onClick={ profileDropdown }
                         >
-                          <h4 className="userName">
+                          <h4 className="userName userHeaderProjectName">
                             {contextData?.profileData &&
                               contextData?.profileData?.name}
                           </h4>
@@ -733,7 +768,7 @@ const Header2 = ({ link }) => {
                             >
                               <button>Dashboard</button>
                             </Link>
-                            <Link
+                            {/* <Link
                               to=""
                               className="d-flex justify-content-center rounded-bottom"
                             >
@@ -742,12 +777,36 @@ const Header2 = ({ link }) => {
                                   setShow(true);
                                 }}
                               >
-                                Log Out
+                                Log Out kro
                               </button>
-                            </Link>
+                            </Link> */}
+                            {/* <Link to="">
+                              <button
+                                onClick={() => {
+                                  setShow(true);
+                                }}
+                              >
+                                hellop
+                              </button>
+                            </Link> */}
+
+                            <button
+                              className="LinkErr"
+                              style={{
+                                width: "126.7px",
+                                marginLeft: "13.8%",
+                                borderRadius: "0 0 10px 10px",
+                                zIndex: "99",
+                              }}
+                              onClick={() => {
+                                setShow(true);
+                              }}
+                            >
+                              Log out
+                            </button>
                           </div>
                         </div>
-                        <h6 className="m-0 email">
+                        <h6 className="m-0 email editEmail">
                           {contextData?.profileData &&
                             contextData?.profileData?.email}
                         </h6>
@@ -805,15 +864,22 @@ const HeaderHome = () => {
   );
   const [show, setShow] = useState(false);
   const contextData = useContext(Global);
+
   const googleTranslateElementInit = () => {
     new window.google.translate.TranslateElement(
       { pageLanguage: "en" },
       "google_translate_element"
     );
   };
+  const googleTranslateElementInitMob = () => {
+    new window.google.translate.TranslateElement(
+      { pageLanguage: "en" },
+      "google_translate_elementMob"
+    );
+  };
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", {
+      .put(`${BaseUrl}/identity/update_account`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -825,7 +891,7 @@ const HeaderHome = () => {
       });
   };
   const logoutapi = () => {
-    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+    axios.post(`${BaseUrl}/identity/logout`, {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
@@ -833,16 +899,16 @@ const HeaderHome = () => {
   };
   return (
     <div>
-      <header className="bg-black home-page-header">
+      <header className=" home-page-header">
         <div className="container">
           <nav>
             <div className="row">
               <div className="col-lg-3 col-md-4 col-7 ">
                 <Link to="/">
                   <img
-                    src="/static/images/Quadra-transparrent-logo.png"
+                    src="/static/images/Logo7.png"
                     alt="logo"
-                    style={{ height: "100px" }}
+                    className="headerLogo"
                   />
                 </Link>
               </div>
@@ -882,6 +948,7 @@ const HeaderHome = () => {
                                 height: "50px",
                                 cursor: "pointer",
                                 borderRadius: "50%",
+                                border: "1px solid black",
                               }}
                             />
                           </div>
@@ -903,6 +970,7 @@ const HeaderHome = () => {
                                 height: "50px",
                                 cursor: "pointer",
                                 borderRadius: "50%",
+                                border: "1px solid black",
                               }}
                             />
                           </div>
@@ -912,11 +980,14 @@ const HeaderHome = () => {
                             className="d-flex align-items-center profileEdit-button"
                             // onClick={profileDropdown}
                           >
-                            <h4>
+                            <h4 style={{ color: "black !important" }}>
                               {contextData?.profileData &&
                                 contextData?.profileData?.name}
                             </h4>
-                            <i className="fa-solid fa-caret-down i-rotate text-white"></i>
+                            <i
+                              className="fa-solid fa-caret-down i-rotate "
+                              style={{ color: "black !important" }}
+                            ></i>
                             <div id="Edit_toggle"></div>
                           </button>
                           <div className="profile-edit-dropdown">
@@ -953,7 +1024,7 @@ const HeaderHome = () => {
                               </Link>
                             </div>
                           </div>
-                          <h6 className="m-0">
+                          <h6 className="m-0" style={{ color: "black" }}>
                             {contextData?.profileData &&
                               contextData?.profileData?.email}
                           </h6>
@@ -1037,30 +1108,14 @@ const HeaderHome = () => {
                         </Button>
                       </Modal.Footer>
                     </Modal>
-                    {/* {cookies?.user_data?.role === "client" && (
-                      <li>
-                        <Link
-                          to={!cookies?.user_data ? "/join" : "clientdashboard"}
-                        >
-                          Business
-                        </Link>
-                      </li>
-                    )} */}
-                    {/* {cookies?.user_data?.role !== "professional" &&
-                      cookies?.user_data?.role !== "client" 
-                     && (
-                      <li>
-                        <Link to="/client-sign-up">Business</Link>
-                      </li>
-                    )} */}
+
                     <div className="LanguageSelectBox">
                       <li
-                        className="LanguageShow text-white"
+                        className="LanguageShow "
+                        style={{ color: "black" }}
                         onClick={googleTranslateElementInit}
                       >
-                        <MdLanguage
-                          style={{ color: "white", fontSize: "27px" }}
-                        />
+                        <MdLanguage style={{ fontSize: "27px" }} />
                       </li>
                       <li className="googleTranslateLanguageDropdown">
                         <div id="google_translate_element"></div>
@@ -1136,16 +1191,21 @@ const HeaderHome = () => {
                             Business
                           </Link>
                         </li> */}
-                        <li onClick={googleTranslateElementInit}>
-                          <div id="google_translate_element">
-                            <MdLanguage
-                              style={{ color: "white", fontSize: "27px" }}
-                            />
-                          </div>
-                        </li>
-                        <li className="googleTranslateLanguageDropdown">
-                          <div id="google_translate_element"></div>
-                        </li>
+                        <div div className="LanguageSelectBox">
+                          <li
+                            className="LanguageShow "
+                            onClick={googleTranslateElementInitMob}
+                          >
+                            <div id="google_translate_elementMob">
+                              <MdLanguage
+                                style={{ color: "white", fontSize: "27px" }}
+                              />
+                            </div>
+                          </li>
+                          <li className="googleTranslateLanguageDropdown">
+                            <div id="google_translate_elementMob"></div>
+                          </li>
+                        </div>
                       </ul>
                       {/* <form className="headerSearchButton " action="action_page.php">
                                         <input type="text" placeholder="Search..." name="search">
@@ -1175,21 +1235,23 @@ const Header3 = ({ navColor }) => {
             <div className="col  align-items-center headerMail">
               <Link to="/">
                 <img
-                  src="/static/images/Quadra-transparrent-logo.png"
+                  src="/static/images/Logo7.png"
                   alt="logo"
-                  style={{ height: "100px" }}
+                  className="headerLogo1"
                 />
               </Link>
 
               <ul className="ms-auto d-flex p-0 mb-0 headerMailInner">
-                <li>
+                <li className="liSignup">
                   {window.location.pathname === "/select-sign-in" ? (
-                    ""
+                    <Link to="/join" className="text-black signLink">
+                      Sign Up
+                    </Link>
                   ) : (
                     <Link
                       to="/select-sign-in"
-                      className="text-black"
-                      style={{ color: "#fff !important" }}
+                      className="text-black signLink"
+                      style={{ width: "100px" }}
                     >
                       Sign In
                     </Link>
@@ -1211,6 +1273,12 @@ const ChatHeader = () => {
     $(".profile-edit-dropdown").slideToggle();
     $(".profileEdit-button i").toggleClass("i-rotate");
   };
+  window.addEventListener("click", (event) => {
+    if (event.target.id !== "Edit_toggle") {
+      $(".profile-edit-dropdown").hide();
+    }
+  });
+
   const contextData = useContext(Global);
   const [show, setShow] = useState(false);
 
@@ -1219,7 +1287,7 @@ const ChatHeader = () => {
   const [clientDetails, setClientDetails] = useState();
   const handleNotification = (res) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_details", {
+      .post(`${BaseUrl}/client/particular_project_details`, {
         professional_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -1241,7 +1309,7 @@ const ChatHeader = () => {
   };
   const handleClientAcceptation = (client_id, client_project_id) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      .post(`${BaseUrl}/client/particular_project_milestones`, {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -1251,15 +1319,12 @@ const ChatHeader = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: client_project_id,
-              }
-            )
+            .post(`${BaseUrl}/client/particular_project_details`, {
+              client_id: cookies?.user_data?.user_id,
+              user_token: cookies?.user_data?.user_token,
+              role: cookies?.user_data?.role,
+              project_id: client_project_id,
+            })
             .then((respo) => {
               if (respo?.data?.status === "Success") {
                 if (clientDetails !== undefined) {
@@ -1283,27 +1348,36 @@ const ChatHeader = () => {
     page_size: 10,
   });
   const [notificationArray, setNotificationArray] = useState();
+  const [loadMore, setLoadMore] = useState(false);
+
+  useEffect(() => {
+    handleNotificationBox();
+  }, [notificationPageId]);
+
   const handleNotificationBox = () => {
-    cookies?.user_data &&
-      axios
-        .post("http://13.52.16.160:8082/identity/get-notifications", {
-          user_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          ...notificationPageId,
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            contextData?.setNotification(res?.data?.data);
-            setNotificationArray(res?.data?.data?.final_data?.reverse());
-            setShowNotificationBox(!showNotificationBox);
-          }
-        });
+    cookies?.user_data && setLoadMore(true);
+    axios
+      .post(`${BaseUrl}/identity/get-notifications`, {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        ...notificationPageId,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          contextData?.setNotification(res?.data?.data);
+          setNotificationArray(res?.data?.data?.final_data?.reverse());
+          setLoadMore(false);
+          // setShowNotificationBox( !showNotificationBox );
+        } else {
+          setLoadMore(false);
+        }
+      });
   };
 
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", {
+      .put(`${BaseUrl}/identity/update_account`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -1316,7 +1390,7 @@ const ChatHeader = () => {
   };
   const bringnotificationCount = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/unread_notification_count", {
+      .post(`${BaseUrl}/identity/unread_notification_count`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -1327,178 +1401,35 @@ const ChatHeader = () => {
         }
       });
   };
+  const handleClientProccess = (payload) => {
+    navigate(payload);
+  };
   return (
     <>
       <header className="dashboard-header bg-white custom-border-radius-one border-bottom">
         <div className="container ">
           <div className="row py-3">
-            <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-8 d-block  d-flex align-items-center  justify-content-between ">
-              <Link
-                to={
-                  cookies?.user_data?.role === "client"
-                    ? "/clientdashboard"
-                    : "/professionaldashboard"
-                }
-                className="text-decoration-none text-dark m-0 h2"
-              >
+            <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-8 col-8 d-block  d-flex align-items-center  justify-content-between ">
+              <Link to={-1} className="text-decoration-none text-dark m-0 h2">
                 <i
                   className="fa-solid fa-arrow-left-long pe-3"
                   style={{ color: "#01a78a" }}
                 ></i>{" "}
                 Dashboard
               </Link>
+
               <div
                 className={`d-flex align-items-center ${
                   widowSize.width > 992 ? "border-end" : ""
                 }  py-4`}
-              >
-                <div
-                  className="dashboard-user-notification me-md-3 me-2"
-                  onClick={() => {
-                    showNotificationBox
-                      ? setShowNotificationBox(false)
-                      : handleNotificationBox();
-                    bringnotificationCount();
-                  }}
-                >
-                  <i className="fa-solid fa-bell"></i>
-                  {contextData?.unreadNotification === 0 ? (
-                    ""
-                  ) : (
-                    <div className="dashboard-user-notification-number">
-                      {contextData?.unreadNotification}
-                    </div>
-                  )}
-                  <div className="notificationDropdownBox"></div>
-                  {showNotificationBox ? (
-                    <div className="notificationDropdownBox">
-                      <div
-                        className="scroll-width-zero"
-                        style={{
-                          position: "relative",
-                          maxHeight: "400px",
-                          background: "#01a78a",
-                          padding: "4px",
-                          overflowY: "auto",
-                          borderTop: " 4px solid #01a78a",
-                          borderBottom: " 4px solid #01a78a",
-                        }}
-                      >
-                        {contextData?.notification.length === 0 ? (
-                          <div className="text-white text-center">
-                            No Messages To Display
-                          </div>
-                        ) : (
-                          notificationArray &&
-                          notificationArray.map((res, keys) => (
-                            <div
-                              key={keys}
-                              className="message"
-                              onClick={async () => {
-                                setClientDetails({
-                                  client_id: res?.detail?.client_id,
-                                  client_project_id: res?.detail?.project_id,
-                                });
-                                if (
-                                  res?.notification.includes(
-                                    "You have received a Project request by the"
-                                  )
-                                ) {
-                                  await handleNotification(res);
-                                }
-                                if (
-                                  res?.notification.includes("accepted by the")
-                                ) {
-                                  await handleClientAcceptation(
-                                    res?.detail?.professional_id,
-                                    res?.detail?.project_id
-                                  );
-                                }
-                              }}
-                            >
-                              <p>{new Date(res?.timestamp).toUTCString()}</p>
-                              {res?.notification}
-                            </div>
-                          ))
-                        )}
-                        <div className="bg-white">
-                          {contextData?.notification?.total_data > 10 && (
-                            <button className="seeAllNotificationButton">
-                              See All
-                            </button>
-                          )}
-                        </div>
-                        {contextData?.notification.length === 0 ? (
-                          ""
-                        ) : (
-                          <div className="arrowMessageBox"></div>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <Link
-                  to="/chat"
-                  className="dashboard-user-notification me-md-3 me-2"
-                >
-                  <img
-                    src="/static/images/messageDots.png"
-                    alt=""
-                    className=""
-                  />
-                  {contextData?.unreadChatCount ? (
-                    <div className="dashboard-user-notification-number">
-                      {contextData?.unreadChatCount}
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </Link>
-              </div>
+              ></div>
             </div>
             <div
-              className="col-xxl-3 col-xl-4 col-lg-5 col-md-4 d-flex align-items-center justify-content-md-end justify-content-center flex-wrap"
+              className="col-xxl-3 col-xl-4 col-lg-4 col-4 profile-mob d-flex align-items-center justify-content-md-end justify-content-center"
               onClick={profileDropdown}
             >
               {cookies?.user_data?.role === "professional" ? (
-                <div
-                  className="w-25"
-                  onClick={() => {
-                    axios
-                      .post(
-                        "http://13.52.16.160:8082/professional/professional_profile",
-                        {
-                          professional_id: cookies?.user_data?.user_id,
-                          user_token: cookies?.user_data?.user_token,
-                          role: "professional",
-                        }
-                      )
-                      .then((respo) => {
-                        navigate(
-                          `/professionalprofile/${cookies?.user_data?.user_id}`
-                        );
-                      });
-                  }}
-                >
-                  <img
-                    src={
-                      contextData?.profileData &&
-                      contextData?.profileData.user_image_url
-                    }
-                    alt=""
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      cursor: "pointer",
-
-                      borderRadius: "50%",
-                    }}
-                  />
-                </div>
-              ) : (
-                <div>
+                <div className="user-profile-img">
                   <img
                     src={
                       contextData?.profileData &&
@@ -1509,13 +1440,29 @@ const ChatHeader = () => {
                       width: "50px",
                       height: "50px",
                       cursor: "pointer",
-                      objectFit: "cover",
                       borderRadius: "50%",
                     }}
                   />
                 </div>
+              ) : (
+                <div className="user-profile-img">
+                  <img
+                    src={
+                      contextData?.profileData &&
+                      contextData?.profileData?.user_image_url
+                    }
+                    alt=""
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      cursor: "pointer",
+                      borderRadius: "50%",
+                      border: "1px solid black",
+                    }}
+                  />
+                </div>
               )}
-              <div className="ps-3 w-75">
+              <div className="ps-3">
                 <button
                   className="d-flex align-items-center profileEdit-button"
                   // onClick={ profileDropdown }
@@ -1524,10 +1471,14 @@ const ChatHeader = () => {
                     {contextData?.profileData && contextData?.profileData?.name}
                   </h4>
                   <i className="fa-solid fa-caret-down"></i>
+                  <div id="Edit_toggle"></div>
                 </button>
-                <div className="profile-edit-dropdown">
+                <div className="profile-edit-dropdown ">
                   <div className=" d-flex flex-column ">
-                    <Link className="d-flex justify-content-center rounded-top">
+                    <Link
+                      to=""
+                      className="d-flex justify-content-center rounded-top"
+                    >
                       <button onClick={handleEditProfileButton}>
                         Edit Profile
                       </button>
@@ -1556,7 +1507,7 @@ const ChatHeader = () => {
                     </Link>
                   </div>
                 </div>
-                <h6 className="m-0">
+                <h6 className="m-0 ">
                   {contextData?.profileData && contextData?.profileData?.email}
                 </h6>
               </div>
@@ -1632,7 +1583,7 @@ const HeaderDashboard = () => {
 
   const handleNotification = (res) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_details", {
+      .post(`${BaseUrl}/client/particular_project_details`, {
         professional_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -1659,7 +1610,7 @@ const HeaderDashboard = () => {
 
   const handleClientAcceptation = (id, project_id) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      .post(`${BaseUrl}/client/particular_project_milestones`, {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -1669,15 +1620,12 @@ const HeaderDashboard = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: project_id,
-              }
-            )
+            .post(`${BaseUrl}/client/particular_project_details`, {
+              client_id: cookies?.user_data?.user_id,
+              user_token: cookies?.user_data?.user_token,
+              role: cookies?.user_data?.role,
+              project_id: project_id,
+            })
             .then((respo) => {
               if (respo?.data?.status === "Success") {
                 navigate("/project-details", {
@@ -1707,7 +1655,7 @@ const HeaderDashboard = () => {
   const [notificationArray, setNotificationArray] = useState();
   // const handleNotificationBox = () => {
   //   cookies?.user_data &&
-  //     axios.post("http://13.52.16.160:8082/identity/get-notifications", {
+  //     axios.post("${BaseUrl}/identity/get-notifications", {
   //       user_id: cookies?.user_data?.user_id,
   //       user_token: cookies?.user_data?.user_token,
   //       role: cookies?.user_data?.role,
@@ -1720,24 +1668,30 @@ const HeaderDashboard = () => {
   //       }
   //     });
   // };
+
+  const [loadMore, setLoadMore] = useState(false);
+
   useEffect(() => {
-    cookies?.user_data &&
-      axios
-        .post("http://13.52.16.160:8082/identity/get-notifications", {
-          user_id: cookies?.user_data?.user_id,
-          user_token: cookies?.user_data?.user_token,
-          role: cookies?.user_data?.role,
-          ...notificationPageId,
-        })
-        .then((res) => {
-          if (res?.data?.status === "Success") {
-            contextData?.setNotification(res?.data?.data);
-            setNotificationArray(res?.data?.data?.final_data);
-          }
-        });
+    cookies?.user_data && setLoadMore(true);
+    axios
+      .post(`${BaseUrl}/identity/get-notifications`, {
+        user_id: cookies?.user_data?.user_id,
+        user_token: cookies?.user_data?.user_token,
+        role: cookies?.user_data?.role,
+        ...notificationPageId,
+      })
+      .then((res) => {
+        if (res?.data?.status === "Success") {
+          contextData?.setNotification(res?.data?.data);
+          setNotificationArray(res?.data?.data?.final_data);
+          setLoadMore(false);
+        } else {
+          setLoadMore(false);
+        }
+      });
 
     axios
-      .post("http://13.52.16.160:8082/identity/unread_notification_count", {
+      .post(`${BaseUrl}/identity/unread_notification_count`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -1747,11 +1701,11 @@ const HeaderDashboard = () => {
           contextData?.setUnreadNotification(res?.data?.data?.unread_count);
         }
       });
-  }, [showNotificationBox]);
+  }, [notificationPageId]);
 
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", {
+      .put(`${BaseUrl}/identity/update_account`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -1764,7 +1718,7 @@ const HeaderDashboard = () => {
   };
 
   // const bringnotificationCount = () => {
-  //   axios.post("http://13.52.16.160:8082/identity/unread_notification_count", {
+  //   axios.post("${BaseUrl}/identity/unread_notification_count", {
   //     user_id: cookies?.user_data?.user_id,
   //     user_token: cookies?.user_data?.user_token,
   //     role: cookies?.user_data?.role,
@@ -1785,7 +1739,7 @@ const HeaderDashboard = () => {
 
   const handalVerify = () => {
     axios
-      .post("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+      .post(`${BaseUrl}/stripe/professionl/verify-account/`, {
         professioanl_id: cookies?.user_data?.user_id,
         professioanl_token: cookies?.user_data?.user_token,
       })
@@ -1812,7 +1766,7 @@ const HeaderDashboard = () => {
   // condition on this state is inverted //
   const [seeAllNotification, setSeeAllNotification] = useState(true);
   const logoutapi = () => {
-    axios.post(`http://13.52.16.160:8082/identity/logout`, {
+    axios.post(`${BaseUrl}/identity/logout`, {
       user_id: cookies?.user_data?.user_id,
       user_token: cookies?.user_data?.user_token,
       role: cookies?.user_data?.role,
@@ -1853,7 +1807,7 @@ const HeaderDashboard = () => {
                         onClick={handalVerify}
                       >
                         <GoUnverified />
-                        <span className="verify-text">Verify your Account</span>
+                        <span className="verify-text">Verify Account</span>
                       </button>
                     )}
                   </>
@@ -1892,69 +1846,8 @@ const HeaderDashboard = () => {
                       >
                         {notificationArray.length === 0 ? (
                           <div className="text-white text-center">
-                            No Messages To Display
+                            No More Messages To Display
                           </div>
-                        ) : seeAllNotification ? (
-                          notificationArray.map((res, keys) => {
-                            if (keys < 7) {
-                              return (
-                                <div
-                                  key={keys}
-                                  className="message"
-                                  onClick={() => {
-                                    setClientDetails({
-                                      client_id: res?.detail?.client_id,
-                                      client_project_id:
-                                        res?.detail?.project_id,
-                                    });
-                                    if (
-                                      res?.notification.includes(
-                                        "You have received a Project request by the"
-                                      )
-                                    ) {
-                                      handleNotification(res);
-                                    }
-                                    if (
-                                      res?.notification.includes(
-                                        "accepted by the"
-                                      )
-                                    ) {
-                                      handleClientAcceptation(
-                                        res?.detail?.professional_id,
-                                        res?.detail?.project_id
-                                      );
-                                    }
-                                    if (
-                                      res?.notification.includes(
-                                        "is approved by the"
-                                      )
-                                    ) {
-                                      handleClientProccess("/myactivity");
-                                    }
-                                    if (
-                                      res?.notification.includes(
-                                        "updated the file of"
-                                      )
-                                    ) {
-                                      handleClientProccess("/ongoing-projects");
-                                    }
-                                    if (
-                                      res?.notification.includes(
-                                        "reported your"
-                                      )
-                                    ) {
-                                      reportHandle(res?.detail);
-                                    }
-                                  }}
-                                >
-                                  <p>
-                                    {new Date(res?.timestamp).toUTCString()}
-                                  </p>
-                                  {res?.notification}
-                                </div>
-                              );
-                            }
-                          })
                         ) : (
                           notificationArray.map((res, keys) => (
                             <div
@@ -2002,16 +1895,35 @@ const HeaderDashboard = () => {
                           ))
                         )}
                         <div className="bg-white">
-                          {contextData?.notification?.total_data > 7 && (
+                          {contextData?.notification?.total_data > 10 &&
+                          notificationArray.length ? (
                             <button
                               className="seeAllNotificationButton"
                               id="SeeAll"
                               onClick={() => {
-                                setSeeAllNotification(!seeAllNotification);
+                                setNotificationPageId({
+                                  page: notificationPageId.page + 1,
+                                  page_size: notificationPageId.page_size + 10,
+                                });
                               }}
                             >
-                              {seeAllNotification ? "See All" : "See Less"}
+                              {loadMore ? <ReactLotti3 /> : "Load More"}
                             </button>
+                          ) : (
+                            contextData?.notification?.total_data > 10 && (
+                              <button
+                                className="seeAllNotificationButton"
+                                id="SeeAll"
+                                onClick={() => {
+                                  setNotificationPageId({
+                                    page: 1,
+                                    page_size: 10,
+                                  });
+                                }}
+                              >
+                                {loadMore ? <ReactLotti3 /> : "Go back"}
+                              </button>
+                            )
                           )}
                         </div>
                         {contextData?.notification.length === 0 ? (
@@ -2061,6 +1973,7 @@ const HeaderDashboard = () => {
                       height: "50px",
                       cursor: "pointer",
                       borderRadius: "50%",
+                      border: "1px solid black",
                     }}
                   />
                 </div>
@@ -2077,6 +1990,7 @@ const HeaderDashboard = () => {
                       height: "50px",
                       cursor: "pointer",
                       borderRadius: "50%",
+                      border: "1px solid black",
                     }}
                   />
                 </div>
@@ -2126,7 +2040,7 @@ const HeaderDashboard = () => {
                     </Link>
                   </div>
                 </div>
-                <h6 className="m-0">
+                <h6 className="m-0 ">
                   {contextData?.profileData && contextData?.profileData?.email}
                 </h6>
               </div>

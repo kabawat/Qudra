@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { BaseUrl } from "../../../BaseUrl";
+
 const Ratings = () => {
   const contextData = useContext(Global);
   const [projectPageId, setProjectPageId] = useState({
@@ -28,7 +30,7 @@ const Ratings = () => {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data.role === "professional") {
           axios
-            .post("http://13.52.16.160:8082/identity/get-like-save", {
+            .post(`${BaseUrl}/identity/get-like-save`, {
               user_id: cookies?.user_data?.user_id,
               user_token: cookies?.user_data?.user_token,
               role: cookies?.user_data?.role,
@@ -67,7 +69,7 @@ const Ratings = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     axios
-      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      .post(`${BaseUrl}/identity/search_like_rate_user`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -90,7 +92,7 @@ const Ratings = () => {
   const handleRating = (val) => {
     if (val == "") {
       axios
-        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+        .post(`${BaseUrl}/identity/search_like_rate_user`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -121,7 +123,7 @@ const Ratings = () => {
 
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      .post(`${BaseUrl}/identity/search_like_rate_user`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,

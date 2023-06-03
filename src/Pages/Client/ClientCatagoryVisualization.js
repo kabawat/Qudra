@@ -8,7 +8,9 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../../components/Loader";
+
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../../BaseUrl";
 const ClientCatagoryVisualization = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
@@ -74,7 +76,9 @@ const ClientCatagoryVisualization = () => {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
-        category: { cat_id: [...new Set([...selectedCatagory.category?.cat_id, 2])] },
+        category: {
+          cat_id: [...new Set([...selectedCatagory.category?.cat_id, 2])],
+        },
         sel_sub_cat: { ...sel_sub_cat },
       })
     );
@@ -103,7 +107,9 @@ const ClientCatagoryVisualization = () => {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
-          category: { cat_id: [...new Set([...selectedCatagory.category?.cat_id, 2])] },
+          category: {
+            cat_id: [...new Set([...selectedCatagory.category?.cat_id, 2])],
+          },
           sel_sub_cat: { ...sel_sub_cat },
         })
       );
@@ -123,14 +129,12 @@ const ClientCatagoryVisualization = () => {
   };
 
   useEffect(() => {
-    axios
-      .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=2")
-      .then((res) => {
-        contextData?.dispatch({
-          type: "STATIC_VISUALIZATION_DESIGN",
-          value: res?.data,
-        });
+    axios.get(`${BaseUrl}/quadra/sub_categories?category_id=2`).then((res) => {
+      contextData?.dispatch({
+        type: "STATIC_VISUALIZATION_DESIGN",
+        value: res?.data,
       });
+    });
   }, []);
   if (contextData?.static_visualization_design?.data?.length && isRender) {
     return (
@@ -243,7 +247,7 @@ const ClientCatagoryVisualization = () => {
                       <button
                         type="submit"
                         className="create-account-btn"
-                      // onClick={() => navigate("/client-visualisation")}
+                        // onClick={() => navigate("/client-visualisation")}
                       >
                         Continue <BsArrowRight style={{ color: "white" }} />
                       </button>

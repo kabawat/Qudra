@@ -9,6 +9,7 @@ import ClientDashboardAside from "../../ClientDashboardAside";
 import { useCookies } from "react-cookie";
 import { BsSearch } from "react-icons/bs";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { BaseUrl } from "../../../BaseUrl";
 
 const DeclineProject = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const DeclineProject = () => {
   useEffect(() => {
     if (cookies?.user_data) {
       axios
-        .post("http://13.52.16.160:8082/identity/filter_projects", {
+        .post(`${BaseUrl}/identity/filter_projects`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -68,7 +69,7 @@ const DeclineProject = () => {
   const handleFilterProject = (e) => {
     e.preventDefault();
     axios
-      .post("http://13.52.16.160:8082/identity/search_projects", {
+      .post(`${BaseUrl}/identity/search_projects`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -86,7 +87,7 @@ const DeclineProject = () => {
   };
   const searchData = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/filter_projects", {
+      .post(`${BaseUrl}/identity/filter_projects`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -142,7 +143,7 @@ const DeclineProject = () => {
                                     searchData();
                                   }
                                 }}
-                                placeholder="Search..."
+                                placeholder="Search... "
                               />
                               <button type="submit">
                                 <BsSearch />

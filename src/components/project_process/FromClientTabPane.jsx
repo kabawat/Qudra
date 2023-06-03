@@ -9,7 +9,18 @@ import $ from "jquery";
 import { useCookies } from "react-cookie";
 import Select from "react-select";
 import ReactLotti3 from "../../loader/ReactLottie3";
+import { BaseUrl } from "../../BaseUrl";
+
 const FromClientTabPane = ({ location }) => {
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
   const [submitLoader, setsubmitLoader] = useState(false);
   const [projectDetaile, setProjectDetaile] = useState({});
   const [descshowless, setdescshowless] = useState(false);
@@ -21,7 +32,9 @@ const FromClientTabPane = ({ location }) => {
   const [reason, setReason] = useState("");
   const [reasonError, SetReasonError] = useState("");
   const [DeclineShow, setDeclineShow] = useState(false);
+  const [cardloader, setcardloader] = useState(false);
 
+  const [carderr, setCarderr] = useState(false);
   const contextData = useContext(Global);
   const navigate = useNavigate();
 
@@ -78,7 +91,7 @@ const FromClientTabPane = ({ location }) => {
   useEffect(() => {
     milestoneHandle();
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_details", {
+      .post(`${BaseUrl}/client/particular_project_details`, {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -94,7 +107,7 @@ const FromClientTabPane = ({ location }) => {
   // particular project milestones API
   function milestoneHandle() {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      .post(`${BaseUrl}/client/particular_project_milestones`, {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -107,58 +120,76 @@ const FromClientTabPane = ({ location }) => {
 
   // add a new card to payment
   const handalSubmit = (event) => {
+    setcardloader(true);
     event.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/stripe/client/card/", {
-        ...cartInfo,
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-      })
-      .then((response) => {
-        if (response?.data?.status === "Failed") {
-          const error = response?.data?.message;
-          setPaymentError(error.split(":")[1]);
-        } else {
-          handalDownload(curMilestone);
-          SetCurMilestnoe({});
-          setIsPayment(false);
-          setPaymentError("");
-        }
-      })
-      .catch((error) => {
-        // console.log(error.response)
-      });
+    if (
+      !cartInfo.card_number ||
+      !cartInfo.cvc ||
+      !cartInfo.expiry_month ||
+      !cartInfo.expiry_year
+    ) {
+      setCarderr(true);
+      setcardloader(false);
+    } else {
+      // setCarderr(false);
+      axios
+        .post(`${BaseUrl}/stripe/client/card/`, {
+          ...cartInfo,
+          client_id: cookies?.user_data?.user_id,
+          client_token: cookies?.user_data?.user_token,
+        })
+        .then((response) => {
+          if (response?.data?.status === "Failed") {
+            const error = response?.data?.message;
+            setPaymentError(error.split(":")[1]);
+            setcardloader(false);
+
+            setCarderr(false);
+          } else {
+            handalDownload(curMilestone);
+            SetCurMilestnoe({});
+            setIsPayment(false);
+            setPaymentError("");
+            setCarderr(false);
+            setcardloader(false);
+          }
+        })
+        .catch((error) => {});
+    }
   };
 
   // go to checkout page
   function handalDownload(curMilestone) {
     SetCurMilestnoe(curMilestone);
-    console.log(projectDetaile);
     axios
-      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
+      .post(`${BaseUrl}/client/client_checkout_details/`, {
         client_id: cookies?.user_data?.user_id,
         client_token: cookies?.user_data?.user_token,
         professional_id: location?.state?.projectData?.professional_id,
-        amount_paid: location?.state?.projectData?.project_cost,
+        amount_paid: curMilestone?.milestone_price,
       })
       .then((result) => {
-        if (
-          result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
+        if (result?.data?.data?.cards?.length === 0) {
+          setIsPayment(true);
+        } else if (
+          result?.data?.status === "Failed" &&
+          result?.data?.error_code === 109
         ) {
           setIsPayment(true);
         } else {
-          navigate("/check-out", {
-            state: {
-              projectDetaile: {
-                ...projectDetaile,
-                professional_image:
-                  location?.state?.projectData?.professional_image,
-                location: location?.state?.projectData?.location,
+          if (result?.data?.status !== "Failed") {
+            navigate("/check-out", {
+              state: {
+                projectDetaile: {
+                  ...projectDetaile,
+                  professional_image:
+                    location?.state?.projectData?.professional_image,
+                  location: location?.state?.projectData?.location,
+                },
+                curMilestone: curMilestone,
               },
-              curMilestone: curMilestone,
-            },
-          });
+            });
+          }
         }
       });
   }
@@ -166,7 +197,7 @@ const FromClientTabPane = ({ location }) => {
   // complated milestones download
   const handalDownload1 = (curMilestone) => {
     axios
-      .put("http://13.52.16.160:8082/client/update_status_view_file", {
+      .put(`${BaseUrl}/client/update_status_view_file`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: "client",
@@ -203,7 +234,7 @@ const FromClientTabPane = ({ location }) => {
   const AcceptHandal = () => {
     setsubmitLoader(true);
     axios
-      .post("http://13.52.16.160:8082/client/update_status_view_file", {
+      .post(`${BaseUrl}/client/update_status_view_file`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: "client",
@@ -225,10 +256,10 @@ const FromClientTabPane = ({ location }) => {
 
   // decline project
   const declineHandal = () => {
-    setsubmitLoader(true);
     if (reason) {
+      setsubmitLoader(true);
       axios
-        .post("http://13.52.16.160:8082/client/update_status_view_file", {
+        .post(`${BaseUrl}/client/update_status_view_file`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: "client",
@@ -244,14 +275,23 @@ const FromClientTabPane = ({ location }) => {
             SetReasonError("");
             setReason("");
             milestoneHandle();
+            setsubmitLoader(false);
           } else {
             SetReasonError("Failed due to some reason");
+            setsubmitLoader(false);
           }
         });
     } else {
       SetReasonError("Reason Required");
     }
   };
+
+  document.querySelectorAll('input[type="number"]').forEach((input) => {
+    input.oninput = () => {
+      if (input.value.length > input.maxLength)
+        input.value = input.value.slice(0, input.maxLength);
+    };
+  });
 
   return (
     <div className="create-account">
@@ -342,6 +382,7 @@ const FromClientTabPane = ({ location }) => {
                           href={projectDetaile?.attachment}
                           download={projectDetaile?.attachment}
                           target="_new"
+                          className="projectFileView"
                         >
                           View File
                         </a>
@@ -359,9 +400,33 @@ const FromClientTabPane = ({ location }) => {
                     <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                       <div className="project-details">9</div>
                       <h5> Project Description: </h5>
-                      {descshowless === "show" ? (
-                        <p>
-                          {projectDetaile?.description}
+                      <br />
+                    </div>
+                    {descshowless === "show" ? (
+                      <p style={{ whiteSpace: "pre-line" }}>
+                        <br />
+                        {projectDetaile?.description}
+                        <span
+                          id={"show"}
+                          style={{
+                            marginTop: "10px",
+                            cursor: "pointer",
+                            textDecoration: "underline",
+
+                            color: "#01a78a",
+                            // backgroundColor: "#0F9E83",
+                          }}
+                          onClick={(e) => {
+                            setdescshowless("");
+                          }}
+                        >
+                          show less
+                        </span>
+                      </p>
+                    ) : (
+                      <p>
+                        {projectDetaile?.description?.slice(0, 199)}{" "}
+                        {projectDetaile?.description?.length < 200 ? null : (
                           <span
                             id={"show"}
                             style={{
@@ -373,46 +438,24 @@ const FromClientTabPane = ({ location }) => {
                               // backgroundColor: "#0F9E83",
                             }}
                             onClick={(e) => {
-                              setdescshowless("");
+                              setdescshowless(e.target.id);
                             }}
                           >
-                            show less
+                            show more
                           </span>
-                        </p>
-                      ) : (
-                        <p>
-                          {projectDetaile?.description?.slice(0, 199)}{" "}
-                          {projectDetaile?.description?.length < 200 ? null : (
-                            <span
-                              id={"show"}
-                              style={{
-                                marginTop: "10px",
-                                cursor: "pointer",
-                                textDecoration: "underline",
-
-                                color: "#01a78a",
-                                // backgroundColor: "#0F9E83",
-                              }}
-                              onClick={(e) => {
-                                setdescshowless(e.target.id);
-                              }}
-                            >
-                              show more
-                            </span>
-                          )}
-                        </p>
-                      )}
-                      {/* <p className="m-0 ms-3">{projectDetaile?.description}</p> */}
-                    </div>
+                        )}
+                      </p>
+                    )}
+                    {/* <p className="m-0 ms-3">{projectDetaile?.description}</p> */}
                   </div>
                 </div>
               </section>
               <section className="projectMilestoneInfo">
-                <h3 className="theme-text-color fs-24 mt-5 mb-4">
+                <h3 className="theme-text-color fs-24 mt-5 mb-4 mt-4">
                   Milestone Details
                 </h3>
                 {milestones?.map((res, i) => (
-                  <div className="row milestoneBox" key={i}>
+                  <div className=" milestoneBox" key={i}>
                     <div className="row milestoneBoxInner">
                       <div className="milestoneBox1 col-4 col-xl-3">
                         <p className="headingMile">Name</p>
@@ -435,7 +478,7 @@ const FromClientTabPane = ({ location }) => {
                       {(res?.status === "pending" ||
                         res?.status === "decline") && (
                         <>
-                          <div className="col-xl-5 statusBtnMilecol resMile">
+                          <div className="col-xl-5 statusBtnMilecol ">
                             <button
                               className="btn default-cursor pendingBtnMile"
                               type="button"
@@ -446,47 +489,45 @@ const FromClientTabPane = ({ location }) => {
                         </>
                       )}
 
-                      {/* downloaded , updated and uploaded project  */}
+                      {/* updated and uploaded project  */}
                       {(res?.status === "downloaded" ||
                         res?.status === "updated" ||
                         res?.status === "uploaded") && (
                         <>
-                          <div className="col-xl-5 d-flex  colAccDec resMile">
-                            <div className="row">
-                              <div className="col-6 colAccDecpar">
-                                <div className="accept_btn_group ">
-                                  <button
-                                    className="pendingBtnMileAll colAccDecchl"
-                                    onClick={() => {
-                                      setAcceptShow(true);
-                                      SetCurMilestnoe({ ...res });
-                                    }}
-                                  >
-                                    Accept
-                                  </button>
-                                  <button
-                                    className="pendingBtnMileAll"
-                                    onClick={() => {
-                                      setDeclineShow(true);
-                                      SetCurMilestnoe({ ...res });
-                                    }}
-                                  >
-                                    Decline
-                                  </button>
-                                </div>
-                              </div>
-                              <div className="col-6">
-                                <button
-                                  className="btn DownloadbtnMile"
-                                  onClick={() => {
-                                    handalDownload({ ...res });
-                                  }}
-                                  type="button"
-                                >
-                                  Download
-                                </button>
-                              </div>
+                          <div className="col-xl-5  col-12 resMile  d-flex ">
+                            <div className="accept_btn_group ">
+                              <button
+                                className="pendingBtnMileAll colAccDecchl"
+                                onClick={() => {
+                                  setAcceptShow(true);
+                                  SetCurMilestnoe({ ...res });
+                                }}
+                              >
+                                Accept
+                              </button>
                             </div>
+                            <div className="accept_btn_group ">
+                              <button
+                                className="pendingBtnMileAll"
+                                onClick={() => {
+                                  setDeclineShow(true);
+                                  SetCurMilestnoe({ ...res });
+                                }}
+                              >
+                                Decline
+                              </button>
+                            </div>
+                            <button
+                              className="btn DownloadbtnMile"
+                              onClick={() => {
+                                res?.invoice
+                                  ? handalDownload1({ ...res })
+                                  : handalDownload({ ...res });
+                              }}
+                              type="button"
+                            >
+                              Download
+                            </button>
                           </div>
                         </>
                       )}
@@ -504,7 +545,7 @@ const FromClientTabPane = ({ location }) => {
                               </div>
                             </div>
                             {res?.invoice && (
-                              <div className="accept_btn_group btnBoeMile">
+                              <div className="accept_btn_group btnBoeMile invoiceButton">
                                 <button
                                   className="Milestone"
                                   onClick={() => handalDownloadInvoice(res)}
@@ -565,7 +606,7 @@ const FromClientTabPane = ({ location }) => {
                         <p className="headingMile">Milestone Description</p>
                         <p style={{ textTransform: "capitalize" }}>
                           {descshowless === i + 1 ? (
-                            <p>
+                            <p style={{ whiteSpace: "pre-line" }}>
                               {res?.milestone_description}
                               <span
                                 id={i + 1}
@@ -610,7 +651,7 @@ const FromClientTabPane = ({ location }) => {
                           )}
                         </p>
                       </div>
-                      <div className="col-xl-2 ">
+                      <div className="col-xl-2 viewFileCol">
                         <p className="mileFile">
                           <a
                             href={res?.milestone_attachment}
@@ -636,11 +677,20 @@ const FromClientTabPane = ({ location }) => {
       </main>
       <Modal
         centered
+        backdrop="static"
+        keyboard={false}
         show={isPayment}
         onHide={() => {
           setIsPayment(false);
+          setCarderr(false);
           setPaymentError("");
           SetCurMilestnoe({});
+          setCartInfo({
+            card_number: "",
+            expiry_month: "",
+            expiry_year: "",
+            cvc: "",
+          });
         }}
       >
         <Modal.Header closeButton>
@@ -654,11 +704,12 @@ const FromClientTabPane = ({ location }) => {
                 <h6>Card Number</h6>
                 <input
                   id="ccn"
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9\s]{13,19}"
+                  type="text"
+                  onKeyPress={handleKeyPress}
+                  // inputMode="numeric"
+                  // pattern="[0-9\s]{13,19}"
                   autoComplete="cc-number"
-                  maxLength="19"
+                  maxLength={16}
                   placeholder="xxxx xxxx xxxx xxxx"
                   name="card_number"
                   value={cartInfo?.card_number}
@@ -666,6 +717,9 @@ const FromClientTabPane = ({ location }) => {
                     handalChange(event?.target?.name, event?.target?.value);
                   }}
                 />
+                {!cartInfo.card_number && carderr && (
+                  <span className="text-danger">Field required</span>
+                )}
               </div>
               <div className="row  py-3">
                 <div className="col-8">
@@ -684,6 +738,9 @@ const FromClientTabPane = ({ location }) => {
                           }
                         />
                       </div>
+                      {!cartInfo.expiry_month && carderr && (
+                        <span className="text-danger">Required</span>
+                      )}
                     </div>
                     <div className="col cardExpiry yearInput">
                       <div className="border-bottom">
@@ -697,6 +754,9 @@ const FromClientTabPane = ({ location }) => {
                           }}
                         />
                       </div>
+                      {!cartInfo.expiry_year && carderr && (
+                        <span className="text-danger"> Required</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -707,6 +767,7 @@ const FromClientTabPane = ({ location }) => {
                       <input
                         type="text"
                         id="CVV"
+                        onKeyPress={handleKeyPress}
                         placeholder="xxx"
                         className="border-bottom"
                         maxLength={3}
@@ -720,14 +781,21 @@ const FromClientTabPane = ({ location }) => {
                           );
                         }}
                       />
+                      {!cartInfo.cvc && carderr && (
+                        <span className="text-danger">Required</span>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
               <div style={{ color: "red" }}>{paymentError}</div>
               <div className="row">
-                <button type="submit" className="PaymentCardSubmitButton">
-                  Save
+                <button
+                  type="submit"
+                  disabled={cardloader ? true : false}
+                  className="PaymentCardSubmitButton"
+                >
+                  {cardloader ? <ReactLotti3 /> : "Save"}
                 </button>
               </div>
             </form>
@@ -737,6 +805,8 @@ const FromClientTabPane = ({ location }) => {
 
       {/* accept  */}
       <Modal
+        backdrop="static"
+        keyboard={false}
         centered
         show={acceptShow}
         onHide={() => {
@@ -769,8 +839,11 @@ const FromClientTabPane = ({ location }) => {
       {/*  decline  */}
       <Modal
         centered
+        backdrop="static"
         show={DeclineShow}
         onHide={() => {
+          setsubmitLoader();
+          SetReasonError("");
           SetCurMilestnoe({});
           setDeclineShow(false);
         }}
@@ -779,17 +852,22 @@ const FromClientTabPane = ({ location }) => {
           <Modal.Title>Add a Reason to decline</Modal.Title>
         </Modal.Header>
         <Modal.Footer>
-          <input
-            type="text"
+          <textarea
+            // type="text"
             placeholder="Reason"
-            onChange={(event) => setReason(event.target.value)}
+            onChange={(event) => {
+              setReason(event.target.value);
+              SetReasonError("");
+            }}
             value={reason}
             className="form-control"
           />
-          <p>{reasonError}</p>
+          <p className="text-danger">{reasonError}</p>
           <Button
             variant="secondary"
             onClick={() => {
+              setsubmitLoader();
+              SetReasonError("");
               SetCurMilestnoe({});
               setDeclineShow(false);
             }}
@@ -798,7 +876,8 @@ const FromClientTabPane = ({ location }) => {
           </Button>
           <Button
             className="theme-bg-color border-0"
-            onClick={!submitLoader ? declineHandal : null}
+            onClick={declineHandal}
+            disabled={submitLoader ? true : false}
           >
             {submitLoader ? <ReactLotti3 /> : "Sure"}
           </Button>

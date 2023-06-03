@@ -5,6 +5,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap");
 @import url("checkout.css");
 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+
 /* @font-face {
   font-family: "century-gothic-regular", sans-serif;
   src: url(../fonts/Century\ Gothic\ Std\ Italic.otf);
@@ -73,6 +75,10 @@ select {
   cursor: pointer;
 }
 
+.loginSinup {
+  color: white !important;
+}
+
 select option:hover {
   cursor: pointer;
 }
@@ -82,7 +88,7 @@ body {
 }
 
 .TypeAnimationHomePage {
-  font-family: Alienware;
+  font-family: "Poppins", sans-serif !important;
 }
 
 button {
@@ -602,12 +608,12 @@ header.home-page-header ul {
 header.home-page-header ul li a:hover,
 header ul li a:active {
   text-decoration: none;
-  color: white;
+  color: black;
 }
 
 header.home-page-header ul li a {
   text-decoration: none;
-  color: white;
+  color: black;
   font-size: 20px;
   font-weight: 400;
   /* font-family: "Poppins"; */
@@ -621,14 +627,14 @@ header.home-page-header .hamburger-button {
 
 header.home-page-header .hamburger-button .line-1 {
   width: 30px;
-  background-color: white;
+  background-color: black;
   height: 3px;
   border-radius: 2px;
 }
 
 header.home-page-header .hamburger-button .line-2 {
   width: 25px;
-  background-color: white;
+  background-color: black;
   height: 3px;
   border-radius: 2px;
 }
@@ -640,7 +646,7 @@ header.home-page-header form {
 
 header.home-page-header .hamburger-button .line-3 {
   width: 20px;
-  background-color: white;
+  background-color: black;
   border-radius: 2px;
   height: 3px;
 }
@@ -756,21 +762,14 @@ footer .quadra-copyright p {
   padding: 0 20px 0 0;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  input {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton input {
   border-radius: 30px;
   width: auto;
   padding: 10px 20px;
   margin: 10px 0;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton {
   display: unset;
 }
 
@@ -779,11 +778,7 @@ header.home-page-header ul li {
   font-size: 20px;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  button[type="submit"] {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
   position: absolute;
   right: 5px;
   padding: 11px 16px;
@@ -798,11 +793,7 @@ header.home-page-header .mobile-menu .mobile-menu-content ul li {
   list-style: none;
 }
 
-header.home-page-header
-  .mobile-menu
-  .mobile-menu-content
-  form.headerSearchButton
-  button[type="submit"] {
+header.home-page-header .mobile-menu .mobile-menu-content form.headerSearchButton button[type="submit"] {
   position: absolute;
   right: 2px;
   padding: 10px 14px;
@@ -864,14 +855,43 @@ header.home-page-header .mobile-menu .mobile-menu-content ul {
   bottom: 5px;
 }
 
+.nav-tabs .nav-link:hover {
+  isolation: initial !important;
+}
+
 .dashboard aside ul.nav-tabs li.nav-item a.nav-link:hover {
   border: none;
   color: white;
 }
 
+.css-1fdsijx-ValueContainer {
+  padding: 0 !important;
+}
+
+.CVV {
+  font-size: 15px !important;
+}
+
+.card-p-0 {
+  padding: 0px !important;
+}
+
+.makeStyles-copyIcon-15 {
+  display: none !important;
+}
+
+.makeStyles-copyIcon-31 {
+  display: none !important;
+}
+
+.makeStyles-copyIcon-23 {
+  display: none !important;
+}
+
 .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
   border: none;
   font-size: 16px;
+  /* height: 72px; */
   line-height: 64px;
   cursor: pointer;
   color: #ffffff;
@@ -904,13 +924,16 @@ header.dashboard-header .profile-edit-dropdown {
   position: absolute;
   padding-top: 20px;
 }
+
 .home-page-header .profile-edit-dropdown {
   display: none;
   position: absolute;
   padding-top: 20px;
 }
+
 .profile-edit-dropdown button {
   border: 0;
+
   text-align: center;
   padding: 10px 20px;
   color: white;
@@ -943,9 +966,7 @@ header.dashboard-header .dashboard-user-notification {
   z-index: 9000;
 }
 
-header.dashboard-header
-  .dashboard-user-notification
-  .dashboard-user-notification-number {
+header.dashboard-header .dashboard-user-notification .dashboard-user-notification-number {
   position: absolute;
   min-width: 20px;
   background-color: #01a78a;
@@ -995,7 +1016,7 @@ header.dashboard-header button.profileEdit-button h4 {
 .home-page-header button.profileEdit-button h4 {
   margin: 0 15px 0 0;
   font-size: 16px;
-  color: #fff;
+  color: black;
   font-weight: 600;
   /* font-family: "Poppins"; */
 }
@@ -1228,7 +1249,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.Residential-Architecture-page .card:hover > .card-img-overlay {
+.Residential-Architecture-page .card:hover>.card-img-overlay {
   opacity: 1;
   background: #000000ad;
 }
@@ -1262,11 +1283,7 @@ textarea {
   padding: 15px 0;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional {
   background-image: url(../img/become-professional-earner-banner.png);
   padding: 60px 0 60px 60px;
   border-radius: 30px;
@@ -1274,12 +1291,7 @@ textarea {
   background-size: 100% 100%;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  h4 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h4 {
   font-size: 32px;
   line-height: 51px;
   color: #ffffff;
@@ -1287,12 +1299,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  h3 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h3 {
   font-size: 35px;
   line-height: 51px;
   color: #ffffff;
@@ -1300,12 +1307,7 @@ textarea {
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  p {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional p {
   font-size: 18px;
   line-height: 34px;
   color: #ffffff;
@@ -1314,12 +1316,7 @@ textarea {
   width: 70%;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .Become-professional
-  button {
+.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional button {
   font-size: 20px;
   line-height: 32px;
   color: #01a78a;
@@ -1331,46 +1328,27 @@ textarea {
   border-radius: 50px;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box {
   box-shadow: 0px 2px 2px 2px #adadad38;
   border-radius: 25px;
   padding: 15px 0;
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h3 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h3 {
   font-size: 22px;
   color: #3a3939;
   font-weight: 600;
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h6 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h6 {
   font-size: 16px;
   color: #3a3939;
   font-weight: 300;
   /* font-family: "Poppins"; */
 }
 
-.dashboard
-  main
-  #dashboard-menu-bar
-  .completed-projects-row
-  .completed-projects-box
-  h2 {
+.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h2 {
   font-size: 32px;
   color: #01a78a;
   font-weight: 600;
@@ -1459,6 +1437,10 @@ textarea {
   border: 1px solid #01a78a;
 }
 
+.editEmail {
+  color: white !important;
+}
+
 .create-account header.create-account-header h2 {
   font-size: 50px;
   color: #ffffff;
@@ -1471,10 +1453,22 @@ textarea {
 .create-account header.create-account-header ul li a {
   list-style: none;
   margin-left: 20px;
-  color: white !important;
+  color: black;
   text-decoration: none;
   cursor: pointer;
   font-size: 20px;
+}
+
+.headerMail {
+  padding: 0 60px !important;
+}
+
+.loginSinupbutton {
+  width: 100px !important;
+}
+
+.headerMailInner {
+  width: 300px;
 }
 
 .create-account main.create-account-main form .check:checked {
@@ -1511,6 +1505,10 @@ textarea {
   .marginForCover {
     margin-top: 7% !important;
   }
+
+  .headerMail {
+    padding: 0 30px !important;
+  }
 }
 
 .marginForCover {
@@ -1538,13 +1536,7 @@ textarea {
 }
 
 .create-account main.create-account-main form input:focus,
-.create-account
-  main.create-account-main
-  form
-  select:focus.create-account
-  main.create-account-main
-  form
-  textarea:focus {
+.create-account main.create-account-main form select:focus.create-account main.create-account-main form textarea:focus {
   outline: none;
   box-shadow: none;
 }
@@ -1554,11 +1546,7 @@ textarea {
   border-radius: 50px;
 }
 
-.create-account
-  main.create-account-main
-  form
-  .create-account-input
-  input::placeholder,
+.create-account main.create-account-main form .create-account-input input::placeholder,
 .create-account main.create-account-main form select::placeholder,
 .create-account main.create-account-main form textarea::placeholder,
 .create-account main.create-account-main form .create-account-input input,
@@ -1771,11 +1759,7 @@ textarea {
   display: none;
 }
 
-.create-account
-  main.create-account-main
-  form
-  .create-account-input
-  .policy-span {
+.create-account main.create-account-main form .create-account-input .policy-span {
   padding: 15px 20px;
   font-size: 14px;
   color: #000000;
@@ -1816,7 +1800,8 @@ textarea {
 .let-get-started .join-us-now-main .join-us-now-text {
   background-color: #f6f9f9;
   padding: 100px;
-  border-radius: 30px 0 0 30px;
+  margin: auto;
+  border-radius: 30px;
 }
 
 .let-get-started .join-us-now-main .join-us-now-text h3 {
@@ -1857,8 +1842,11 @@ textarea {
 }
 
 .let-get-started .join-us-now-main .join-us-now-image {
-  width: 40%;
+  /* width: 40%;
+   */
+  display: none !important;
 }
+
 .let-get-started .join-us-now-main .join-us-now-image img {
   border-radius: 0;
   width: 100%;
@@ -1990,11 +1978,7 @@ section.chatbox .chats-main .chats-show {
   flex-direction: column;
 }
 
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input {
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input {
   background: #eeeeee;
   padding: 15px 30px;
   border: 0px;
@@ -2015,21 +1999,9 @@ section.chatbox .chats-main .chats-show .chatbox-text-input-box button {
   right: 20px;
 }
 
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input:focus,
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input::placeholder,
-section.chatbox
-  .chats-main
-  .chats-show
-  .chatbox-text-input-box
-  input.chatbox-text-input:focus-visible {
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus,
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input::placeholder,
+section.chatbox .chats-main .chats-show .chatbox-text-input-box input.chatbox-text-input:focus-visible {
   border: 0;
   outline: 0;
   font-size: 18px;
@@ -2204,8 +2176,32 @@ main.profile-page section.profile-page-sec-one {
 
 main.profile-page section.profile-page-sec-one img.right-user-banner-image {
   margin-bottom: 100px;
-  height: 400px;
+  /* height: 400px; */
   width: 100%;
+}
+
+.topclientCol {
+  place-content: center;
+  max-width: 300px !important;
+}
+
+.topclientColinner {
+  /* display: grid; */
+  max-height: 300px !important;
+  overflow: hidden !important;
+}
+
+.topclientCol img {
+  width: 100% !important;
+}
+
+.bannerMain {
+  height: 400px;
+  overflow: hidden;
+}
+
+.homePageherosSectionLogo {
+  width: 400px;
 }
 
 main.profile-page section.profile-page-sec-two .user-profile-image {
@@ -2499,7 +2495,7 @@ main.profile-page section.profile-page-sec-six h6 {
 #heroes {
   width: 100%;
   overflow: hidden;
-  height: calc(100vh - 148px);
+  height: calc(100vh - 121px);
   background-image: url("../img/380.jpg");
   background-size: 100% 100%;
 }
@@ -2701,9 +2697,11 @@ canvas {
   border-radius: 20px;
   border: 0;
 }
+
 .PaymentCardSubmitButton {
   width: 175px !important;
 }
+
 .ImgBox video {
   height: 95%;
   width: 80% !important;
@@ -3001,7 +2999,7 @@ canvas {
 .modalProfessionalDashboard .ModalCategorySubmit {
   width: 200px;
   margin: auto;
-  padding: 10px 0;
+  padding: 10px 9px;
   border-radius: 5px;
   background-color: #01a78a;
   border: 0;
@@ -3094,36 +3092,31 @@ canvas {
 }
 
 .LoadingMain .cuboid .side:nth-of-type(2) {
-  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin))
-    rotateY(180deg);
+  transform: translate3d(-50%, -50%, calc(var(--depth) * -0.5vmin)) rotateY(180deg);
   background: hsl(var(--hue), var(--sat), 25%);
 }
 
 .LoadingMain .cuboid .side:nth-of-type(3) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(90deg)
-    translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 75%);
 }
 
 .LoadingMain .cuboid .side:nth-of-type(4) {
   width: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateY(-90deg)
-    translate3d(0, 0, calc(var(--width) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateY(-90deg) translate3d(0, 0, calc(var(--width) * 0.5vmin));
   background: #009379;
 }
 
 .LoadingMain .cuboid .side:nth-of-type(5) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(90deg)
-    translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: #008971;
 }
 
 .LoadingMain .cuboid .side:nth-of-type(6) {
   height: calc(var(--depth) * 1vmin);
-  transform: translate(-50%, -50%) rotateX(-90deg)
-    translate3d(0, 0, calc(var(--height) * 0.5vmin));
+  transform: translate(-50%, -50%) rotateX(-90deg) translate3d(0, 0, calc(var(--height) * 0.5vmin));
   background: hsl(var(--hue), var(--sat), 20%);
 }
 
@@ -3267,6 +3260,7 @@ canvas {
   margin: 0;
   width: 100%;
 }
+
 .chatBoxFileSelectMainBox {
   display: flex;
   justify-content: center;
@@ -3854,6 +3848,7 @@ input[name="milestone_date_fifth"]::placeholder {
   position: relative;
   background: #f9f9f9;
 }
+
 .viesfilea {
   background-color: #0bbb92;
   padding: 8px 25px;
@@ -3875,10 +3870,12 @@ input[name="milestone_date_fifth"]::placeholder {
 
   color: black;
 }
+
 .accept_btn_group {
   display: flex;
   justify-content: center;
 }
+
 .accept_btn_group button {
   height: 100%;
   border: 0;
@@ -3886,25 +3883,30 @@ input[name="milestone_date_fifth"]::placeholder {
 
   background: transparent;
 }
+
 .milerow-2 {
   margin-top: 2% !important;
 }
+
 .mileFile {
   border: 1px solid #008971;
   padding: 5px;
   height: 40px;
   width: 165px;
   border-radius: 20px;
+  width: 135px !important;
 }
+
 .mileFile a {
   color: #008971;
   text-decoration: none;
   display: grid;
   place-content: center;
 }
+
 .viewFile {
   display: flex;
-  width: 165px;
+  width: 135px;
   align-items: center;
   justify-content: center;
   text-decoration: none;
@@ -3913,28 +3915,34 @@ input[name="milestone_date_fifth"]::placeholder {
   padding: 8px 10px;
   border-radius: 50px;
 }
+
 .viewFile:hover {
   color: #0f9e83;
 }
+
 .uploadMileStoneof {
   align-items: center;
   display: flex;
 
   justify-content: flex-end;
 }
+
 .uploadMileStonefo {
   padding: 10px 0px;
-  width: 165px;
+  width: 135px;
   text-align: center;
   border-radius: 50px;
   color: #ffffff;
   background-color: #0e9e84;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
   /* margin-right: 22px; */
 }
+
 .pendingMileStone {
   margin-right: 50px;
-  width: 165px;
+  width: 135px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3944,47 +3952,58 @@ input[name="milestone_date_fifth"]::placeholder {
   padding: 8px 10px;
   border-radius: 50px;
 }
+
 .pendingMileStone:hover {
   color: #0f9e83;
 }
+
 .headingMile {
   font-weight: bold !important;
   padding-top: 8px;
 }
+
 .headingMile2 {
   text-align: center !important;
 }
+
 .mileFile a :hover {
   color: #008971;
 }
+
 .mileColor {
   border: 1px solid #008971 !important;
   padding: 0px 20px !important;
   border-radius: 30px;
   color: #008971 !important;
 }
+
 .mileColor button {
   color: #008971 !important;
 }
+
 .btnBoeMile {
   border: 1px solid #008971 !important;
   padding: 0px 20px !important;
   border-radius: 30px;
   color: #008971 !important;
   margin-right: 10px !important;
-  width: 165px;
+  width: 135px !important;
 }
 
-.accept_btn_group button:first-child {
-  /* background: rgb(245, 81, 81);
-  color: #fff; */
+.viewFileCol {
+  justify-content: end;
+  padding: 0;
+  display: flex;
 }
+
 .btnBoeMile1 {
   border: 1px solid #008971 !important;
   padding: 9px 20px !important;
   border-radius: 30px;
   color: #008971 !important;
   height: 40px !important;
+  display: grid !important;
+  place-content: center !important;
 }
 
 .default-cursor {
@@ -4419,7 +4438,7 @@ a:visited {
   -ms-user-select: none;
   /* Internet Explorer */
   -khtml-user-select: none;
-  /* KHTML browsers (e.g. Konqueror) */
+
   -webkit-user-select: none;
   /* Chrome, Safari, and Opera */
   -webkit-touch-callout: none;
@@ -4704,6 +4723,11 @@ canvas {
   outline-width: 0;
 }
 
+.projectFileView {
+  color: #0e9e84;
+  text-decoration: none;
+}
+
 .MainReport {
   background: #f0f0f0;
 }
@@ -4718,6 +4742,15 @@ canvas {
 .reportFormData .input-path-label:hover {
   background: none repeat scroll 0 0 #ffffff;
   outline-width: 0;
+  cursor: pointer;
+}
+
+.input-path-label-chiled:hover {
+  cursor: pointer;
+}
+
+.input-path-label:hover {
+  cursor: pointer;
 }
 
 .Report {
@@ -4733,44 +4766,66 @@ canvas {
   padding: 20px;
 }
 
+.field-custom_image :hover {
+  cursor: pointer;
+}
+
+.profileinfo {
+  width: 300px;
+}
+
+.MyProjectDisplayRow img {
+  border: 1px solid black !important;
+}
+
+.Residential-Architecture-page .card :hover {
+  cursor: pointer;
+}
+
 .modal-closebtn {
-  width: 32px;
-  font-size: 24px;
-  height: 32px;
+  border: 3px solid #fff;
   border-radius: 50%;
+  font-size: 24px;
+  font-weight: bolder;
+  height: 32px;
   line-height: 0;
   position: absolute;
-  top: -24px;
+  right: 2%;
+  top: 2%;
+  width: 32px;
   z-index: 99999;
-  right: -29px;
-  background: transparent;
-  border: 3px solid #fff;
-  font-weight: bolder;
+  background: #00a78b;
 }
 
 .milestonedatepicker {
   margin-left: 3%;
   border-radius: 1px;
 }
+
 .react-datepicker__close-icon {
   right: 10% !important;
 }
+
 .milestone_input_des {
   width: 100%;
   border: 0;
   padding: 10px 20px 10px 40px;
 }
+
 .rowMilestone {
   border-bottom: 1px solid #b6b6b6;
   margin: 0 !important;
   padding: 0 !important;
 }
+
 .colMilestone {
   border-right: 1px solid #b6b6b6;
 }
+
 .mileStoneAttach {
   margin-top: 10px;
 }
+
 .mileStoneAttach_lablel {
   box-shadow: none;
 }
@@ -4778,6 +4833,7 @@ canvas {
 .attachmentMilestone {
   box-shadow: none;
 }
+
 .footer-right {
   display: grid;
   place-content: end;
@@ -4811,6 +4867,10 @@ canvas {
   border-radius: 25px;
   box-sizing: border-box;
   background-color: transparent;
+}
+
+.form_data .half-cullom .field-data input[type="text"]:focus-visible {
+  outline: none;
 }
 
 .form_data .half-cullom {
@@ -4875,36 +4935,44 @@ canvas {
 }
 
 @media only screen and (max-width: 767px) and (min-width: 320px) {
+
   .form_data .half-cullom .field-data,
   .form_data .half-cullom .field-custom {
     width: 100%;
     margin-bottom: 25px;
   }
+
   .form_data .half-cullom {
     display: block;
   }
+
   .form_data .field-custom input,
   .form_data .half-cullom .field-data input {
     padding: 12px 20px;
   }
+
   .form_data .full_cullomn .field_data label,
   .form_data .full_cullomn .field-data label,
   .form_data .half-cullom label {
     font-size: 15px;
     padding-bottom: 10px;
   }
+
   .form_data .half-cullom .field-custom_image input#file {
     background-size: 33px;
     height: 35px;
   }
+
   .form_data .half-cullom .field-custom_image {
     margin-top: 30px;
-    width: 65%;
+    width: 100%;
   }
+
   .form_data .half-cullom .field-custom_image span {
     padding: 15px 20px;
     font-size: 13px;
   }
+
   .form_data .field_data textarea {
     padding: 12px 20px;
     height: 120px;
@@ -4917,20 +4985,24 @@ canvas {
     box-sizing: border-box;
     width: 100%;
   }
+
   .form_data .half-cullom .field-data,
   .form_data .half-cullom .field-custom {
     width: 46%;
     display: inline-block;
   }
+
   .form_data .half-cullom .field-data:nth-child(2) {
     margin-left: 20px;
   }
+
   .form_data .half-cullom .field-custom_image {
     display: inline-block;
     width: 43%;
     margin-left: 20px;
-    top: -12px;
+    top: 1px;
   }
+
   .form_data .half-cullom .field-custom {
     margin-top: 20px;
   }
@@ -4944,36 +5016,69 @@ canvas {
   margin-right: auto !important;
   border: 1px solid #01a78a !important;
   border-radius: 30px !important;
-  padding: 5px 50px !important;
+  /* padding: 5px 50px !important; */
   color: #01a78a !important;
+  width: 135px !important;
+  display: flex;
+  justify-content: center;
 }
+
 .statusBtnMilecol {
   display: grid !important;
   place-content: end !important;
 }
+
 .DownloadbtnMile {
   background-color: #01a78a !important;
   border-radius: 30px !important;
   padding: 5px 30px !important;
   color: white !important;
-  width: 165px;
+  width: 135px !important;
+  display: flex !important;
+  justify-content: center !important;
 }
+
 .pendingBtnMileAll {
   border: 1px solid #01a78a !important;
   border-radius: 30px !important;
   padding: 5px 15px !important;
   height: 40px !important;
   color: #01a78a !important;
+  width: 135px !important;
 }
+
+.uploadMileStoneofmost {
+  justify-content: space-between !important;
+}
+
+.invoiceButton {
+  border: none !important;
+  background-color: #0f9e83;
+}
+
+.invoiceButton button {
+  color: white !important;
+}
+
+.mileFile :hover {
+  color: #01a78a !important;
+}
+
 .colAccDec {
   justify-content: end !important;
   text-align: end !important;
 }
+
 .colAccDecpar {
   display: flex;
 }
-.colAccDecchl {
-  margin-right: 10px;
+
+.headerLogo {
+  width: calc(10% + 170px);
+}
+
+.headerLogo1 {
+  width: calc(10% + 85px);
 }
 
 .headerMail {
@@ -4981,10 +5086,18 @@ canvas {
 }
 
 .newJoin {
-  position: absolute;
+  /* position: relative; */
   width: 100%;
-  top: 148px;
+
   z-index: 999;
+  /* height: 80vh; */
+  display: grid !important;
+  place-content: center;
+  place-items: center !important;
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
 }
 
 /* @media screen and (min-width: 1269px) and (max-width: 1365px) {
@@ -5025,14 +5138,17 @@ canvas {
 .resMile {
   height: 40px;
 }
+
 .pendingBtnMile {
   height: 40px !important;
 }
+
 .DownloadbtnMile {
   height: 40px !important;
 }
+
 .Milestone {
-  color: #01a78a !important;
+  color: #01a78a;
 }
 
 .btnBoeMile {
@@ -5045,22 +5161,27 @@ canvas {
 .VIpgJd-ZVi9od-ORHb-OEVmcd {
   display: none !important;
 }
+
 .btnBoeMileOuter {
   justify-content: space-between;
 }
 
 .btnBoeMile button {
-  color: #01a78a !important;
+  color: #01a78a;
 }
+
 .buy-now-btn {
   width: 110px;
 }
+
 .buy-now-btn-active {
   width: 110px;
 }
+
 .buy-now-btn-cancel {
   width: 110px;
 }
+
 .VIpgJd-ZVi9od-ORHb {
   display: none !important;
 }
@@ -5074,6 +5195,7 @@ canvas {
   font-size: 21px;
   font-weight: 800;
 }
+
 .rce-citem-body--top-title {
   text-transform: capitalize;
 }
@@ -5085,10 +5207,12 @@ canvas {
   width: 100%;
   object-fit: cover;
 }
+
 .resMileinvoice {
   display: flex;
   justify-content: space-around;
 }
+
 .catCursor :hover {
   cursor: pointer;
 }
@@ -5099,4 +5223,86 @@ canvas {
 
 .nav-tabs .nav-link.active {
   background-color: #f6feff !important;
+}
+
+.miniRate_browse {
+  font-size: 25px !important;
+}
+
+.makeStyles-copyIcon-7 p {
+  display: none !important;
+}
+
+.fetchMore {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fetchMore svg {
+  stroke: #fff;
+  fill: #fff;
+}
+
+/* .chat-box {
+  padding-top: 60px;
+} */
+
+.earning_row {
+  height: 300px;
+}
+
+.earning_row_col {
+  display: grid;
+  place-items: center;
+}
+
+.earning_row_col_data {
+  display: grid;
+  margin-top: 3%;
+  place-content: center;
+}
+
+.billingReason {
+  font-size: 22px !important;
+}
+
+.biilingInvoice {
+  font-size: 22px !important;
+}
+
+.mobile-menu .goog-te-gadget {
+  position: absolute !important;
+  top: 35% !important;
+  left: 0 !important;
+  opacity: 0 !important;
+}
+
+.isMobile {
+  overflow: hidden;
+  display: none !important;
+}
+
+.isDesktop {
+  display: flex;
+}
+
+.isDesktopchat {
+  display: flex;
+}
+
+@media screen and (max-width : 994px) {
+  .isMobile {
+    display: flex !important;
+  }
+
+  .isDesktopchat {
+    display: none !important;
+  }
+
+  .isDesktop {
+    display: none;
+  }
 }

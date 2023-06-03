@@ -11,6 +11,7 @@ import { HeaderDashboard } from "../../Header";
 import { useCookies } from "react-cookie";
 import { BsSearch } from "react-icons/bs";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { BaseUrl } from "../../../BaseUrl";
 
 const PendingProject = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const PendingProject = () => {
   useEffect(() => {
     if (cookies?.user_data) {
       axios
-        .post("http://13.52.16.160:8082/identity/filter_projects", {
+        .post(`${BaseUrl}/identity/filter_projects`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -65,7 +66,7 @@ const PendingProject = () => {
   // useEffect( () => {
   //     contextData?.userData &&
   //         axios
-  //             .post( "http://13.52.16.160:8082/identity/filter_projects", {
+  //             .post( "${BaseUrl}/identity/filter_projects", {
   //                 user_id: cookies?.user_data?.user_id,
   //                 user_token: cookies?.user_data?.user_token,
   //                 role: cookies?.user_data?.role,
@@ -90,7 +91,7 @@ const PendingProject = () => {
 
   const handleClientAcceptation = (id, project_id) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      .post(`${BaseUrl}/client/particular_project_milestones`, {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -100,15 +101,12 @@ const PendingProject = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: project_id,
-              }
-            )
+            .post(`${BaseUrl}/client/particular_project_details`, {
+              client_id: cookies?.user_data?.user_id,
+              user_token: cookies?.user_data?.user_token,
+              role: cookies?.user_data?.role,
+              project_id: project_id,
+            })
             .then((respo) => {
               if (respo?.data?.status === "Success") {
                 if (id !== undefined) {
@@ -131,7 +129,7 @@ const PendingProject = () => {
   const handleFilterProject = (e) => {
     e.preventDefault();
     axios
-      .post("http://13.52.16.160:8082/identity/search_projects", {
+      .post(`${BaseUrl}/identity/search_projects`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -149,7 +147,7 @@ const PendingProject = () => {
   };
   const searchData = () => {
     axios
-      .post("http://13.52.16.160:8082/identity/filter_projects", {
+      .post(`${BaseUrl}/identity/filter_projects`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -207,7 +205,7 @@ const PendingProject = () => {
                                     searchData();
                                   }
                                 }}
-                                placeholder="Search via project name and professional name"
+                                placeholder="Search..."
                               />
                               <button type="submit">
                                 <BsSearch />

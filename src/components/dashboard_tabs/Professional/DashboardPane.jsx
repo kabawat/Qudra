@@ -6,6 +6,8 @@ import Pagination from "react-bootstrap/Pagination";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { Button, Modal } from "react-bootstrap";
+import { BaseUrl } from "../../../BaseUrl";
+
 const initialState = {
   projects: null,
 };
@@ -27,7 +29,7 @@ const DashboardPane = () => {
   });
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/identity/filter_projects", {
+      .post(`${BaseUrl}/identity/filter_projects`, {
         page: projectPageId?.page,
         page_size: projectPageId?.page_size,
         project_status: "approved",
@@ -39,9 +41,9 @@ const DashboardPane = () => {
         dispatch({ type: "PROJECTS", value: res?.data?.data });
       });
   }, [projectPageId]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [projectPageId]);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [projectPageId]);
   const projectPaginationArray = [];
   for (
     let i = 0;
@@ -54,7 +56,7 @@ const DashboardPane = () => {
   const [show, setShow] = useState(false);
   const sellDesignHandal = () => {
     axios
-      .put("http://13.52.16.160:8082/stripe/professionl/verify-account/", {
+      .put(`${BaseUrl}/stripe/professionl/verify-account/`, {
         professioanl_id: cookies?.user_data?.user_id,
         professioanl_token: cookies?.user_data?.user_token,
       })
@@ -102,7 +104,7 @@ const DashboardPane = () => {
           <div className="d-flex align-items-center justify-content-center top-earning-box bg-white">
             <img src="./static/images/img/TotalEarnings.png" alt="" />
             <div className="ps-2">
-              <h4 className="m-0">Total Earnings</h4>
+              <h4 className="m-0">Wallet</h4>
               <h2 className="m-0">
                 ${contextData?.profileData?.total_earning}
               </h2>

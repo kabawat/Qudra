@@ -1,14 +1,5 @@
 import React from "react";
-import profGuideVid from "../../assets/vid/Freelance.mp4";
-import profGuidelineImg1 from "../../assets/img/pro1.jpg";
-import profGuidelineImg2 from "../../assets/img/pro2.jpg";
-import profGuidelineImg3 from "../../assets/img/pro3.jpg";
-import profGuidelineImg4 from "../../assets/img/pro4.jpg";
-import profGuidelineImg5 from "../../assets/img/pro5.jpg";
-import profGuidelineImg6 from "../../assets/img/pro6.jpg";
-import profGuidelineImg7 from "../../assets/img/pro7.jpg";
-import profGuidelineImg8 from "../../assets/img/pro8.jpg";
-import profGuidelineImg9 from "../../assets/img/pro9.jpg";
+
 import Dashboardside from "../ProfessionalDashboardside";
 import { HeaderDashboard } from "../Header";
 
@@ -17,10 +8,14 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import Loader from "../Loader";
 import { useEffect } from "react";
+import axios from "axios";
+import { BaseUrl } from "../../BaseUrl";
 
 const ProfessionalGuidelines = () => {
   const navigate = useNavigate();
   const [isRender, setIsRender] = useState(false);
+  const [guideImages, setGuideImages] = useState([]);
+  const [status, setStatus] = useState(true);
   const [cookies] = useCookies();
   useEffect(() => {
     if (cookies?.user_data) {
@@ -40,7 +35,28 @@ const ProfessionalGuidelines = () => {
     } else {
       navigate("/select-sign-in");
     }
+
+    /// Guideline Images API called :
+    const formData = new FormData();
+    formData.append("page", "Professional_help");
+
+    axios
+      .post(`${BaseUrl}/quadra/page_media/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res?.data?.status === "Failed") {
+          setStatus(false);
+        } else {
+          setStatus(true);
+          setGuideImages(res?.data?.data);
+        }
+      })
+      .catch((errr) => {});
   }, []);
+
   return isRender ? (
     <>
       <div className="dashboard">
@@ -56,45 +72,54 @@ const ProfessionalGuidelines = () => {
                   <div className="Guidelines">
                     <div className="images-container">
                       <div className="row p-4">
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <div className="video-container">
-                            <video
-                              src={profGuideVid}
-                              poster={profGuidelineImg1}
-                              controls
-                              preload="auto"
+                        {status ? (
+                          guideImages &&
+                          guideImages?.map((item, i) => {
+                            let checkExt = item?.media?.split(".").pop();
+                            if (
+                              checkExt === "mp4" ||
+                              checkExt === "avi" ||
+                              checkExt === "mkv"
+                            ) {
+                              return (
+                                <div className="col-md-6 col-lg-6 my-2" key={i}>
+                                  <div className="video-container">
+                                    <video
+                                      src={item?.media}
+                                      // poster={ profGuidelineImg1 }
+                                      controls
+                                      preload="auto"
+                                    >
+                                      This video is not supported by your
+                                      browser
+                                    </video>
+                                  </div>
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div className="col-md-6 col-lg-6 my-2">
+                                  <img
+                                    src={item?.media}
+                                    alt="guideline-image"
+                                  />
+                                </div>
+                              );
+                            }
+                          })
+                        ) : (
+                          <>
+                            <div
+                              style={{
+                                minHeight: "600px",
+                                display: "grid",
+                                placeItems: "center",
+                              }}
                             >
-                              This video is not supported by your browser
-                            </video>
-                          </div>
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg1} alt="guideline-image1" />
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg2} alt="guideline-image2" />
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg3} alt="guideline-image3" />
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg4} alt="guideline-image4" />
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg5} alt="guideline-image5" />
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg6} alt="guideline-image6" />
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg7} alt="guideline-image7" />
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg8} alt="guideline-image8" />
-                        </div>
-                        <div className="col-md-6 col-lg-6 my-2">
-                          <img src={profGuidelineImg9} alt="guideline-image9" />
-                        </div>
+                              <span className="h4">No Data Found</span>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

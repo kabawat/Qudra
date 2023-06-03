@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { BsSearch, BsFillSuitHeartFill } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import Pagination from "react-bootstrap/Pagination";
-
 import Global from "../../../context/Global";
 import axios from "axios";
 import Dashboardside from "../../ProfessionalDashboardside";
@@ -12,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { BaseUrl } from "../../../BaseUrl";
 const LikesShow = () => {
   const contextData = useContext(Global);
   const [likes, setLikes] = useState([]);
@@ -37,7 +37,7 @@ const LikesShow = () => {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data.role === "professional") {
           axios
-            .post("http://13.52.16.160:8082/identity/get-like-save", {
+            .post(`${BaseUrl}/identity/get-like-save`, {
               user_id: cookies?.user_data?.user_id,
               user_token: cookies?.user_data?.user_token,
               role: cookies?.user_data?.role,
@@ -76,7 +76,7 @@ const LikesShow = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     axios
-      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      .post(`${BaseUrl}/identity/search_like_rate_user`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -98,7 +98,7 @@ const LikesShow = () => {
   const handleLikes = (val) => {
     if (val == "") {
       axios
-        .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+        .post(`${BaseUrl}/identity/search_like_rate_user`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -118,7 +118,7 @@ const LikesShow = () => {
   const [searchData, setSearchdata] = useState(searchAll);
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/identity/search_like_rate_user", {
+      .post(`${BaseUrl}/identity/search_like_rate_user`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,

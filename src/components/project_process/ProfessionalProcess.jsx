@@ -15,6 +15,7 @@ import ReactLottie3 from "../../loader/ReactLottie3";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactLotti from "../../loader/ReactLotti";
+import { BaseUrl } from "../../BaseUrl";
 
 const ProfessionalProcess = ({ location }) => {
   const contextData = useContext(Global);
@@ -38,7 +39,7 @@ const ProfessionalProcess = ({ location }) => {
     if (req === "declined") {
       setdecline_loader(true);
       axios
-        .post("http://13.52.16.160:8082/professional/project_requests", {
+        .post(`${BaseUrl}/professional/project_requests`, {
           client_id: location?.state?.client_id,
           user_token: cookies?.user_data?.user_token,
           professional_id: cookies?.user_data?.user_id,
@@ -58,7 +59,7 @@ const ProfessionalProcess = ({ location }) => {
     } else {
       setsubmit_loader(true);
       axios
-        .post("http://13.52.16.160:8082/professional/project_requests", {
+        .post(`${BaseUrl}/professional/project_requests`, {
           client_id: location?.state?.client_id,
           user_token: cookies?.user_data?.user_token,
           professional_id: cookies?.user_data?.user_id,
@@ -71,6 +72,8 @@ const ProfessionalProcess = ({ location }) => {
         .then((res) => {
           if (res?.data?.status === "Success") {
             navigate("/request-projects");
+            setsubmit_loader(false);
+          } else if (res?.data?.status === "Failed") {
             setsubmit_loader(false);
           } else {
             setsubmit_loader(false);
@@ -175,6 +178,19 @@ const ProfessionalProcess = ({ location }) => {
         input.value = input.value.slice(0, input.maxLength);
     };
   });
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
+  const handleScroll = (event) => {
+    event.preventDefault();
+    handleScroll(event);
+  };
   return loading ? (
     <Loader />
   ) : (
@@ -286,7 +302,10 @@ const ProfessionalProcess = ({ location }) => {
                         <h5>Project Description:</h5>
                       </div>
                       <div className="row">
-                        <p className="m-0 ms-3 ">
+                        <p
+                          className="m-0 ms-3 "
+                          style={{ whiteSpace: "pre-line" }}
+                        >
                           {showText ? (
                             <div>
                               {location?.state?.projectData?.description}
@@ -439,13 +458,10 @@ const ProfessionalProcess = ({ location }) => {
                   } else {
                     setsubmit_loader(true);
                     axios
-                      .put(
-                        "http://13.52.16.160:8082/stripe/professionl/verify-account/",
-                        {
-                          professioanl_id: cookies?.user_data?.user_id,
-                          professioanl_token: cookies?.user_data?.user_token,
-                        }
-                      )
+                      .put(`${BaseUrl}/stripe/professionl/verify-account/`, {
+                        professioanl_id: cookies?.user_data?.user_id,
+                        professioanl_token: cookies?.user_data?.user_token,
+                      })
                       .then((result) => {
                         if (result?.data?.status === "Failed") {
                           setShow(true);
@@ -589,7 +605,7 @@ const ProfessionalProcess = ({ location }) => {
                           ) {
                             axios
                               .post(
-                                "http://13.52.16.160:8082/professional/project_details",
+                                `${BaseUrl}/professional/project_details`,
                                 formdata
                               )
                               .then((res) => {
@@ -625,7 +641,7 @@ const ProfessionalProcess = ({ location }) => {
                   <Form>
                     <section className="form_data ">
                       <div className="container">
-                        <div className="main_heading my-3">
+                        <div className="main_heading my-4">
                           <h3>Milestone Details</h3>
                         </div>
                         <form>
@@ -663,13 +679,15 @@ const ProfessionalProcess = ({ location }) => {
                                 /> */}
                               </div>
                               <div className="field-data">
-                                <label htmlFor="fname">Cost Percentage</label>
+                                <label htmlFor="fname">Cost </label>
                                 <Field
-                                  type="number"
+                                  type="text"
                                   name="milestone_one_percent"
                                   maxLength="2"
                                   min="0"
                                   max="99"
+                                  onWheel={handleScroll}
+                                  onKeyPress={handleKeyPress}
                                   placeholder=" Cost % "
                                   className="milestone_input_des maxlength "
                                   value={values.milestone_one_percent}
@@ -855,15 +873,17 @@ const ProfessionalProcess = ({ location }) => {
                               </div>
                               <div className="field-data">
                                 <label htmlFor="milestone_two_percent">
-                                  Cost Percentage
+                                  Cost
                                 </label>
                                 <Field
                                   name="milestone_two_percent"
-                                  type="number"
+                                  type="text"
                                   maxLength="2"
                                   min="0"
                                   max="99"
                                   placeholder=" Cost % "
+                                  onWheel={handleScroll}
+                                  onKeyPress={handleKeyPress}
                                   className="milestone_input_des maxlength"
                                   value={values.milestone_two_percent}
                                   onChange={(e) => {
@@ -1054,14 +1074,16 @@ const ProfessionalProcess = ({ location }) => {
                               </div>
                               <div className="field-data">
                                 <label htmlFor="milestone_third_percent">
-                                  Cost Percentage
+                                  Cost
                                 </label>
                                 <Field
                                   name="milestone_third_percent"
-                                  type="number"
+                                  type="text"
                                   maxLength="2"
                                   min="0"
                                   max="99"
+                                  onWheel={handleScroll}
+                                  onKeyPress={handleKeyPress}
                                   placeholder=" Cost % "
                                   className="milestone_input_des  maxlength"
                                   value={values.milestone_third_percent}
@@ -1252,14 +1274,16 @@ const ProfessionalProcess = ({ location }) => {
                               </div>
                               <div className="field-data">
                                 <label htmlFor="milestone_four_percent">
-                                  Cost Percentage
+                                  Cost
                                 </label>
                                 <Field
                                   name="milestone_four_percent"
-                                  type="number"
+                                  type="text"
                                   maxLength="2"
                                   min="0"
                                   max="99"
+                                  onWheel={handleScroll}
+                                  onKeyPress={handleKeyPress}
                                   placeholder=" Cost % "
                                   className="milestone_input_des  maxlength"
                                   value={values.milestone_four_percent}
@@ -1448,14 +1472,16 @@ const ProfessionalProcess = ({ location }) => {
 
                               <div class="field-data">
                                 <label for="milestone_fifth_percent">
-                                  Cost Percentage
+                                  Cost
                                 </label>
                                 <Field
                                   name="milestone_fifth_percent"
-                                  type="number"
+                                  type="text"
                                   maxLength="2"
                                   min="0"
                                   max="99"
+                                  onWheel={handleScroll}
+                                  onKeyPress={handleKeyPress}
                                   placeholder=" Cost % "
                                   className="milestone_input_des  maxlength"
                                   value={values.milestone_fifth_percent}
@@ -1666,7 +1692,9 @@ const ProfessionalProcess = ({ location }) => {
                       <div className="row mt-sm-5 mt-3 g-sm-3 g-3">
                         <div className="col-sm">
                           <button
-                            disabled={decline_loader ? true : false}
+                            disabled={
+                              decline_loader || submit_loader ? true : false
+                            }
                             onClick={() => {
                               handleProfessionalDecesion("declined");
                             }}
@@ -1689,33 +1717,30 @@ const ProfessionalProcess = ({ location }) => {
                         </div>
 
                         <div className="col-sm">
-                          {submit_loader ? (
-                            <button
-                              type="button"
-                              className={`theme-bg-color text-white   ${
-                                windowSize?.width > 576 ? "me-auto" : "mx-auto"
-                              }`}
-                            >
-                              <ReactLottie3 />
-                            </button>
-                          ) : (
-                            <button
-                              type="submit"
-                              className={`theme-bg-color text-white   ${
-                                windowSize?.width > 576 ? "me-auto" : "mx-auto"
-                              }`}
-                            >
-                              Accept
-                            </button>
-                          )}
+                          <button
+                            disabled={
+                              decline_loader || submit_loader ? true : false
+                            }
+                            type="submit"
+                            className={`theme-bg-color text-white   ${
+                              windowSize?.width > 576 ? "me-auto" : "mx-auto"
+                            }`}
+                          >
+                            {submit_loader ? <ReactLottie3 /> : "Accept"}
+                          </button>
                         </div>
                       </div>
                     </section>
                   </Form>
                 )}
               </Formik>
-              <Modal centered show={show} onHide={() => setShow(false)}>
-                <Modal.Header closeButton>
+              <Modal
+                centered
+                backdrop="static"
+                show={show}
+                onHide={() => setShow(false)}
+              >
+                <Modal.Header>
                   <Modal.Title>
                     Please Verify your Account Details.{" "}
                   </Modal.Title>

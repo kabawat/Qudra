@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Global from "../../context/Global";
 import ReactLotti from "../../loader/ReactLotti";
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../../BaseUrl";
 
 const countries = [
   {
@@ -1074,297 +1075,15 @@ const countries = [
   },
 ];
 
-//     id: 1,
-//     name: "Australia",
-//     flag: "🇦🇺",
-//     alpha2: "AU",
-//     alpha3: "AUS",
-//     ioc: "AUS",
-//   },
-//   {
-//     id: 2,
-//     name: "Austria",
-//     flag: "🇦🇹",
-//     alpha2: "AT",
-//     alpha3: "AUT",
-//     ioc: "AUT",
-//   },
-//   {
-//     id: 3,
-//     name: "Belgium",
-//     flag: "🇧🇪",
-//     alpha2: "BE",
-//     alpha3: "BEL",
-//     ioc: "BEL",
-//   },
-//   {
-//     id: 4,
-//     name: "Bulgaria",
-//     flag: "🇧🇬",
-//     alpha2: "BG",
-//     alpha3: "BGR",
-//     ioc: "BUL",
-//   },
-//   {
-//     id: 5,
-//     name: "Canada",
-//     flag: "🇨🇦",
-//     alpha2: "CA",
-//     alpha3: "CAN",
-//     ioc: "CAN",
-//   },
-//   {
-//     id: 6,
-//     name: "Cyprus",
-//     flag: "🇨🇾",
-//     alpha2: "CY",
-//     alpha3: "CYP",
-//     ioc: "CYP",
-//   },
-//   {
-//     id: 7,
-//     name: "Czech Republic",
-//     flag: "🇨🇿",
-//     alpha2: "CZ",
-//     alpha3: "CZE",
-//     ioc: "CZE",
-//   },
-//   {
-//     id: 8,
-//     name: "Denmark",
-//     flag: "🇩🇰",
-//     alpha2: "DK",
-//     alpha3: "DNK",
-//     ioc: "DEN",
-//   },
-//   {
-//     id: 9,
-//     name: "Estonia",
-//     flag: "🇪🇪",
-//     alpha2: "EE",
-//     alpha3: "EST",
-//     ioc: "EST",
-//   },
-//   {
-//     id: 10,
-//     name: "Finland",
-//     flag: "🇫🇮",
-//     alpha2: "FI",
-//     alpha3: "FIN",
-//     ioc: "FIN",
-//   },
-//   {
-//     id: 11,
-//     name: "France",
-//     flag: "🇫🇷",
-//     alpha2: "FR",
-//     alpha3: "FRA",
-//     ioc: "FRA",
-//   },
-//   {
-//     id: 12,
-//     name: "Germany",
-//     flag: "🇩🇪",
-//     alpha2: "DE",
-//     alpha3: "DEU",
-//     ioc: "GER",
-//   },
-//   {
-//     id: 13,
-//     name: "Greece",
-//     flag: "🇬🇷",
-//     alpha2: "GR",
-//     alpha3: "GRC",
-//     ioc: "GRE",
-//   },
-//   {
-//     id: 14,
-//     name: "Hong Kong",
-//     flag: "🇭🇰",
-//     alpha2: "HK",
-//   },
-//   {
-//     id: 15,
-//     name: "Hungary",
-//     flag: "🇭🇺",
-//     alpha2: "HU",
-//     alpha3: "HUN",
-//     ioc: "HUN",
-//   },
-//   {
-//     id: 16,
-//     name: "Ireland",
-//     flag: "🇮🇪",
-//     alpha2: "IE",
-//     alpha3: "IRL",
-//     ioc: "IRL",
-//   },
-//   {
-//     id: 17,
-//     name: "Italy",
-//     flag: "🇮🇹",
-//     alpha2: "IT",
-//     alpha3: "ITA",
-//     ioc: "ITA",
-//   },
-//   {
-//     id: 18,
-//     name: "Japan",
-//     flag: "🇯🇵",
-//     alpha2: "JP",
-//     alpha3: "JPN",
-//     ioc: "JPN",
-//   },
-//   {
-//     id: 19,
-//     name: "Latvia",
-//     flag: "🇱🇻",
-//     alpha2: "LV",
-//     alpha3: "LVA",
-//     ioc: "LAT",
-//   },
-//   {
-//     id: 20,
-//     name: "Lithuania",
-//     flag: "🇱🇹",
-//     alpha2: "LT",
-//     alpha3: "LTU",
-//     ioc: "LTU",
-//   },
-//   {
-//     id: 21,
-//     name: "Luxembourg",
-//     flag: "🇱🇺",
-//     alpha2: "LU",
-//     alpha3: "LUX",
-//     ioc: "LUX",
-//   },
-//   {
-//     id: 22,
-//     name: "Malta",
-//     flag: "🇲🇹",
-//     alpha2: "MT",
-//     alpha3: "MLT",
-//     ioc: "MLT",
-//   },
-//   {
-//     id: 23,
-//     name: "Netherlands",
-//     flag: "🇳🇱",
-//     alpha2: "NL",
-//     alpha3: "NLD",
-//     ioc: "NED",
-//   },
-//   {
-//     id: 24,
-//     name: "New Zealand",
-//     flag: "🇳🇿",
-//     alpha2: "NZ",
-//     alpha3: "NZL",
-//     ioc: "NZL",
-//   },
-//   {
-//     id: 25,
-//     name: "Norway",
-//     flag: "🇳🇴",
-//     alpha2: "NO",
-//     alpha3: "NOR",
-//     ioc: "NOR",
-//   },
-//   {
-//     id: 26,
-//     name: "Poland",
-//     flag: "🇵🇱",
-//     alpha2: "PL",
-//     alpha3: "POL",
-//     ioc: "POL",
-//   },
-//   {
-//     id: 27,
-//     name: "Portugal",
-//     flag: "🇵🇹",
-//     alpha2: "PT",
-//     alpha3: "PRT",
-//     ioc: "POR",
-//   },
-//   {
-//     id: 28,
-//     name: "Romania",
-//     flag: "🇷🇴",
-//     alpha2: "RO",
-//     alpha3: "ROU",
-//     ioc: "ROU",
-//   },
-//   {
-//     id: 29,
-//     name: "Singapore",
-//     flag: "🇸🇬",
-//     alpha2: "SG",
-//     alpha3: "SGP",
-//     ioc: "SGP",
-//   },
-//   {
-//     id: 30,
-//     name: "Slovakia",
-//     flag: "🇸🇰",
-//     alpha2: "SK",
-//     alpha3: "SVK",
-//     ioc: "SVK",
-//   },
-//   {
-//     id: 31,
-//     name: "Slovenia",
-//     flag: "🇸🇮",
-//     alpha2: "SI",
-//     alpha3: "SVN",
-//     ioc: "SLO",
-//   },
-//   {
-//     id: 32,
-//     name: "Spain",
-//     flag: "🇪🇸",
-//     alpha2: "ES",
-//     alpha3: "ESP",
-//     ioc: "ESP",
-//   },
-//   {
-//     id: 33,
-//     name: "Sweden",
-//     flag: "🇸🇪",
-//     alpha2: "SE",
-//     alpha3: "SWE",
-//     ioc: "SWE",
-//   },
-//   {
-//     id: 34,
-//     name: "Switzerland",
-//     flag: "🇨🇭",
-//     alpha2: "ch",
-//     alpha3: "CHE",
-//     ioc: "SUI",
-//   },
-//   {
-//     id: 35,
-//     name: "United Kingdom of Great Britain and Northern Ireland",
-//     flag: "🇬🇧",
-//     alpha2: "gb",
-//     alpha3: "GBR",
-//     ioc: "GBR",
-//   },
-//   {
-//     id: 36,
-//     name: "United States of America",
-//     flag: "🇺🇸",
-//     alpha2: "us",
-//     alpha3: "USA",
-//     ioc: "USA",
-//   },
-// ];
 const SignUpSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Password must be aleast 8 characters long!")
     .max(30, "Password is too long!")
-    .required("Password required"),
+    .required("Password required")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
   email: Yup.string().email("Enter a valid email").required("Email Required"),
   last_name: Yup.string()
     .min(3, "Enter your last name")
@@ -1397,6 +1116,8 @@ const SignIn = () => {
   const [OtpResponse, setOtpResponse] = useState("Verify");
   const [optdisplay, setoptdisplay] = useState("none");
   let navigate = useNavigate();
+  const [emailerr, setemailerr] = useState(false);
+
   const [imgcode, setimgcode] = useState("");
   const [emailExists, setEmailExists] = useState(false);
   const [email_verifyErr, setemail_verifyErr] = useState(false);
@@ -1423,26 +1144,33 @@ const SignIn = () => {
   }, []);
 
   const verifyRequestButton = () => {
+    let regex =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     let email = $("#EmailInputSignUpForm").val();
-    setLoadingActive(true);
+    if (!regex.test(email)) {
+      setemailerr("Enter valid email");
+    } else {
+      setLoadingActive(true);
 
-    axios
-      .post("http://13.52.16.160:8082/identity/verify-email", {
-        email: email,
-      })
-      .then((res) => {
-        if (res?.data?.status === "Failed") {
-          setShow(false);
-          setLoadingActive(false);
-          setExistingEmail(true);
-          setOtpResponse("Verify");
-        }
-        if (res?.data?.status === "Success") {
-          setShow(true);
-          setLoadingActive(false);
-          setExistingEmail(false);
-        }
-      });
+      axios
+        .post(`${BaseUrl}/identity/verify-email`, {
+          email: email,
+        })
+        .then((res) => {
+          if (res?.data?.status === "Failed") {
+            setShow(false);
+            setLoadingActive(false);
+            setExistingEmail(true);
+            setOtpResponse("Verify");
+          }
+          if (res?.data?.status === "Success") {
+            setShow(true);
+            setLoadingActive(false);
+            setExistingEmail(false);
+            setemailerr("");
+          }
+        });
+    }
   };
   const [validateOTP, setValidateOTP] = useState(false);
 
@@ -1454,7 +1182,7 @@ const SignIn = () => {
 
     e.preventDefault();
     axios
-      .put("http://13.52.16.160:8082/identity/verify-email", {
+      .put(`${BaseUrl}/identity/verify-email`, {
         email: email,
         otp: otp,
       })
@@ -1465,6 +1193,7 @@ const SignIn = () => {
           handleOTP("");
           setShow(false);
           setoptdisplay("none");
+          setemailerr("");
         } else {
           setOtpResponse("Verify");
           // handleOTP("");
@@ -1494,6 +1223,7 @@ const SignIn = () => {
   const handleEmailFocus = () => {
     setExistingEmail(false);
     setOtpResponse("Verify");
+    setoptdisplay("none");
   };
 
   useEffect(() => {
@@ -1554,10 +1284,7 @@ const SignIn = () => {
                   } else {
                     setLoading(true);
                     axios
-                      .post(
-                        "http://13.52.16.160:8082/identity/signup_client",
-                        values
-                      )
+                      .post(`${BaseUrl}/identity/signup_client`, values)
                       .then((res) => {
                         if (res?.data?.status !== "Success") {
                           setOtpResponse("Please try Again");
@@ -1578,14 +1305,14 @@ const SignIn = () => {
                         if (res?.data?.status === "Success") {
                           axios
                             .post(
-                              "http://13.52.16.160:8082/identity/client_profile",
+                              `${BaseUrl}/identity/client_profile`,
                               signupuser
                             )
                             .then((respo) => {
                               if (respo.data?.status === "Success") {
                                 axios
                                   .post(
-                                    "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                    `${BaseUrl}/identity/get_dashboard_profile/`,
                                     {
                                       user_id: res?.data?.data?.user_id,
                                       user_token: res?.data?.data?.user_token,
@@ -1671,8 +1398,10 @@ const SignIn = () => {
                             placeholder="Enter Your Mail"
                             name="email"
                             onInput={handleEmailFocus}
+                            disabled={OtpResponse === "Verified" ? true : false}
                           />
                           <button
+                            disabled={OtpResponse === "Verified" ? true : false}
                             onClick={verifyRequestButton}
                             type="button"
                             className={
@@ -1735,15 +1464,13 @@ const SignIn = () => {
                             </div>
                           </Modal>
                           <i className="fa-regular fa-envelope"></i>
-                          <ErrorMessage
+                          {/* <ErrorMessage
                             name="email"
                             component="div"
                             className="m-2 text-danger"
-                          />
+                          /> */}
                           {email_verifyErr ? (
-                            <span className="text-danger">
-                              Please Verify Email
-                            </span>
+                            <span className="text-danger">Verify Email</span>
                           ) : null}
                         </div>
                         {existingEmail ? (
@@ -1770,6 +1497,9 @@ const SignIn = () => {
                             click
                           </button>
                         </div>
+                        {emailerr ? (
+                          <span style={{ color: "red" }}>{emailerr}</span>
+                        ) : null}
                       </div>
                       <div className="col-md my-md-3 my-1">
                         <div className="create-account-input">
@@ -1843,7 +1573,6 @@ const SignIn = () => {
                           value={value}
                           onChange={(val) => {
                             setValue(val);
-                            // console.log(val);
                             // let id = val.id;
                             // setimgcode( id.toLocaleUpperCase() );
                             setFieldValue("nation", val?.name);
@@ -1967,6 +1696,7 @@ const SignIn = () => {
                               style={{ marginLeft: "5px" }}
                               to="/terms-condition"
                               className="theme-text-color text-decoration-none "
+                              target="_new"
                             >
                               Quadra Terms of Service User Agreement Privacy
                               Policy
@@ -1996,6 +1726,10 @@ const SignIn = () => {
                         onClick={() => {
                           if (!filePic) {
                             seterrdisplay("block");
+                          }
+                          if (OtpResponse === "Verify") {
+                            setemailerr("Please verify email");
+                            //  return false;
                           }
                         }}
                       >

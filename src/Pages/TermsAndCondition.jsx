@@ -77,7 +77,7 @@ const TermsAndCondition = () => {
               <div className="col-lg-3 col-md-4 col-7 ">
                 <Link to="/">
                   <img
-                    src="./static/images/Quadra-transparrent-logo.png"
+                    src="./static/images/Logo8.png"
                     alt="logo"
                     style={{ height: "100px" }}
                   />

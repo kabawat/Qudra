@@ -24,10 +24,18 @@ import { MultiSelect } from "react-multi-select-component";
 import { GiCancel } from "react-icons/gi";
 import Loader from "../../components/Loader";
 import { grey } from "@mui/material/colors";
+
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../../BaseUrl";
 const ProfessionalBuyAndSale = () => {
   const contextData = useContext(Global);
   const ref = useRef();
+
+  const handleKeyDownPrice = (event) => {
+    if (event.key === ".") {
+      event.preventDefault();
+    }
+  };
 
   const [catErr, setCatErr] = useState(false);
   const [clsstyle, setclsstyle] = useState("none");
@@ -91,7 +99,7 @@ const ProfessionalBuyAndSale = () => {
   useEffect(() => {
     if (!contextData?.static_buy_sale_design?.data?.length) {
       axios
-        .get(`http://13.52.16.160:8082/quadra/sub_categories?category_id=3`)
+        .get(`${BaseUrl}/quadra/sub_categories?category_id=3`)
         .then((res) => {
           contextData?.dispatch({
             type: "STATIC_BUY_SALE_DESIGN",
@@ -162,7 +170,7 @@ const ProfessionalBuyAndSale = () => {
 
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/professional/professional_sub_cat", {
+      .post(`${BaseUrl}/professional/professional_sub_cat`, {
         ...cookies?.user_data,
       })
       .then((res) => {
@@ -210,8 +218,12 @@ const ProfessionalBuyAndSale = () => {
 
   const [modalSubCatagoryID, setModalSubCatagoryID] = useState("");
   const SetUpSchema = Yup.object().shape({
-    price: Yup.string().required("Please enter a price"),
-    customize_price: Yup.string().required("Please Enter Customization Price"),
+    price: Yup.number()
+      .typeError("Price must be a number")
+      .required("Please enter a price"),
+    customize_price: Yup.number()
+      .typeError("Customization Price must be a number")
+      .required("Please Enter Customization Price"),
   });
   const [showImagesSection, setShowImagesSection] = useState(false);
 
@@ -220,7 +232,7 @@ const ProfessionalBuyAndSale = () => {
   const formSubmit = (valueArray) => {
     if (valueArray.length) {
       axios
-        .post("http://13.52.16.160:8082/professional/sel_sub_category", {
+        .post(`${BaseUrl}/professional/sel_sub_category`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -262,7 +274,7 @@ const ProfessionalBuyAndSale = () => {
     state?.sub_catagory_data?.CataId &&
       state?.sub_catagory_data?.SubCataId &&
       axios
-        .post("http://13.52.16.160:8082/professional/sub_cat_data", {
+        .post(`${BaseUrl}/professional/sub_cat_data`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -291,7 +303,7 @@ const ProfessionalBuyAndSale = () => {
     try {
       if (list.length && selectedCatagories) {
         axios
-          .post("http://13.52.16.160:8082/professional/sel_sub_category", {
+          .post(`${BaseUrl}/professional/sel_sub_category`, {
             user_id: cookies?.user_data?.user_id,
             user_token: cookies?.user_data?.user_token,
             role: cookies?.user_data?.role,
@@ -326,10 +338,7 @@ const ProfessionalBuyAndSale = () => {
   const handleEditDesign = (data) => {
     setLoader(true);
     axios
-      .post(
-        "http://13.52.16.160:8082/professional/update_buy_sell_project",
-        data
-      )
+      .post(`${BaseUrl}/professional/update_buy_sell_project`, data)
       .then(() => {
         setLoader(false);
         dispatch({ type: "PREVIEW_DATA_MODAL", value: false });
@@ -817,14 +826,11 @@ const ProfessionalBuyAndSale = () => {
                       });
 
                       axios
-                        .put(
-                          "http://13.52.16.160:8082/professional/sel_sub_category",
-                          {
-                            ...cookies?.user_data,
-                            category_id: "3",
-                            new_sub_cat: values?.new_sub_cat,
-                          }
-                        )
+                        .put(`${BaseUrl}/professional/sel_sub_category`, {
+                          ...cookies?.user_data,
+                          category_id: "3",
+                          new_sub_cat: values?.new_sub_cat,
+                        })
                         .then((res) => {
                           return res?.data?.status === "Success"
                             ? (dispatch({
@@ -942,7 +948,7 @@ const ProfessionalBuyAndSale = () => {
                         setLoader(true);
                         axios
                           .post(
-                            "http://13.52.16.160:8082/professional/sell_design",
+                            `${BaseUrl}/professional/sell_design`,
                             catagoryUpload
                           )
                           .then((res) => {
@@ -985,6 +991,7 @@ const ProfessionalBuyAndSale = () => {
                                   placeholder="Enter Your project Price "
                                   className="priceInput"
                                   name="price"
+                                  onKeyDown={handleKeyDownPrice}
                                 />
                                 <ErrorMessage
                                   name="price"
@@ -1069,6 +1076,7 @@ const ProfessionalBuyAndSale = () => {
                                     placeholder="Enter Your Customization Price "
                                     className="priceInput"
                                     name="customize_price"
+                                    onKeyDown={handleKeyDownPrice}
                                   />
                                   <ErrorMessage
                                     name="customize_price"
@@ -1269,7 +1277,7 @@ const ProfessionalBuyAndSale = () => {
                   // fullscreen={
                   //   state?.preview_catagory_data?.type === "edit" ? false : false
                   // }
-                  size="xl"
+                  size="lg"
                   aria-labelledby="contained-modal-title-vcenter"
                   centered
                   className="modalProfessionalDashboard"
@@ -1289,6 +1297,7 @@ const ProfessionalBuyAndSale = () => {
                   {state?.preview_catagory_data &&
                     state?.preview_catagory_data?.type === "image" && (
                       <img
+                        className="img-fluid object-fit-contain"
                         src={state?.preview_catagory_data?.image}
                         alt=""
                         style={{ maxHeight: "532px" }}
@@ -1353,13 +1362,14 @@ const ProfessionalBuyAndSale = () => {
                                 Edit Design
                               </h3>
                               <div className="row">
-                                <div className="col">
+                                <div className="col-xl col-12">
                                   <div className="selectprice">
                                     <BsCurrencyDollar />
                                     <Field
                                       type="number"
                                       placeholder="Enter Your project Price "
                                       className="priceInput"
+                                      onKeyDown={handleKeyDownPrice}
                                       name="price"
                                       value={values.price}
                                       onChange={(e) => {
@@ -1395,7 +1405,10 @@ const ProfessionalBuyAndSale = () => {
                                       }}
                                     >
                                       <img
-                                        style={{ height: "44px" }}
+                                        style={{
+                                          height: "44px",
+                                          maxWidth: "50px",
+                                        }}
                                         src={
                                           imgPreview
                                             ? imgPreview
@@ -1412,7 +1425,7 @@ const ProfessionalBuyAndSale = () => {
                                       <span
                                         style={{
                                           position: "absolute",
-                                          right: "10%",
+                                          right: "33%",
                                           top: "1%",
                                         }}
                                       >
@@ -1451,6 +1464,7 @@ const ProfessionalBuyAndSale = () => {
                                         placeholder="Enter Your Customization Price "
                                         className="priceInput"
                                         name="customize_price"
+                                        onKeyDown={handleKeyDownPrice}
                                         value={values.customize_price}
                                         onChange={(e) => {
                                           setFieldValue(
@@ -1473,7 +1487,7 @@ const ProfessionalBuyAndSale = () => {
                                 </div>
                               </div>
                               <div className="row m-0 pb-3 mb-3">
-                                <div className="col ps-0">
+                                <div className="col-xl col-12 ps-0 p-0">
                                   <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
                                     <button className="w-100" type="button">
                                       <BsPlusLg
@@ -1488,11 +1502,10 @@ const ProfessionalBuyAndSale = () => {
                                       <span>
                                         {vidlbl
                                           ? vidlbl
-                                          : state?.preview_catagory_designs
-                                              ?.video[
+                                          : state?.preview_catagory_designs?.video[
                                               state?.preview_catagory_data
                                                 ?.index
-                                            ]}
+                                            ].slice(0, 20)}
                                       </span>
                                       <span
                                         style={{
@@ -1535,7 +1548,7 @@ const ProfessionalBuyAndSale = () => {
                                     />
                                   </div>
                                 </div>
-                                <div className="col pe-0">
+                                <div className="col-xl col-12 pe-0">
                                   <div className="d-flex imageDropBoxDashboardProfessional align-items-center">
                                     <button className="w-100" type="button">
                                       <BsPlusLg

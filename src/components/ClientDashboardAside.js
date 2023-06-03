@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import Global from "../context/Global";
 import { CiHeart } from "react-icons/ci";
 import { MdOutlineLiveHelp } from "react-icons/md";
+import { FaFileInvoice } from "react-icons/fa";
 const ClientDashboardAside = () => {
   const contextData = useContext(Global);
   return (
@@ -10,10 +11,10 @@ const ClientDashboardAside = () => {
       <div className="d-flex px-3 ps-xxl-4 ps-4 pb-4 pb-xxl-2  pt-5 pt-xxl-5">
         <Link to="/">
           <img
-            src="/static/images/Quadra-transparrent-logo.png"
-            className="logo"
+            src="/static/images/Logo8.png"
+            className="logo Quadradashboardlogo"
             alt="logo"
-            style={{ height: "100px" }}
+            style={{ width: "calc(10% + 160px)" }}
           />
         </Link>
       </div>
@@ -169,6 +170,34 @@ const ClientDashboardAside = () => {
               className="Activities-green-icon"
             />
             Purchased Design
+          </NavLink>
+        </li>
+
+        <li className="nav-item">
+          <NavLink className={`nav-link activity-btn`} to="/billing">
+            {/* <img
+              src="/static/icon/likes2.png"
+              alt=""
+              className="Activities-white-icon"s
+            />
+            <img
+              src="/static/icon/likes1.png"
+              alt=""
+              className="Activities-green-icon"
+            /> */}
+            <FaFileInvoice
+              className="Activities-white-icon  "
+              style={{ marginRight: "10px" }}
+              color="white "
+              size={18}
+            />
+            <FaFileInvoice
+              className="Activities-green-icon "
+              style={{ marginRight: "10px" }}
+              color="#01a789"
+              size={18}
+            />
+            Billings
           </NavLink>
         </li>
 

@@ -6,12 +6,14 @@ import { Header3 } from "../components/Header";
 import { welcomeImg } from "../components/images";
 import HeroesSection from ".././components/HeroesSection";
 import HeroesSection1 from "../components/HeroesSection1";
+import { BaseUrl } from "../BaseUrl";
+
 const Join = () => {
   const navigate = useNavigate();
   const [cookies] = useCookies();
 
   useEffect(() => {
-    axios.get("http://13.52.16.160:8082/quadra/categories").then((res) => {
+    axios.get(`${BaseUrl}/quadra/categories`).then((res) => {
       localStorage.setItem("selectCatagory", JSON.stringify(res?.data));
     });
     const script = document.createElement("script");
@@ -48,7 +50,7 @@ const Join = () => {
     return (
       <div style={{ position: "relative" }}>
         <div className="create-account let-get-started animationLogin">
-          <Header3 navColor="black" />
+          <Header3 navColor="white" />
           <HeroesSection1 />
           <div className="join-us-now-main d-md-flex align-items-center newJoin">
             <div className="join-us-now-text ms-auto d-flex justify-content-center align-items-center flex-column">

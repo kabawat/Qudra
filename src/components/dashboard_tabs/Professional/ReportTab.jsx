@@ -15,6 +15,7 @@ import { FreeMode, Navigation } from "swiper";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { BaseUrl } from "../../../BaseUrl";
 
 function ReportTab() {
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,7 @@ function ReportTab() {
     if (cookies?.user_data) {
       axios
         .post(
-          "http://13.52.16.160:8082/professional/client_list_buysell_design_professional/",
+          `${BaseUrl}/professional/client_list_buysell_design_professional/`,
           {
             professional_id: cookies?.user_data?.user_id,
             professional_token: cookies?.user_data?.user_token,
@@ -52,7 +53,6 @@ function ReportTab() {
         )
         .then((res) => {
           if (res?.data?.status === "Success") {
-            // console.log(res.data.data);
             // setLoading(true);
             setDesignsSold(res?.data?.data);
             setMyProject(res?.data?.data);
@@ -351,7 +351,12 @@ function ReportTab() {
                   setSpecificProductDataType("");
                 }}
               >
-                <Modal.Header closeButton></Modal.Header>
+                <Modal.Header
+                  closeButton
+                  style={{ background: "white", borderRadius: "7px" }}
+                >
+                  {" "}
+                </Modal.Header>
                 <Modal.Body className=" p-0">
                   <Swiper
                     style={{

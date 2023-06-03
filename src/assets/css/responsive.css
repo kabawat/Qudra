@@ -1,4 +1,28 @@
 @media screen and (min-width: 576px) and (max-width: 767px) {
+  section.chatbox .chats-header form.search input.search__input {
+    width: 100px;
+  }
+  .create-account-header .profile-edit-dropdown {
+    right: 14%;
+  }
+
+  .Quadradashboardlogo {
+    width: calc(10% + 100px) !important;
+  }
+  .card-box-our-top-clients .card img {
+    width: 100%;
+  }
+  .card-box-our-top-clients {
+    margin: 10px 0 !important;
+    height: 1100px !important;
+  }
+  .card-box-our-top-clients {
+    padding: 20px 0 !important;
+  }
+  .our-top-clients-images-sec {
+    padding: 20px 0;
+  }
+
   .cart_page_main {
     width: 85% !important;
     margin: auto;
@@ -29,7 +53,7 @@
     max-width: 22%;
   }
   .logo {
-    height: 0px !important;
+    /* height: 0px !important; */
   }
 
   /* ====== 09-05-2023 ======= */
@@ -83,7 +107,7 @@
   }
 
   .chatbox .container {
-    padding: 0px;
+    padding: 0 50px;
     max-width: 100%;
     margin: 0;
   }
@@ -99,7 +123,101 @@
   }
 }
 
+@media screen and (min-width: 320px) and (max-width: 411px) {
+  .heroesjoin {
+    height: calc(100vh - 90px) !important;
+  }
+  .card-box-our-top-clients .card img {
+    width: 100%;
+  }
+  .card-box-our-top-clients {
+    margin: 10px 0 !important;
+    height: 1100px !important;
+  }
+  .card-box-our-top-clients {
+    padding: 20px 0 !important;
+  }
+  .our-top-clients-images-sec {
+    padding: 20px 0;
+  }
+  .headerMail {
+    padding: 0 25px !important;
+  }
+  .profileinfo {
+    justify-content: center !important;
+  }
+  .profileinfo_padding {
+    padding-left: 5px !important;
+  }
+}
+
+@media screen and (min-width: 412px) and (max-width: 575px) {
+  .heroesjoin {
+    height: calc(100vh - 91px) !important;
+  }
+  .headerMail {
+    padding: 0 35px !important;
+  }
+  .card-box-our-top-clients .card img {
+    width: 100%;
+  }
+  .card-box-our-top-clients {
+    margin: 10px 0 !important;
+    height: 1100px !important;
+  }
+  .card-box-our-top-clients {
+    padding: 20px 0 !important;
+  }
+  .our-top-clients-images-sec {
+    padding: 20px 0;
+  }
+}
+
 @media screen and (min-width: 320px) and (max-width: 575px) {
+  section.chatbox .chats-header form.search input.search__input {
+    width: 95px;
+  }
+  .userChatName {
+    font-size: 16px;
+  }
+  .create-account-header .profile-edit-dropdown {
+    right: 10%;
+  }
+  .signLink {
+    width: 100px !important;
+  }
+  .liSignup {
+    width: 240px !important;
+    display: grid;
+    place-content: end;
+  }
+  .Quadradashboardlogo {
+    width: calc(10% + 100px) !important;
+  }
+  .viewFile {
+    width: 100px !important;
+  }
+  .pendingBtnMileAll {
+    width: 100px !important;
+  }
+  .DownloadbtnMile {
+    width: 100px !important;
+  }
+  .pendingBtnMile {
+    width: 100px !important;
+  }
+  .pendingMileStone {
+    width: 100px !important;
+  }
+  .uploadMileStonefo {
+    width: 100px;
+  }
+  .mileFile {
+    width: 100px !important;
+  }
+  .pendingBtnMileAl {
+    width: 100px !important;
+  }
   .buy-now-btn-cancel,
   .buy-now-btn,
   .buy-now-btn-active {
@@ -210,6 +328,29 @@
   }
 }
 @media screen and (min-width: 320px) and (max-width: 767px) {
+  section.chatbox .container {
+    max-width: 763px !important;
+  }
+  .homePageherosSectionLogo {
+    width: 250px;
+  }
+  .userHeaderProjectName {
+    /* display: block !important; */
+  }
+
+  .editEmail {
+    display: none !important;
+  }
+  .profileinfo {
+    width: 200px;
+    justify-content: center;
+  }
+  .headerLogo1 {
+    width: calc(10% + 95px);
+  }
+  .Report {
+    margin: auto;
+  }
   .searchActiveProject.col-lg-8.ms-auto form input {
     padding-right: 67px;
   }
@@ -291,7 +432,7 @@
   }
 
   .logo {
-    height: 50px !important;
+    /* height: 50px !important; */
   }
 
   .dashboard aside {
@@ -345,7 +486,9 @@
   .profile-mob h6 {
     display: none;
   }
-
+  .verify-btn {
+    padding: 5px 8px !important;
+  }
   .mob-heading {
     font-size: 19px !important;
   }
@@ -413,6 +556,7 @@
     width: 95%;
     margin: 20px auto;
     border-radius: 20px;
+    display: grid;
   }
 
   .card-box-our-top-clients .card img {
@@ -476,9 +620,6 @@
     display: flex;
   }
 
-  .homePageherosSectionLogo {
-    height: 80px !important;
-  }
   header.dashboard-header h6 {
     font-size: 12px;
   }
@@ -747,6 +888,7 @@
     padding: 10px 30px;
     margin: auto;
     display: block;
+    margin-top: 20px;
   }
   .create-account main.create-account-main form .logInbtn {
     font-size: 15px;
@@ -776,7 +918,7 @@
     min-height: auto;
     padding: 60px 20px;
     border-radius: 30px;
-    margin: 0 30px;
+    /* margin: 0 30px; */
   }
   .let-get-started .join-us-now-main .join-us-now-text h3 {
     font-size: 22px;
@@ -891,6 +1033,13 @@
     width: 60px;
     height: 60px;
   }
+  main.profile-page
+    section.profile-page-sec-three
+    .button-group-profile-page
+    svg {
+    width: 60px;
+    height: 60px;
+  }
   main.profile-page section.profile-page-sec-three h4 {
     font-size: 16px;
   }
@@ -943,6 +1092,26 @@
 }
 
 @media screen and (min-device-width: 768px) and (max-device-width: 991px) {
+  header.create-account-header ul li a {
+    margin-left: 5px;
+  }
+
+  .create-account main.create-account-main form .create-account-btn {
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+  .modalProfessionalDashboard .selectCategoryMain {
+    margin-top: 20px;
+  }
+  .ModalCategorySubmit {
+    margin-top: 10px !important;
+  }
+  .sukhuPurchaseImg {
+    max-height: 100px !important;
+  }
+  .homePageherosSectionLogo {
+    width: 300px;
+  }
   .cuspurchase {
     font-size: 15px;
   }
@@ -983,11 +1152,11 @@
   }
 
   section.projectMilestoneInfo {
-    display: flex;
+    /* display: flex; */
     flex-wrap: wrap;
   }
   section.projectMilestoneInfo button:last-child {
-    width: 165px;
+    width: 205px;
     margin: 0 20px;
   }
 
@@ -1100,9 +1269,7 @@
   .let-get-started .join-us-now-main .join-us-now-text a:nth-child(2) button {
     font-size: 12px;
   }
-  .homePageherosSectionLogo {
-    height: 90px !important;
-  }
+
   .Find_Talent {
     padding: 50px 0 0 0px;
   }
@@ -1421,6 +1588,15 @@
     width: 60px;
     height: 60px;
   }
+
+  main.profile-page
+    section.profile-page-sec-three
+    .button-group-profile-page
+    svg {
+    width: 60px;
+    height: 60px;
+  }
+
   main.profile-page section.profile-page-sec-three h4 {
     font-size: 14px;
     font-weight: 600;
@@ -1560,9 +1736,9 @@
   .logo {
     height: 60px !important;
   }
-  .profileEdit-button h4,
-  .profile-mob h6 {
-    display: none;
+  .profileEdit-button,
+  .profile-mob {
+    /* display: none; */
   }
   .uploadimageCat {
     height: 52px;
@@ -1596,7 +1772,7 @@
   }
 
   .mob-hide {
-    display: none;
+    /* display: none; */
   }
 
   .henry-img img {
@@ -1613,9 +1789,6 @@
 
   /* =============== 05 April  ================ */
 
-  .homePageherosSectionLogo {
-    height: 110px !important;
-  }
   .form-image-input img {
     width: 100%;
   }
@@ -1867,6 +2040,22 @@
   }
 }
 @media screen and (min-device-width: 992px) and (max-device-width: 1199px) {
+  .modalProfessionalDashboard .selectCategoryMain {
+    margin-top: 20px;
+  }
+  .sukhuPurchaseImg {
+    max-height: 100px !important;
+  }
+  .homePageherosSectionLogo {
+    width: 310px;
+  }
+  .verifyYour {
+    display: none;
+  }
+  .verify-btn {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
   .cuspurchase {
     font-size: 15px;
   }
@@ -1887,7 +2076,7 @@
     place-content: center !important;
   }
   .resMile {
-    margin: 5% 0 !important ;
+    margin: 2% 0 !important ;
   }
   .verified-btn {
     padding: 6px;
@@ -1914,27 +2103,74 @@
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1399px) {
+  .heroesjoin {
+    height: calc(100vh - 115px) !important;
+  }
+  .heading_earing {
+    font-size: 22px;
+  }
+  .earning_row_col svg {
+    width: 25px;
+  }
+  .sukhuPurchaseImg {
+    max-height: 100px !important;
+  }
+  .homePageherosSectionLogo {
+    width: 350px;
+  }
+  .miniRate {
+    font-size: 21px !important;
+  }
+  .Quadradashboardlogo {
+    /* height: 80px !important; */
+  }
+  .miniRate_browse {
+    font-size: 23px !important;
+  }
+  .accpt_dec {
+    padding: 0 !important;
+  }
   .viewFilePro {
     padding: 0 !important;
   }
   .viewFile {
-    width: 160px;
+    width: 120px;
+  }
+  .pendingMileStone {
+    width: 120px !important;
+  }
+  .uploadMileStonefo {
+    width: 120px;
+  }
+  .pendingBtnMileAl {
+    width: 120px !important;
+  }
+  .pendingBtnMileAll {
+    width: 120px !important;
   }
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1279px) {
+  .verify-btn {
+    padding: 8px 10px !important;
+    font-size: 15px !important;
+  }
   .btnBoeMile1 {
-    padding: 9px 10px !important;
+    /* padding: 9px 10px !important; */
+    width: 120px !important;
   }
   .btnBoeMile {
-    padding: 9px 10px !important;
+    /* padding: 9px 10px !important; */
+    width: 120px !important;
   }
-
+  .DownloadbtnMile {
+    width: 120px !important;
+  }
   .pendingBtnMile {
     padding: 5px 37px !important;
   }
   .resMile {
-    /* justify-content: space-between !important; */
+    justify-content: space-between !important;
   }
   .accept_btn_group button {
   }
@@ -1974,9 +2210,7 @@
   header.dashboard-header .profile-edit-dropdown {
     right: 30px;
   }
-  .homePageherosSectionLogo {
-    height: 120px !important;
-  }
+
   .create-account main.create-account-main form {
     padding: 50px;
     min-height: 500px;
@@ -2176,6 +2410,10 @@
   .let-get-started .join-us-now-main .join-us-now-text {
     padding: 75px 25px;
   }
+  .verify-btn {
+    padding: 8px 10px !important;
+    font-size: 15px !important;
+  }
   .mileFileCol {
     padding: 0 !important;
   }
@@ -2205,7 +2443,7 @@
     padding: 6px 12px !important;
   }
   .logo {
-    height: 80px !important;
+    /* height: 80px !important; */
   }
   .pendingBtnMile {
     padding: 5px 37px !important;
@@ -2241,7 +2479,7 @@
   }
 
   .cart_page_main h3 {
-    font-size: 11px !important;
+    font-size: 16px !important;
   }
   .PaymentCardSubmitButton {
     width: 120px !important;
@@ -2262,7 +2500,7 @@
     justify-content: space-between !important;
   }
   .bl-col img {
-    height: 65px !important;
+    /* height: 65px !important; */
     width: 100%;
     object-fit: cover;
   }
@@ -2312,7 +2550,7 @@
   }
 
   .cart_page_main h3 {
-    font-size: 13px !important;
+    font-size: 16px !important;
   }
   .PaymentCardSubmitButton {
     width: 120px !important;
@@ -2331,9 +2569,17 @@
 }
 
 @media screen and (min-device-width: 1400px) and (max-device-width: 1600px) {
+  .sukhuPurchaseImg {
+    max-height: 150px !important;
+  }
   .resMile {
     justify-content: space-between !important;
   }
+
+  .PaymentCardSubmitButton {
+    width: 135px !important;
+  }
+
   .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
     font-size: 14px;
     line-height: 55px;
@@ -2347,63 +2593,37 @@
     background-position: 100%;
     background-size: 105% 100%;
   }
-  /* .newJoin {
-    top: 20%;
-  } */
 }
-
-/* 
-.dashboard main #dashboard-menu-bar .total-earning-row h3 {
-    font-size: 26px;
-}
-
-.dashboard main #dashboard-menu-bar .total-earning-row h5 {
-    font-size: 18px;
-}
-
-.dashboard main #dashboard-menu-bar img {
-    height: 42px;
-}
-
-.dashboard main #dashboard-menu-bar .total-earning-row h4 {
-    font-size: 16px;
-}
-
-.dashboard main #dashboard-menu-bar .total-earning-row h2 {
-    font-size: 26px;
-}
-
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional {
-    padding: 30px;
-}
-
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional h4 {
-    font-size: 28px;
-    line-height: normal;
-    margin: 0;
-}
-
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional p {
-    font-size: 18px;
-    line-height: normal;
-    width: 90%;
-}
-
-.dashboard main #dashboard-menu-bar .completed-projects-row .Become-professional button {
-    padding: 8px 30px;
-}
-
-.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h3 {
-    font-size: 19px;
-}
-
-.dashboard main #dashboard-menu-bar .completed-projects-row .completed-projects-box h2 {
-    font-size: 26px;
-} */
 
 @media screen and (max-width: 767px) {
+  #google_translate_elementMob {
+    padding-left: 25px !important;
+    padding-top: 10px !important;
+  }
+  .ModalCategorySubmit {
+    margin-top: 10px !important;
+  }
+  .purchaseImg img {
+    max-height: 200px;
+  }
+  .purchaseVid video {
+    max-height: 200px;
+  }
+
+  .headerLogo {
+    width: calc(10% + 130px);
+  }
+
+  .LinkErr {
+    width: 118.7px !important;
+    margin-left: 4.1% !important;
+  }
   .card-box-our-top-clients-row {
     max-height: 0 !important;
+  }
+
+  header.home-page-header ul li a {
+    color: white !important;
   }
   .accept_btn_group {
     margin: 0 !important;
@@ -2439,8 +2659,28 @@
   } */
 }
 @media screen and (min-width: 768px) and (max-width: 992px) {
+  .create-account header.create-account-header ul li {
+    margin-left: 5px;
+  }
+  .Quadradashboardlogo {
+    width: calc(10% + 140px) !important;
+  }
+  .verify-btn {
+    padding: 8px 10px !important;
+    font-size: 14px !important;
+  }
   .helpactive {
     width: 300px !important;
+  }
+  .dashboard aside ul.nav-tabs li.nav-item a.nav-link {
+    padding-left: 7px !important;
+    font-size: 14px;
+  }
+  .progress-bar-main {
+    padding: 10px !important;
+  }
+  .mob-hide {
+    font-size: 14px !important;
   }
 }
 @media screen and (min-width: 1276px) and (max-width: 1399px) {
@@ -2474,10 +2714,12 @@
     margin: 0 !important;
   }
   .headerMail {
-    display: block !important;
+    /* display: block !important;
+     */
+    padding: 0 5px;
   }
   .headerMailInner {
-    margin-top: 7%;
+    /* margin-top: 7%; */
   }
 
   .btnBoeMile1 {
@@ -2513,9 +2755,38 @@
     padding: 0 !important;
   }
 }
+
+@media screen and (min-width: 1199px) {
+  .purchaseImg img {
+    max-height: 114px;
+  }
+  .purchaseVid video {
+    max-height: 114px;
+  }
+}
+@media screen and (min-width: 576px) and (max-width: 991px) {
+  .heroesjoin {
+    height: calc(100vh - 102px) !important;
+  }
+}
 @media screen and (max-width: 1199px) {
+  .heading_earing {
+    font-size: 27px;
+  }
+  .earning_row_col svg {
+    width: 30px;
+  }
+  .pendingBtnMile {
+    margin: 10px 0 !important;
+  }
+  .uploadMileStoneof {
+    margin: 10px 0 !important;
+  }
   .cart_page_main h3 {
-    font-size: 14px !important;
+    font-size: 16px !important;
+  }
+  .viewFileCol {
+    justify-content: center !important;
   }
   .gapForpurchase {
     padding-top: 20px !important;
@@ -2537,6 +2808,9 @@
   .mileFile {
     margin: 10px 0 !important;
   }
+  .viewFileCol {
+    margin: 10px 0 !important;
+  }
   .resMile {
     justify-content: space-around !important;
   }
@@ -2550,10 +2824,16 @@
     justify-content: end !important;
   }
   .uploadMileStonefo {
-    justify-content: end !important;
+    /* justify-content: end !important; */
   }
 }
 @media screen and (min-device-width: 1400px) and (max-device-width: 1600px) {
+  .heading_earing {
+    font-size: 27px;
+  }
+  .Quadradashboardlogo {
+    /* height: 80px !important; */
+  }
   .buy-now-btn,
   .buy-now-btn-active,
   .buy-now-btn-cancel {
@@ -2599,6 +2879,20 @@
   .fetures ul li {
     width: 39%;
   }
+  .purchaseImg img {
+    max-height: 184px;
+  }
+  .purchaseVid video {
+    max-height: 184px;
+  }
+  .Quadradashboardlogo {
+    /* width: 100px !important; */
+    height: 60px;
+  }
+  .verify-btn {
+    padding: 8px 10px !important;
+    font-size: 14px !important;
+  }
   .buy-now-btn,
   .buy-now-btn-active,
   .buy-now-btn-cancel {
@@ -2614,10 +2908,13 @@
 
 @media screen and (min-width: 768px) and (max-width: 1470px) {
   .checkout_data .checkout-listing {
-    padding-left: 5% !important;
+    padding-left: 3% !important;
   }
 }
 @media screen and (min-device-width: 992px) and (max-device-width: 1199px) {
+  .heroesjoin {
+    height: calc(100vh - 109px) !important;
+  }
   .milestoneBox1 {
     display: grid !important;
     place-content: center !important;
@@ -2647,7 +2944,7 @@
   }
 
   .chatbox .container {
-    padding: 0px;
+    padding: 0px 30px;
     max-width: 100%;
     margin: 0;
   }
@@ -2658,7 +2955,7 @@
 }
 @media screen and (min-width: 1601px) {
   .resMile {
-    /* justify-content: space-between !important; */
+    justify-content: space-between !important;
   }
   .uploadMileStonefo {
     padding: 10px 55px;
@@ -2678,5 +2975,10 @@
 @media screen and (min-width: 768px) and (max-width: 1199px) {
   .bl-sold-card {
     padding: 0px 8px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .card-box-our-top-clients-row {
+    place-content: center !important;
   }
 }

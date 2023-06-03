@@ -7,32 +7,34 @@ import Global from "../../context/Global";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../../BaseUrl";
 const ProfessionalCategoryVisualization = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
   const [selectList, setSelectList] = useState();
-  const [cookies,] = useCookies()
-  const [isRender, setIsRender] = useState(false)
+  const [cookies] = useCookies();
+  const [isRender, setIsRender] = useState(false);
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data?.role === "client") {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         } else {
-          navigate('/professionaldashboard')
+          navigate("/professionaldashboard");
         }
       } else {
         if (cookies?.user_data?.role === "professional") {
-          setIsRender(true)
+          setIsRender(true);
         } else {
-          navigate('/client-architechture')
+          navigate("/client-architechture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     let list = {};
@@ -125,14 +127,12 @@ const ProfessionalCategoryVisualization = () => {
   };
 
   useEffect(() => {
-    axios
-      .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=2")
-      .then((res) => {
-        contextData?.dispatch({
-          type: "STATIC_VISUALIZATION_DESIGN",
-          value: res?.data,
-        });
+    axios.get(`${BaseUrl}/quadra/sub_categories?category_id=2`).then((res) => {
+      contextData?.dispatch({
+        type: "STATIC_VISUALIZATION_DESIGN",
+        value: res?.data,
       });
+    });
   }, []);
 
   if (contextData?.static_visualization_design?.data?.length && isRender) {
@@ -187,7 +187,13 @@ const ProfessionalCategoryVisualization = () => {
                               >
                                 <div className="row  category-box">
                                   <div className="col-md-3 col-12 h-100 text-center  px-2">
-                                    <div className={selectList[`checkbox${i}`] ? "p-md-1 p-lg-3 icon-box " : "p-md-1 p-lg-3 icon-box"}>
+                                    <div
+                                      className={
+                                        selectList[`checkbox${i}`]
+                                          ? "p-md-1 p-lg-3 icon-box "
+                                          : "p-md-1 p-lg-3 icon-box"
+                                      }
+                                    >
                                       <img
                                         id={i + "icon"}
                                         src={
@@ -240,7 +246,7 @@ const ProfessionalCategoryVisualization = () => {
                       <button
                         type="submit"
                         className="create-account-btn"
-                      // onClick={() => navigate("/client-visualisation")}
+                        // onClick={() => navigate("/client-visualisation")}
                       >
                         Continue <BsArrowRight style={{ color: "white" }} />
                       </button>

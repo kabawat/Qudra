@@ -10,8 +10,18 @@ import { Backdrop, CircularProgress } from "@mui/material";
 import { Button, Container, Modal } from "react-bootstrap";
 import ReactLotti3 from "../../../loader/ReactLottie3";
 import { HiTrash } from "react-icons/hi";
+import { BaseUrl } from "../../../BaseUrl";
 
 const CheckOut = () => {
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
   const [show, setShow] = useState(false);
   const [cookies] = useCookies();
   const location = useLocation();
@@ -27,10 +37,28 @@ const CheckOut = () => {
   const [paymentError, setPaymentError] = useState("");
   const [payment_loader, setpayment_loader] = useState(false);
   const [checkout_loader, setcheckout_loader] = useState(false);
+  const [carderr, setCarderr] = useState(false);
+  const [deleteLoader, setdeleteloader] = useState(false);
+  const [showdelete, setShowDelete] = useState(false);
+
+  const handleDeleteClose = () => setShowDelete(false);
+  const handleDeleteShow = () => setShowDelete(true);
+
+  const [showPayModal, setshowPayModal] = useState(false);
+
+  const handlePayClose = () => setshowPayModal(false);
+  const handlePayShow = () => {
+    if (curCart == "") {
+      setshowPayModal(false);
+      setError("Please select a card");
+    } else {
+      setshowPayModal(true);
+    }
+  };
 
   const handleCard = () => {
     axios
-      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
+      .post(`${BaseUrl}/client/client_checkout_details/`, {
         client_id: cookies?.user_data?.user_id,
         client_token: cookies?.user_data?.user_token,
         professional_id: location?.state?.professional_id,
@@ -38,8 +66,10 @@ const CheckOut = () => {
       })
       .then((result) => {
         if (
-          result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
+          (result?.data?.error_code === 109 &&
+            result?.data?.status === "Failed") ||
+          (result?.data?.status === "Failed" &&
+            result?.data?.error_code === 109)
         ) {
           setIsPayment(true);
         } else {
@@ -49,13 +79,18 @@ const CheckOut = () => {
       });
   };
   useEffect(() => {
-    console.log(location?.state);
     handleCard();
   }, []);
+  useEffect(() => {
+    if (card?.length === 1) {
+      setCurCart(card[0]?.id);
+    }
+  }, [card]);
 
   const deleteCard = () => {
+    setdeleteloader(true);
     axios
-      .post("http://13.52.16.160:8082/stripe/client/delete/card/", {
+      .post(`${BaseUrl}/stripe/client/delete/card/`, {
         client_id: cookies?.user_data?.user_id,
         client_token: cookies?.user_data?.user_token,
         card_id: card[0].id,
@@ -63,6 +98,12 @@ const CheckOut = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           handleCard();
+          setdeleteloader(false);
+          setCurCart("");
+          handleDeleteClose();
+        } else if (res?.data?.status === "Failed") {
+          setdeleteloader(false);
+          handleDeleteClose();
         }
       });
   };
@@ -72,10 +113,10 @@ const CheckOut = () => {
     try {
       if (curCart === "") {
         setpayment_loader(false);
-        throw new Error("please select a card");
+        throw new Error("Please select a card");
       }
       axios
-        .post("http://13.52.16.160:8082/client/purchase/buy-sell-design/", {
+        .post(`${BaseUrl}/client/purchase/buy-sell-design/`, {
           client_id: cookies?.user_data?.user_id,
           client_token: cookies?.user_data?.user_token,
           role: "client",
@@ -86,14 +127,14 @@ const CheckOut = () => {
           payment_card_id: curCart,
         })
         .then((result) => {
-          if (
-            result?.data?.error_code === 109 &&
-            result?.data?.status === "Failed"
-          ) {
+          if (result?.data?.status === "Failed") {
             setpayment_loader(false);
+            handlePayClose();
           } else {
             setProject(result?.data?.data?.project_url);
             setShow(show);
+            handlePayClose();
+
             setpayment_loader(false);
           }
         });
@@ -162,29 +203,45 @@ const CheckOut = () => {
   };
 
   const handalPurchase = (event) => {
+    setCarderr(true);
     setcheckout_loader(true);
     event.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/stripe/client/new/card/", {
-        ...cartInfo,
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-      })
-      .then((response) => {
-        setcheckout_loader(false);
-        if (response?.data?.status === "Failed") {
-          const error = response?.data?.message;
-          setPaymentError(error.split(":")[1]);
-        } else {
-          setShow2(true);
+    if (
+      !cartInfo.card_number ||
+      !cartInfo.cvc ||
+      !cartInfo.expiry_month ||
+      !cartInfo.expiry_year
+    ) {
+      setCarderr(true);
+
+      setcheckout_loader(false);
+    } else {
+      setCarderr(false);
+
+      axios
+        .post(`${BaseUrl}/stripe/client/new/card/`, {
+          ...cartInfo,
+          client_id: cookies?.user_data?.user_id,
+          client_token: cookies?.user_data?.user_token,
+        })
+        .then((response) => {
           setcheckout_loader(false);
-          handleCard();
-          setIsPayment(false);
-          setPaymentError("");
-          setCartInfo(infocard);
-        }
-      })
-      .catch((error) => {});
+          if (response?.data?.status === "Failed") {
+            const error = response?.data?.message;
+            setPaymentError(error.split(":")[1]);
+            setcheckout_loader(false);
+          } else {
+            setShow2(true);
+            setcheckout_loader(false);
+            handleCard();
+            setIsPayment(false);
+            setPaymentError("");
+            setCartInfo(infocard);
+            setcheckout_loader(false);
+          }
+        })
+        .catch((error) => {});
+    }
   };
   document.querySelectorAll('input[type="number"]').forEach((input) => {
     input.oninput = () => {
@@ -280,7 +337,13 @@ const CheckOut = () => {
                                 card.map((item, keys) => {
                                   return (
                                     <>
-                                      <div className="card_div">
+                                      <div
+                                        className="card_div "
+                                        style={{
+                                          display: "contents",
+                                          position: "relative",
+                                        }}
+                                      >
                                         <div
                                           className={
                                             item?.id === curCart
@@ -293,6 +356,14 @@ const CheckOut = () => {
                                             setError("");
                                           }}
                                         >
+                                          <div className="">
+                                            <span onClick={handleDeleteShow}>
+                                              <HiTrash
+                                                color="white"
+                                                size={25}
+                                              />
+                                            </span>
+                                          </div>
                                           <h5>XXX XXXX XXXX {item?.last4}</h5>
                                           <div className="card-details">
                                             <span>
@@ -303,17 +374,20 @@ const CheckOut = () => {
                                             </span>
                                           </div>
                                         </div>
-                                        <div className="Delete_card">
-                                          <span onClick={deleteCard}>
-                                            <HiTrash color="white" size={25} />
-                                          </span>
-                                        </div>
                                       </div>
                                     </>
                                   );
                                 })}
+                              {error && (
+                                <div className="error-box mb-3 text-danger">
+                                  <span style={{ fontSize: "18px" }}>
+                                    {error}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           </div>
+
                           <div className="add-card-button">
                             <button
                               className="left-button"
@@ -324,32 +398,55 @@ const CheckOut = () => {
                             </button>
                           </div>
 
-                          <div className="choose-payment-button">
-                            <button
-                              disabled={payment_loader ? true : false}
-                              type="button"
-                              className="payment-btn"
-                              onClick={() => handalSubmit(true)}
-                            >
-                              {payment_loader ? (
-                                <ReactLotti3 />
-                              ) : (
-                                "Make a Payment"
-                              )}
-                            </button>
-                            <button
-                              type="button"
-                              className="left-button"
-                              onClick={handalBack}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                          {error && (
-                            <div className="error-box">
-                              <span>{error}</span>
-                            </div>
+                          {card.length !== 0 && (
+                            <>
+                              <div className="choose-payment-button">
+                                <button
+                                  disabled={payment_loader ? true : false}
+                                  type="button"
+                                  className="payment-btn"
+                                  onClick={() => {
+                                    if (!payment_loader) {
+                                      // handalSubmit(true);
+                                      handlePayShow();
+                                    }
+                                  }}
+                                >
+                                  Make a Payment
+                                </button>
+                                <button
+                                  type="button"
+                                  className="left-button"
+                                  onClick={handalBack}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </>
                           )}
+                          {payment_loader ? (
+                            <Backdrop
+                              sx={{
+                                color: "#fff",
+                                zIndex: (theme) => theme.zIndex.drawer + 1,
+                              }}
+                              open={payment_loader}
+                            >
+                              <CircularProgress color="inherit" />
+                            </Backdrop>
+                          ) : null}
+
+                          {deleteLoader ? (
+                            <Backdrop
+                              sx={{
+                                color: "#fff",
+                                zIndex: (theme) => theme.zIndex.drawer + 1,
+                              }}
+                              open={deleteLoader}
+                            >
+                              <CircularProgress color="inherit" />
+                            </Backdrop>
+                          ) : null}
                         </div>
                       </div>
                     </Container>
@@ -387,10 +484,19 @@ const CheckOut = () => {
       {/* new card add  */}
       <Modal
         centered
+        backdrop="static"
+        keyboard={false}
         show={isPayment}
         onHide={() => {
           setIsPayment(false);
           setPaymentError("");
+          setCarderr(false);
+          setCartInfo({
+            card_number: "",
+            expiry_month: "",
+            expiry_year: "",
+            cvc: "",
+          });
         }}
       >
         <Modal.Header closeButton>
@@ -400,11 +506,13 @@ const CheckOut = () => {
         <Modal.Footer>
           <div className="bg-white payementFormMain card-popup">
             <form onSubmit={handalPurchase}>
-              <div className="row m-0 pt-3 pb-4 border-bottom">
-                <h6>Card Number</h6>
+              <div className="row m-0 pt-3 pb-4 border-bottom card-p-0">
+                <h6 className="card-p-0">Card Number</h6>
                 <input
+                  className="card-p-0"
                   id="ccn"
-                  type="number"
+                  type="text"
+                  onKeyPress={handleKeyPress}
                   // inputMode="numeric"
                   // pattern="[0-9\s]+{13,16}"
                   autoComplete="cc-number"
@@ -416,6 +524,9 @@ const CheckOut = () => {
                     handalChange(event?.target?.name, event?.target?.value);
                   }}
                 />
+                {!cartInfo.card_number && carderr && (
+                  <span className="text-danger card-p-0">Required</span>
+                )}
               </div>
               <div className="row  py-3">
                 <div className="col-8">
@@ -434,6 +545,9 @@ const CheckOut = () => {
                           }
                         />
                       </div>
+                      {!cartInfo.expiry_month && carderr && (
+                        <span className="text-danger">Required</span>
+                      )}
                     </div>
                     <div className="col cardExpiry yearInput">
                       <div className="border-bottom">
@@ -447,6 +561,9 @@ const CheckOut = () => {
                           }}
                         />
                       </div>
+                      {!cartInfo.expiry_year && carderr && (
+                        <span className="text-danger"> Required</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -455,8 +572,9 @@ const CheckOut = () => {
                     <div className="col d-flex flex-column justify-content-end">
                       <label htmlFor="CVV">CVV:</label>
                       <input
-                        type="number"
+                        type="text"
                         id="CVV"
+                        onKeyPress={handleKeyPress}
                         placeholder="xxx"
                         className="border-bottom"
                         maxLength={3}
@@ -470,6 +588,9 @@ const CheckOut = () => {
                           );
                         }}
                       />
+                      {!cartInfo.cvc && carderr && (
+                        <span className="text-danger">Required</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -486,6 +607,52 @@ const CheckOut = () => {
               </div>
             </form>
           </div>
+        </Modal.Footer>
+      </Modal>
+      {/* delete card modal */}
+      <Modal
+        show={showdelete}
+        onHide={handleDeleteClose}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>Are you sure to delete this card?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleDeleteClose}>
+            Cancel
+          </Button>
+          <Button
+            onClick={deleteCard}
+            style={{ backgroundColor: "#00A78B", border: "none" }}
+          >
+            Sure
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* Payment modal */}
+      <Modal
+        show={showPayModal}
+        onHide={handlePayClose}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>Are you sure to make payment?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handlePayClose}>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handalSubmit(true);
+            }}
+            style={{ backgroundColor: "#00A78B", border: "none" }}
+          >
+            Sure
+          </Button>
         </Modal.Footer>
       </Modal>
       {/* <Footer /> */}

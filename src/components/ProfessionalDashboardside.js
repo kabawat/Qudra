@@ -7,18 +7,19 @@ import { MdSell } from "react-icons/md";
 import Global from "../context/Global";
 import { TbMessageReport } from "react-icons/tb";
 import axios from "axios";
+import { BaseUrl } from "../BaseUrl";
+import { AiOutlineDollarCircle } from "react-icons/ai";
 
 const Dashboardside = () => {
   const contextData = useContext(Global);
   const [progressData, setProgressData] = useState([]);
   useEffect(() => {
     axios
-      .post(" http://13.52.16.160:8082/professional/progress_report/", {
+      .post(`${BaseUrl}/professional/progress_report/`, {
         user_id: contextData?.userData?.user_id,
         user_token: contextData?.userData?.user_token,
       })
       .then((res) => {
-        console.log(res);
         setProgressData(res.data);
       });
   }, []);
@@ -29,10 +30,10 @@ const Dashboardside = () => {
         <div className="d-flex px-3 ps-xxl-4 ps-4 pb-4 pb-xxl-2  pt-5 pt-xxl-5">
           <Link to="/">
             <img
-              src="/static/images/Quadra-transparrent-logo.png"
-              className="logo "
+              src="/static/images/Logo8.png"
+              className="logo Quadradashboardlogo"
               alt="logo"
-              style={{ height: "100px" }}
+              style={{ width: "calc(10% + 160px)" }}
             />
           </Link>
         </div>
@@ -47,7 +48,7 @@ const Dashboardside = () => {
         </label>
         <input type="checkbox" name="" id="dash" />
         <div className="menu-cont">
-          <div className="px-xxl-5 px-4 py-xxl-5 py-4 progress-bar-main">
+          <div className="px-xxl-5 px-lg-4 py-xxl-5 py-4 progress-bar-main">
             <div className="d-flex justify-content-between">
               <label htmlFor="progressbar-quality-of-work">
                 Quality of Work
@@ -343,6 +344,22 @@ const Dashboardside = () => {
                   }}
                 />
                 <span className="mob-hide">Subscription Plans</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className={`nav-link liked-btn`} to="/total-earnings">
+                <AiOutlineDollarCircle
+                  style={{
+                    color: `${
+                      contextData?.current_professional_tab === "total_earnins"
+                        ? "#00a78b"
+                        : "white"
+                    }`,
+                    fontSize: "27px",
+                  }}
+                />
+                <span className="mob-hide"> Total Earnings</span>
               </NavLink>
             </li>
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { ChatHeader } from "../components/Header";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper";
@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import BackButton from "../components/Button/BackButton";
 import styled from "styled-components";
+
 import { useNavigate } from "react-router-dom";
 const Wrapper = styled.div`
   position: relative;
@@ -99,6 +100,10 @@ const reducer = (state, action) => {
   }
 };
 const CategoryResult = () => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
   const contextData = useContext(Global);
@@ -115,7 +120,7 @@ const CategoryResult = () => {
       {location?.state ? (
         location?.state?.image === "" ? (
           <div
-            style={{ height: "calc(100vh - 137px)" }}
+            style={{ height: "calc(100vh - 220px)" }}
             className="d-flex flex-column justify-content-center align-items-center "
           >
             <h2>User Has Not Uploaded Any Image Yet</h2>
@@ -191,6 +196,7 @@ const CategoryResult = () => {
                                       backgroundColor: "#00A78B",
                                     }}
                                     onClick={() => {
+                                      handleShow();
                                       dispatch({
                                         type: "PREVIEW_DATA",
                                         value: {
@@ -258,7 +264,7 @@ const CategoryResult = () => {
       <div className="container d-flex my-5 justify-content-center">
         <BackButton text="back" />
       </div>
-      <Modal
+      {/* <Modal
         show={state?.preview_data_modal}
         fullscreen={true}
         aria-labelledby="contained-modal-title-vcenter"
@@ -281,6 +287,49 @@ const CategoryResult = () => {
               maxHeight: "100%",
               objectFit: "contain",
               width: "50%",
+              margin: "auto",
+            }}
+          />
+        )}
+
+        {state?.preview_data &&
+          state?.preview_data?.type === "video" &&
+          state?.preview_data?.video !== "" &&
+          state?.preview_data?.video && (
+            <video
+              className="h-100"
+              src={state?.preview_data?.video && state?.preview_data?.video}
+              controls="true"
+              autoplay="true"
+              style={{ objectFit: "contain" }}
+            ></video>
+          )}
+      </Modal> */}
+      <Modal show={show} onHide={handleClose} size="lg" centered>
+        <button
+          className="closeBtn"
+          style={{
+            position: "absolute",
+            top: "5px",
+            right: "5px",
+            borderRadius: "50%",
+            padding: "4px 12px",
+            backgroundColor: "#01B182",
+            border: "none",
+            color: "white",
+          }}
+          onClick={handleClose}
+        >
+          x
+        </button>
+        {state?.preview_data && state?.preview_data?.type === "image" && (
+          <img
+            src={state?.preview_data?.image}
+            alt=""
+            style={{
+              maxHeight: "532px",
+              objectFit: "contain",
+              width: "100%",
               margin: "auto",
             }}
           />

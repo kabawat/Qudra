@@ -9,6 +9,7 @@ const HeroesSection1 = () => {
   return (
     <>
       <div
+        className="heroesjoin"
         id="heroes"
         style={{
           position: "relative",

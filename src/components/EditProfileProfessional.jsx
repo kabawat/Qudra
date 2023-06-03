@@ -19,6 +19,8 @@ import Global from "../context/Global";
 import { getCode } from "country-list";
 import { useCookies } from "react-cookie";
 import { Button, Modal } from "react-bootstrap";
+import ReactLottie4 from "../loader/ReactLottie4";
+import { BaseUrl } from "../BaseUrl";
 
 const languages = [
   { label: "Albanian", value: "Albanian" },
@@ -72,10 +74,24 @@ const languages = [
 ];
 
 const EditProfileProfessional = ({ location }) => {
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
+
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [skillsOpt, setSkillsOpt] = useState([]);
+
   const navigate = useNavigate();
   const [cookies] = useCookies();
+
   const [value, setValue] = useState({
     // alpha2: "us",
     // alpha3: "usa",
@@ -110,7 +126,9 @@ const EditProfileProfessional = ({ location }) => {
       .trim()
       .min(100, "Minimum 100 character required")
       .required("Job description  required"),
-    price_range: Yup.string().required("Price range required"),
+    price_range: Yup.number()
+      .typeError("Price range must be a number")
+      .required("Price range required"),
 
     nation: Yup.string().required("Country name required"),
     bio: Yup.string().min(100).max(500).trim().required("About required"),
@@ -127,10 +145,7 @@ const EditProfileProfessional = ({ location }) => {
 
     signupuser.append("role", cookies?.user_data?.role);
     signupuser &&
-      axios.post(
-        "http://13.52.16.160:8082/identity/professional_profile",
-        signupuser
-      );
+      axios.post(`${BaseUrl}/identity/professional_profile`, signupuser);
     if (file) {
       let reader = new FileReader();
       reader.onload = function (event) {
@@ -154,10 +169,7 @@ const EditProfileProfessional = ({ location }) => {
 
     signupuser.append("role", cookies?.user_data?.role);
     signupuser &&
-      axios.post(
-        "http://13.52.16.160:8082/identity/professional_profile",
-        signupuser
-      );
+      axios.post(`${BaseUrl}/identity/professional_profile`, signupuser);
     if (file) {
       let reader = new FileReader();
       reader.onload = function (event) {
@@ -209,10 +221,7 @@ const EditProfileProfessional = ({ location }) => {
 
   const updateCancel = () => {
     axios
-      .post(
-        "http://13.52.16.160:8082/identity/get_dashboard_profile/",
-        cookies?.user_data
-      )
+      .post(`${BaseUrl}/identity/get_dashboard_profile/`, cookies?.user_data)
       .then((res) => {
         contextData?.dispatch({
           type: "FETCH_PROFILE_DATA",
@@ -229,6 +238,15 @@ const EditProfileProfessional = ({ location }) => {
         }
       });
   };
+
+  useEffect(() => {
+    axios
+      .get(`${BaseUrl}/admin/static_skills_without_auth/`)
+      .then((res) => {
+        setSkillsOpt(res?.data?.data?.all_static_data);
+      })
+      .catch((err) => {});
+  }, []);
 
   const [otherEdu, setOtherEdu] = useState(
     location.state.education !== "Bachelors" &&
@@ -318,21 +336,20 @@ const EditProfileProfessional = ({ location }) => {
                     setEduErr(true);
                     return false;
                   } else {
+                    /////////////////////////////////////////////////
+                    setLoader(true);
                     axios
-                      .post(
-                        "http://13.52.16.160:8082/identity/update_account",
-                        {
-                          user_id: cookies?.user_data?.user_id,
-                          user_token: cookies?.user_data?.user_token,
-                          role: "professional",
-                          ...data,
-                        }
-                      )
+                      .post(`${BaseUrl}/identity/update_account`, {
+                        user_id: cookies?.user_data?.user_id,
+                        user_token: cookies?.user_data?.user_token,
+                        role: "professional",
+                        ...data,
+                      })
                       .then((res) => {
                         if (res?.data?.status === "Success") {
                           axios
                             .post(
-                              "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                              `${BaseUrl}/identity/get_dashboard_profile/`,
                               {
                                 user_id: cookies?.user_data?.user_id,
                                 user_token: cookies?.user_data?.user_token,
@@ -355,7 +372,7 @@ const EditProfileProfessional = ({ location }) => {
                                 certificate
                               );
                               axios.post(
-                                "http://13.52.16.160:8082/identity/professional_certificate",
+                                `${BaseUrl}/identity/professional_certificate`,
                                 userCertificate
                               );
 
@@ -363,6 +380,7 @@ const EditProfileProfessional = ({ location }) => {
                                 type: "FETCH_PROFILE_DATA",
                                 value: res?.data?.data,
                               });
+                              setLoader(false);
                               setShow(true);
                             });
                         }
@@ -750,7 +768,7 @@ const EditProfileProfessional = ({ location }) => {
 
                           <MultiSelect
                             selectedValues={arraySkills}
-                            options={contextData.skillsOpt}
+                            options={skillsOpt}
                             value={skills}
                             onChange={(skills) => {
                               setFieldValue(
@@ -800,7 +818,8 @@ const EditProfileProfessional = ({ location }) => {
                           <div className="create-account-input">
                             <Field
                               name="price_range"
-                              type="number"
+                              type="text"
+                              onKeyPress={handleKeyPress}
                               className="form-control"
                               placeholder="Enter Minimum Rate Per Square Meter in $"
                             />
@@ -822,13 +841,24 @@ const EditProfileProfessional = ({ location }) => {
                         type="button"
                         onClick={updateCancel}
                         className="logInbtn mx-3"
+                        disabled={loader ? true : false}
                       >
                         <i className="fa-solid  fa-arrow-left-long me-3"></i>
                         Cancel
                       </button>
-                      <button type="submit" className="create-account-btn mx-3">
-                        Update
-                        <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                      <button
+                        type="submit"
+                        disabled={loader ? true : false}
+                        className="create-account-btn mx-3"
+                      >
+                        {loader ? (
+                          <ReactLottie4 />
+                        ) : (
+                          <>
+                            Update{" "}
+                            <i className="fa-solid  fa-arrow-right-long ms-3"></i>
+                          </>
+                        )}
                       </button>
                     </div>
                   </Form>
@@ -837,6 +867,8 @@ const EditProfileProfessional = ({ location }) => {
 
               <Modal
                 centered
+                backdrop="static"
+                keyboard={false}
                 show={show}
                 onHide={() => setShow(false)}
                 style={{ zIndex: 1000000 }}

@@ -7,34 +7,35 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCookies } from "react-cookie";
+
 import Loader from "../../components/Loader";
+import { BaseUrl } from "../../BaseUrl";
 const ClientCategoriesArchitectural = () => {
   const contextData = useContext(Global);
   const [selectList, setSelectList] = useState();
 
   const navigate = useNavigate();
-  const [cookies] = useCookies()
-  const [isRender, setIsRender] = useState(false)
+  const [cookies] = useCookies();
+  const [isRender, setIsRender] = useState(false);
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data?.role === "client") {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         } else {
-          navigate('/professionaldashboard')
+          navigate("/professionaldashboard");
         }
       } else {
         if (cookies?.user_data?.role === "client") {
-          setIsRender(true)
+          setIsRender(true);
         } else {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [])
-
+  }, []);
 
   useEffect(() => {
     let list = {};
@@ -114,28 +115,26 @@ const ClientCategoriesArchitectural = () => {
     }
   };
   useEffect(() => {
-    axios
-      .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
-      .then((res) => {
-        contextData?.dispatch({
-          type: "STATIC_ARCHITECTURE_DESIGN",
-          value: res?.data,
-        });
+    axios.get(`${BaseUrl}/quadra/sub_categories?category_id=1`).then((res) => {
+      contextData?.dispatch({
+        type: "STATIC_ARCHITECTURE_DESIGN",
+        value: res?.data,
       });
+    });
   }, []);
 
   // edit profile back
   const handleEditProfileButton = () => {
     axios
-      .put("http://13.52.16.160:8082/identity/update_account", cookies?.user_data)
+      .put(`${BaseUrl}/identity/update_account`, cookies?.user_data)
       .then((res) => {
         if (res?.data?.status === "Success") {
           navigate("/edit-profile", { state: res?.data?.data });
         }
       });
   };
-  return (
-    isRender && contextData?.static_architecture_design?.data ? <>
+  return isRender && contextData?.static_architecture_design?.data ? (
+    <>
       <div className="create-account">
         <main className="create-account-main">
           <div className="container mb-5">
@@ -182,7 +181,13 @@ const ClientCategoriesArchitectural = () => {
                             >
                               <div className="row  category-box">
                                 <div className="col-md-3 col-12 h-100 text-center  px-2">
-                                  <div className={selectList[`checkbox${i}`] ? "p-md-1 p-lg-3 icon-box " : "p-md-1 p-lg-3 icon-box "}>
+                                  <div
+                                    className={
+                                      selectList[`checkbox${i}`]
+                                        ? "p-md-1 p-lg-3 icon-box "
+                                        : "p-md-1 p-lg-3 icon-box "
+                                    }
+                                  >
                                     <img
                                       id={i + "icon"}
                                       src={
@@ -254,7 +259,9 @@ const ClientCategoriesArchitectural = () => {
           theme="colored"
         />
       </div>
-    </> : <Loader />
+    </>
+  ) : (
+    <Loader />
   );
 };
 

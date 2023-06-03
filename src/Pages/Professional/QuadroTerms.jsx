@@ -5,7 +5,9 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader";
+
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../../BaseUrl";
 const LoginSchema = Yup.object().shape({
   checkTerms: Yup.bool().oneOf([true], "Accept Terms & Conditions is required"),
 });
@@ -16,7 +18,7 @@ const QuadroTerms = () => {
   let navigate = useNavigate();
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/quadra/profile_points", {
+      .post(`${BaseUrl}/quadra/profile_points`, {
         type: "Guidelines",
       })
       .then((res) => {
@@ -82,8 +84,11 @@ const QuadroTerms = () => {
                             style={{ cursor: "default" }}
                           >
                             <div
-                              className="policy-span"
-                              style={{ cursor: "default" }}
+                              className="policy-span d-flex"
+                              style={{
+                                cursor: "default",
+                                alignItems: "center",
+                              }}
                             >
                               <img
                                 src="/static/images/infoIcon.png"
@@ -114,6 +119,7 @@ const QuadroTerms = () => {
                       <Link
                         to="/terms-condition"
                         className="theme-text-color text-decoration-none"
+                        target="_new"
                       >
                         terms and conditions
                       </Link>
@@ -122,7 +128,7 @@ const QuadroTerms = () => {
                   <ErrorMessage
                     name="checkTerms"
                     component="div"
-                    className="m-2 text-danger"
+                    className="m-2 text-danger text-center"
                   />
                   <div className="d-flex align-items-center justify-content-center my-md-5 my-2 flex-md-row flex-column-reverse">
                     <Link

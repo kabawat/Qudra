@@ -12,6 +12,8 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import ReactLotti3 from "../../loader/ReactLottie3";
+import { BaseUrl } from "../../BaseUrl";
+
 const months = [
   { value: "01", label: "01", name: "expiry_month" },
   { value: "02", label: "02", name: "expiry_month" },
@@ -38,6 +40,16 @@ for (let i = 0; i < 20; ++i) {
 }
 
 const Cart = () => {
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
+
   const [loading, setLoading] = useState(false);
 
   const [currentTab, setCurrentTab] = useState("dashboard");
@@ -60,25 +72,30 @@ const Cart = () => {
   const [isPayment, setIsPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const [show, setShow] = useState(false);
+  const [carderr, setCarderr] = useState(false);
+  const [cardloader, setcardloader] = useState(false);
+
   const handalSubmit = () => {
     setLoading(true);
     axios
-      .post("http://13.52.16.160:8082/client/client_checkout_details/", {
+      .post(`${BaseUrl}/client/client_checkout_details/`, {
         client_id: cookies?.user_data?.user_id,
         client_token: cookies?.user_data?.user_token,
         professional_id: location?.state?.professional_id,
         amount_paid: location?.state?.project_cost,
       })
       .then((result) => {
-        if (
+        if (result?.data?.data?.cards?.length === 0) {
+          setLoading(false);
+          setIsPayment(true);
+        } else if (
           result?.data?.error_code === 109 &&
-          result?.data?.status === "Failed"
+          result?.data?.status == "Failed"
         ) {
           setLoading(false);
           setIsPayment(true);
         } else {
           setLoading(false);
-
           navigate("/checkout", {
             state: {
               ...result?.data?.data,
@@ -90,26 +107,39 @@ const Cart = () => {
   };
 
   const handalPurchase = (event) => {
+    setcardloader(true);
     event.preventDefault();
-    axios
-      .post("http://13.52.16.160:8082/stripe/client/card/", {
-        ...cartInfo,
-        client_id: cookies?.user_data?.user_id,
-        client_token: cookies?.user_data?.user_token,
-      })
-      .then((response) => {
-        if (response?.data?.status === "Failed") {
-          const error = response?.data?.message;
-          setPaymentError(error.split(":")[1]);
-        } else {
-          setIsPayment(false);
-          setPaymentError("");
-          handalSubmit();
-        }
-      })
-      .catch((error) => {
-        // console.log(error.response)
-      });
+    if (
+      !cartInfo.card_number ||
+      !cartInfo.cvc ||
+      !cartInfo.expiry_month ||
+      !cartInfo.expiry_year
+    ) {
+      setCarderr(true);
+      setcardloader(false);
+    } else {
+      setCarderr(false);
+
+      axios
+        .post(`${BaseUrl}/stripe/client/card/`, {
+          ...cartInfo,
+          client_id: cookies?.user_data?.user_id,
+          client_token: cookies?.user_data?.user_token,
+        })
+        .then((response) => {
+          if (response?.data?.status === "Failed") {
+            const error = response?.data?.message;
+            setPaymentError(error.split(":")[1]);
+            setcardloader(false);
+          } else {
+            setIsPayment(false);
+            setPaymentError("");
+            handalSubmit();
+            setcardloader(false);
+          }
+        })
+        .catch((error) => {});
+    }
   };
 
   // card number maxLength validation
@@ -132,11 +162,15 @@ const Cart = () => {
             </div>
             <div className="col-xxl-10 col-md-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              <div className="cart_page_main mx-xl-5 px-lg-5 my-xl-5 py-lg-5 ">
+              <div className="cart_page_main mx-xl-5 px-lg-3 px-xxl-5 px-xl-4  my-xl-5 py-lg-5 ">
                 <div className="row leftShoppingCart">
                   <h2 className="pb-4">
                     <span
-                      onClick={() => navigate(-1)}
+                      onClick={() => {
+                        navigate("/clientdashboard", {
+                          state: { role: "client", designe: true },
+                        });
+                      }}
                       style={{
                         color: "#00A78B",
                         marginRight: "8px",
@@ -155,7 +189,7 @@ const Cart = () => {
                   className="row p-3 bg-white align-items-center bl-col"
                   style={{ border: "1px solid #e3e2de", borderRadius: "12px" }}
                 >
-                  <div className="col-xl-2 col-md-6 ">
+                  <div className="col-xl-2 col-md-6 purchaseImg">
                     <img
                       style={{ height: "100%", borderRadius: "12px" }}
                       src={location?.state?.image}
@@ -164,7 +198,7 @@ const Cart = () => {
                       onClick={() => setImgPreview(true)}
                     />
                   </div>
-                  <div className="col-xl-2 col-md-6">
+                  <div className="col-xl-2 col-md-6 purchaseVid">
                     <video
                       width="100%"
                       style={{ height: "100%", borderRadius: "12px" }}
@@ -175,7 +209,7 @@ const Cart = () => {
                       Your browser does not support HTML video.
                     </video>
                   </div>
-                  <div className="col-xl-6 px-xl-5 my-3 col-md-12">
+                  <div className="col-xl-6  my-3 col-md-12 ">
                     <div className="d-flex flex-column justify-content-center">
                       <div className="row">
                         <h3
@@ -212,7 +246,7 @@ const Cart = () => {
                   <div className="col-xl-2 col-md-12">
                     <button
                       type="button"
-                      onClick={handalSubmit}
+                      onClick={!loading ? handalSubmit : null}
                       disabled={loading ? true : false}
                       className="PaymentCardSubmitButton px-4"
                     >
@@ -222,58 +256,6 @@ const Cart = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="cart_page_main mx-lg-5 px-lg-5 my-lg-5 py-lg-5 ">
-                <div className="row leftShoppingCart">
-                  
-                  <h2 className="pb-4">{location?.state?.sub_category_name}</h2>
-                </div>
-                <div
-                  className="row p-3 bg-white"
-                  style={{ border: "1px solid #e3e2de", borderRadius: "12px" }}
-                >
-                  <div className="col-lg-2">
-                    <img
-                      style={{ height: "100%", borderRadius: "12px" }}
-                      src={location?.state?.image}
-                      alt=""
-                      className="img-fluid"
-                    />
-                  </div>
-                  <div className="col-lg-2 ">
-                    <video
-                      width="100%"
-                      style={{ height: "100%", borderRadius: "12px" }}
-                      controls
-                    >
-                      <source src={location?.state?.video} type="video/ogg" />
-                      <source src={location?.state?.video} type="video/mp4" />
-                      Your browser does not support HTML video.
-                    </video>
-                  </div>
-                  <div className="col-lg-8 d-flex flex-column justify-content-center">
-                    <div className="row">
-                      <h3>Price: ${location?.state?.project_cost}</h3>
-                    </div>
-                    <div className="row d-flex align-items-center">
-                      <div className="col-4">
-                        <h5>Total:</h5>
-                      </div>
-                      <div className="col-4">
-                        <h4>${location?.state?.project_cost}</h4>
-                      </div>
-                      <div className="col-4">
-                        <button
-                          type="button"
-                          onClick={handalSubmit}
-                          className="PaymentCardSubmitButton px-4"
-                        >
-                          Checkout <BsArrowRight />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
@@ -305,7 +287,14 @@ const Cart = () => {
           }
         </Modal>
 
-        <Modal centered show={show} onHide={() => setShow(false)}>
+        <Modal
+          centered
+          show={show}
+          onHide={() => {
+            setShow(false);
+            setCarderr("");
+          }}
+        >
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
             <Modal.Title>Are you sure want to purchase this design</Modal.Title>
@@ -329,10 +318,19 @@ const Cart = () => {
 
         <Modal
           centered
+          keyboard={false}
+          backdrop="static"
           show={isPayment}
           onHide={() => {
             setIsPayment(false);
             setPaymentError("");
+            setCarderr(false);
+            setCartInfo({
+              card_number: "",
+              expiry_month: "",
+              expiry_year: "",
+              cvc: "",
+            });
           }}
         >
           <Modal.Header closeButton>
@@ -343,27 +341,32 @@ const Cart = () => {
             <div className="bg-white payementFormMain card-popup">
               <form onSubmit={handalPurchase}>
                 <div className="row m-0 pt-3 pb-4 border-bottom">
-                  <h6>Card Number</h6>
+                  <h6 className="p-0">Card Number</h6>
                   <input
                     id="ccn"
-                    type="number"
+                    type="text"
+                    onKeyPress={handleKeyPress}
                     // inputMode="numeric"
                     // pattern="[0-9\s]+{13,16}"
                     autoComplete="cc-number"
                     maxLength={16}
                     placeholder="xxxx xxxx xxxx xxxx"
                     name="card_number"
+                    className="p-0"
                     value={cartInfo?.card_number}
                     onChange={(event) => {
                       handalChange(event?.target?.name, event?.target?.value);
                     }}
                   />
+                  {!cartInfo.card_number && carderr && (
+                    <span className="text-danger">Required</span>
+                  )}
                 </div>
                 <div className="row  py-3">
                   <div className="col-8">
                     <div className="row">
                       <h6>Expiry Date</h6>
-                      <div className="col cardExpiry monthInput">
+                      <div className="col cardExpiry monthInput ">
                         <div className="border-bottom">
                           <Select
                             options={months}
@@ -376,6 +379,9 @@ const Cart = () => {
                             }
                           />
                         </div>
+                        {!cartInfo.expiry_month && carderr && (
+                          <span className="text-danger">Required</span>
+                        )}
                       </div>
                       <div className="col cardExpiry yearInput">
                         <div className="border-bottom">
@@ -389,15 +395,21 @@ const Cart = () => {
                             }}
                           />
                         </div>
+                        {!cartInfo.expiry_year && carderr && (
+                          <span className="text-danger"> Required</span>
+                        )}
                       </div>
                     </div>
                   </div>
                   <div className="col-4">
                     <div className="row h-100">
                       <div className="col d-flex flex-column justify-content-end">
-                        <label htmlFor="CVV">CVV:</label>
+                        <label htmlFor="CVV" className="CVV">
+                          CVV:
+                        </label>
                         <input
-                          type="number"
+                          type="text"
+                          onKeyPress={handleKeyPress}
                           id="CVV"
                           placeholder="xxx"
                           className="border-bottom"
@@ -412,14 +424,22 @@ const Cart = () => {
                             );
                           }}
                         />
+                        {!cartInfo.cvc && carderr && (
+                          <span className="text-danger">Required</span>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div style={{ color: "red" }}>{paymentError}</div>
                 <div className="row">
-                  <button type="submit" className="PaymentCardSubmitButton">
-                    Save
+                  <button
+                    type="submit"
+                    disabled={cardloader ? true : false}
+                    className="PaymentCardSubmitButton"
+                    // onClick={checkDetails}
+                  >
+                    {cardloader ? <ReactLotti3 /> : "Save"}
                   </button>
                 </div>
               </form>

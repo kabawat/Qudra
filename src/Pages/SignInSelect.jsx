@@ -41,7 +41,7 @@ const SignInSelect = () => {
   return isRender ? (
     <>
       <div className="create-account let-get-started">
-        <Header3 navColor="black" />
+        <Header3 navColor="white" />
         <HeroesSection1 />
         <div className="join-us-now-main d-md-flex align-items-center newJoin">
           <div className="join-us-now-text ms-auto d-flex justify-content-center align-items-center flex-column">

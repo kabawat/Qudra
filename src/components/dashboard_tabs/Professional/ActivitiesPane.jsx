@@ -13,6 +13,8 @@ import { useCookies } from "react-cookie";
 import Loader from "../../Loader";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { BaseUrl } from "../../../BaseUrl";
+
 const ActivitiesPane = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
@@ -34,12 +36,11 @@ const ActivitiesPane = () => {
 
   const [cookies] = useCookies();
   useEffect(() => {
-    setLoading(true);
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data.role === "professional") {
           axios
-            .post("http://13.52.16.160:8082/identity/filter_projects", {
+            .post(`${BaseUrl}/identity/filter_projects`, {
               user_id: cookies?.user_data?.user_id,
               user_token: cookies?.user_data?.user_token,
               role: cookies?.user_data?.role,
@@ -73,7 +74,7 @@ const ActivitiesPane = () => {
   const handleFilterProject = (e) => {
     e.preventDefault();
     axios
-      .post("http://13.52.16.160:8082/identity/search_projects", {
+      .post(`${BaseUrl}/identity/search_projects`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -158,7 +159,7 @@ const ActivitiesPane = () => {
                                   setSearchActiveProject(e?.target?.value);
                                   setNoResult(false);
                                 }}
-                                placeholder="Search via project name "
+                                placeholder="Search..."
                               />
                               <button type="submit">
                                 <BsSearch />

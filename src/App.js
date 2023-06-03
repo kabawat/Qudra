@@ -62,6 +62,8 @@ import PurchaseDesign from "./components/dashboard_tabs/Client/purchase-design";
 import Report from "./components/dashboard_tabs/Professional/Report";
 import ReportTab from "./components/dashboard_tabs/Professional/ReportTab";
 import LastStep from "./components/dashboard_tabs/Professional/LastStep";
+import Earnings from "./components/dashboard_tabs/Professional/Earnings";
+import Billing from "./components/dashboard_tabs/Client/Billing";
 
 function App() {
   const [cookies] = useCookies();
@@ -92,6 +94,7 @@ function App() {
           <Route path="/Portfolio" element={<PortfolioPane />} />
           <Route path="/Report" element={<Report />} />
           <Route path="/sold-design" element={<ReportTab />} />
+          <Route path="/total-earnings" element={<Earnings />} />
 
           <Route path="/request-projects" element={<RequestProjects />} />
           <Route path="/pending-activity" element={<PendingActivity />} />
@@ -142,6 +145,8 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/check-out" element={<CheckoutMilstone />} />
+          <Route path="/billing" element={<Billing />} />
+
           <Route
             path="/client-architechture"
             element={<ClientCategoriesArchitectural />}

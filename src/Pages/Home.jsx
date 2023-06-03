@@ -27,6 +27,7 @@ import HeroesSection from "../components/HeroesSection";
 import axios, { AxiosError } from "axios";
 import { useCookies } from "react-cookie";
 import { Button, Modal } from "react-bootstrap";
+import { BaseUrl } from "../BaseUrl";
 
 const options1 = {
   loop: false,
@@ -69,6 +70,7 @@ const Home = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
   const [cookies] = useCookies();
+  const [earnersReview, setEarnersReview] = useState([]);
 
   // auth
   const [isRender, setIsRender] = useState(false);
@@ -87,19 +89,19 @@ const Home = () => {
     } else {
       setIsRender(true);
     }
-    axios
-      .post("http://13.52.16.160:8082/quadra/show_top_client/")
-      .then((res) => {
-        setTopClients(res?.data?.data);
-      });
-    axios.post("http://13.52.16.160:8082/quadra/top_earners/").then((res) => {
+    axios.post(`${BaseUrl}/quadra/show_top_client/`).then((res) => {
+      setTopClients(res?.data?.data);
+    });
+    axios.post(`${BaseUrl}/quadra/top_earners/`).then((res) => {
       setTopEarners(res?.data?.data);
     });
-    axios
-      .post("http://13.52.16.160:8082/quadra/recent_professional_earners/")
-      .then((res) => {
-        setRecentEarners(res?.data?.data);
-      });
+    axios.post(`${BaseUrl}/quadra/recent_professional_earners/`).then((res) => {
+      setRecentEarners(res?.data?.data);
+    });
+    axios.post(`${BaseUrl}/quadra/earner_review/`).then((res) => {
+      setEarnersReview(res?.data?.data);
+    });
+
     const script = document.createElement("script");
     script.src = "/heroes.js";
     document.body.appendChild(script);
@@ -116,7 +118,7 @@ const Home = () => {
       });
       navigate("/clientdashboard");
     } else if (contextData?.userData?.role === "professional") {
-      toast.warn("Fistly Register With Client Profile !", {
+      toast.warn(" Register With Client !", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: true,
@@ -155,7 +157,7 @@ const Home = () => {
       });
       navigate("/clientdashboard");
     } else if (contextData?.userData?.role === "professional") {
-      toast.warn("Fistly Register With Client Profile !", {
+      toast.warn(" Register With Client !", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: true,
@@ -176,7 +178,7 @@ const Home = () => {
     if (contextData?.userData?.role === "client") {
       navigate(`/professionalprofile/${professional_id}`);
     } else {
-      toast.warn("Fistly Register With Client Profile !", {
+      toast.warn("Register With Client  !", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: true,
@@ -228,7 +230,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      {topEarners.length > 0 && (
+      {topEarners?.length > 0 && (
         <section className="Top_Earners">
           <div className="container">
             <div className="Top_Earners_Ineer">
@@ -290,7 +292,7 @@ const Home = () => {
         </section>
       )}
 
-      {recentEarners.length > 0 && (
+      {recentEarners?.length > 0 && (
         <section className="Top_Earners Recent_Earners">
           <div className="container">
             <div className="Top_Earners_Ineer">
@@ -366,16 +368,20 @@ const Home = () => {
               <div className="row p-2 card-box-our-top-clients-row">
                 {topClients?.map((item, i) => {
                   return (
-                    <div className="col-md card border-0 text-center" key={i}>
-                      <img
-                        alt=""
-                        src={item.client_image}
-                        style={{
-                          aspectRatio: "3/3",
-                          borderRadius: "12px",
-                          boxShadow: "1px 1px #dedede",
-                        }}
-                      />
+                    <div
+                      className="col-md card border-0 text-center topclientCol"
+                      key={i}
+                    >
+                      <div className="topclientColinner">
+                        <img
+                          alt=""
+                          src={item.client_image}
+                          style={{
+                            borderRadius: "12px",
+                            boxShadow: "1px 1px #dedede",
+                          }}
+                        />
+                      </div>
                       <h5
                         className="pt-4 pb-3 m-0"
                         style={{ textTransform: "capitalize" }}
@@ -417,148 +423,57 @@ const Home = () => {
 
             {/* { The slideshow/carousel } */}
             <div className="carousel-inner">
-              <div className="carousel-item active">
-                <div className="row">
-                  <div className="col-md d-flex justify-content-md-end">
-                    <div className="d-flex justify-content-md-end image-carousel-main">
-                      <img
-                        src={mohd}
-                        alt="Los Angeles"
-                        className="d-block object-fit"
-                      />
+              {earnersReview &&
+                earnersReview?.map((item, index) => {
+                  return (
+                    <div
+                      className={
+                        index === 0 ? ` carousel-item active` : `carousel-item`
+                      }
+                      key={index}
+                    >
+                      <div className="row">
+                        <div className="col-md d-flex justify-content-md-end">
+                          <div className="d-flex justify-content-md-end image-carousel-main">
+                            <img
+                              src={item?.image}
+                              alt="Los Angeles"
+                              className="d-block object-fit"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md d-flex align-items-center flex-column justify-content-center pt-md-0 pt-4">
+                          <img
+                            alt=""
+                            src={layer52}
+                            className="align-self-start quotes-image-carousel"
+                          />
+                          <div className="carousel-caption pb-0 text-dark text-start">
+                            <p>{item?.quote}</p>
+                          </div>
+                          <div className="d-flex w-100">
+                            <button
+                              className="carousel-control-prev me-md-3 me-2"
+                              type="button"
+                              data-bs-target="#demo"
+                              data-bs-slide="prev"
+                            >
+                              <span className="carousel-control-prev-icon"></span>
+                            </button>
+                            <button
+                              className="carousel-control-next"
+                              type="button"
+                              data-bs-target="#demo"
+                              data-bs-slide="next"
+                            >
+                              <span className="carousel-control-next-icon"></span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-md d-flex align-items-center flex-column justify-content-center pt-md-0 pt-4">
-                    <img
-                      alt=""
-                      src={layer52}
-                      className="align-self-start quotes-image-carousel"
-                    />
-                    <div className="carousel-caption pb-0 text-dark text-start">
-                      <h3>Earners Review</h3>
-                      <p>
-                        I am a student and I wanted a side income and being a
-                        student u have less time to work but if everything is in
-                        your phone then it's easy, final I found something to
-                        earn through online,
-                      </p>
-                    </div>
-                    <div className="d-flex w-100">
-                      <button
-                        className="carousel-control-prev me-md-3 me-2"
-                        type="button"
-                        data-bs-target="#demo"
-                        data-bs-slide="prev"
-                      >
-                        <span className="carousel-control-prev-icon"></span>
-                      </button>
-                      <button
-                        className="carousel-control-next"
-                        type="button"
-                        data-bs-target="#demo"
-                        data-bs-slide="next"
-                      >
-                        <span className="carousel-control-next-icon"></span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="carousel-item">
-                <div className="row">
-                  <div className="col-md d-flex justify-content-md-end">
-                    <div className="d-flex justify-content-md-end image-carousel-main">
-                      <img
-                        src="https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8bWFufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                        alt="Chicago"
-                        className="d-block object-fit"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md d-flex align-items-center flex-column justify-content-center pt-md-0 pt-4">
-                    <img
-                      alt=""
-                      src={layer52}
-                      className="align-self-start quotes-image-carousel"
-                    />
-                    <div className="carousel-caption pb-0 text-dark text-start">
-                      <h3>Earners Review</h3>
-                      <p>
-                        I am a Doctor and I wanted a side income and being a
-                        student u have less time to work but if everything is in
-                        your phone then it's easy, final I found something to
-                        earn through online,
-                      </p>
-                    </div>
-
-                    <div className="d-flex w-100">
-                      <button
-                        className="carousel-control-prev me-md-3 me-2"
-                        type="button"
-                        data-bs-target="#demo"
-                        data-bs-slide="prev"
-                      >
-                        <span className="carousel-control-prev-icon"></span>
-                      </button>
-                      <button
-                        className="carousel-control-next"
-                        type="button"
-                        data-bs-target="#demo"
-                        data-bs-slide="next"
-                      >
-                        <span className="carousel-control-next-icon"></span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="carousel-item">
-                <div className="row">
-                  <div className="col-md d-flex justify-content-md-end">
-                    <div className="d-flex justify-content-md-end image-carousel-main">
-                      <img
-                        src="https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8bWFufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                        alt="New York"
-                        className="d-block object-fit"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md d-flex align-items-center flex-column justify-content-center pt-md-0 pt-4">
-                    <img
-                      alt=""
-                      src={layer52}
-                      className="align-self-start quotes-image-carousel"
-                    />
-                    <div className="carousel-caption pb-0 text-dark text-start">
-                      <h3>Earners Review</h3>
-                      <p>
-                        I am a Plumber and I wanted a side income and being a
-                        student u have less time to work but if everything is in
-                        your phone then it's easy, final I found something to
-                        earn through online,
-                      </p>
-                    </div>
-                    <div className="d-flex w-100">
-                      <button
-                        className="carousel-control-prev me-md-3 me-2"
-                        type="button"
-                        data-bs-target="#demo"
-                        data-bs-slide="prev"
-                      >
-                        <span className="carousel-control-prev-icon"></span>
-                      </button>
-                      <button
-                        className="carousel-control-next"
-                        type="button"
-                        data-bs-target="#demo"
-                        data-bs-slide="next"
-                      >
-                        <span className="carousel-control-next-icon"></span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                  );
+                })}
             </div>
             {/* {Left and right controls/icons} */}
           </div>

@@ -22,10 +22,26 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Global from "../../../context/Global";
 import ReactLottie3 from "../../../loader/ReactLottie3";
+import { BaseUrl } from "../../../BaseUrl";
+import ReactLotti3 from "../../../loader/ReactLottie3";
+
 const PurchaseDesign = () => {
+  const handleKeyPress = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
+
   const contextData = useContext(Global);
   const [fileErr, setFileErr] = useState("none");
   const [islotti, setIslotti] = useState(false);
+  const [successfullyHired, setsuccessfullyHired] = useState(false);
+  const handleSuccessClose = () => setsuccessfullyHired(false);
+  const handleSuccessShow = () => setsuccessfullyHired(true);
   const [
     newBothArchiteactureAndVisualization,
     setNewBothArchiteactureAndVisualization,
@@ -59,6 +75,7 @@ const PurchaseDesign = () => {
   const params = useParams();
   const validateQuery = () => {
     if (!query) {
+      setQueryError("");
       setreportResposne(false);
       setQueryError("Please enter your query");
     } else {
@@ -88,7 +105,7 @@ const PurchaseDesign = () => {
   useEffect(() => {
     if (cookies?.user_data) {
       axios
-        .post("http://13.52.16.160:8082/client/purchased-projects/", {
+        .post(`${BaseUrl}/client/purchased-projects/`, {
           client_id: cookies?.user_data?.user_id,
           client_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -100,29 +117,23 @@ const PurchaseDesign = () => {
             if (cookies?.user_data?.category_selected) {
               if (cookies?.user_data?.role === "client") {
                 axios
-                  .post(
-                    "http://13.52.16.160:8082/professional/professional_profile",
-                    {
-                      client_id: cookies?.user_data?.user_id,
-                      role: cookies?.user_data?.role,
-                      user_token: cookies?.user_data?.user_token,
-                      professional_id:
-                        res?.data?.data?.final_data[0].professional_id,
-                    }
-                  )
+                  .post(`${BaseUrl}/professional/professional_profile`, {
+                    client_id: cookies?.user_data?.user_id,
+                    role: cookies?.user_data?.role,
+                    user_token: cookies?.user_data?.user_token,
+                    professional_id:
+                      res?.data?.data?.final_data[0].professional_id,
+                  })
                   .then((respo) => {
                     if (respo?.data?.status === "Success") {
                       axios
-                        .post(
-                          "http://13.52.16.160:8082/professional/professional_sub_cat",
-                          {
-                            client_id: cookies?.user_data?.user_id,
-                            professional_id:
-                              res?.data?.data?.final_data[0].professional_id,
-                            role: cookies?.user_data?.role,
-                            user_token: cookies?.user_data?.user_token,
-                          }
-                        )
+                        .post(`${BaseUrl}/professional/professional_sub_cat`, {
+                          client_id: cookies?.user_data?.user_id,
+                          professional_id:
+                            res?.data?.data?.final_data[0].professional_id,
+                          role: cookies?.user_data?.role,
+                          user_token: cookies?.user_data?.user_token,
+                        })
                         .then((res) => {
                           if (res?.data?.status === "Success") {
                             contextData?.dispatch({
@@ -174,6 +185,7 @@ const PurchaseDesign = () => {
 
   const ReportUpload = (e) => {
     e.preventDefault();
+    validateQuery();
     setreportResposne(true);
     validateQuery();
     validateAttachment();
@@ -182,18 +194,16 @@ const PurchaseDesign = () => {
       return false;
     }
     if (cookies?.user_data) {
-      axios
-        .post("http://13.52.16.160:8082/client/report-design/", formdata)
-        .then((res) => {
-          setShowReport(false);
-          setSetquery("");
-          setQueryError("");
-          setAttachementError("");
-          setAttachement("");
-          setFileReport("");
-          setreportUpload(false);
-          setreportResposne(false);
-        });
+      axios.post(`${BaseUrl}/client/report-design/`, formdata).then((res) => {
+        setShowReport(false);
+        setSetquery("");
+        setQueryError("");
+        setAttachementError("");
+        setAttachement("");
+        setFileReport("");
+        setreportUpload(false);
+        setreportResposne(false);
+      });
     }
   };
 
@@ -207,22 +217,18 @@ const PurchaseDesign = () => {
   }
 
   useEffect(() => {
-    axios
-      .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
-      .then((res) => {
-        contextData?.dispatch({
-          type: "STATIC_ARCHITECTURE_DESIGN",
-          value: res?.data,
-        });
+    axios.get(`${BaseUrl}/quadra/sub_categories?category_id=1`).then((res) => {
+      contextData?.dispatch({
+        type: "STATIC_ARCHITECTURE_DESIGN",
+        value: res?.data,
       });
-    axios
-      .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=2")
-      .then((res) => {
-        contextData?.dispatch({
-          type: "STATIC_VISUALIZATION_DESIGN",
-          value: res?.data,
-        });
+    });
+    axios.get(`${BaseUrl}/quadra/sub_categories?category_id=2`).then((res) => {
+      contextData?.dispatch({
+        type: "STATIC_VISUALIZATION_DESIGN",
+        value: res?.data,
       });
+    });
   }, []);
 
   const bothDataArchitecture =
@@ -295,7 +301,7 @@ const PurchaseDesign = () => {
   //function called on purchased design button////
   const handalSubmit = (data, index) => {
     axios
-      .post("http://13.52.16.160:8082/client/purchase/buy-sell-design/", {
+      .post(`${BaseUrl}/client/purchase/buy-sell-design/`, {
         client_id: cookies?.user_data?.user_id,
         client_token: cookies?.user_data?.user_token,
         role: "client",
@@ -367,139 +373,6 @@ const PurchaseDesign = () => {
                     <div className="row  pt-5 g-3 ">
                       {purchaseDesigns?.final_data?.map((res, index, key) => {
                         return (
-                          // <div className="col-xl-3 col-md-6   my-3" key={index}>
-                          //   <div
-                          //     className="card border-0 flex-row bg-dark text-white visibleForEdit"
-                          //     style={{ height: "240px", borderRadius: "30px" }}
-                          //   >
-                          //     <img
-                          //       src={`${res?.image}`}
-                          //       className="card-img w-100"
-                          //       style={{
-                          //         borderRadius: "30px",
-                          //         objectFit: "cover",
-                          //         height: "100%",
-                          //       }}
-                          //       alt="..."
-                          //     />
-                          //     <div
-                          //       className="card-img-overlay"
-                          //       style={{
-                          //         display: "flex",
-                          //         justifyContent: "flex-end",
-                          //         flexDirection: "column",
-                          //         borderRadius: "30px",
-                          //         background:
-                          //           "linear-gradient(20deg, #000000a1, transparent)",
-                          //         padding: " 0 10px 20px 10px",
-                          //       }}
-                          //     >
-                          //       <h4 className="card-title cardTitleVisible">
-                          //         ${res?.price}/ project
-                          //       </h4>
-
-                          //       <h4 className="card-title fs-20 visibleForEdit-cat">
-                          //         {res?.sub_category_name}
-                          //       </h4>
-                          //       <div className="row g-2">
-                          //         <div className="col-xxl-6 col-lg-12 col-6">
-                          //           <button
-                          //             type="button"
-                          //             className="btn btn-primary border-0"
-                          //             style={{
-                          //               width: "100%",
-                          //               fontSize: "14px",
-                          //               backgroundColor: "rgb(0, 167, 139)",
-                          //             }}
-                          //             onClick={() => {
-                          //               setShowPurchaseDesignModal(true);
-                          //               handleImageAndVideoClick(
-                          //                 [res],
-                          //                 purchaseDesigns?.image,
-                          //                 "image"
-                          //               );
-                          //             }}
-                          //           >
-                          //             Preview Images
-                          //           </button>
-                          //         </div>
-                          //         <div className="col-xxl-6 col-lg-12 col-6">
-                          //           <button
-                          //             type="button"
-                          //             className="btn btn-primary border-0"
-                          //             style={{
-                          //               width: "100%",
-                          //               fontSize: "14px",
-                          //               backgroundColor: "rgb(0, 167, 139)",
-                          //             }}
-                          //             onClick={() => {
-                          //               setShowPurchaseDesignModal(true);
-                          //               handleImageAndVideoClick(
-                          //                 [res],
-                          //                 purchaseDesigns?.video,
-                          //                 "video"
-                          //               );
-                          //             }}
-                          //           >
-                          //             Preview Videos
-                          //           </button>
-                          //         </div>
-                          //         <div className="col-xxl-6 col-lg-12 col-6">
-                          //           <button
-                          //             className="btn btn-primary border-0"
-                          //             style={{
-                          //               width: "100%",
-                          //               fontSize: "14px",
-                          //               backgroundColor: "rgb(0, 167, 139)",
-                          //             }}
-                          //             type="button"
-                          //             onClick={() => {
-                          //               setShow(true);
-                          //               setDesignInfo(res);
-                          //               setDesignindex(index);
-                          //             }}
-                          //           >
-                          //             Download
-                          //           </button>
-                          //         </div>
-                          //         <div className="col-xxl-6 col-lg-12 col-6">
-                          //           <button
-                          //             className="btn btn-primary border-0"
-                          //             style={{
-                          //               width: "100%",
-                          //               fontSize: "14px",
-                          //               backgroundColor: "rgb(0, 167, 139)",
-                          //             }}
-                          //             type="button"
-                          //             onClick={() => {
-                          //               setShowReport(true);
-                          //               setbuysell_id(res.id);
-                          //             }}
-                          //           >
-                          //             Report
-                          //           </button>
-                          //         </div>
-                          //         <div className="col-xxl-6 col-lg-12 col-6">
-                          //           <button
-                          //             className="btn btn-primary border-0"
-                          //             style={{
-                          //               width: "100%",
-                          //               fontSize: "13px",
-                          //               backgroundColor: "rgb(0, 167, 139)",
-                          //             }}
-                          //             type="button"
-                          //             onClick={() => {
-                          //               downloadInvoice(res);
-                          //             }}
-                          //           >
-                          //             Download invoice
-                          //           </button>
-                          //         </div>
-                          //       </div>
-                          //     </div>
-                          //   </div>
-
-                          // </div>
                           <div
                             className="container purchaseContainer "
                             key={index}
@@ -517,11 +390,12 @@ const PurchaseDesign = () => {
                                 <div className=" col-md-2 ">
                                   <img
                                     src={`${res?.image}`}
-                                    className="card-img w-100"
+                                    className="card-img w-100 sukhuPurchaseImg"
                                     style={{
                                       borderRadius: "10px",
                                       objectFit: "cover",
                                       height: "100%",
+                                      maxHeight: "155px",
                                     }}
                                     alt="..."
                                   />
@@ -751,7 +625,7 @@ const PurchaseDesign = () => {
                     ) : (
                       <div
                         style={{ minHeight: "600px" }}
-                        className="d-flex justify-content-center align-items-center"
+                        className="d-flex justify-content-center align-items-center shadow"
                       >
                         <div className="h4">No Purchased Designs</div>
                       </div>
@@ -795,13 +669,13 @@ const PurchaseDesign = () => {
                               value={query}
                               onChange={(e) => {
                                 setSetquery(e.target.value);
-                                validateQuery();
+                                setQueryError("");
                               }}
                             ></textarea>
                           </div>
                         </div>
                         {queryError && (
-                          <div className="Report text-danger">{queryError}</div>
+                          <div className=" text-danger">{queryError}</div>
                         )}
 
                         <input
@@ -825,7 +699,7 @@ const PurchaseDesign = () => {
                           {reportUpload ? (
                             <p className="Report"> {fileReport}</p>
                           ) : (
-                            <p className="Report">Upload File</p>
+                            <p className="Report ">Upload File</p>
                           )}
                         </label>
                       </div>
@@ -854,9 +728,10 @@ const PurchaseDesign = () => {
                         type="submit"
                         className="theme-bg-color border-0"
                         onClick={ReportUpload}
+                        disabled={reportResposne ? true : false}
                         style={{ padding: reportResposne ? "0px" : null }}
                       >
-                        {reportResposne ? <ReactLotti /> : "Submit"}
+                        {reportResposne ? <ReactLotti3 /> : "Submit"}
                       </Button>
                     </Modal.Footer>
                   </form>
@@ -901,7 +776,10 @@ const PurchaseDesign = () => {
                     setSpecificProductDataType("");
                   }}
                 >
-                  <Modal.Header closeButton></Modal.Header>
+                  <Modal.Header
+                    closeButton
+                    style={{ background: "white", borderRadius: "7px" }}
+                  ></Modal.Header>
                   <Modal.Body className=" p-0">
                     <Swiper
                       style={{
@@ -955,6 +833,7 @@ const PurchaseDesign = () => {
                       setAttachement("");
                       setFileReport("");
                       setreportUpload(false);
+                      setDate(null);
                     }}
                   >
                     <Modal.Title id="contained-modal-title-vcenter">
@@ -1004,16 +883,14 @@ const PurchaseDesign = () => {
                             .split(",")[0]
                         );
 
-                        if (!values?.work_assigned) {
+                        if (!values?.work_assigned || !values?.time) {
                           // alert( "put the alert" );
                           // return false
+                          setSubmitting(false);
                         } else {
                           setIslotti(true);
                           axios
-                            .post(
-                              "http://13.52.16.160:8082/client/start_project",
-                              formdata
-                            )
+                            .post(`${BaseUrl}/client/start_project`, formdata)
                             .then((res) => {
                               if (res?.data?.status === "Success") {
                                 setShowModal(false);
@@ -1023,6 +900,7 @@ const PurchaseDesign = () => {
                                 setFileReport("");
                                 setreportUpload(false);
                                 setFileErr("none");
+                                handleSuccessShow();
                               }
                             });
                         }
@@ -1091,7 +969,8 @@ const PurchaseDesign = () => {
                             <div className="col-md-6 area_price">
                               <Field
                                 name="area"
-                                type="number"
+                                type="text"
+                                onKeyPress={handleKeyPress}
                                 placeholder="Estimated Area in Square Meter"
                                 min="0"
                               />
@@ -1107,7 +986,8 @@ const PurchaseDesign = () => {
                             >
                               <Field
                                 name="budget"
-                                type="number"
+                                type="text"
+                                onKeyPress={handleKeyPress}
                                 placeholder="Estimated Budget in $"
                                 min="0"
                                 style={{ paddingLeft: "7%" }}
@@ -1181,6 +1061,25 @@ const PurchaseDesign = () => {
                   </Modal.Body>
                 </Modal>
               </div>
+
+              {/* successfully hired freelancer modal */}
+              <Modal
+                show={successfullyHired}
+                onHide={handleSuccessClose}
+                centered
+              >
+                <Modal.Header closeButton></Modal.Header>
+                <Modal.Body>Successfully hired freelancer!</Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    onClick={handleSuccessClose}
+                    style={{ backgroundColor: "#01A78A", border: "none" }}
+                  >
+                    ok
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+              {/* ----------------- */}
             </div>
           </div>
         </div>

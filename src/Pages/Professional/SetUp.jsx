@@ -24,56 +24,7 @@ import { getCode } from "country-list";
 import { useCookies } from "react-cookie";
 
 import ReactLotti from "../../loader/ReactLotti";
-const languages = [
-  { label: "Albanian", value: "Albanian" },
-  { label: "Bosnian", value: "Bosnian" },
-  { label: "Belarusian", value: "Belarusian" },
-  { label: "Bulgarian", value: "Bulgarian" },
-  { label: "Croatian", value: "Croatian" },
-  { label: "Czech", value: "Czech" },
-  { label: "Catalan", value: "Catalan" },
-  { label: "Croatian", value: "Croatian" },
-  { label: "Danish", value: "Danish" },
-  { label: "Deutsch", value: "Deutsch" },
-  { label: "Dutch", value: "Dutch" },
-  { label: "English", value: "English" },
-  { label: "Estonian", value: "Estonian" },
-  { label: "French", value: "French" },
-  { label: "Finnish", value: "Finnish" },
-  { label: "German,", value: "German," },
-  { label: "Greek", value: "Greek" },
-  { label: "Greenlandic", value: "Greenlandic" },
-  { label: "Galician", value: "Galician" },
-  { label: "Hindi", value: "Hindi" },
-  { label: "Hungarian", value: "Hungarian" },
-  { label: "Icelandic", value: "Icelandic" },
-  { label: "Inuktitut", value: "Inuktitut" },
-  { label: "Irish", value: "Irish" },
-  { label: "Italian", value: "Italian" },
-  { label: "Latvian", value: "Latvian" },
-  { label: "Lithuanian", value: "Lithuanian" },
-  { label: "Luxembourgish", value: "Luxembourgish" },
-  { label: "Maltese", value: "Maltese" },
-  { label: "Moldovan", value: "Moldovan" },
-  { label: "Macedonian", value: "Macedonian" },
-  { label: "Norwegian", value: "Norwegian" },
-  { label: "Russian", value: "Russian" },
-  { label: "Serbian", value: "Serbian" },
-  { label: "Slovene", value: "Slovene" },
-  { label: "Serbo", value: "Serbo" },
-  { label: "Polish", value: "Polish" },
-  { label: "Portuguese", value: "Portuguese" },
-  { label: "Romanian", value: "Romanian" },
-  { label: "Romansch", value: "Romansch" },
-  { label: "Russian", value: "Russian" },
-  { label: "Turkish", value: "Turkish" },
-  { label: "Serbian", value: "Serbian" },
-  { label: "Slovak", value: "Slovak" },
-  { label: "Slovenian", value: "Slovenian" },
-  { label: "Spanish", value: "Spanish" },
-  { label: "Swedis", value: "Swedis" },
-  { label: "Ukrainian", value: "Ukrainian" },
-];
+import { BaseUrl } from "../../BaseUrl";
 
 const countries = [
   {
@@ -518,7 +469,7 @@ const countries = [
 
   {
     id: 50,
-    name: "Indone  sia",
+    name: "Indonesia",
     flag: "ID",
     alpha2: "ID",
     alpha3: "IDN",
@@ -1129,9 +1080,21 @@ const countries = [
 ];
 
 const SetUp = () => {
+  const handleKeyPressPrice = (event) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const pattern = /^[0-9]+$/;
+
+    if (!pattern.test(keyValue)) {
+      event.preventDefault();
+    }
+  };
+
   const [cookies, setCookies] = useCookies();
   const contextData = useContext(Global);
   const [isLoading, setLoading] = useState(false);
+  const [languages, setLanguages] = useState([]);
+  const [skillsOpt, setSkillsOpt] = useState([]);
   const navigate = useNavigate();
   const [value, setValue] = useState({});
 
@@ -1155,6 +1118,18 @@ const SetUp = () => {
     if (cookies?.user_data) {
       isCookies();
     }
+    axios
+      .get(`${BaseUrl}/admin/static_languages_without_auth/`)
+      .then((res) => {
+        setLanguages(res?.data?.data?.all_static_data);
+      })
+      .catch((err) => {});
+    axios
+      .get(`${BaseUrl}/admin/static_skills_without_auth/`)
+      .then((res) => {
+        setSkillsOpt(res?.data?.data?.all_static_data);
+      })
+      .catch((err) => {});
   }, []);
 
   const handleKeyPress = (event) => {
@@ -1185,8 +1160,12 @@ const SetUp = () => {
     password: Yup.string()
       .min(8, "Password must be aleast 8 characters long!")
       .max(30, "Password is too long!")
-      .required("Password required"),
-    email: Yup.string().email(" Enter  valid email").required("Email required"),
+      .required("Password required")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+      ),
+    email: Yup.string().email("Please Verify Email").required("Email required"),
     mobile_no: Yup.string()
       .required("Phone number required")
       .min(10, "Enter valid mobile number"),
@@ -1265,11 +1244,16 @@ const SetUp = () => {
   const [existingEmail, setExistingEmail] = useState(true);
   const [resData, setResData] = useState();
   const verifyRequestButton = () => {
+    let regex =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     let email = $("#EmailInputSignUpForm").val();
-    setLoadingActive(true);
-    axios
-      .post("http://13.52.16.160:8082/identity/verify-email", { email })
-      .then((res) => {
+
+    if (!regex.test(email)) {
+      setemailerr("Enter valid email");
+    } else {
+      setLoadingActive(true);
+      axios.post(`${BaseUrl}/identity/verify-email`, { email }).then((res) => {
         if (res?.data?.status === "Failed") {
           setResData(res.data);
           setShow(false);
@@ -1281,15 +1265,17 @@ const SetUp = () => {
           setShow(true);
           setLoadingActive(false);
           setExistingEmail(true);
+          setemailerr("");
         }
       });
+    }
   };
 
   const [otp, handleOTP] = useState("");
   var otp̥Length = otp.length;
-  const [verifyButtonText, setVerifyButtonText] = useState("verify");
+  const [verifyButtonText, setVerifyButtonText] = useState("Verify");
   const [loadingActive, setLoadingActive] = useState(false);
-
+  const [emailerr, setemailerr] = useState(false);
   const [show, setShow] = useState(false);
   const [OtpResponse, setOtpResponse] = useState(false);
 
@@ -1304,13 +1290,14 @@ const SetUp = () => {
     setExistingEmail(true);
     setVerifyButtonText("Verify");
     setOtpResponse(false);
+    setotpdisplay("none");
   };
 
   const handleOTPSubmit = (e) => {
     let email = $("#EmailInputSignUpForm").val();
     e.preventDefault();
     axios
-      .put("http://13.52.16.160:8082/identity/verify-email", {
+      .put(`${BaseUrl}/identity/verify-email`, {
         email: email,
         otp: otp,
       })
@@ -1321,6 +1308,7 @@ const SetUp = () => {
           setVerifyButtonText("Verified");
           $(".emailVerifyBtnProfessional").css("pointer-events", "none");
           handleOTP("");
+          setemailerr("");
         } else {
           handleOTP("");
           setOtpResponse(true);
@@ -1376,10 +1364,7 @@ const SetUp = () => {
                     } else {
                       setLoading(true);
                       axios
-                        .post(
-                          "http://13.52.16.160:8082/identity/signup_professional",
-                          values
-                        )
+                        .post(`${BaseUrl}/identity/signup_professional`, values)
                         .then((res) => {
                           if (res?.data?.status === "Success") {
                             const signupuser = new FormData();
@@ -1398,7 +1383,7 @@ const SetUp = () => {
                             signupuser &&
                               axios
                                 .post(
-                                  "http://13.52.16.160:8082/identity/professional_profile",
+                                  `${BaseUrl}/identity/professional_profile`,
                                   signupuser
                                 )
                                 .then((respo) => {
@@ -1427,11 +1412,9 @@ const SetUp = () => {
                                   );
 
                                   axios.post(
-                                    "http://13.52.16.160:8082/identity/professional_certificate",
+                                    `${BaseUrl}/identity/professional_certificate`,
                                     userCertificate
                                   );
-                                  // .then((res) => console.log(""))
-                                  // .catch((err) => console.log(err));
 
                                   if (respo?.data?.status === "Success") {
                                     contextData?.dispatch({
@@ -1451,7 +1434,7 @@ const SetUp = () => {
                                     if (!contextData?.profileData) {
                                       axios
                                         .post(
-                                          "http://13.52.16.160:8082/identity/get_dashboard_profile/",
+                                          `${BaseUrl}/identity/get_dashboard_profile/`,
                                           {
                                             user_id: res?.data?.data?.user_id,
                                             user_token:
@@ -1532,8 +1515,10 @@ const SetUp = () => {
                               placeholder="Enter Your Email"
                               name="email"
                               onInput={handleEmailFocus}
+                              disabled={
+                                verifyButtonText === "Verified" ? true : false
+                              }
                             />
-
                             <button
                               onClick={verifyRequestButton}
                               type="button"
@@ -1554,7 +1539,6 @@ const SetUp = () => {
                                 verifyButtonText
                               )}
                             </button>
-
                             <Modal
                               show={show}
                               className="OtpInputModal"
@@ -1601,25 +1585,23 @@ const SetUp = () => {
                                 </button>
                               </div>
                             </Modal>
-
                             <i className="fa-regular fa-envelope"></i>
-                            <ErrorMessage
+                            {/* <ErrorMessage
                               name="email"
                               component="div"
                               className="m-2 text-danger"
-                            />
+                            /> */}
                             {!existingEmail ? (
                               <p className="text-danger">
-                                {resData.message}
+                                {/* {resData.message} */}
                                 {/* Email is already registered ! */}
                               </p>
                             ) : (
                               ""
                             )}
-                            {verifyButtonText === "Verify" ? (
-                              <span style={{ color: "red" }}>
-                                Please verify Email
-                              </span>
+
+                            {emailerr ? (
+                              <span className="text-danger">{emailerr}</span>
                             ) : null}
                           </div>
                           <div className={otpdisplay}>
@@ -2040,7 +2022,7 @@ const SetUp = () => {
                             <img src="./static/images/SkillsIcon.png" alt="" />
 
                             <MultiSelect
-                              options={contextData.skillsOpt}
+                              options={skillsOpt}
                               value={skills}
                               onChange={(skills) => {
                                 setFieldValue(
@@ -2094,7 +2076,8 @@ const SetUp = () => {
                           <div className="create-account-input">
                             <Field
                               name="price_range"
-                              type="number"
+                              type="text"
+                              onKeyPress={handleKeyPressPrice}
                               className="form-control"
                               placeholder="Enter Minimum Rate Per Square Meter in $"
                             />
@@ -2124,6 +2107,10 @@ const SetUp = () => {
                             if (!certificate) {
                               setCerErr("block");
                               // return false;
+                            }
+                            if (verifyButtonText === "Verify") {
+                              setemailerr("Please verify  email");
+                              //  return false;
                             }
                           }}
                         >

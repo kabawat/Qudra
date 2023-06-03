@@ -9,6 +9,8 @@ import { useCookies } from "react-cookie";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useEffect } from "react";
 import ReactLotti3 from "../../loader/ReactLottie3";
+import { BaseUrl } from "../../BaseUrl";
+
 const Wrapper = styled.div`
   .mileStoneDate {
     padding: 10px 10px;
@@ -112,7 +114,7 @@ const FromProfessionalTabPane = ({ location }) => {
   };
   useEffect(() => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_details", {
+      .post(`${BaseUrl}/client/particular_project_details`, {
         client_id: location?.state?.client_id,
         project_id: location?.state?.project_id,
         professional_id: cookies?.user_data?.user_id,
@@ -123,16 +125,13 @@ const FromProfessionalTabPane = ({ location }) => {
         if (respo?.data?.status === "Success") {
           setCurProject(respo?.data?.data);
           axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_milestones",
-              {
-                client_id: location?.state?.client_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                professional_id: cookies?.user_data?.user_id,
-                project_id: location?.state?.project_id,
-              }
-            )
+            .post(`${BaseUrl}/client/particular_project_milestones`, {
+              client_id: location?.state?.client_id,
+              user_token: cookies?.user_data?.user_token,
+              role: cookies?.user_data?.role,
+              professional_id: cookies?.user_data?.user_id,
+              project_id: location?.state?.project_id,
+            })
             .then((res) => {
               if (res?.data?.status === "Success") {
                 setMilestone(res?.data?.data);
@@ -160,7 +159,7 @@ const FromProfessionalTabPane = ({ location }) => {
     setError("");
     setShow(false);
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      .post(`${BaseUrl}/client/particular_project_milestones`, {
         client_id: location?.state?.client_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -185,18 +184,16 @@ const FromProfessionalTabPane = ({ location }) => {
     data.append("milestone_file", file[0]);
     if (file?.length > 0) {
       setsubmitLoader(true);
-      await axios
-        .post("http://13.52.16.160:8082/client/milestone_file", data)
-        .then((res) => {
+      await axios.post(`${BaseUrl}/client/milestone_file`, data).then((res) => {
+        setsubmitLoader(false);
+        if (res?.data?.status === "Success") {
+          handalClose();
           setsubmitLoader(false);
-          if (res?.data?.status === "Success") {
-            handalClose();
-            setsubmitLoader(false);
-          }
-        });
+        }
+      });
     } else {
       setsubmitLoader(false);
-      setError("file required");
+      setError("File required");
     }
   };
 
@@ -211,7 +208,7 @@ const FromProfessionalTabPane = ({ location }) => {
 
   const handalDownload = (paylaod) => {
     axios
-      .post("http://13.52.16.160:8082/professional/milestone/download/", {
+      .post(`${BaseUrl}/professional/milestone/download/`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: "professional",
@@ -291,7 +288,11 @@ const FromProfessionalTabPane = ({ location }) => {
                       <div className="col-xxl d-flex align-items-center my-3 align-items-center">
                         <div className="project-details">7</div>
                         <h5>Project File: </h5>
-                        <a href={curProject?.attachment} download>
+                        <a
+                          href={curProject?.attachment}
+                          download
+                          className="projectFileView"
+                        >
                           View File
                         </a>
                       </div>
@@ -308,11 +309,14 @@ const FromProfessionalTabPane = ({ location }) => {
                           <h5>Project Description: </h5>
                         </div>
                         <br />
-                        <p className="m-0 ms-3 ">
+                        <p
+                          className="m-0 ms-3 "
+                          style={{ whiteSpace: "pre-line" }}
+                        >
                           {showText ? (
                             <div>{curProject?.description}</div>
                           ) : (
-                            <div>
+                            <div style={{ whiteSpace: "pre-line" }}>
                               {curProject?.description?.substring(0, 212)}
                             </div>
                           )}
@@ -355,7 +359,7 @@ const FromProfessionalTabPane = ({ location }) => {
               <section className="projectMilestoneInfo">
                 <h3 className="theme-text-color fs-24 mt-5 mb-4">Milestone</h3>
                 {milestone?.map((res, i) => (
-                  <div className="milestoneBox row" key={i}>
+                  <div className="milestoneBox " key={i}>
                     <div className=" d-block  ">
                       <div className="row">
                         <div className="col-4 col-xl-2">
@@ -372,7 +376,13 @@ const FromProfessionalTabPane = ({ location }) => {
                           <p className="headingMile">Cost </p>
                           <p>{res?.milestone_amount_percent} %</p>
                         </div>
-                        <div className="uploadMileStoneof col-xl-6 resMile">
+                        <div
+                          className={
+                            res?.status === "decline"
+                              ? "uploadMileStoneof  uploadMileStoneofmost col-xl-6 "
+                              : "uploadMileStoneof   col-xl-6 "
+                          }
+                        >
                           {res?.status === "pending" && (
                             <div
                               className="uploadMileStonefo"
@@ -400,13 +410,20 @@ const FromProfessionalTabPane = ({ location }) => {
                             <>
                               <button
                                 title="Decline Reason"
-                                className="mileStoneDate decline"
+                                style={{
+                                  backgroundColor: "transparent",
+                                  border: "none",
+                                }}
+                                className="mileStoneDate decline border-none"
                                 onClick={() => handalViewReason(res)}
                               >
-                                <AiOutlineInfoCircle />
+                                <AiOutlineInfoCircle
+                                  color="#da220a"
+                                  size={25}
+                                />
                               </button>
                               <div
-                                className="update"
+                                className="update uploadMileStonefo"
                                 style={{ cursor: "pointer" }}
                                 onClick={() => handalshow(res)}
                               >
@@ -434,7 +451,7 @@ const FromProfessionalTabPane = ({ location }) => {
                           <div>
                             {" "}
                             {descshowless === i + 1 ? (
-                              <p>
+                              <p style={{ whiteSpace: "pre-line" }}>
                                 {res?.milestone_description}
                                 <span
                                   id={i + 1}
@@ -480,7 +497,7 @@ const FromProfessionalTabPane = ({ location }) => {
                         <button>Read less</button>} */}
                         </div>
                       </div>
-                      <div className="col-lg-2">
+                      <div className="col-xl-2 viewFileCol">
                         <p>
                           <a
                             className="viewFile"
@@ -507,7 +524,10 @@ const FromProfessionalTabPane = ({ location }) => {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        onHide={handalClose}
+        onHide={() => {
+          handalClose();
+          setsubmitLoader(false);
+        }}
         className="modalProfessionalDashboard"
       >
         <Modal.Header

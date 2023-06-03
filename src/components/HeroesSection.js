@@ -20,7 +20,7 @@ const HeroesSection = () => {
           className="center-text"
           style={{
             position: "absolute",
-            zIndex: 1,
+            zIndex: 999,
             top: "50%",
             left: "50%",
             transform: "translate(-50%,-50%)",
@@ -30,10 +30,9 @@ const HeroesSection = () => {
           <h1 className="text-light text-center display-1">
             <Link to="/">
               <img
-                src="/static/images/Quadra-transparrent-logo.png"
+                src="/static/images/Logo8.png"
                 className="homePageherosSectionLogo"
                 alt="logo"
-                style={{ height: "150px" }}
               />
             </Link>
           </h1>

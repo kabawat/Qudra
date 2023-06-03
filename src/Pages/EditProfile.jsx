@@ -5,6 +5,8 @@ import { useCookies } from "react-cookie";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import axios from "axios";
+import { BaseUrl } from "../BaseUrl";
+
 const EditProfile = () => {
   const [cookies] = useCookies();
   const [state, setState] = useState({});
@@ -13,7 +15,7 @@ const EditProfile = () => {
   useEffect(() => {
     if (cookies?.user_data) {
       axios
-        .put("http://13.52.16.160:8082/identity/update_account", {
+        .put(`${BaseUrl}/identity/update_account`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,

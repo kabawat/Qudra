@@ -23,9 +23,13 @@ import freelancer10 from "../../../assets/img/frelancer_10.jpg";
 import freelancer11 from "../../../assets/img/frelancer_11.jpg";
 import freelancer12 from "../../../assets/img/frelancer_12.jpg";
 import top_professional from "../../../assets/vid/top_professional.mp4";
+import axios from "axios";
+import { BaseUrl } from "../../../BaseUrl";
 const LastStep = () => {
   const navigate = useNavigate();
   const [isRender, setIsRender] = useState(false);
+  const [guideImages, setGuideImages] = useState([]);
+  const [status, setStatus] = useState(true);
   const [cookies] = useCookies();
   useEffect(() => {
     if (cookies?.user_data) {
@@ -45,6 +49,21 @@ const LastStep = () => {
     } else {
       navigate("/select-sign-in");
     }
+
+    const formData = new FormData();
+    formData.append("page", "Professional_last_page");
+
+    axios
+      .post(`${BaseUrl}/quadra/page_media/`, formData)
+      .then((res) => {
+        if (res?.data?.status === "Failed") {
+          setStatus(false);
+        } else {
+          setStatus(true);
+          setGuideImages(res?.data?.data);
+        }
+      })
+      .catch((errr) => {});
   }, []);
   return isRender ? (
     <>
@@ -61,11 +80,60 @@ const LastStep = () => {
                   <div className="Guidelines">
                     <div className="images-container">
                       <div className="row p-4">
-                        <div className="col-md-6 col-lg-6 my-2">
+                        {status ? (
+                          guideImages &&
+                          guideImages?.map((item, i) => {
+                            let checkExt = item?.media?.split(".").pop();
+                            if (
+                              checkExt === "mp4" ||
+                              checkExt === "avi" ||
+                              checkExt === "mkv"
+                            ) {
+                              return (
+                                <div className="col-md-6 col-lg-6 my-2" key={i}>
+                                  <div className="video-container">
+                                    <video
+                                      src={item?.media}
+                                      // poster={ profGuidelineImg1 }
+                                      controls
+                                      preload="auto"
+                                    >
+                                      This video is not supported by your
+                                      browser
+                                    </video>
+                                  </div>
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div className="col-md-6 col-lg-6 my-2">
+                                  <img
+                                    src={item?.media}
+                                    alt="guideline-image"
+                                  />
+                                </div>
+                              );
+                            }
+                          })
+                        ) : (
+                          <>
+                            <div
+                              style={{
+                                minHeight: "600px",
+                                display: "grid",
+                                placeItems: "center",
+                              }}
+                            >
+                              <span className="h4">No Data Found</span>
+                            </div>
+                          </>
+                        )}
+
+                        {/* <div className="col-md-6 col-lg-6 my-2">
                           <div className="video-container video-container2">
                             <video
-                              src={top_professional}
-                              poster={freelancer1}
+                              src={ top_professional }
+                              poster={ freelancer1 }
                               controls
                               preload="auto"
                             >
@@ -75,45 +143,45 @@ const LastStep = () => {
                         </div>
                         <div
                           className="col-md-6 col-lg-6 my-2"
-                          style={{ maxHeight: "425px" }}
+                          style={ { maxHeight: "425px" } }
                         >
-                          <img src={freelancer1} alt="guideline-image1" />
+                          <img src={ freelancer1 } alt="guideline-image1" />
                         </div>
                       </div>
                       <div className="row p-4 img-container2">
                         <div className="col-md-6 col-lg-6 my-2 img-container2">
-                          <img src={freelancer2} alt="freelancer-image1" />
+                          <img src={ freelancer2 } alt="freelancer-image1" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer3} alt="freelancer-image2" />
+                          <img src={ freelancer3 } alt="freelancer-image2" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer4} alt="freelancer-image3" />
+                          <img src={ freelancer4 } alt="freelancer-image3" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer5} alt="freelancer-image4" />
+                          <img src={ freelancer5 } alt="freelancer-image4" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer6} alt="freelancer-image5" />
+                          <img src={ freelancer6 } alt="freelancer-image5" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer7} alt="freelancer-image6" />
+                          <img src={ freelancer7 } alt="freelancer-image6" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer8} alt="freelancer-image7" />
+                          <img src={ freelancer8 } alt="freelancer-image7" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer9} alt="freelancer-image8" />
+                          <img src={ freelancer9 } alt="freelancer-image8" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer10} alt="freelancer-image9" />
+                          <img src={ freelancer10 } alt="freelancer-image9" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer11} alt="freelancer-image9" />
+                          <img src={ freelancer11 } alt="freelancer-image9" />
                         </div>
                         <div className="col-md-6 col-lg-6 my-2">
-                          <img src={freelancer12} alt="freelancer-image" />
-                        </div>
+                          <img src={ freelancer12 } alt="freelancer-image" />
+                        </div> */}
                       </div>
                     </div>
                   </div>

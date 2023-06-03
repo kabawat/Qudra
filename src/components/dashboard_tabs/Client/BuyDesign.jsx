@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
+import { BaseUrl } from "../../../BaseUrl";
 const BuyDesign = ({ setBuyDesigns }) => {
   const [purchaseDesigns, setPurchaseDesigns] = useState();
   const contextData = useContext(Global);
@@ -27,7 +28,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
     setLoading(true);
     cookies?.user_data &&
       axios
-        .post("http://13.52.16.160:8082/client/client_buysell_projects", {
+        .post(`${BaseUrl}/client/client_buysell_projects`, {
           client_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -179,7 +180,7 @@ const BuyDesign = ({ setBuyDesigns }) => {
                                   professional_id: res?.professional_id,
                                   sub_category_id: res?.sub_category_id,
                                   sub_category_name: res?.sub_category_name,
-                                  customize_price: res?.customize_price[i],
+                                  customize_price: res?.customize_price[index],
                                   project_cost: res?.price[index],
                                   video: `${purchaseDesigns?.video_url}${res?.video[index]}`,
                                   image: `${purchaseDesigns?.image_url}${it}`,
@@ -287,9 +288,11 @@ const BuyDesign = ({ setBuyDesigns }) => {
           ) : (
             <div
               style={{ minHeight: "600px" }}
-              className="d-flex justify-content-center align-items-center"
+              className="d-flex justify-content-center align-items-center shadow"
             >
-              <div className="h4">No Catagory Selected</div>
+              <div className="h4">
+                No Design To Show Related To Your Subcategories
+              </div>
             </div>
           )}
         </div>

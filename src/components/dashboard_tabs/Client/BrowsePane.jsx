@@ -19,12 +19,14 @@ import Loader from "../../Loader";
 import { Backdrop, CircularProgress } from "@mui/material";
 import ScrollToTop from "../../../Hooks/ScrollToTop";
 import { Dropdown } from "react-bootstrap";
+import { BaseUrl } from "../../../BaseUrl";
 const BrowsePane = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
   const [cookies] = useCookies();
   const [showCatagory, setShowCatagory] = useState({});
   const [catagoriesDropdown, SetCatagoriesDropdown] = useState([]);
+  const [suraj, setsuraj] = useState("");
   const [browserProfessionalSearchInput, setBrowserProfessionalSearchInput] =
     useState("");
   const [browseProfessionalData, setBrowserProfessionalData] = useState();
@@ -45,7 +47,6 @@ const BrowsePane = () => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data?.role === "client") {
-          setIsReander(true);
         } else {
           navigate("/professionaldashboard");
         }
@@ -65,7 +66,7 @@ const BrowsePane = () => {
     if (cookies?.user_data && cookies?.user_data.role === "client") {
       !defaultProfessionalProfile?.length &&
         axios
-          .post("http://13.52.16.160:8082/client/browse_profesional_list", {
+          .post(`${BaseUrl}/client/browse_profesional_list`, {
             client_id: cookies?.user_data?.user_id,
             user_token: cookies?.user_data?.user_token,
             role: cookies?.user_data?.role,
@@ -73,6 +74,8 @@ const BrowsePane = () => {
           })
           .then((res) => {
             if (res?.data?.status === "Success") {
+              setIsReander(true);
+
               setDefaultProfessionalProfile(res?.data?.data);
             }
           });
@@ -113,7 +116,7 @@ const BrowsePane = () => {
   useEffect(() => {
     if (browserProfessionalSearchInput) {
       axios
-        .post("http://13.52.16.160:8082/client/search_professional", {
+        .post(`${BaseUrl}/client/search_professional`, {
           client_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -137,7 +140,7 @@ const BrowsePane = () => {
   const [clientSelectedCatagory, setClientSelectedCatagory] = useState();
   const uploadCatagory = () => {
     axios
-      .post("http://13.52.16.160:8082/client/client_selected_cat", {
+      .post(`${BaseUrl}/client/client_selected_cat`, {
         client_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -152,7 +155,7 @@ const BrowsePane = () => {
   useEffect(() => {
     if (!contextData?.static_architecture_design?.data?.length) {
       axios
-        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=1")
+        .get(`${BaseUrl}/quadra/sub_categories?category_id=1`)
         .then((res) => {
           contextData?.dispatch({
             type: "STATIC_ARCHITECTURE_DESIGN",
@@ -163,7 +166,7 @@ const BrowsePane = () => {
 
     if (!contextData?.static_visualization_design?.data?.length) {
       axios
-        .get("http://13.52.16.160:8082/quadra/sub_categories?category_id=2")
+        .get(`${BaseUrl}/quadra/sub_categories?category_id=2`)
         .then((res) => {
           contextData?.dispatch({
             type: "STATIC_VISUALIZATION_DESIGN",
@@ -171,14 +174,12 @@ const BrowsePane = () => {
           });
         });
     }
-    axios
-      .get(`http://13.52.16.160:8082/quadra/sub_categories?category_id=3`)
-      .then((res) => {
-        contextData?.dispatch({
-          type: "STATIC_BUY_SALE_DESIGN",
-          value: res?.data,
-        });
+    axios.get(`${BaseUrl}/quadra/sub_categories?category_id=3`).then((res) => {
+      contextData?.dispatch({
+        type: "STATIC_BUY_SALE_DESIGN",
+        value: res?.data,
       });
+    });
   }, []);
 
   const languagesArchitecture = [
@@ -287,7 +288,17 @@ const BrowsePane = () => {
             </div>
             <div className="col-xxl-10 col-md-9 col-lg-9 custom-border-radius-one dashboard-theme-skyblue px-0 dashboard-right-section">
               <HeaderDashboard />
-              {isRender ? (
+              {!isRender ? (
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={!isRender}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+              ) : (
                 <main className="dashboard-main">
                   <div
                     id="dashboard-menu-bar"
@@ -297,25 +308,25 @@ const BrowsePane = () => {
                       <form
                         onSubmit={(e) => {
                           e.preventDefault();
-                          browserProfessionalSearchInput
-                            ? axios
-                                .post(
-                                  "http://13.52.16.160:8082/client/search_professional",
-                                  {
-                                    client_id: cookies?.user_data?.user_id,
-                                    user_token: cookies?.user_data?.user_token,
-                                    role: cookies?.user_data?.role,
-                                    search_data: browserProfessionalSearchInput,
-                                    ...browseProfessinalSearchPageId,
-                                    filter_by: filterProject,
-                                  }
-                                )
-                                .then((res) => {
-                                  if (res?.data?.status === "Success") {
-                                    setBrowserProfessionalData(res?.data?.data);
-                                  } else setBrowserProfessionalData(null);
-                                })
-                            : setBrowserProfessionalData(null);
+                          if (browserProfessionalSearchInput) {
+                            setsuraj("suraj");
+                            axios
+                              .post(`${BaseUrl}/client/search_professional`, {
+                                client_id: cookies?.user_data?.user_id,
+                                user_token: cookies?.user_data?.user_token,
+                                role: cookies?.user_data?.role,
+                                search_data: browserProfessionalSearchInput,
+                                ...browseProfessinalSearchPageId,
+                                filter_by: filterProject,
+                              })
+                              .then((res) => {
+                                if (res?.data?.status === "Success") {
+                                  setBrowserProfessionalData(res?.data?.data);
+                                } else setBrowserProfessionalData(null);
+                              });
+                          } else {
+                            setBrowserProfessionalData(null);
+                          }
                         }}
                       >
                         <h3 className="m-0">Find Professionals now easily</h3>
@@ -330,6 +341,7 @@ const BrowsePane = () => {
                                 }
                                 value={browserProfessionalSearchInput}
                                 onInput={(e) => {
+                                  setsuraj("");
                                   setBrowserProfessionalSearchInput(
                                     e?.target?.value
                                   );
@@ -450,15 +462,16 @@ const BrowsePane = () => {
                         <button
                           type="reset"
                           onClick={() => {
-                            setBrowserProfessionalSearchInput(null);
-                            setBrowserProfessionalData(null);
+                            setBrowserProfessionalSearchInput("");
+                            setBrowserProfessionalData("");
                           }}
                         >
                           <img src="./static/images/reload.png" alt="" />
                         </button>
                       </form>
                       <div className="row">
-                        {browserProfessionalSearchInput ? (
+                        {browserProfessionalSearchInput !== "" &&
+                        suraj !== "" ? (
                           browseProfessionalData === null ? (
                             <>
                               <div
@@ -860,17 +873,14 @@ const BrowsePane = () => {
                                     return false;
                                   }
                                   axios
-                                    .post(
-                                      "http://13.52.16.160:8082/client/add_client_cat",
-                                      {
-                                        client_id: cookies?.user_data?.user_id,
-                                        user_token:
-                                          cookies?.user_data?.user_token,
-                                        role: cookies?.user_data?.role,
-                                        category_id: showCatagory?.catagory_id,
-                                        new_sub_cat: values?.new_sub_cat,
-                                      }
-                                    )
+                                    .post(`${BaseUrl}/client/add_client_cat`, {
+                                      client_id: cookies?.user_data?.user_id,
+                                      user_token:
+                                        cookies?.user_data?.user_token,
+                                      role: cookies?.user_data?.role,
+                                      category_id: showCatagory?.catagory_id,
+                                      new_sub_cat: values?.new_sub_cat,
+                                    })
                                     .then((res) => {
                                       if (res?.data?.status === "Success") {
                                         setUploadSubCatagoryModal(false);
@@ -1005,16 +1015,6 @@ const BrowsePane = () => {
                     </Modal.Body>
                   </Modal>
                 </main>
-              ) : (
-                <Backdrop
-                  sx={{
-                    color: "#fff",
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                  }}
-                  open={!isRender}
-                >
-                  <CircularProgress color="inherit" />
-                </Backdrop>
               )}
             </div>
           </div>

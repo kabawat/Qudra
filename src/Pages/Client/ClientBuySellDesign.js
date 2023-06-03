@@ -10,30 +10,31 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../../components/Loader";
 import { useCookies } from "react-cookie";
+import { BaseUrl } from "../../BaseUrl";
 const ClientBuySellDesign = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies()
-  const [isRender, setIsRender] = useState(false)
+  const [cookies, setCookies] = useCookies();
+  const [isRender, setIsRender] = useState(false);
   useEffect(() => {
     if (cookies?.user_data) {
       if (cookies?.user_data?.category_selected) {
         if (cookies?.user_data?.role === "client") {
-          navigate('/clientdashboard')
+          navigate("/clientdashboard");
         } else {
-          navigate('/professionaldashboard')
+          navigate("/professionaldashboard");
         }
       } else {
         if (cookies?.user_data?.role === "client") {
-          setIsRender(true)
+          setIsRender(true);
         } else {
-          navigate('/categoryArchitecture')
+          navigate("/categoryArchitecture");
         }
       }
     } else {
-      navigate('/select-sign-in')
+      navigate("/select-sign-in");
     }
-  }, [])
+  }, []);
 
   const toggleDisabled = (target) => {
     let IconTarget = document.getElementById(`${parseInt(target.id)}icon`);
@@ -57,24 +58,29 @@ const ClientBuySellDesign = () => {
 
   const formSubmit = (valueArray) => {
     if (valueArray.length) {
-      axios.post("http://13.52.16.160:8082/client/sel_sub_category", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        category: {
-          cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
-        },
-        sel_sub_cat: {
-          ...selectedCatagories.sel_sub_cat,
-          3: valueArray,
-        },
-      }).then((res) => {
-        if (res?.data?.status === "Success") {
-          localStorage.clear()
-          setCookies("user_data", { ...cookies?.user_data, category_selected: true })
-          navigate("/clientdashboard");
-        }
-      });
+      axios
+        .post(`${BaseUrl}/client/sel_sub_category`, {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          category: {
+            cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
+          },
+          sel_sub_cat: {
+            ...selectedCatagories.sel_sub_cat,
+            3: valueArray,
+          },
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            localStorage.clear();
+            setCookies("user_data", {
+              ...cookies?.user_data,
+              category_selected: true,
+            });
+            navigate("/clientdashboard");
+          }
+        });
     } else {
       toast.error("You must select an category!", {
         position: "top-right",
@@ -89,35 +95,42 @@ const ClientBuySellDesign = () => {
     }
   };
   useEffect(() => {
-    axios.get(`http://13.52.16.160:8082/quadra/sub_categories?category_id=3`)
-      .then((res) => {
-        contextData?.dispatch({
-          type: "STATIC_BUY_SALE_DESIGN",
-          value: res?.data,
-        });
+    axios.get(`${BaseUrl}/quadra/sub_categories?category_id=3`).then((res) => {
+      contextData?.dispatch({
+        type: "STATIC_BUY_SALE_DESIGN",
+        value: res?.data,
       });
+    });
   }, []);
   const handleSkipButton = () => {
-    const list = [...selectedCatagories?.sel_sub_cat['1'], ...selectedCatagories?.sel_sub_cat['2']]
+    const list = [
+      ...selectedCatagories?.sel_sub_cat["1"],
+      ...selectedCatagories?.sel_sub_cat["2"],
+    ];
     if (list.length) {
-      axios.post("http://13.52.16.160:8082/client/sel_sub_category", {
-        user_id: contextData?.userData?.user_id,
-        user_token: contextData?.userData?.user_token,
-        role: contextData?.userData?.role,
-        category: {
-          cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
-        },
-        sel_sub_cat: {
-          ...selectedCatagories.sel_sub_cat,
-          3: [],
-        },
-      }).then((res) => {
-        if (res?.data?.status === "Success") {
-          setCookies("user_data", { ...cookies?.user_data, category_selected: true })
-          localStorage.clear()
-          navigate("/clientdashboard");
-        }
-      });
+      axios
+        .post(`${BaseUrl}/client/sel_sub_category`, {
+          user_id: contextData?.userData?.user_id,
+          user_token: contextData?.userData?.user_token,
+          role: contextData?.userData?.role,
+          category: {
+            cat_id: [...new Set([...selectedCatagories?.category?.cat_id, 3])],
+          },
+          sel_sub_cat: {
+            ...selectedCatagories.sel_sub_cat,
+            3: [],
+          },
+        })
+        .then((res) => {
+          if (res?.data?.status === "Success") {
+            setCookies("user_data", {
+              ...cookies?.user_data,
+              category_selected: true,
+            });
+            localStorage.clear();
+            navigate("/clientdashboard");
+          }
+        });
     } else {
       toast.error("You must select an category!", {
         position: "top-right",
@@ -248,7 +261,7 @@ const ClientBuySellDesign = () => {
                           <button
                             type="submit"
                             className="create-account-btn"
-                          // onClick={() => navigate("/client-visualisation")}
+                            // onClick={() => navigate("/client-visualisation")}
                           >
                             Continue <BsArrowRight style={{ color: "white" }} />
                           </button>

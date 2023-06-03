@@ -13,6 +13,8 @@ import { useCookies } from "react-cookie";
 import Loader from "../../Loader";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { BaseUrl } from "../../../BaseUrl";
+
 const PendingActivity = () => {
   const contextData = useContext(Global);
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ const PendingActivity = () => {
   useEffect(() => {
     if (cookies?.user_data) {
       axios
-        .post("http://13.52.16.160:8082/identity/filter_projects", {
+        .post(`${BaseUrl}/identity/filter_projects`, {
           user_id: cookies?.user_data?.user_id,
           user_token: cookies?.user_data?.user_token,
           role: cookies?.user_data?.role,
@@ -71,7 +73,7 @@ const PendingActivity = () => {
   const handleFilterProject = (e) => {
     e.preventDefault();
     axios
-      .post("http://13.52.16.160:8082/identity/search_projects", {
+      .post(`${BaseUrl}/identity/search_projects`, {
         user_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -106,7 +108,7 @@ const PendingActivity = () => {
   }, [searchActiveProject]);
   const handleClientAcceptation = (id, project_id) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_milestones", {
+      .post(`${BaseUrl}/client/particular_project_milestones`, {
         client_id: id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -116,16 +118,13 @@ const PendingActivity = () => {
       .then((res) => {
         if (res?.data?.status === "Success") {
           axios
-            .post(
-              "http://13.52.16.160:8082/client/particular_project_details",
-              {
-                client_id: id,
-                professional_id: cookies?.user_data?.user_id,
-                user_token: cookies?.user_data?.user_token,
-                role: cookies?.user_data?.role,
-                project_id: project_id,
-              }
-            )
+            .post(`${BaseUrl}/client/particular_project_details`, {
+              client_id: id,
+              professional_id: cookies?.user_data?.user_id,
+              user_token: cookies?.user_data?.user_token,
+              role: cookies?.user_data?.role,
+              project_id: project_id,
+            })
             .then((respo) => {
               if (respo?.data?.status === "Success") {
                 if (id !== undefined) {
@@ -147,7 +146,7 @@ const PendingActivity = () => {
 
   const handlePendingRequest = (client_id, project_id) => {
     axios
-      .post("http://13.52.16.160:8082/client/particular_project_details", {
+      .post(`${BaseUrl}/client/particular_project_details`, {
         professional_id: cookies?.user_data?.user_id,
         user_token: cookies?.user_data?.user_token,
         role: cookies?.user_data?.role,
@@ -208,7 +207,7 @@ const PendingActivity = () => {
                                   setSearchActiveProject(e?.target?.value);
                                   setNoResult(false);
                                 }}
-                                placeholder="Search via client or project name "
+                                placeholder="Search... "
                               />
                               <button type="submit">
                                 <BsSearch />
